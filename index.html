@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ressources EUSP</title>
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/concertations.css">
+</head>
+<body>
+<div class="app">
+
+  <nav class="nav" aria-label="Sections">
+    <div class="brand">DS-DC Montréal</div>
+    <div class="nav-items">
+      <button class="nav-item" id="nav-cartes" data-view="cartes" aria-current="page">Cartes</button>
+      <button class="nav-item" id="nav-conc" data-view="conc" aria-current="false">Concertations</button>
+      <button class="nav-item" id="nav-cadre" data-view="cadre" aria-current="false">Cadre conceptuel</button>
+      <button class="nav-item" id="nav-ressources" data-view="ressources" aria-current="false">Ressources</button>
+      <button class="nav-item" id="nav-gloss" data-view="gloss" aria-current="false">Glossaire</button>
+    </div>
+  </nav>
+
+  <div class="views">
+
+    <!-- Santé Québec : CIUSSS map (geometry TODO) -->
+    <section class="view active" id="view-cartes" aria-label="Cartes">
+      <div class="views map-views">
+        <section class="view active" id="view-sante" aria-label="Santé Québec">
+      <div class="wrap">
+        <section class="map-side">
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button></div>
+          <div class="map-head"><img class="logo" style="transform:translateY(14px)" src="assets/logos/sante-quebec.png" alt="Santé Québec"></div>
+          <div class="map-stage"><div class="legend"><div><span class="sw low"></span>Région sociosanitaire (RSS) de Montréal</div><div><span class="sw mid"></span>Les 5 réseaux territoriaux de services (RTS)</div><div><span class="sw high"></span>Les réseaux locaux de services (RLS)</div></div><svg id="sante-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des territoires de CIUSSS"></svg></div>
+        </section>
+        <aside class="panel" id="panel-sante" aria-live="polite">
+          <h2>CIUSSS de Montréal</h2><hr class="rule">
+          <p class="intro">Cliquez un territoire pour afficher ses directions. (Données à intégrer.)</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Ville de Montréal : arrondissements -->
+    <section class="view" id="view-ville" aria-label="Ville de Montréal" hidden>
+      <div class="wrap">
+        <section class="map-side">
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button></div>
+          <div class="map-head"><img class="logo" src="assets/logos/Logo_Montréal.png" alt="Ville de Montréal"></div>
+          <div class="map-stage"><div class="legend"><div><span class="sw mid"></span>Arrondissement</div><div><span class="sw low"></span>Ville liée</div></div><svg id="ville-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des arrondissements"></svg></div>
+        </section>
+        <aside class="panel" id="ville-panel" aria-live="polite"></aside>
+      </div>
+    </section>
+
+    <!-- Tables de quartier (TODO) -->
+    <section class="view" id="view-tdq" aria-label="Tables de quartier" hidden>
+      <div class="wrap">
+        <section class="map-side">
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button></div>
+          <div class="map-head"><img class="logo" style="transform:scale(2);transform-origin:left top" src="assets/logos/tables-de-quartier.png" alt="Tables de quartier"></div>
+          <div class="map-stage"><div class="legend"><div><span class="sw mid"></span>Table de quartier</div><div><span class="sw low"></span>Secteur sans table</div></div><svg id="tdq-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des 32 tables de quartier de l'île de Montréal"></svg></div>
+        </section>
+        <aside class="panel" id="tdq-panel" aria-live="polite"></aside>
+      </div>
+    </section>
+
+    <!-- Concertations (TODO) -->
+      </div>
+    </section>
+
+    <section class="view" id="view-conc" aria-label="Concertations" hidden>
+      <div class="conc-app embed" id="conc-root"></div>
+    </section>
+
+    <!-- Glossaire -->
+    <section class="view" id="view-cadre" aria-label="Cadre conceptuel" hidden>
+      <iframe class="gloss-frame" src="cadre.html" title="Cadre conceptuel DS-DC" loading="lazy"></iframe>
+    </section>
+
+    <section class="view" id="view-ressources" aria-label="Ressources" hidden>
+      <div class="full"><h1>Ressources</h1>
+        <div class="stub"><div class="frame"><h2>À venir</h2><p>Section à remplir.</p></div></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-gloss" aria-label="Glossaire" hidden>
+      <iframe class="gloss-frame" src="acronymes.html" title="Glossaire des acronymes" loading="lazy"></iframe>
+    </section>
+
+  </div>
+</div>
+
+  <!-- coeur : helpers + nav -->
+  <script src="assets/js/app.js"></script>
+  <!-- carte Ville de Montréal : données puis logique -->
+  <script src="assets/data/ville-montreal.data.js"></script>
+  <script src="assets/js/ville-montreal.js"></script>
+  <!-- carte Tables de quartier : 32 territoires découpés sur la silhouette de l'île -->
+  <script src="assets/data/tables-quartier.data.js"></script>
+  <script src="assets/data/tables-quartier.members.js"></script>
+  <script src="assets/js/tables-quartier.js"></script>
+  <!-- carte Santé Québec : données puis logique -->
+  <script src="assets/data/sante-quebec.data.js"></script>
+  <script src="assets/js/sante-quebec.js"></script>
+  <!-- section Concertations : données puis rendu -->
+  <script src="assets/data/concertations.data.js"></script>
+  <script src="assets/js/concertations.js"></script>
+</body>
+</html>

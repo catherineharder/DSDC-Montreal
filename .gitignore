@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+
+# Classeurs de départ pour les feuilles Google (sauvegarde locale, déjà dans
+# votre Google Drive). Pas nécessaires au site ni à GitHub.
+feuilles-sources-google/
