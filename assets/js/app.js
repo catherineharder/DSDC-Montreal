@@ -17,18 +17,38 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
 function initNav() {
   const buttons = [...document.querySelectorAll(".nav-item")];
   if (!buttons.length) return;
-  const select = (btn) => {
+
+  // Chaque onglet a sa propre URL (ex. /DSDC-Montreal/concertations).
+  // Le préfixe de base est lu depuis la balise <base> (source unique).
+  const baseEl = document.querySelector("base");
+  const BASE = baseEl ? new URL(baseEl.href).pathname : "/";
+  const VIEW_SLUG = {
+    cartes: "cartes", conc: "concertations", cadre: "cadre-conceptuel",
+    ressources: "ressources", gloss: "glossaire",
+  };
+  const SLUG_VIEW = {};
+  Object.keys(VIEW_SLUG).forEach((v) => { SLUG_VIEW[VIEW_SLUG[v]] = v; });
+
+  const apply = (view) => {
     buttons.forEach((b) => {
-      const on = b === btn;
+      const on = b.dataset.view === view;
       b.setAttribute("aria-current", on ? "page" : "false");
-      const view = el("view-" + b.dataset.view);
-      if (view) {
-        view.classList.toggle("active", on);
-        view.toggleAttribute("hidden", !on);
-      }
+      const v = el("view-" + b.dataset.view);
+      if (v) { v.classList.toggle("active", on); v.toggleAttribute("hidden", !on); }
     });
   };
-  buttons.forEach((b) => b.addEventListener("click", () => select(b)));
+  const viewFromPath = () => {
+    const seg = location.pathname.slice(BASE.length).replace(/^\/+|\/+$/g, "").split("/")[0];
+    return SLUG_VIEW[seg] || "cartes";
+  };
+  const go = (view, push) => {
+    apply(view);
+    if (push) history.pushState({ view }, "", BASE + (VIEW_SLUG[view] || ""));
+  };
+
+  buttons.forEach((b) => b.addEventListener("click", () => go(b.dataset.view, true)));
+  window.addEventListener("popstate", () => apply(viewFromPath()));
+  go(viewFromPath(), false); // état initial (sans empiler d'historique)
 }
 
 /* ---- "Cartes" tab : pick a map from the list in the left column -------------
