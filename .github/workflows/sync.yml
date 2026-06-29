@@ -49,3 +49,4 @@ jobs:
             git commit -m "Synchronisation automatique du site ($(date -u +%Y-%m-%d))"
             git push
           fi
+

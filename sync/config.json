@@ -1,12 +1,12 @@
 {
   "_aide": "Collez l'ID de chaque feuille Google entre les guillemets de 'sheet_id'. L'ID est la longue chaîne dans l'URL de la feuille : https://docs.google.com/spreadsheets/d/<ID>/edit . Chaque feuille doit être partagée « Tout le monde disposant du lien : Lecteur ». Tant qu'un sheet_id commence par 'TODO', cette source est ignorée par la synchronisation.",
   "glossaire": {
-    "sheet_id": "TODO_ID_FEUILLE_GLOSSAIRE",
+    "sheet_id": "1RRaZ4SMFaWm3m78ypPufWrClJymn4y7n",
     "tab": "Acronymes",
     "output": "acronymes.html"
   },
   "concertations": {
-    "sheet_id": "TODO_ID_FEUILLE_CONCERTATIONS",
+    "sheet_id": "1dDpLbIMQCE9OoCvnZNVQc0R8gkmydV8I",
     "tabs": [
       "Familles_partenaires",
       "Partenaires",
@@ -18,7 +18,7 @@
     "output": "assets/data/concertations.data.js"
   },
   "tables": {
-    "sheet_id": "TODO_ID_FEUILLE_TABLES",
+    "sheet_id": "11P0JPIxhEmf3EFvXxVx2z_NYmQ-oNo7u",
     "tab": "Membres",
     "output": "assets/data/tables-quartier.members.js"
   }
