@@ -93,35 +93,29 @@
     return items ? '<div class="fld"><p class="fl">Présence interne (DRSP)</p><ul class="blist">' + items + '</ul></div>' : '';
   }
   // Composition en liste à puces. Omise si rien à afficher.
+  // Composition : « membre (catégorie) », ordonnée porteur -> DRSP -> autres.
   function compBlock(c) {
-    var list = c.comp;
-    if (!list || !list.length) {
-      list = [];
-      if (c.drsp === 'lead' || c.drsp === 'participant') list.push({ m: 'DRSP / EUSP' });
-      if (c.par) c.par.forEach(function (x) { var s = PAR2SECT[x]; if (s) list.push({ m: SECT[s][0] }); });
-    }
+    var list = c.comp || [];
     if (!list.length) return '';
-    var items = list.map(function (x) { return '<li>' + x.m + '</li>'; }).join('');
+    function rank(cat) { var n = normC(cat); if (n.indexOf('porteur') === 0) return 0; if (n === 'drsp') return 1; return 2; }
+    var sorted = list.slice().sort(function (a, b) { return rank(a.cat) - rank(b.cat); });
+    var items = sorted.map(function (x) {
+      var lab = x.cat ? ' <span class="mcat">(' + x.cat + ')</span>' : '';
+      return '<li>' + x.m + lab + '</li>';
+    }).join('');
     return '<div class="fld"><p class="fl">Composition</p><ul class="blist">' + items + '</ul></div>';
   }
   function renderCommittee(id) {
     var c = byId[id]; if (!c) return;
     info.innerHTML =
       '<h3 class="info-title">' + titleAcr(c.full, c.name) + '</h3>'
-      + fld('Porté par', c.pp) + fld('Mandat', c.man)
-      + presBlock(c.int)
+      + fld('Mandat', c.man)
       + compBlock(c);
     pane.scrollTop = 0;
   }
-  function comitesForPartner(p) {
-    return C.filter(function (c) {
-      var hay = c.name + ' ' + (c.full || '') + ' ' + (c.pp || '') + ' ' + (c.man || '') + ' ' + (c.comp || []).map(function (x) { return x.m; }).join(' ');
-      return p.match.some(function (t) { return hay.indexOf(t) >= 0; });
-    });
-  }
   function renderPartner(pid) {
     var p = null; P.forEach(function (x) { if (x.id === pid) p = x; }); if (!p) return;
-    var coms = comitesForPartner(p), list = '';
+    var coms = (p.coms || []).map(function (id) { return byId[id]; }).filter(Boolean), list = '';
     if (coms.length) {
       list = '<div class="fld"><p class="fl">Présent dans les comités</p><ul class="blist">' + coms.map(function (c) {
         return '<li><button class="comlink" data-go="' + c.id + '">' + titleAcr(c.full, c.name) + '</button></li>';
@@ -129,7 +123,6 @@
     }
     info.innerHTML =
       '<h3 class="info-title">' + titleAcr(p.full, p.ac) + '</h3>'
-      + (p.desc ? '<p class="info-desc">' + p.desc + '</p>' : '')
       + list;
     pane.scrollTop = 0;
     info.querySelectorAll('.comlink').forEach(function (btn) {

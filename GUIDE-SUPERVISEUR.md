@@ -72,72 +72,67 @@ Une ligne = **un organisme membre** d'une table de quartier.
 
 ## 3. Concertations — feuille « Concertations — site »
 
-C'est la plus riche : elle a **six onglets**. Chacun a un rôle précis. Vous
-modifiez surtout `Partenaires`, `Comites`, `Composition` et `Definitions`.
+Elle a **quatre onglets** : `Partenaires`, `Comites`, `Composition`,
+`Definitions`. Les familles (groupes) ne sont plus un onglet à part : elles se
+déduisent automatiquement des colonnes `famille` / `groupe`.
 
-### Onglet `Partenaires` — les cases « Partenaires » du site
+### Onglet `Partenaires` — les cases « Partenaires »
 Un partenaire = une ligne.
 
 | Colonne | À mettre |
 |---|---|
-| **famille_key** | Le **code de famille** (voir onglet `Familles_partenaires`), ex. `min`, `mun`, `comm`… |
-| **id** | Un identifiant court et unique, sans espace ni accent, ex. `mamh` |
-| **ac** | Le **nom court / sigle** affiché en gras sur la case, ex. `MAMH` |
-| **full** | Le nom complet (facultatif), ex. `Ministère des Affaires municipales et de l'Habitation` |
-| **desc** | Une phrase de description (affichée quand on clique sur la case) |
-| **rel** | Rattachement affiché entre parenthèses (facultatif), ex. `MSSS` |
-| **sub** | Mettez `x` si c'est une **sous-entité** (case plus discrète) ; sinon vide |
-| **match** | Mots-clés qui relient ce partenaire aux comités où il siège, séparés par `;` ex. `MAMH ; affaires municipales` |
+| **ID-par** | Identifiant court et unique, sans espace ni accent, ex. `mamh`. **C'est lui qui relie un partenaire aux comités** (voir `Composition`). |
+| **acronym** | Le sigle affiché en gras sur la case, ex. `MAMH` |
+| **partenaire** | Le **nom complet**, ex. `Ministère des Affaires municipales et de l'Habitation` |
+| **famille** | Le **nom de la famille** (regroupe et colore les cases), ex. `Ministères`, `Communautaire`… |
+| **parent** | Organisme parent, affiché entre parenthèses (facultatif), ex. `MSSS` |
+
+> Les **familles connues** (et leurs couleurs) : `Ministères`, `Réseau de la santé (RSSS)`,
+> `Métropolitain et municipal`, `Instituts, observatoires et chaires`,
+> `Universités et centres de recherche`, `Philanthropie`, `Communautaire`,
+> `Autres partenaires`. Une **nouvelle** famille s'affiche, mais en couleur neutre
+> tant que sa couleur n'a pas été ajoutée dans le code (demandez à l'administrateur·rice).
 
 ### Onglet `Comites` — les comités
 Un comité = une ligne.
 
 | Colonne | À mettre |
 |---|---|
-| **id** | Identifiant court unique, ex. `trsp` |
-| **fam** | Le **code de famille de comité** (voir `Familles_comites`), ex. `trsp`, `dsl`… |
-| **niv** | Niveau : `strat` (stratégique), `tact` (tactique) ou `oper` (opérationnel) — fixe la couleur |
-| **pal** | Palier (texte libre interne), ex. `regional` |
-| **name** | Le nom court affiché sur la case |
-| **full** | Le nom complet (affiché en titre de la fiche) |
-| **drsp** | Rôle de la DRSP : `lead` (porteuse), `participant`, ou `absent` |
-| **neu** | `x` si le comité est **nouveau** (étoile ★, < 1 an) ; sinon vide |
-| **under** | « Sous » / rattachement affiché en petit sous le nom (facultatif) |
-| **ina** | `x` si le comité est **inactif** ; sinon vide |
-| **pp** | « Porté par » (facultatif) |
-| **man** | Le mandat / la mission (facultatif, peut être long) |
-| **presence_interne** | Équipes DRSP présentes, codes séparés par `;` parmi : `dir`, `eusp`, `jeun`, `pcmi`, `ecos` |
-| **partenaires_lies** | Codes de partenaires liés, séparés par `;` (facultatif) |
+| **ID-com** | Identifiant court unique, ex. `trsp`. Sert à relier la composition (voir `Composition`). |
+| **acronym** | Le sigle affiché en gras sur la case, ex. `TRSP` |
+| **comite** | Le **nom complet** (titre de la fiche), ex. `Table régionale de santé publique` |
+| **groupe** | Le **nom du regroupement** (sous-titre de section), ex. `Gouvernance régionale` |
+| **parent** | Instance / comité de rattachement, affiché en petit sous le nom (facultatif) |
+| **niveau** | `stratégique`, `tactique` ou `opérationnel` — fixe la couleur de la case |
+| **DRSP-coord** | `x` si la DRSP est **coordonnatrice** (pastille noire) ; sinon vide |
+| **nouveau** | `x` si le comité est **nouveau** (étoile ★, < 1 an) ; sinon vide |
+| **mandat** | Le mandat / la mission (peut être long) |
 
 ### Onglet `Composition` — qui siège dans chaque comité
 Une ligne = **un membre** d'un comité.
 
 | Colonne | À mettre |
 |---|---|
-| **comite_id** | L'`id` du comité (même valeur que dans l'onglet `Comites`) |
-| **secteur** | Code de secteur (couleur/regroupement), ex. `drsp`, `rss`, `mun`, `comm`… |
+| **ID-com** | L'`ID-com` du comité (même valeur que dans l'onglet `Comites`) |
+| **comite** | Le nom du comité (pour vous repérer ; non affiché) |
+| **ID-mem** | Si ce membre est aussi un **partenaire**, mettez son `ID-par`. Le site crée alors automatiquement le lien « présent dans les comités ». Sinon, laissez vide. |
 | **membre** | Le libellé du membre, ex. `Directions concernées des 5 CIUSSS` |
+| **categorie** | Rôle affiché entre parenthèses après le nom : `porteur`, `DRSP`, ou vide. **Le `porteur` apparaît toujours en premier, puis les `DRSP`, puis le reste.** Ex. : `MAMH (porteur)`, `EUSP (DRSP)`. |
 
-Pour ajouter un siège à un comité : nouvelle ligne avec le bon `comite_id`.
+Pour ajouter un siège : nouvelle ligne avec le bon `ID-com`. Pour qu'un partenaire
+soit listé sur sa propre fiche comme « présent dans » un comité, renseignez
+`ID-mem` avec son `ID-par`.
 
 ### Onglet `Definitions` — le lexique de bas de section
 | Colonne | À mettre |
 |---|---|
 | **terme** | Le terme défini, ex. `Communauté de pratique` |
-| **acronyme** | Son sigle (facultatif), ex. `CoP` |
+| **acronym** | Son sigle (facultatif), ex. `CoP` |
 | **definition** | La définition (le HTML simple comme `<em>…</em>` est permis) |
 
-### Onglets `Familles_partenaires` et `Familles_comites` — les regroupements
-Vous y touchez **rarement**. Ils définissent les **familles** (titres de groupes)
-et leur ordre d'affichage.
-
-- `Familles_partenaires` : `key` (code), `label` (titre affiché), `dot` (code de
-  pastille de couleur).
-- `Familles_comites` : `key` (code), `label` (titre affiché).
-
-L'**ordre des lignes** dans ces deux onglets fixe l'**ordre d'affichage** des
-groupes sur le site. Pour qu'un partenaire ou un comité apparaisse, son code de
-famille (`famille_key` / `fam`) doit exister ici.
+> L'**ordre des lignes** des onglets `Partenaires` et `Comites` fixe l'ordre
+> d'affichage ; les familles/groupes apparaissent dans l'ordre de leur première
+> occurrence.
 
 ---
 

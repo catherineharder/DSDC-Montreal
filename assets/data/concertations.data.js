@@ -1,6 +1,7 @@
 /* Données de la section Concertations.
-   Source de vérité : modifier les données ici, puis la page se met à jour.
-   Généré par tools/build_concertations.py voir README. */
+   GÉNÉRÉ AUTOMATIQUEMENT depuis la feuille Google « Concertations »
+   par sync/sync_all.py. NE PAS ÉDITER À LA MAIN : modifiez la feuille,
+   le site se met à jour à la prochaine synchronisation. */
 window.CONC = {
   "famsP": [
     {
@@ -11,97 +12,75 @@ window.CONC = {
         {
           "id": "mamh",
           "ac": "MAMH",
-          "desc": "Ministère responsable des affaires municipales et de l'habitation; partenaire sur le logement et l'aménagement.",
-          "match": [
-            "MAMH"
-          ],
-          "full": "Ministère des Affaires municipales et de l'Habitation"
+          "full": "Ministère des Affaires municipales et de l'Habitation",
+          "coms": [
+            "car",
+            "instance-strat"
+          ]
         },
         {
           "id": "mapaq",
           "ac": "MAPAQ",
-          "desc": "Ministère de l'agriculture, des pêcheries et de l'alimentation; partenaire en sécurité et systèmes alimentaires.",
-          "match": [
-            "MAPAQ"
-          ],
-          "full": "Ministère de l'Agriculture, des Pêcheries et de l'Alimentation du Québec"
+          "full": "Ministère de l'Agriculture, des Pêcheries et de l'Alimentation du Québec",
+          "coms": []
         },
         {
           "id": "mtess",
           "ac": "MTESS",
-          "desc": "Ministère du travail, de l'emploi et de la solidarité sociale; bailleur de la lutte contre la pauvreté (Alliance pour la solidarité).",
-          "match": [
-            "MTESS"
-          ],
-          "full": "Ministère du Travail, de l'Emploi et de la Solidarité sociale"
+          "full": "Ministère du Travail, de l'Emploi et de la Solidarité sociale",
+          "coms": [
+            "alliance"
+          ]
         },
         {
           "id": "mtq",
           "ac": "MTQ",
-          "desc": "Ministère des transports; partenaire sur la mobilité et le transport en commun.",
-          "match": [
-            "MTQ"
-          ],
-          "full": "Ministère des Transports du Québec"
+          "full": "Ministère des Transports du Québec",
+          "coms": [
+            "instance-strat",
+            "imsdsl-pilotage"
+          ]
         },
         {
           "id": "mfa",
           "ac": "MFA",
-          "desc": "Ministère de la famille; partenaire petite enfance et soutien aux familles.",
-          "match": [
-            "MFA",
-            "Ministère de la Famille"
-          ],
-          "full": "Ministère de la Famille"
+          "full": "Ministère de la Famille",
+          "coms": []
         },
         {
           "id": "mess",
           "ac": "MESS",
-          "desc": "Ministère de l'emploi et de la solidarité sociale.",
-          "match": [
-            "MESS"
-          ],
-          "full": "Ministère de l'Emploi et de la Solidarité sociale"
+          "full": "Ministère de l'Emploi et de la Solidarité sociale",
+          "coms": []
         },
         {
           "id": "meq",
           "ac": "MEQ",
-          "desc": "Ministère de l'éducation du Québec; partenaire sur la réussite éducative et les milieux scolaires.",
-          "match": [
-            "MEQ"
-          ],
-          "full": "Ministère de l'Éducation du Québec"
+          "full": "Ministère de l'Éducation du Québec",
+          "coms": []
         },
         {
           "id": "msss",
           "ac": "MSSS",
-          "desc": "Ministère de la santé et des services sociaux; pilote le Programme national de santé publique.",
-          "match": [
-            "MSSS"
-          ],
-          "full": "Ministère de la Santé et des Services sociaux"
+          "full": "Ministère de la Santé et des Services sociaux",
+          "coms": [
+            "tcnsp",
+            "tcnpp"
+          ]
         },
         {
           "id": "smpsp",
           "ac": "SMPSP",
-          "desc": "Sous-ministériat à la prévention et à la santé publique, au sein du MSSS.",
-          "match": [
-            "SMPSP"
-          ],
+          "full": "Sous-ministériat à la prévention et à la santé publique",
           "rel": "MSSS",
-          "sub": true,
-          "full": "Sous-ministériat à la prévention et à la santé publique"
+          "coms": []
         },
         {
           "id": "psoc",
           "ac": "PSOC",
-          "desc": "Programme de soutien aux organismes communautaires, géré par le MSSS.",
-          "match": [
-            "PSOC"
-          ],
+          "full": "Programme de soutien aux organismes communautaires",
           "rel": "MSSS",
-          "sub": true,
-          "full": "Programme de soutien aux organismes communautaires"
+          "coms": []
         }
       ]
     },
@@ -113,40 +92,47 @@ window.CONC = {
         {
           "id": "drsp",
           "ac": "DRSP",
-          "desc": "Direction régionale de santé publique de Montréal; porteuse ou participante de la plupart des comités présentés ici.",
-          "match": [
-            "DRSP"
-          ],
-          "full": "Direction régionale de santé publique"
+          "full": "Direction régionale de santé publique",
+          "coms": [
+            "trsp",
+            "car",
+            "alliance",
+            "ccsp",
+            "instance-strat",
+            "imsdsl-pilotage",
+            "imsdsl-coord",
+            "pic",
+            "pic-gestion",
+            "av-oqi",
+            "citoyen-msam",
+            "conseil-equite",
+            "pouvoir-jeun",
+            "cop-eusp",
+            "cop-langage",
+            "cop-part",
+            "aspic"
+          ]
         },
         {
           "id": "dlsp",
           "ac": "DLSP",
-          "desc": "Direction locale de santé publique.",
-          "match": [
-            "DLSP"
-          ],
-          "full": "Direction locale de santé publique"
+          "full": "Direction locale de santé publique",
+          "coms": []
         },
         {
           "id": "5-ciusss",
           "ac": "5 Santé Québec",
-          "desc": "Centres intégrés universitaires de santé et de services sociaux de Montréal, désormais regroupés sous Santé Québec.",
-          "match": [
-            "CIUSSS",
-            "Santé Québec"
-          ],
-          "full": "Anciennement CIUSSS (Centres intégrés universitaires de santé et de services sociaux)"
+          "full": "Anciennement CIUSSS (Centres intégrés universitaires de santé et de services sociaux)",
+          "coms": []
         },
         {
           "id": "ccpsc",
           "ac": "CCPSC",
-          "desc": "Clinique communautaire de Pointe-Saint-Charles; partenaire de première ligne communautaire.",
-          "match": [
-            "CCPSC",
-            "Pointe-Saint-Charles"
-          ],
-          "full": "Clinique communautaire de Pointe-Saint-Charles"
+          "full": "Clinique communautaire de Pointe-Saint-Charles",
+          "coms": [
+            "ccsp",
+            "cop-eusp"
+          ]
         }
       ]
     },
@@ -158,93 +144,64 @@ window.CONC = {
         {
           "id": "cmm",
           "ac": "CMM",
-          "desc": "Communauté métropolitaine de Montréal; planification métropolitaine.",
-          "match": [
-            "CMM"
-          ],
-          "full": "Communauté métropolitaine de Montréal"
+          "full": "Communauté métropolitaine de Montréal",
+          "coms": []
         },
         {
           "id": "vdm",
           "ac": "VdM",
-          "desc": "Ville de Montréal, municipalité centrale de l'agglomération.",
-          "match": [
-            "Ville de Montréal",
-            "VdM"
-          ],
-          "full": "Ville de Montréal (municipalité centrale)"
+          "full": "Ville de Montréal (municipalité centrale)",
+          "coms": []
         },
         {
           "id": "omhm",
           "ac": "OMHM",
-          "desc": "Office municipal d'habitation de Montréal; gestionnaire du logement social.",
-          "match": [
-            "OMHM"
-          ],
-          "full": "Office municipal d'habitation de Montréal"
+          "full": "Office municipal d'habitation de Montréal",
+          "coms": []
         },
         {
           "id": "ocpm",
           "ac": "OCPM",
-          "desc": "Office de consultation publique de Montréal.",
-          "match": [
-            "OCPM"
-          ],
-          "full": "Office de consultation publique de Montréal"
+          "full": "Office de consultation publique de Montréal",
+          "coms": []
         },
         {
           "id": "15-villes-li-es",
           "ac": "15 villes liées",
-          "desc": "Municipalités reconstituées de l'agglomération de Montréal.",
-          "match": [
-            "villes liées",
-            "Agglomération"
-          ],
-          "full": "Agglomération de Montréal"
+          "full": "Agglomération de Montréal",
+          "coms": []
         },
         {
           "id": "19-arrondissements",
           "ac": "19 arrondissements",
-          "desc": "Arrondissements de la Ville de Montréal.",
-          "match": [
-            "arrondissement"
-          ],
+          "full": "Arrondissements de la Ville de Montréal",
           "rel": "VdM",
-          "sub": true,
-          "full": "Arrondissements de la Ville de Montréal"
+          "coms": []
         },
         {
           "id": "sdis",
           "ac": "SDIS",
-          "desc": "Service de la diversité et de l'inclusion sociale de la Ville de Montréal; mandataire régional de l'Alliance pour la solidarité.",
-          "match": [
-            "SDIS"
-          ],
+          "full": "Service de la diversité et de l'inclusion sociale",
           "rel": "VdM",
-          "sub": true,
-          "full": "Service de la diversité et de l'inclusion sociale"
+          "coms": [
+            "alliance",
+            "imsdsl-pilotage",
+            "imsdsl-coord"
+          ]
         },
         {
           "id": "dcslds",
           "ac": "DCSLDS",
-          "desc": "Direction de la culture, des sports, des loisirs et du développement social de la Ville.",
-          "match": [
-            "DCSLDS"
-          ],
+          "full": "Direction de la culture, des sports, des loisirs et du développement social",
           "rel": "VdM",
-          "sub": true,
-          "full": "Direction de la culture, des sports, des loisirs et du développement social"
+          "coms": []
         },
         {
           "id": "spvm",
           "ac": "SPVM",
-          "desc": "Service de police de la Ville de Montréal.",
-          "match": [
-            "SPVM"
-          ],
+          "full": "Service de police de la Ville de Montréal",
           "rel": "VdM",
-          "sub": true,
-          "full": "Service de police de la Ville de Montréal"
+          "coms": []
         }
       ]
     },
@@ -256,67 +213,51 @@ window.CONC = {
         {
           "id": "inspq",
           "ac": "INSPQ",
-          "desc": "Institut national de santé publique du Québec; partenaire scientifique du réseau.",
-          "match": [
-            "INSPQ"
-          ],
-          "full": "Institut national de santé publique du Québec"
+          "full": "Institut national de santé publique du Québec",
+          "coms": [
+            "tcnsp",
+            "tcnpp"
+          ]
         },
         {
           "id": "iris",
           "ac": "IRIS",
-          "desc": "Institut de recherche et d'informations socioéconomiques.",
-          "match": [
-            "IRIS"
-          ],
-          "full": "Institut de recherche et d'informations socioéconomiques"
+          "full": "Institut de recherche et d'informations socioéconomiques",
+          "coms": []
         },
         {
           "id": "oqi",
           "ac": "OQI",
-          "desc": "Observatoire québécois des inégalités.",
-          "match": [
-            "OQI"
-          ],
-          "full": "Observatoire québécois des inégalités"
+          "full": "Observatoire québécois des inégalités",
+          "coms": [
+            "av-oqi"
+          ]
         },
         {
           "id": "omiss",
           "ac": "oMISS",
-          "desc": "Observatoire montréalais des inégalités sociales de santé.",
-          "match": [
-            "oMISS"
-          ],
-          "full": "Observatoire montréalais des inégalités sociales de la santé"
+          "full": "Observatoire montréalais des inégalités sociales de la santé",
+          "coms": []
         },
         {
           "id": "cacis",
           "ac": "CACIS",
+          "full": "Chaire Approches communautaires et inégalités de santé (Louise Potvin)",
           "rel": "UdeM",
-          "desc": "Chaire approches communautaires et inégalités de santé.",
-          "match": [
-            "CACIS"
-          ],
-          "full": "Chaire Approches communautaires et inégalités de santé (Louise Potvin)"
+          "coms": []
         },
         {
           "id": "celac",
           "ac": "CELAC",
+          "full": "Chaire d'enseignement Lucie et André Chagnon",
           "rel": "UdeM",
-          "desc": "Chaire d'enseignement Lucie et André Chagnon.",
-          "match": [
-            "CELAC"
-          ],
-          "full": "Chaire d'enseignement Lucie et André Chagnon"
+          "coms": []
         },
         {
           "id": "6-ccnsp",
           "ac": "6 CCNSP",
-          "desc": "Centres de collaboration nationale en santé publique.",
-          "match": [
-            "CCNSP"
-          ],
-          "full": "Centres de collaboration nationale en santé publique"
+          "full": "Centres de collaboration nationale en santé publique",
+          "coms": []
         }
       ]
     },
@@ -328,117 +269,79 @@ window.CONC = {
         {
           "id": "udem",
           "ac": "UdeM",
-          "desc": "Université de Montréal; partenaire de recherche et de formation.",
-          "match": [
-            "UdeM",
-            "Université de Montréal"
-          ],
-          "full": "Université de Montréal"
+          "full": "Université de Montréal",
+          "coms": []
         },
         {
           "id": "uqam",
           "ac": "UQAM",
-          "desc": "Université du Québec à Montréal; partenaire de recherche et de formation.",
-          "match": [
-            "UQAM"
-          ],
-          "full": "Université du Québec à Montréal"
+          "full": "Université du Québec à Montréal",
+          "coms": []
         },
         {
           "id": "ulaval",
           "ac": "ULaval",
-          "desc": "Université Laval; partenaire de recherche et de formation.",
-          "match": [
-            "ULaval",
-            "Université Laval"
-          ],
-          "full": "Université Laval"
+          "full": "Université Laval",
+          "coms": []
         },
         {
           "id": "cresp",
           "ac": "CReSP",
+          "full": "Centre de recherche en santé publique",
           "rel": "UdeM",
-          "desc": "Centre de recherche en santé publique (UdeM et CIUSSS).",
-          "match": [
-            "CReSP"
-          ],
-          "full": "Centre de recherche en santé publique"
+          "coms": []
         },
         {
           "id": "cr-mis",
           "ac": "CRÉMIS",
+          "full": "Centre de recherche de Montréal sur les inégalités sociales, les discriminations et les pratiques alternatives de citoyenneté",
           "rel": "UdeM",
-          "desc": "Centre de recherche de Montréal sur les inégalités sociales et les discriminations.",
-          "match": [
-            "CRÉMIS"
-          ],
-          "full": "Centre de recherche de Montréal sur les inégalités sociales, les discriminations et les pratiques alternatives de citoyenneté"
+          "coms": []
         },
         {
           "id": "crchum",
           "ac": "CRCHUM",
+          "full": "Centre de recherche du Centre hospitalier de l'Université de Montréal",
           "rel": "UdeM",
-          "desc": "Centre de recherche du CHUM.",
-          "match": [
-            "CRCHUM"
-          ],
-          "full": "Centre de recherche du Centre hospitalier de l'Université de Montréal"
+          "coms": []
         },
         {
           "id": "ir-du-cusm",
           "ac": "IR du CUSM",
-          "desc": "Institut de recherche du Centre universitaire de santé McGill.",
-          "match": [
-            "CUSM"
-          ],
-          "full": "Institut de recherche du Centre universitaire de santé McGill"
+          "full": "Institut de recherche du Centre universitaire de santé McGill",
+          "coms": []
         },
         {
           "id": "criugm",
           "ac": "CRIUGM",
+          "full": "Centre de recherche de l'Institut universitaire de gériatrie de Montréal",
           "rel": "UdeM",
-          "desc": "Centre de recherche de l'Institut universitaire de gériatrie de Montréal.",
-          "match": [
-            "CRIUGM"
-          ],
-          "full": "Centre de recherche de l'Institut universitaire de gériatrie de Montréal"
+          "coms": []
         },
         {
           "id": "crises",
           "ac": "CRISES",
-          "desc": "Centre de recherche sur les innovations sociales.",
-          "match": [
-            "CRISES"
-          ],
-          "full": "Centre de recherche sur les innovations sociales"
+          "full": "Centre de recherche sur les innovations sociales",
+          "coms": []
         },
         {
           "id": "inrs-ucs",
           "ac": "INRS-UCS",
-          "desc": "INRS, centre Urbanisation Culture Société.",
-          "match": [
-            "INRS"
-          ],
-          "full": "Institut national de la recherche scientifique, Urbanisation Culture Société"
+          "full": "Institut national de la recherche scientifique, Urbanisation Culture Société",
+          "coms": []
         },
         {
           "id": "ceetum",
           "ac": "CEETUM",
+          "full": "Centre d'études ethniques des universités montréalaises",
           "rel": "UdeM",
-          "desc": "Centre d'études ethniques des universités montréalaises.",
-          "match": [
-            "CEETUM"
-          ],
-          "full": "Centre d'études ethniques des universités montréalaises"
+          "coms": []
         },
         {
           "id": "philab",
           "ac": "PhiLab",
-          "desc": "Réseau de recherche partenariale sur la philanthropie.",
-          "match": [
-            "PhiLab"
-          ],
-          "full": "Réseau canadien de recherche partenariale sur la philanthropie"
+          "full": "Réseau canadien de recherche partenariale sur la philanthropie",
+          "coms": []
         }
       ]
     },
@@ -450,47 +353,42 @@ window.CONC = {
         {
           "id": "centraide",
           "ac": "Centraide",
-          "desc": "Centraide du Grand Montréal; bailleur et gestionnaire de l'Initiative montréalaise et du Projet d'impact collectif.",
-          "match": [
-            "Centraide"
-          ],
-          "full": "Centraide du Grand Montréal"
+          "full": "Centraide du Grand Montréal",
+          "coms": [
+            "instance-strat",
+            "imsdsl-pilotage",
+            "imsdsl-coord",
+            "pic",
+            "pic-gestion",
+            "gt-insec-csam"
+          ]
         },
         {
           "id": "fgm",
           "ac": "FGM",
-          "desc": "Fondation du Grand Montréal.",
-          "match": [
-            "Fondation du Grand Montréal"
-          ],
-          "full": "Fondation du Grand Montréal"
+          "full": "Fondation du Grand Montréal",
+          "coms": []
         },
         {
           "id": "fml-saputo",
           "ac": "FML Saputo",
-          "desc": "Fondation Mirella et Lino Saputo; membre du collectif des fondations du PIC.",
-          "match": [
-            "Saputo"
-          ],
-          "full": "Fondation Mirella et Lino Saputo"
+          "full": "Fondation Mirella et Lino Saputo",
+          "coms": []
         },
         {
           "id": "flac",
           "ac": "FLAC",
-          "desc": "Fondation Lucie et André Chagnon; membre du collectif des fondations du PIC.",
-          "match": [
-            "FLAC"
-          ],
-          "full": "Fondation Lucie et André Chagnon"
+          "full": "Fondation Lucie et André Chagnon",
+          "coms": [
+            "instance-strat",
+            "pic"
+          ]
         },
         {
           "id": "grands-donateurs",
           "ac": "Grands donateurs",
-          "desc": "Donateurs philanthropiques majeurs.",
-          "match": [
-            "donateurs"
-          ],
-          "full": "Donateurs majeurs"
+          "full": "Donateurs majeurs",
+          "coms": []
         }
       ]
     },
@@ -502,50 +400,42 @@ window.CONC = {
         {
           "id": "cmtq",
           "ac": "CMTQ",
-          "desc": "Coalition montréalaise des tables de quartier; partenaire de l'Initiative montréalaise et du PIC.",
-          "match": [
-            "CMTQ"
-          ],
-          "full": "Coalition montréalaise des tables de quartier"
+          "full": "Coalition montréalaise des tables de quartier",
+          "coms": [
+            "ccsp",
+            "imsdsl-coord",
+            "pic",
+            "gt-insec-csam",
+            "gt-csam"
+          ]
         },
         {
           "id": "32-tq",
           "ac": "32 TQ",
-          "desc": "Tables de quartier, concertations locales intersectorielles regroupées par la CMTQ.",
-          "match": [
-            "Tables de quartier",
-            "Table de quartier"
-          ],
+          "full": "Tables de quartier",
           "rel": "CMTQ",
-          "sub": true,
-          "full": "Tables de quartier"
+          "coms": []
         },
         {
           "id": "riocm",
           "ac": "RIOCM",
-          "desc": "Regroupement intersectoriel des organismes communautaires de Montréal.",
-          "match": [
-            "RIOCM"
-          ],
-          "full": "Regroupement intersectoriel des organismes communautaires de Montréal"
+          "full": "Regroupement intersectoriel des organismes communautaires de Montréal",
+          "coms": [
+            "ccsp",
+            "instance-strat"
+          ]
         },
         {
           "id": "rqiiac",
           "ac": "RQIIAC",
-          "desc": "Regroupement québécois des intervenant·es en action communautaire en CISSS et CIUSSS.",
-          "match": [
-            "RQIIAC"
-          ],
-          "full": "Regroupement québécois des intervenantes et intervenants en action communautaire en CISSS et CIUSSS"
+          "full": "Regroupement québécois des intervenantes et intervenants en action communautaire en CISSS et CIUSSS",
+          "coms": []
         },
         {
           "id": "organismes-communautaires",
           "ac": "Organismes communautaires",
-          "desc": "Organismes d'action communautaire des quartiers et des secteurs.",
-          "match": [
-            "communautaire"
-          ],
-          "full": "Organismes communautaires"
+          "full": "Organismes communautaires",
+          "coms": []
         }
       ]
     },
@@ -557,1083 +447,1191 @@ window.CONC = {
         {
           "id": "citoyennes-et-citoyens",
           "ac": "Citoyennes et citoyens",
-          "desc": "Citoyennes et citoyens engagés dans les démarches de participation.",
-          "match": [
-            "Citoyen",
-            "citoyen"
+          "coms": [
+            "citoyen-msam",
+            "conseil-equite"
           ]
         },
         {
           "id": "b-n-voles",
           "ac": "Bénévoles",
-          "desc": "Bénévoles des milieux de vie.",
-          "match": [
-            "Bénévole",
-            "bénévole"
-          ]
+          "coms": []
         },
         {
           "id": "cssdm",
           "ac": "CSSDM",
-          "desc": "Centre de services scolaire de Montréal; réseau scolaire francophone.",
-          "match": [
-            "CSSDM",
-            "scolaire",
-            "École",
-            "école"
-          ],
-          "full": "Centre de services scolaire de Montréal"
+          "full": "Centre de services scolaire de Montréal",
+          "coms": []
         },
         {
           "id": "emsb",
           "ac": "EMSB",
-          "desc": "English Montreal School Board; réseau scolaire anglophone.",
-          "match": [
-            "EMSB",
-            "English Montreal School Board"
-          ],
-          "full": "English Montreal School Board"
+          "full": "English Montreal School Board",
+          "coms": []
         },
         {
           "id": "milieux-de-travail",
           "ac": "Milieux de travail",
-          "desc": "Milieux de travail.",
-          "match": [
-            "Milieux de travail"
-          ]
+          "coms": []
         },
         {
           "id": "lieux-de-culte",
           "ac": "Lieux de culte",
-          "desc": "Lieux de culte.",
-          "match": [
-            "culte"
-          ]
+          "coms": []
         },
         {
           "id": "organismes-culturels",
           "ac": "Organismes culturels",
-          "desc": "Organismes culturels.",
-          "match": [
-            "culturel"
-          ]
+          "coms": []
         }
       ]
     }
   ],
   "famsC": [
     {
-      "key": "nat",
+      "key": "g1",
       "label": "Concertations nationales (TCNSP)"
     },
     {
-      "key": "trsp",
+      "key": "g2",
       "label": "Gouvernance régionale"
     },
     {
-      "key": "dsl",
+      "key": "g3",
       "label": "Développement social local"
     },
     {
-      "key": "itin",
+      "key": "g4",
       "label": "Milieux de vie et cohabitation"
     },
     {
-      "key": "alim",
+      "key": "g5",
       "label": "Sécurité alimentaire"
     },
     {
-      "key": "equi",
+      "key": "g6",
       "label": "Équité, migration et communautés"
     },
     {
-      "key": "eusp",
+      "key": "g7",
       "label": "Communautés de pratique et comités internes"
     }
   ],
   "committees": [
     {
       "id": "tcnsp",
-      "fam": "nat",
+      "fam": "g1",
       "name": "TCNSP",
       "full": "Table de coordination nationale en santé publique",
       "niv": "strat",
-      "pal": "national",
-      "drsp": "participant",
-      "pp": "MSSS, Direction nationale de santé publique (DNSP).",
+      "drsp": "",
       "man": "Plus haute instance de coordination en santé publique au Québec. Aligne le réseau sur les axes du Programme national de santé publique (PNSP) et chapeaute les tables de concertation nationales.",
       "comp": [
         {
+          "m": "MSSS, Direction nationale de santé publique (DNSP)",
+          "cat": "porteur"
+        },
+        {
           "m": "Directeur national de santé publique (DNSP), présidence",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "Directrices et directeurs régionaux de SP (18 régions)",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "Santé Québec",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "INSPQ, partenaire scientifique",
-          "s": "rec"
+          "cat": ""
         }
       ]
     },
     {
       "id": "tcnpp",
-      "fam": "nat",
+      "fam": "g1",
       "name": "TCNPP",
       "full": "Table de concertation nationale en promotion et en prévention",
       "niv": "tact",
-      "pal": "national",
-      "drsp": "participant",
-      "pp": "TCNSP.",
+      "drsp": "",
       "man": "Concertation nationale en promotion-prévention (axes 1 et 2 du PNSP). Anime neuf groupes de répondants thématiques.",
       "under": "TCNSP",
       "comp": [
         {
+          "m": "TCNSP",
+          "cat": "porteur"
+        },
+        {
           "m": "Répondantes et répondants régionaux en promotion-prévention",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "INSPQ",
-          "s": "rec"
+          "cat": ""
         },
         {
           "m": "MSSS",
-          "s": "min"
+          "cat": ""
         }
       ]
     },
     {
       "id": "gr-alim",
-      "fam": "nat",
+      "fam": "g1",
       "name": "GR Alimentation",
       "full": "Groupe de répondants en alimentation",
       "niv": "tact",
-      "pal": "national",
       "drsp": "lead",
-      "pp": "TCNPP.",
       "man": "Groupe de répondants thématique sur l'alimentation. Décline à Montréal les travaux nationaux en alimentation; plusieurs équipes EUSP y participent.",
       "under": "TCNPP",
-      "comp": []
+      "comp": [
+        {
+          "m": "TCNPP",
+          "cat": "porteur"
+        }
+      ]
     },
     {
       "id": "gr-pauv",
-      "fam": "nat",
+      "fam": "g1",
       "name": "GR Pauvreté et DC",
       "full": "Groupe de répondants en pauvreté et développement des communautés",
       "niv": "tact",
-      "pal": "national",
       "drsp": "lead",
-      "pp": "TCNPP.",
       "man": "Groupe de répondants thématique sur la pauvreté et le développement des communautés. Décline à Montréal les travaux nationaux; plusieurs équipes EUSP y participent.",
       "under": "TCNPP",
-      "comp": []
+      "comp": [
+        {
+          "m": "TCNPP",
+          "cat": "porteur"
+        }
+      ]
     },
     {
       "id": "trsp",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "TRSP",
       "full": "Table régionale de santé publique",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP de Montréal.",
       "man": "Principal lieu de gouvernance en santé publique à l'échelle de l'île. Décline le PNSP et le PARI-SP, arbitre les priorités régionales et suit la mise en œuvre des plans d'action.",
-      "int": [
-        "dir"
-      ],
       "comp": [
         {
+          "m": "DRSP de Montréal",
+          "cat": "porteur"
+        },
+        {
+          "m": "Direction",
+          "cat": "DRSP"
+        },
+        {
           "m": "Directrice ou directeur régional de SP (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Équipe de direction et professionnelle de l'équipe de direction (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Directions concernées des 5 CIUSSS",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "Établissements non fusionnés",
-          "s": "rss"
+          "cat": ""
         }
       ]
     },
     {
       "id": "car",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "CAR",
       "full": "Conférence administrative régionale",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "Gouvernement du Québec (MAMH).",
       "man": "Coordination des ministères et organismes du gouvernement du Québec à l'échelle de la région de Montréal.",
-      "int": [
-        "dir"
-      ],
       "comp": [
         {
-          "m": "Dirigeantes et dirigeants régionaux des ministères et organismes du gouvernement du Québec",
-          "s": "min"
+          "m": "Gouvernement du Québec (MAMH)",
+          "cat": "porteur"
+        },
+        {
+          "m": "Direction",
+          "cat": "DRSP"
         },
         {
           "m": "DRSP (participante)",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "Dirigeantes et dirigeants régionaux des ministères et organismes du gouvernement du Québec",
+          "cat": ""
         }
       ]
     },
     {
       "id": "sous-car-ds",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "Sous-CAR DS",
       "full": "Sous-comité développement social de la Conférence administrative régionale (CAR)",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "Conférence administrative régionale (CAR).",
+      "drsp": "",
       "man": "Sous-comité de la CAR consacré au développement social.",
       "under": "CAR",
-      "comp": []
+      "comp": [
+        {
+          "m": "Conférence administrative régionale (CAR)",
+          "cat": "porteur"
+        }
+      ]
     },
     {
       "id": "alliance",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "Alliance pour la solidarité",
       "full": "Alliance pour la solidarité",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "Gouvernement du Québec, Plan d'action gouvernemental pour l'inclusion économique et la participation sociale (PAGIEPS); mandataire régional : Ville de Montréal (SDIS).",
       "man": "Mécanisme régional de concertation et de financement de projets de lutte contre la pauvreté et l'exclusion sociale.",
-      "int": [
-        "eusp"
-      ],
       "comp": [
         {
-          "m": "MTESS, financement",
-          "s": "min"
+          "m": "Gouvernement du Québec, Plan d'action gouvernemental pour l'inclusion économique et la participation sociale (PAGIEPS); mandataire régional : Ville de Montréal (SDIS)",
+          "cat": "porteur"
         },
         {
-          "m": "Ville de Montréal, SDIS (mandataire régional)",
-          "s": "mun"
+          "m": "EUSP",
+          "cat": "DRSP"
         },
         {
           "m": "Coordination secteur EUSP (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "MTESS, financement",
+          "cat": ""
+        },
+        {
+          "m": "Ville de Montréal, SDIS (mandataire régional)",
+          "cat": ""
         },
         {
           "m": "Partenaires régionaux et communautaires (à préciser)",
-          "s": "comm"
+          "cat": ""
         }
       ]
     },
     {
       "id": "alliance-sous",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "Alliance, sous-comités",
       "full": "Alliance pour la solidarité, sous-comités",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "Alliance pour la solidarité.",
       "man": "Sous-comités de mise en œuvre de l'Alliance pour la solidarité.",
       "under": "Alliance pour la solidarité",
-      "int": [
-        "ecos"
-      ],
-      "comp": []
+      "comp": [
+        {
+          "m": "Alliance pour la solidarité",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        }
+      ]
     },
     {
       "id": "av-alliance",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "Comité aviseur des Alliances",
       "full": "Comité aviseur des Alliances pour la solidarité",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "",
+      "drsp": "",
       "man": "Comité aviseur des Alliances pour la solidarité.",
-      "under": "Alliance pour la solidarité",
       "neu": true,
+      "under": "Alliance pour la solidarité",
       "comp": []
     },
     {
       "id": "ccsp",
-      "fam": "trsp",
+      "fam": "g2",
       "name": "CCSP",
       "full": "Comité conjoint de santé publique",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP, secteur EUSP.",
       "man": "Plateforme de transmission d’information sur la santé publique régionale (enjeux, bons coups, besoins) de la part de tous les membres, à relayer dans les réseaux. Porte d’entrée pour amener des enjeux de santé publique régionaux, à travailler en sous-comité.",
-      "int": [
-        "eusp",
-        "pcmi",
-        "jeun"
-      ],
       "comp": [
         {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "EUSP",
+          "cat": "DRSP"
+        },
+        {
+          "m": "PCMI",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Jeunesse",
+          "cat": "DRSP"
+        },
+        {
           "m": "Coordination et professionnel·les du secteur EUSP (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "RIOCM",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "ROCFM",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "RACOR",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "COMACO",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "Concertation jeunesse Montréal",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "Association canadienne pour la santé mentale – filiale de Montréal (ACSM)",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "Regroupement des instances de concertation en petite enfance de Montréal",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "TOMS",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "CRADI",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "1, 2, 3 GO! Pointe-de-l’Île",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "DéPHY Montréal",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "CMTQ",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "DSGPU (CIUSSS du Centre-Sud)",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "Directions de santé publique des 5 CIUSSS de Montréal",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "CCPSC",
-          "s": "rss"
+          "cat": ""
         }
       ]
     },
     {
       "id": "instance-strat",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "Instance stratégique",
       "full": "Instance stratégique des bailleurs de fonds",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP, secteur EUSP.",
       "man": "Maximiser la cohérence et la complémentarité des leviers des institutions et des milieux communautaire et philanthropique pour agir comme catalyseur d’amélioration des conditions de vie des communautés montréalaises. Espace volontaire d’échange, l’Instance n’est pas un lieu de décision.",
-      "int": [
-        "eusp",
-        "ecos"
-      ],
       "comp": [
         {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "EUSP",
+          "cat": "DRSP"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
           "m": "Coordination du secteur EUSP, professionnelle ÉCoS (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Centraide du Grand Montréal",
-          "s": "fond"
+          "cat": ""
         },
         {
           "m": "Fondation du Grand Montréal",
-          "s": "fond"
+          "cat": ""
         },
         {
           "m": "Fondation Lucie et André Chagnon (FLAC)",
-          "s": "fond"
+          "cat": ""
         },
         {
           "m": "Fondation Mirella et Saputo",
-          "s": "fond"
+          "cat": ""
         },
         {
           "m": "Fondation Trottier",
-          "s": "fond"
+          "cat": ""
         },
         {
           "m": "Ministère des Affaires municipales et de l’Habitation (MAMH)",
-          "s": "min"
+          "cat": ""
         },
         {
           "m": "Ville de Montréal – Service de la diversité et de l’inclusion sociale",
-          "s": "mun"
+          "cat": ""
         },
         {
           "m": "Coalition montréalaise des tables de quartier (CMTQ)",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "RIOCM",
-          "s": "comm"
+          "cat": ""
         },
         {
           "m": "DSGPU (CIUSSS du Centre-Sud)",
-          "s": "rss"
+          "cat": ""
         }
       ]
     },
     {
       "id": "imsdsl-pilotage",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "IMSDSL Comité de pilotage",
       "full": "Initiative montréalaise de soutien au développement social local, Comité de pilotage",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "Les quatre réseaux partenaires de l'Initiative montréalaise.",
       "man": "Protéger l'intégrité de l'Initiative, déterminer ses grandes orientations stratégiques et veiller à leur respect. Instance décisionnelle (droit de vote par réseau); confirme annuellement le financement et organise un rendez-vous stratégique aux 2 ans.",
-      "int": [
-        "ecos"
-      ],
       "comp": [
         {
-          "m": "Centraide du Grand Montréal, gestionnaire",
-          "s": "fond"
+          "m": "Les quatre réseaux partenaires de l'Initiative montréalaise",
+          "cat": "porteur"
         },
         {
-          "m": "Coalition montréalaise des Tables de quartier (CMTQ)",
-          "s": "comm"
+          "m": "ÉCoS",
+          "cat": "DRSP"
         },
         {
           "m": "DRSP (CCSMTL et CIUSSS de Montréal)",
-          "s": "drsp"
-        },
-        {
-          "m": "SDIS, Ville de Montréal et arrondissements",
-          "s": "mun"
-        },
-        {
-          "m": "Représentants locaux de chaque réseau",
-          "s": "comm"
+          "cat": "DRSP"
         },
         {
           "m": "Professionnels du comité de coordination (soutien)",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "Centraide du Grand Montréal, gestionnaire",
+          "cat": ""
+        },
+        {
+          "m": "Coalition montréalaise des Tables de quartier (CMTQ)",
+          "cat": ""
+        },
+        {
+          "m": "SDIS, Ville de Montréal et arrondissements",
+          "cat": ""
+        },
+        {
+          "m": "Représentants locaux de chaque réseau",
+          "cat": ""
         }
       ]
     },
     {
       "id": "imsdsl-coord",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "IMSDSL Comité de coordination",
       "full": "Initiative montréalaise, Comité de coordination",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "Les quatre réseaux partenaires de l'Initiative montréalaise.",
       "man": "Assurer la mise en œuvre du plan d'action, la gestion courante et la promotion de l'Initiative. Analyse conjointe de la reddition de comptes; transmet au comité de pilotage ses recommandations sur le financement des Tables de quartier.",
-      "int": [
-        "ecos"
-      ],
       "comp": [
         {
-          "m": "Professionnel·les de Centraide du Grand Montréal",
-          "s": "fond"
+          "m": "Les quatre réseaux partenaires de l'Initiative montréalaise",
+          "cat": "porteur"
         },
         {
-          "m": "Professionnel·les de la CMTQ",
-          "s": "comm"
+          "m": "ÉCoS",
+          "cat": "DRSP"
         },
         {
           "m": "Professionnel·les de la DRSP",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "Professionnel·les de Centraide du Grand Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Professionnel·les de la CMTQ",
+          "cat": ""
         },
         {
           "m": "Professionnel·les du SDIS, Ville de Montréal",
-          "s": "mun"
+          "cat": ""
         }
       ]
     },
     {
       "id": "pic",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "PIC",
       "full": "Projet d'impact collectif",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "Centraide du Grand Montréal.",
       "man": "Démarche de mobilisation et de financement concerté déployée dans 17 quartiers montréalais pour lutter contre la pauvreté et l'exclusion sociale.",
-      "int": [
-        "ecos"
-      ],
       "comp": [
         {
           "m": "Centraide du Grand Montréal",
-          "s": "fond"
+          "cat": "porteur"
         },
         {
-          "m": "Collectif des 8 fondations : FLAC, Marcelle et Jean Coutu, Grand Montréal, McConnell, Molson, Pathy, Peacock, Mirella et Lino Saputo",
-          "s": "fond"
-        },
-        {
-          "m": "CMTQ",
-          "s": "comm"
-        },
-        {
-          "m": "Ville de Montréal",
-          "s": "mun"
+          "m": "ÉCoS",
+          "cat": "DRSP"
         },
         {
           "m": "DRSP, cheffe de service ÉCoS",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "Centraide du Grand Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Collectif des 8 fondations : FLAC, Marcelle et Jean Coutu, Grand Montréal, McConnell, Molson, Pathy, Peacock, Mirella et Lino Saputo",
+          "cat": ""
+        },
+        {
+          "m": "CMTQ",
+          "cat": ""
+        },
+        {
+          "m": "Ville de Montréal",
+          "cat": ""
         },
         {
           "m": "17 quartiers : organismes locaux, arrondissements, secteurs santé/éducation/économie, citoyens",
-          "s": "comm"
+          "cat": ""
         }
       ]
     },
     {
       "id": "pic-gestion",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "Comité de gestion du PIC",
       "full": "Comité de gestion du Projet d'impact collectif (Centraide)",
       "niv": "strat",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "Centraide du Grand Montréal.",
+      "drsp": "",
       "man": "Gestion du Projet d'impact collectif. La DRSP y est participante.",
       "comp": [
         {
           "m": "Centraide du Grand Montréal",
-          "s": "fond"
-        },
-        {
-          "m": "Collectif des fondations",
-          "s": "fond"
+          "cat": "porteur"
         },
         {
           "m": "DRSP (participante)",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "Centraide du Grand Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Collectif des fondations",
+          "cat": ""
         }
       ]
     },
     {
       "id": "qir",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "QIR",
       "full": "Quartiers inclusifs et résilients",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "absent",
-      "pp": "",
+      "drsp": "",
       "man": "Démarche Quartiers inclusifs et résilients. Pas de présence de la DRSP.",
-      "par": [
-        "mun"
-      ],
       "comp": []
     },
     {
       "id": "groupe-coeur",
-      "fam": "dsl",
+      "fam": "g3",
       "name": "Groupe cœur",
       "full": "Groupe cœur",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "",
       "comp": []
     },
     {
       "id": "prev-itin",
-      "fam": "itin",
+      "fam": "g4",
       "name": "Comité prévention de l'itinérance",
       "full": "Comité prévention de l'itinérance",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "",
       "neu": true,
       "comp": []
     },
     {
       "id": "gt-perte-log",
-      "fam": "itin",
+      "fam": "g4",
       "name": "GT prévention perte de logement",
       "full": "Groupe de travail, prévention de la perte de logement",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "",
-      "under": "Comité prévention de l'itinérance",
       "neu": true,
+      "under": "Comité prévention de l'itinérance",
       "comp": []
     },
     {
       "id": "heberg-log",
-      "fam": "itin",
+      "fam": "g4",
       "name": "Comité Hébergement-Logement",
       "full": "Comité Hébergement-Logement (itinérance)",
       "niv": "strat",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "",
+      "drsp": "",
       "man": "",
       "comp": []
     },
     {
       "id": "cohab",
-      "fam": "itin",
+      "fam": "g4",
       "name": "Cohabitation sociale",
       "full": "Comité cohabitation sociale",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "",
       "neu": true,
       "comp": []
     },
     {
       "id": "tdb-itin",
-      "fam": "itin",
+      "fam": "g4",
       "name": "Tableau de bord régional itinérance",
       "full": "Comité Tableau de bord régional en itinérance",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "",
       "neu": true,
       "comp": []
     },
     {
       "id": "av-psi",
-      "fam": "itin",
+      "fam": "g4",
       "name": "Comité aviseur, mortalité des PSI",
       "full": "Comité aviseur du projet de recherche sur la vigie de la mortalité des personnes en situation d'itinérance (PSI)",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "",
+      "drsp": "",
       "man": "Comité aviseur d'un projet de recherche sur la vigie de la mortalité des personnes en situation d'itinérance.",
       "neu": true,
       "comp": []
     },
     {
       "id": "av-oqi",
-      "fam": "itin",
+      "fam": "g4",
       "name": "Comité aviseur, OQI itinérance et climat",
       "full": "Comité aviseur du projet de recherche de l'OQI sur l'itinérance, les changements climatiques et les adaptations",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "OQI (Observatoire québécois des inégalités).",
       "man": "Comité aviseur d'un projet de recherche de l'OQI sur l'itinérance, les changements climatiques et les adaptations.",
       "neu": true,
       "comp": [
         {
-          "m": "OQI, Observatoire québécois des inégalités",
-          "s": "rec"
+          "m": "OQI (Observatoire québécois des inégalités)",
+          "cat": "porteur"
         },
         {
           "m": "DRSP",
-          "s": "drsp"
+          "cat": "DRSP"
+        },
+        {
+          "m": "OQI, Observatoire québécois des inégalités",
+          "cat": ""
         }
       ]
     },
     {
       "id": "gt-log-tec",
-      "fam": "itin",
+      "fam": "g4",
       "name": "GT logement de TEC",
       "full": "Groupe de travail sur le logement de TEC (Transition en commun)",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "TEC, Transition en commun.",
       "man": "",
-      "comp": []
+      "comp": [
+        {
+          "m": "TEC, Transition en commun",
+          "cat": "porteur"
+        }
+      ]
     },
     {
       "id": "gt-demo-tec",
-      "fam": "itin",
+      "fam": "g4",
       "name": "GT Démotorisation de TEC",
       "full": "Groupe de travail sur la démotorisation de TEC (Transition en commun)",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "TEC, Transition en commun.",
+      "drsp": "",
       "man": "",
-      "comp": []
+      "comp": [
+        {
+          "m": "TEC, Transition en commun",
+          "cat": "porteur"
+        }
+      ]
     },
     {
       "id": "secu-alim",
-      "fam": "alim",
+      "fam": "g5",
       "name": "Sécurité alimentaire et DDA",
       "full": "Concertation sécurité alimentaire et DDA (demandeurs·euses d'asile)",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Concertation reliant la sécurité alimentaire et la situation des demandeurs·euses d'asile (DDA).",
       "comp": []
     },
     {
       "id": "gt-insec-csam",
-      "fam": "alim",
+      "fam": "g5",
       "name": "GT Insécurité alimentaire du CSAM",
       "full": "Groupe de travail sur l'insécurité alimentaire du CSAM (Conseil du système alimentaire montréalais)",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "CSAM (Conseil du système alimentaire montréalais).",
+      "drsp": "",
       "man": "Groupe de travail du CSAM sur l'insécurité alimentaire.",
       "comp": [
-        { "m": "CSAM", "s": "comm" },
-        { "m": "Moisson Montréal", "s": "comm" },
-        { "m": "La Corbeille Bordeau-Cartierville", "s": "comm" },
-        { "m": "RCCQ", "s": "comm" },
-        { "m": "Right to food", "s": "comm" },
-        { "m": "Ville de Montréal", "s": "mun" },
-        { "m": "Cultiver Montréal", "s": "comm" },
-        { "m": "<span class='tbc'>À confirmer</span>", "s": "comm" },
-        { "m": "La cantine pour tous", "s": "comm" },
-        { "m": "La tablée des chefs", "s": "comm" },
-        { "m": "CMTQ", "s": "comm" },
-        { "m": "La Table de concertation sur la faim et le développement social du Montréal métropolitain", "s": "comm" },
-        { "m": "Centre Bon Courage", "s": "comm" },
-        { "m": "Regroupement Partage", "s": "comm" },
-        { "m": "Club des petits déjeuners", "s": "comm" },
-        { "m": "Centraide", "s": "fond" },
-        { "m": "CSSMB", "s": "rss" }
+        {
+          "m": "CSAM (Conseil du système alimentaire montréalais)",
+          "cat": "porteur"
+        },
+        {
+          "m": "CSAM",
+          "cat": ""
+        },
+        {
+          "m": "Moisson Montréal",
+          "cat": ""
+        },
+        {
+          "m": "La Corbeille Bordeau-Cartierville",
+          "cat": ""
+        },
+        {
+          "m": "RCCQ",
+          "cat": ""
+        },
+        {
+          "m": "Right to food",
+          "cat": ""
+        },
+        {
+          "m": "Ville de Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Cultiver Montréal",
+          "cat": ""
+        },
+        {
+          "m": "<span class='tbc'>À confirmer</span>",
+          "cat": ""
+        },
+        {
+          "m": "La cantine pour tous",
+          "cat": ""
+        },
+        {
+          "m": "La tablée des chefs",
+          "cat": ""
+        },
+        {
+          "m": "CMTQ",
+          "cat": ""
+        },
+        {
+          "m": "La Table de concertation sur la faim et le développement social du Montréal métropolitain",
+          "cat": ""
+        },
+        {
+          "m": "Centre Bon Courage",
+          "cat": ""
+        },
+        {
+          "m": "Regroupement Partage",
+          "cat": ""
+        },
+        {
+          "m": "Club des petits déjeuners",
+          "cat": ""
+        },
+        {
+          "m": "Centraide",
+          "cat": ""
+        },
+        {
+          "m": "CSSMB",
+          "cat": ""
+        }
       ]
     },
     {
       "id": "gt-csam",
-      "fam": "alim",
+      "fam": "g5",
       "name": "GT Citoyenneté alimentaire du CSAM",
       "full": "Groupe de travail sur la citoyenneté alimentaire du CSAM (Conseil du système alimentaire montréalais)",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "CSAM (Conseil du système alimentaire montréalais).",
+      "drsp": "",
       "man": "Groupe de travail du CSAM sur la citoyenneté alimentaire.",
       "comp": [
-        { "m": "Ville de Montréal", "s": "mun" },
-        { "m": "Les Fruits défendus", "s": "comm" },
-        { "m": "Forum SAT", "s": "comm" },
-        { "m": "RCCQ", "s": "comm" },
-        { "m": "INRS", "s": "rec" },
-        { "m": "CMTQ", "s": "comm" },
-        { "m": "Chaire de recherche du Canada sur les inégalités en nutrition et santé", "s": "rec" },
-        { "m": "Arrondissement Montréal-Nord – Transition écologique", "s": "mun" },
-        { "m": "ATD Quart Monde", "s": "comm" },
-        { "m": "Chic Resto Pop", "s": "comm" },
-        { "m": "CSAM", "s": "comm" }
+        {
+          "m": "CSAM (Conseil du système alimentaire montréalais)",
+          "cat": "porteur"
+        },
+        {
+          "m": "Ville de Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Les Fruits défendus",
+          "cat": ""
+        },
+        {
+          "m": "Forum SAT",
+          "cat": ""
+        },
+        {
+          "m": "RCCQ",
+          "cat": ""
+        },
+        {
+          "m": "INRS",
+          "cat": ""
+        },
+        {
+          "m": "CMTQ",
+          "cat": ""
+        },
+        {
+          "m": "Chaire de recherche du Canada sur les inégalités en nutrition et santé",
+          "cat": ""
+        },
+        {
+          "m": "Arrondissement Montréal-Nord – Transition écologique",
+          "cat": ""
+        },
+        {
+          "m": "ATD Quart Monde",
+          "cat": ""
+        },
+        {
+          "m": "Chic Resto Pop",
+          "cat": ""
+        },
+        {
+          "m": "CSAM",
+          "cat": ""
+        }
       ]
     },
     {
       "id": "gt-alim-tec",
-      "fam": "alim",
+      "fam": "g5",
       "name": "GT alimentation de TEC",
       "full": "Groupe de travail sur l'alimentation de TEC (Transition en commun)",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "TEC, Transition en commun.",
       "man": "Groupe de travail sur l'alimentation de Transition en commun (TEC).",
-      "comp": []
+      "comp": [
+        {
+          "m": "TEC, Transition en commun",
+          "cat": "porteur"
+        }
+      ]
     },
     {
       "id": "strat-dda-msam",
-      "fam": "equi",
+      "fam": "g6",
       "name": "Comité stratégique DDA-MSAM",
       "full": "Comité stratégique DDA-MSAM et ses 4 lots de travail",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Comité stratégique sur les demandeurs·euses d'asile (DDA) et les personnes migrantes sans assurance médicale (MSAM), décliné en quatre lots de travail.",
       "comp": []
     },
     {
       "id": "cosami",
-      "fam": "equi",
+      "fam": "g6",
       "name": "CoSaMi",
       "full": "Concertation pour la santé des personnes migrantes",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "",
+      "drsp": "",
       "man": "Concertation pour la santé des personnes migrantes.",
       "neu": true,
       "comp": []
     },
     {
       "id": "gt-noires",
-      "fam": "equi",
+      "fam": "g6",
       "name": "GT communautés noires",
       "full": "Groupe de travail intersectoriel pour le bien-être des communautés noires",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Groupe de travail intersectoriel pour le bien-être des communautés noires.",
       "comp": []
     },
     {
       "id": "dspu-secu",
-      "fam": "equi",
+      "fam": "g6",
       "name": "Concertation DSPu, sécurisation culturelle",
       "full": "Concertation des directions de santé publique (DSPu) régionales en sécurisation culturelle",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Concertation interrégionale des directions de santé publique en sécurisation culturelle.",
       "neu": true,
       "comp": []
     },
     {
       "id": "av-hopital",
-      "fam": "equi",
+      "fam": "g6",
       "name": "Comité aviseur, Hôpital solidaire",
       "full": "Comité aviseur de l'évaluation du projet Hôpital solidaire",
       "niv": "tact",
-      "pal": "regional",
-      "drsp": "participant",
-      "pp": "",
+      "drsp": "",
       "man": "Comité aviseur de l'évaluation du projet Hôpital solidaire.",
       "neu": true,
       "comp": []
     },
     {
       "id": "citoyen-msam",
-      "fam": "equi",
+      "fam": "g6",
       "name": "Comité citoyen MSAM",
       "full": "Comité citoyen, personnes migrantes sans assurance médicale (MSAM)",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Comité citoyen lié aux personnes migrantes sans assurance médicale.",
       "comp": [
         {
-          "m": "Citoyennes et citoyens concernés",
-          "s": "cit"
+          "m": "DRSP",
+          "cat": "DRSP"
         },
         {
-          "m": "DRSP",
-          "s": "drsp"
+          "m": "Citoyennes et citoyens concernés",
+          "cat": ""
         }
       ]
     },
     {
       "id": "conseil-equite",
-      "fam": "equi",
+      "fam": "g6",
       "name": "Conseil Citoyen Équité",
       "full": "Conseil Citoyen Équité",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Conseil citoyen en équité.",
       "neu": true,
       "comp": [
         {
-          "m": "Citoyennes et citoyens",
-          "s": "cit"
+          "m": "DRSP",
+          "cat": "DRSP"
         },
         {
-          "m": "DRSP",
-          "s": "drsp"
+          "m": "Citoyennes et citoyens",
+          "cat": ""
         }
       ]
     },
     {
       "id": "pouvoir-jeun",
-      "fam": "equi",
+      "fam": "g6",
       "name": "Pouvoir d'agir Jeunesse",
       "full": "Pouvoir d'agir Jeunesse",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Démarche visant à renforcer le pouvoir d'agir des jeunes.",
-      "int": [
-        "ecos",
-        "jeun"
-      ],
       "comp": [
         {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Jeunesse",
+          "cat": "DRSP"
+        },
+        {
           "m": "Secteur Jeunesse (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Secteur EUSP (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         }
       ]
     },
     {
       "id": "cop-eusp",
-      "fam": "eusp",
+      "fam": "g7",
       "name": "CoP EUSP",
       "full": "Communauté de pratique, EUSP",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP, secteur EUSP.",
       "man": "Favoriser le développement professionnel des équipes de santé publique œuvrant au niveau local et travaillant à la réduction des inégalités sociales de santé et au développement des communautés.",
-      "int": [
-        "ecos"
-      ],
       "comp": [
         {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
           "m": "Professionnelles ÉCoS (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Équipes de santé publique locale des 5 CIUSSS de Montréal",
-          "s": "rss"
+          "cat": ""
         },
         {
           "m": "CCPSC",
-          "s": "rss"
+          "cat": ""
         }
       ]
     },
     {
       "id": "cop-langage",
-      "fam": "eusp",
+      "fam": "g7",
       "name": "CoP Langage clair",
       "full": "Communauté de pratique, Langage clair",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP, secteur EUSP.",
       "man": "Communauté de pratique sur la communication en langage clair.",
-      "int": [
-        "ecos",
-        "jeun",
-        "pcmi"
-      ],
       "comp": [
         {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Jeunesse",
+          "cat": "DRSP"
+        },
+        {
+          "m": "PCMI",
+          "cat": "DRSP"
+        },
+        {
           "m": "Professionnelles ÉCoS (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "CIUSSS",
-          "s": "rss"
+          "cat": ""
         }
       ]
     },
     {
       "id": "cop-part",
-      "fam": "eusp",
+      "fam": "g7",
       "name": "CoP Participation citoyenne",
       "full": "Communauté de pratique, Participation citoyenne",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP, secteur EUSP.",
       "man": "Communauté de pratique sur la participation citoyenne.",
-      "int": [
-        "ecos"
-      ],
       "comp": [
         {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
           "m": "Professionnel·les ÉCoS (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         }
       ]
     },
     {
       "id": "tec",
-      "fam": "eusp",
+      "fam": "g7",
       "name": "TEC",
       "full": "Transition en commun (concertation)",
       "niv": "strat",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "Concertation sur la transition en commun, au niveau de l'équipe de direction. Voir aussi les GT logement, démotorisation et alimentation de TEC.",
-      "int": [
-        "dir"
-      ],
-      "comp": []
+      "comp": [
+        {
+          "m": "Direction",
+          "cat": "DRSP"
+        }
+      ]
     },
     {
       "id": "epup",
-      "fam": "eusp",
+      "fam": "g7",
       "name": "Comité EPUP Tactique",
       "full": "Comité EPUP, participation et populations (à confirmer), niveau tactique",
       "niv": "tact",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "",
       "man": "<span class='tbc'>Sigle EPUP à confirmer (participation et populations).</span>",
       "comp": []
     },
     {
       "id": "aspic",
-      "fam": "eusp",
+      "fam": "g7",
       "name": "ASPIC",
       "full": "Action de santé publique et ISS en contexte de crise",
       "niv": "oper",
-      "pal": "regional",
       "drsp": "lead",
-      "pp": "DRSP, secteur EUSP.",
       "man": "Renforcer les actions de la DRSP de Montréal visant la réduction des impacts collatéraux et des inégalités sociales de santé liées aux interventions de santé publique, par la collaboration intersectorielle.",
-      "int": [
-        "ecos"
-      ],
       "comp": [
         {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
           "m": "Service ÉCoS (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Services SEMAU et BLICC (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Équipe Surveillance (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         },
         {
           "m": "Secteur Jeunesse (DRSP)",
-          "s": "drsp"
+          "cat": "DRSP"
         }
       ]
     }
