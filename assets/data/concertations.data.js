@@ -1,6 +1,7 @@
 /* Données de la section Concertations.
-   Source de vérité : modifier les données ici, puis la page se met à jour.
-   Généré par tools/build_concertations.py voir README. */
+   GÉNÉRÉ AUTOMATIQUEMENT depuis la feuille Google « Concertations »
+   par sync/sync_all.py. NE PAS ÉDITER À LA MAIN : modifiez plutôt la
+   feuille Google, le site se met à jour à la prochaine synchronisation. */
 window.CONC = {
   "famsP": [
     {
@@ -88,9 +89,9 @@ window.CONC = {
           "match": [
             "SMPSP"
           ],
+          "full": "Sous-ministériat à la prévention et à la santé publique",
           "rel": "MSSS",
-          "sub": true,
-          "full": "Sous-ministériat à la prévention et à la santé publique"
+          "sub": true
         },
         {
           "id": "psoc",
@@ -99,9 +100,9 @@ window.CONC = {
           "match": [
             "PSOC"
           ],
+          "full": "Programme de soutien aux organismes communautaires",
           "rel": "MSSS",
-          "sub": true,
-          "full": "Programme de soutien aux organismes communautaires"
+          "sub": true
         }
       ]
     },
@@ -209,9 +210,9 @@ window.CONC = {
           "match": [
             "arrondissement"
           ],
+          "full": "Arrondissements de la Ville de Montréal",
           "rel": "VdM",
-          "sub": true,
-          "full": "Arrondissements de la Ville de Montréal"
+          "sub": true
         },
         {
           "id": "sdis",
@@ -220,9 +221,9 @@ window.CONC = {
           "match": [
             "SDIS"
           ],
+          "full": "Service de la diversité et de l'inclusion sociale",
           "rel": "VdM",
-          "sub": true,
-          "full": "Service de la diversité et de l'inclusion sociale"
+          "sub": true
         },
         {
           "id": "dcslds",
@@ -231,9 +232,9 @@ window.CONC = {
           "match": [
             "DCSLDS"
           ],
+          "full": "Direction de la culture, des sports, des loisirs et du développement social",
           "rel": "VdM",
-          "sub": true,
-          "full": "Direction de la culture, des sports, des loisirs et du développement social"
+          "sub": true
         },
         {
           "id": "spvm",
@@ -242,9 +243,9 @@ window.CONC = {
           "match": [
             "SPVM"
           ],
+          "full": "Service de police de la Ville de Montréal",
           "rel": "VdM",
-          "sub": true,
-          "full": "Service de police de la Ville de Montréal"
+          "sub": true
         }
       ]
     },
@@ -292,22 +293,22 @@ window.CONC = {
         {
           "id": "cacis",
           "ac": "CACIS",
-          "rel": "UdeM",
           "desc": "Chaire approches communautaires et inégalités de santé.",
           "match": [
             "CACIS"
           ],
-          "full": "Chaire Approches communautaires et inégalités de santé (Louise Potvin)"
+          "full": "Chaire Approches communautaires et inégalités de santé (Louise Potvin)",
+          "rel": "UdeM"
         },
         {
           "id": "celac",
           "ac": "CELAC",
-          "rel": "UdeM",
           "desc": "Chaire d'enseignement Lucie et André Chagnon.",
           "match": [
             "CELAC"
           ],
-          "full": "Chaire d'enseignement Lucie et André Chagnon"
+          "full": "Chaire d'enseignement Lucie et André Chagnon",
+          "rel": "UdeM"
         },
         {
           "id": "6-ccnsp",
@@ -357,32 +358,32 @@ window.CONC = {
         {
           "id": "cresp",
           "ac": "CReSP",
-          "rel": "UdeM",
           "desc": "Centre de recherche en santé publique (UdeM et CIUSSS).",
           "match": [
             "CReSP"
           ],
-          "full": "Centre de recherche en santé publique"
+          "full": "Centre de recherche en santé publique",
+          "rel": "UdeM"
         },
         {
           "id": "cr-mis",
           "ac": "CRÉMIS",
-          "rel": "UdeM",
           "desc": "Centre de recherche de Montréal sur les inégalités sociales et les discriminations.",
           "match": [
             "CRÉMIS"
           ],
-          "full": "Centre de recherche de Montréal sur les inégalités sociales, les discriminations et les pratiques alternatives de citoyenneté"
+          "full": "Centre de recherche de Montréal sur les inégalités sociales, les discriminations et les pratiques alternatives de citoyenneté",
+          "rel": "UdeM"
         },
         {
           "id": "crchum",
           "ac": "CRCHUM",
-          "rel": "UdeM",
           "desc": "Centre de recherche du CHUM.",
           "match": [
             "CRCHUM"
           ],
-          "full": "Centre de recherche du Centre hospitalier de l'Université de Montréal"
+          "full": "Centre de recherche du Centre hospitalier de l'Université de Montréal",
+          "rel": "UdeM"
         },
         {
           "id": "ir-du-cusm",
@@ -396,12 +397,12 @@ window.CONC = {
         {
           "id": "criugm",
           "ac": "CRIUGM",
-          "rel": "UdeM",
           "desc": "Centre de recherche de l'Institut universitaire de gériatrie de Montréal.",
           "match": [
             "CRIUGM"
           ],
-          "full": "Centre de recherche de l'Institut universitaire de gériatrie de Montréal"
+          "full": "Centre de recherche de l'Institut universitaire de gériatrie de Montréal",
+          "rel": "UdeM"
         },
         {
           "id": "crises",
@@ -424,12 +425,12 @@ window.CONC = {
         {
           "id": "ceetum",
           "ac": "CEETUM",
-          "rel": "UdeM",
           "desc": "Centre d'études ethniques des universités montréalaises.",
           "match": [
             "CEETUM"
           ],
-          "full": "Centre d'études ethniques des universités montréalaises"
+          "full": "Centre d'études ethniques des universités montréalaises",
+          "rel": "UdeM"
         },
         {
           "id": "philab",
@@ -516,9 +517,9 @@ window.CONC = {
             "Tables de quartier",
             "Table de quartier"
           ],
+          "full": "Tables de quartier",
           "rel": "CMTQ",
-          "sub": true,
-          "full": "Tables de quartier"
+          "sub": true
         },
         {
           "id": "riocm",
@@ -844,10 +845,10 @@ window.CONC = {
       "drsp": "lead",
       "pp": "Alliance pour la solidarité.",
       "man": "Sous-comités de mise en œuvre de l'Alliance pour la solidarité.",
-      "under": "Alliance pour la solidarité",
       "int": [
         "ecos"
       ],
+      "under": "Alliance pour la solidarité",
       "comp": []
     },
     {
@@ -860,8 +861,8 @@ window.CONC = {
       "drsp": "participant",
       "pp": "",
       "man": "Comité aviseur des Alliances pour la solidarité.",
-      "under": "Alliance pour la solidarité",
       "neu": true,
+      "under": "Alliance pour la solidarité",
       "comp": []
     },
     {
@@ -1194,8 +1195,8 @@ window.CONC = {
       "drsp": "lead",
       "pp": "",
       "man": "",
-      "under": "Comité prévention de l'itinérance",
       "neu": true,
+      "under": "Comité prévention de l'itinérance",
       "comp": []
     },
     {
@@ -1318,23 +1319,74 @@ window.CONC = {
       "pp": "CSAM (Conseil du système alimentaire montréalais).",
       "man": "Groupe de travail du CSAM sur l'insécurité alimentaire.",
       "comp": [
-        { "m": "CSAM", "s": "comm" },
-        { "m": "Moisson Montréal", "s": "comm" },
-        { "m": "La Corbeille Bordeau-Cartierville", "s": "comm" },
-        { "m": "RCCQ", "s": "comm" },
-        { "m": "Right to food", "s": "comm" },
-        { "m": "Ville de Montréal", "s": "mun" },
-        { "m": "Cultiver Montréal", "s": "comm" },
-        { "m": "<span class='tbc'>À confirmer</span>", "s": "comm" },
-        { "m": "La cantine pour tous", "s": "comm" },
-        { "m": "La tablée des chefs", "s": "comm" },
-        { "m": "CMTQ", "s": "comm" },
-        { "m": "La Table de concertation sur la faim et le développement social du Montréal métropolitain", "s": "comm" },
-        { "m": "Centre Bon Courage", "s": "comm" },
-        { "m": "Regroupement Partage", "s": "comm" },
-        { "m": "Club des petits déjeuners", "s": "comm" },
-        { "m": "Centraide", "s": "fond" },
-        { "m": "CSSMB", "s": "rss" }
+        {
+          "m": "CSAM",
+          "s": "comm"
+        },
+        {
+          "m": "Moisson Montréal",
+          "s": "comm"
+        },
+        {
+          "m": "La Corbeille Bordeau-Cartierville",
+          "s": "comm"
+        },
+        {
+          "m": "RCCQ",
+          "s": "comm"
+        },
+        {
+          "m": "Right to food",
+          "s": "comm"
+        },
+        {
+          "m": "Ville de Montréal",
+          "s": "mun"
+        },
+        {
+          "m": "Cultiver Montréal",
+          "s": "comm"
+        },
+        {
+          "m": "<span class='tbc'>À confirmer</span>",
+          "s": "comm"
+        },
+        {
+          "m": "La cantine pour tous",
+          "s": "comm"
+        },
+        {
+          "m": "La tablée des chefs",
+          "s": "comm"
+        },
+        {
+          "m": "CMTQ",
+          "s": "comm"
+        },
+        {
+          "m": "La Table de concertation sur la faim et le développement social du Montréal métropolitain",
+          "s": "comm"
+        },
+        {
+          "m": "Centre Bon Courage",
+          "s": "comm"
+        },
+        {
+          "m": "Regroupement Partage",
+          "s": "comm"
+        },
+        {
+          "m": "Club des petits déjeuners",
+          "s": "comm"
+        },
+        {
+          "m": "Centraide",
+          "s": "fond"
+        },
+        {
+          "m": "CSSMB",
+          "s": "rss"
+        }
       ]
     },
     {
@@ -1348,17 +1400,50 @@ window.CONC = {
       "pp": "CSAM (Conseil du système alimentaire montréalais).",
       "man": "Groupe de travail du CSAM sur la citoyenneté alimentaire.",
       "comp": [
-        { "m": "Ville de Montréal", "s": "mun" },
-        { "m": "Les Fruits défendus", "s": "comm" },
-        { "m": "Forum SAT", "s": "comm" },
-        { "m": "RCCQ", "s": "comm" },
-        { "m": "INRS", "s": "rec" },
-        { "m": "CMTQ", "s": "comm" },
-        { "m": "Chaire de recherche du Canada sur les inégalités en nutrition et santé", "s": "rec" },
-        { "m": "Arrondissement Montréal-Nord – Transition écologique", "s": "mun" },
-        { "m": "ATD Quart Monde", "s": "comm" },
-        { "m": "Chic Resto Pop", "s": "comm" },
-        { "m": "CSAM", "s": "comm" }
+        {
+          "m": "Ville de Montréal",
+          "s": "mun"
+        },
+        {
+          "m": "Les Fruits défendus",
+          "s": "comm"
+        },
+        {
+          "m": "Forum SAT",
+          "s": "comm"
+        },
+        {
+          "m": "RCCQ",
+          "s": "comm"
+        },
+        {
+          "m": "INRS",
+          "s": "rec"
+        },
+        {
+          "m": "CMTQ",
+          "s": "comm"
+        },
+        {
+          "m": "Chaire de recherche du Canada sur les inégalités en nutrition et santé",
+          "s": "rec"
+        },
+        {
+          "m": "Arrondissement Montréal-Nord – Transition écologique",
+          "s": "mun"
+        },
+        {
+          "m": "ATD Quart Monde",
+          "s": "comm"
+        },
+        {
+          "m": "Chic Resto Pop",
+          "s": "comm"
+        },
+        {
+          "m": "CSAM",
+          "s": "comm"
+        }
       ]
     },
     {
