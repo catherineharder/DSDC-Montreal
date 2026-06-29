@@ -8,8 +8,8 @@
   /* deux nuances de vert pour la recherche : instituts (foncé) / universités (clair) */
   --rec1:#1f7a4d; --rec2:#5cb085;
   --drsp-sect:#16307a;
-  /* niveau = remplissage des boites : stratégique / tactique / opérationnel (tons terre) */
-  --nf-strat:#d4918a; --nf-tact:#e7c4bc; --nf-oper:#f7ede8;
+  /* niveau = remplissage des boites : stratégique / tactique / opérationnel (pastels doux) */
+  --nf-strat:#efd3cc; --nf-tact:#f6e6df; --nf-oper:#fcf5f1;
   /* marqueurs : cercle noir = DRSP coordonnatrice, étoile jaune = nouveau */
   --drsp-mark:#000; --new-mark:#f2c200;
   --i-dir:#e0644b; --i-eusp:#f0a93e; --i-jeun:#6cb04e; --i-pcmi:#4a90d9; --i-ecos:#8a6fc0;
@@ -131,7 +131,8 @@
 .conc-app .blist{list-style:none;margin:6px 0 0;padding:0;}
 .conc-app .blist li{position:relative;padding:3px 0 3px 18px;font-size:10pt;line-height:1.5;color:#000;}
 .conc-app .blist li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:#000;}
-.conc-app .blist li .mcat{color:var(--soft);font-size:9pt;}
+/* trait de séparation sous le titre du panneau droit (comme l'onglet « Cartes ») */
+.conc-app .info-inner .rule{height:1.5px;margin:2px 0 16px;border:0;background:var(--ink);}
 /* Comités liés : texte cliquable, sans boîte */
 .conc-app .comlink{font:inherit;font-size:10pt;line-height:1.5;text-align:left;background:none;border:0;padding:0;margin:0;color:#000;cursor:pointer;}
 .conc-app .comlink:hover{color:var(--accent);text-decoration:underline;}

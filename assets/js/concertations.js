@@ -100,15 +100,21 @@
     function rank(cat) { var n = normC(cat); if (n.indexOf('porteur') === 0) return 0; if (n === 'drsp') return 1; return 2; }
     var sorted = list.slice().sort(function (a, b) { return rank(a.cat) - rank(b.cat); });
     var items = sorted.map(function (x) {
-      var lab = x.cat ? ' <span class="mcat">(' + x.cat + ')</span>' : '';
-      return '<li>' + x.m + lab + '</li>';
+      var name = x.m, lab = '';
+      if (x.cat) {
+        // évite « (DRSP) (DRSP) » : retire l'étiquette identique déjà dans le nom
+        var esc = x.cat.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        name = name.replace(new RegExp('\\s*\\(' + esc + '\\)', 'i'), '').trim();
+        lab = ' (' + x.cat + ')';
+      }
+      return '<li>' + name + lab + '</li>';
     }).join('');
     return '<div class="fld"><p class="fl">Composition</p><ul class="blist">' + items + '</ul></div>';
   }
   function renderCommittee(id) {
     var c = byId[id]; if (!c) return;
     info.innerHTML =
-      '<h3 class="info-title">' + titleAcr(c.full, c.name) + '</h3>'
+      '<h3 class="info-title">' + titleAcr(c.full, c.name) + '</h3><hr class="rule">'
       + fld('Mandat', c.man)
       + compBlock(c);
     pane.scrollTop = 0;
@@ -122,7 +128,7 @@
       }).join('') + '</ul></div>';
     }
     info.innerHTML =
-      '<h3 class="info-title">' + titleAcr(p.full, p.ac) + '</h3>'
+      '<h3 class="info-title">' + titleAcr(p.full, p.ac) + '</h3><hr class="rule">'
       + list;
     pane.scrollTop = 0;
     info.querySelectorAll('.comlink').forEach(function (btn) {
