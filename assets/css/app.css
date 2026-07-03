@@ -129,4 +129,11 @@
 .map-results .mr-item:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);}
 .map-results .mr-item.mr-none{color:var(--muted);cursor:default;}
 .map-results .mr-item.mr-none:hover{background:transparent;}
-.map-results .mr-g{flex:0 0 auto;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+.map-results .mr-g{flex:0 1 auto;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%;text-align:right;}
+
+/* Organisme atteint via la recherche : surlignage temporaire dans le panneau TDQ */
+.member-hit{animation:member-hit 2.4s ease;border-radius:4px;}
+@keyframes member-hit{
+  0%,55%{background:color-mix(in srgb,var(--accent) 24%,transparent);}
+  100%{background:transparent;}
+}

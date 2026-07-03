@@ -77,6 +77,39 @@ function initTdqMap() {
     entries: Object.keys(TDQ_TABLES).map((slug) => ({ label: TDQ_TABLES[slug].name, value: slug }))
       .sort((a, b) => a.label.localeCompare(b.label, "fr")),
   };
+
+  // Membres des tables dans la même recherche : chaque organisme est une
+  // entrée (étiquette de groupe = sa table). La sélection ouvre la carte TDQ,
+  // sélectionne la table, puis fait défiler le panneau jusqu'à l'organisme
+  // et le surligne brièvement. Valeur encodée « slug§nom » (aucun nom ne
+  // contient « § » ; le slug non plus).
+  if (typeof TDQ_MEMBERS !== "undefined") {
+    const memberEntries = [];
+    Object.keys(TDQ_MEMBERS).forEach((slug) => {
+      const table = lookup(slug);
+      const group = "Membre · " + (table ? table.name : slug);
+      TDQ_MEMBERS[slug].forEach((g) => g.items.forEach((it) => {
+        memberEntries.push({ label: it.n, value: slug + "§" + it.n, group });
+      }));
+    });
+    memberEntries.sort((a, b) => a.label.localeCompare(b.label, "fr"));
+    window.CARTES.tdqm = {
+      entries: memberEntries,
+      pick: (raw) => {
+        const i = raw.indexOf("§");
+        const slug = raw.slice(0, i), name = raw.slice(i + 1);
+        if (window.showCartesMap) window.showCartesMap("tdq");
+        tdqMap.select(slug);
+        const li = [...panel.querySelectorAll(".items li")]
+          .find((n) => n.textContent.trim() === name);
+        if (!li) return;
+        li.classList.add("member-hit");
+        li.addEventListener("animationend", () => li.classList.remove("member-hit"), { once: true });
+        const pr = panel.getBoundingClientRect(), lr = li.getBoundingClientRect();
+        panel.scrollTop += lr.top - pr.top - panel.clientHeight / 2 + lr.height / 2;
+      },
+    };
+  }
 }
 
 initTdqMap();

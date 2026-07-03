@@ -208,25 +208,31 @@ window.CARTES = window.CARTES || {};
 /* One shared search for all three maps: a combined index of every territory,
    placed at the top-right of the eyebrow. Picking a result switches to that
    map and selects the region. Built on DOMContentLoaded, after each map has
-   registered its entries into window.CARTES. */
+   registered its entries into window.CARTES.
+   Registries may carry per-entry group labels (entry.group overrides
+   reg.groupLabel) and a custom reg.pick(value) instead of the default
+   "switch map + select territory" — used by the tables-de-quartier member
+   index ("tdqm"), whose entries select a table then highlight the member. */
 function buildCartesSearch() {
-  const order = ["sante", "ville", "tdq"];
+  const order = ["sante", "ville", "tdq", "tdqm"];
   const combined = [];
   order.forEach((k) => {
     const reg = window.CARTES[k];
     if (!reg) return;
-    reg.entries.forEach((e) => combined.push({ label: e.label, value: k + "§" + e.value, group: reg.groupLabel }));
+    reg.entries.forEach((e) => combined.push({ label: e.label, value: k + "§" + e.value, group: e.group || reg.groupLabel }));
   });
   if (!combined.length) return;
   const pick = (v) => {
     const i = v.indexOf("§");
     const k = v.slice(0, i), raw = v.slice(i + 1);
-    if (window.showCartesMap) window.showCartesMap(k);
     const reg = window.CARTES[k];
-    if (reg && reg.select) reg.select(raw);
+    if (!reg) return;
+    if (reg.pick) { reg.pick(raw); return; }
+    if (window.showCartesMap) window.showCartesMap(k);
+    if (reg.select) reg.select(raw);
   };
   document.querySelectorAll("#view-cartes .map-eyebrow").forEach((eb) => {
-    eb.appendChild(makeSearch(combined, pick, "Rechercher un territoire…"));
+    eb.appendChild(makeSearch(combined, pick, "Rechercher un territoire, un organisme…"));
   });
 }
 document.addEventListener("DOMContentLoaded", buildCartesSearch);
