@@ -255,6 +255,12 @@ def parse_entries(rows):
         if not acronyme:
             continue
         entries.append((acronyme, signification, source))
+    # Tri alphabétique insensible aux accents et à la casse : l'ordre des
+    # lignes dans la feuille Google n'a donc aucune importance.
+    def sort_key(entry):
+        nfkd = unicodedata.normalize("NFKD", entry[0])
+        return "".join(c for c in nfkd if not unicodedata.combining(c)).casefold()
+    entries.sort(key=sort_key)
     return entries
 
 
