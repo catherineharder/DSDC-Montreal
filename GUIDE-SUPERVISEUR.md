@@ -18,8 +18,16 @@ Les trois feuilles (partagées avec vous) :
 > **jamais la première ligne** (les en-têtes de colonnes) ni les **noms des
 > onglets**. Si une colonne ne vous concerne pas, laissez-la vide.
 
-Après un changement, attendez la nuit (ou demandez à l'administrateur·rice de
-« relancer la synchronisation »), puis rechargez le site.
+**Raccourci** : sur le site, chaque section modifiable affiche un petit
+**crayon** ✎ à côté de son titre (Glossaire, Concertations, panneau des Tables
+de quartier). Cliquer le crayon ouvre directement la bonne feuille Google.
+Sans accès en écriture, la feuille s'ouvre en lecture seule (avec possibilité
+de demander l'accès).
+
+Après un changement, attendez la nuit, puis rechargez le site. Pour voir vos
+changements tout de suite : cliquez l'icône de **synchronisation** ↻ à droite
+de la barre de navigation (réservée aux personnes ayant accès au dépôt GitHub),
+puis « Run workflow » ; le site est régénéré en 1 à 2 minutes.
 
 ---
 

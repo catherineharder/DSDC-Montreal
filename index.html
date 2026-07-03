@@ -24,6 +24,7 @@
       <button class="nav-item" id="nav-ressources" data-view="ressources" aria-current="false">Ressources</button>
       <button class="nav-item" id="nav-gloss" data-view="gloss" aria-current="false">Glossaire</button>
     </div>
+    <a class="nav-sync" href="https://github.com/catherineharder/DSDC-Montreal/actions/workflows/sync.yml" target="_blank" rel="noopener" title="Synchroniser le site depuis Google Sheets (ouvre GitHub Actions — cliquer « Run workflow »)" aria-label="Synchroniser le site depuis Google Sheets"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></a>
   </nav>
 
   <div class="views">
@@ -50,7 +51,7 @@
       <div class="wrap">
         <section class="map-side">
           <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button></div>
-          <div class="map-head"><img class="logo" src="assets/logos/Logo_Montréal.png" alt="Ville de Montréal"></div>
+          <div class="map-head"><img class="logo" src="assets/logos/logo-montreal.png" alt="Ville de Montréal"></div>
           <div class="map-stage"><div class="legend"><div><span class="sw mid"></span>Arrondissement</div><div><span class="sw low"></span>Ville liée</div></div><svg id="ville-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des arrondissements"></svg></div>
         </section>
         <aside class="panel" id="ville-panel" aria-live="polite"></aside>
@@ -69,10 +70,10 @@
       </div>
     </section>
 
-    <!-- Concertations (TODO) -->
-      </div>
-    </section>
+      </div><!-- /.map-views -->
+    </section><!-- /#view-cartes -->
 
+    <!-- Concertations -->
     <section class="view" id="view-conc" aria-label="Concertations" hidden>
       <div class="conc-app embed" id="conc-root"></div>
     </section>

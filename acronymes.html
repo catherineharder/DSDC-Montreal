@@ -148,6 +148,15 @@
   }
   .entry.hidden { display: none; }
 
+  /* Crayon d'édition : ouvre la feuille Google source (lecture seule sans accès). */
+  .edit-pencil {
+    display: inline-flex; align-items: center;
+    vertical-align: middle; margin-left: 10px;
+    color: var(--muted); opacity: .45;
+    transition: opacity 120ms ease, color 120ms ease;
+  }
+  .edit-pencil:hover, .edit-pencil:focus-visible { opacity: 1; color: var(--accent); }
+
   footer {
     border-top: 1px solid var(--hairline);
     padding: 32px 48px 64px;
@@ -163,7 +172,7 @@
 <main>
 
   <section class="hero">
-    <h1>Glossaire des acronymes</h1>
+    <h1>Glossaire des acronymes<a class="edit-pencil" href="https://docs.google.com/spreadsheets/d/1RRaZ4SMFaWm3m78ypPufWrClJymn4y7n/edit" target="_blank" rel="noopener" title="Suggérer une modification (ouvre la feuille Google)" aria-label="Suggérer une modification"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></a></h1>
     </section>
 
   <div class="alpha-index">

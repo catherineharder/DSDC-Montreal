@@ -11,6 +11,22 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 }[c]));
 
+/* ---- Édition des données sources (Google Sheets) --------------------------
+   Chaque section affiche un petit crayon qui ouvre sa feuille Google dans un
+   nouvel onglet. Les personnes ayant accès en écriture peuvent corriger ;
+   les autres voient la feuille en lecture seule (mêmes IDs que sync/config.json). */
+const EDIT_SHEETS = {
+  concertations: "https://docs.google.com/spreadsheets/d/1dDpLbIMQCE9OoCvnZNVQc0R8gkmydV8I/edit",
+  tables: "https://docs.google.com/spreadsheets/d/11P0JPIxhEmf3EFvXxVx2z_NYmQ-oNo7u/edit",
+  glossaire: "https://docs.google.com/spreadsheets/d/1RRaZ4SMFaWm3m78ypPufWrClJymn4y7n/edit",
+};
+const editPencil = (url) =>
+  `<a class="edit-pencil" href="${url}" target="_blank" rel="noopener" ` +
+  `title="Suggérer une modification (ouvre la feuille Google)" aria-label="Suggérer une modification">` +
+  `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" ` +
+  `stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">` +
+  `<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></a>`;
+
 /* ---- Navigation: show one view at a time ---------------------------------
    Plain nav semantics (aria-current="page"), not the ARIA tab pattern: the
    buttons are page switches, and Tab-to-focus + Enter is the expected model. */

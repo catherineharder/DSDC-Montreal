@@ -163,6 +163,15 @@ TEMPLATE = """<!DOCTYPE html>
   }
   .entry.hidden { display: none; }
 
+  /* Crayon d'édition : ouvre la feuille Google source (lecture seule sans accès). */
+  .edit-pencil {
+    display: inline-flex; align-items: center;
+    vertical-align: middle; margin-left: 10px;
+    color: var(--muted); opacity: .45;
+    transition: opacity 120ms ease, color 120ms ease;
+  }
+  .edit-pencil:hover, .edit-pencil:focus-visible { opacity: 1; color: var(--accent); }
+
   footer {
     border-top: 1px solid var(--hairline);
     padding: 32px 48px 64px;
@@ -178,7 +187,7 @@ TEMPLATE = """<!DOCTYPE html>
 <main>
 
   <section class="hero">
-    <h1>Glossaire des acronymes</h1>
+    <h1>Glossaire des acronymes<a class="edit-pencil" href="{{SHEET_URL}}" target="_blank" rel="noopener" title="Suggérer une modification (ouvre la feuille Google)" aria-label="Suggérer une modification"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></a></h1>
     </section>
 
   <div class="alpha-index">
@@ -279,7 +288,7 @@ def french_month_year(now=None):
     return f"{MOIS_FR[now.month]} {now.year}"
 
 
-def build(rows):
+def build(rows, sheet_url=""):
     entries = parse_entries(rows)
     if not entries:
         raise RuntimeError("Glossaire : aucune entrée trouvée dans la feuille.")
@@ -287,12 +296,14 @@ def build(rows):
     return (TEMPLATE
             .replace("{{ALPHA_INDEX}}", alpha)
             .replace("{{LETTER_BLOCKS}}", blocks)
+            .replace("{{SHEET_URL}}", sheet_url)
             .replace("{{FOOTER_DATE}}", french_month_year())), count
 
 
 def run(cfg, fetch, repo_root):
     text = fetch(cfg["sheet_id"], cfg["tab"])
     rows = list(csv.reader(io.StringIO(text)))
-    out_html, count = build(rows)
+    sheet_url = f"https://docs.google.com/spreadsheets/d/{cfg['sheet_id']}/edit"
+    out_html, count = build(rows, sheet_url)
     (repo_root / cfg["output"]).write_text(out_html, encoding="utf-8")
     return f"{cfg['output']} — {count} acronymes"

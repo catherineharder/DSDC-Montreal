@@ -37,7 +37,7 @@
 
   root.innerHTML =
     '<div class="layout"><div class="pane-left">'
-    + '<div class="pagehead"><h1>Concertations</h1><div class="conc-search"><span class="conc-noresult" id="conc-noresult">Aucun résultat</span><input id="conc-q" type="search" autocomplete="off" placeholder="Rechercher…"></div></div>'
+    + '<div class="pagehead"><h1>Concertations' + editPencil(EDIT_SHEETS.concertations) + '</h1><div class="conc-search"><span class="conc-noresult" id="conc-noresult">Aucun résultat</span><input id="conc-q" type="search" autocomplete="off" placeholder="Rechercher…"></div></div>'
     + '<section class="cblock" id="c-partenaires"><h2>Partenaires</h2>' + partnersHTML(D.famsP) + '</section>'
     + '<section class="cblock" id="c-comites"><h2>Comités</h2>' + LEG + '<div id="ctree"></div></section>'
     + '<section class="cblock" id="c-definitions"><h2>Définitions</h2><dl>' + defsHTML(D.defs) + '</dl></section>'

@@ -20,6 +20,11 @@
      Each button carries its own --accent (set below); one rule covers all. */
   .nav-item:hover,.nav-item[aria-current="page"]{background:color-mix(in srgb,var(--accent) 10%,transparent);}
   .nav-item:focus-visible{outline:2px solid var(--ink);outline-offset:1px;}
+  /* ---- Synchro (nav, discret) + crayons d'édition vers Google Sheets ---- */
+  .nav-sync{margin-left:auto;display:inline-flex;align-items:center;padding:6px;border-radius:8px;color:var(--muted);opacity:.55;transition:opacity 120ms ease,color 120ms ease;}
+  .nav-sync:hover,.nav-sync:focus-visible{opacity:1;color:var(--ink);}
+  .edit-pencil{display:inline-flex;align-items:center;vertical-align:middle;margin-left:8px;color:var(--muted);opacity:.45;transition:opacity 120ms ease,color 120ms ease;}
+  .edit-pencil:hover,.edit-pencil:focus-visible{opacity:1;color:var(--accent,var(--ink));}
   /* single source of truth: each view AND its nav button share one --accent */
   #nav-sante,#view-sante{--accent:#1f5fa8;}
   #nav-ville,#view-ville{--accent:#d60303;}

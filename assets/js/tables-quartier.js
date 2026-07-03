@@ -53,12 +53,12 @@ function initTdqMap() {
     shapes: TDQ_GEOMETRY.tables,
     lookup,
     renderPanel: (t) =>
-      `<h2>${esc(t.name)}</h2><hr class="rule">` +
+      `<h2>${esc(t.name)}${editPencil(EDIT_SHEETS.tables)}</h2><hr class="rule">` +
       `<p class="intro">Membres de la table de quartier. ` +
       `Cliquez un organisme pour ouvrir sa fiche Google Maps.</p>` +
       membersHTML(t.slug),
     renderLanding: () =>
-      `<h2>Tables de quartier</h2><hr class="rule">` +
+      `<h2>Tables de quartier${editPencil(EDIT_SHEETS.tables)}</h2><hr class="rule">` +
       `<p class="intro">${esc(intro)}</p>` +
       `<p class="intro">Cliquez un territoire pour afficher sa table de quartier.</p>`,
   });
