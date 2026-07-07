@@ -242,56 +242,48 @@ document.addEventListener('click', e => {
 const COL = { red:'#b12638', redL:'#f7ede8', blue:'#28587a', or:'#9c5a15', orL:'#f4e4cd',
   vio:'#54437c', vioL:'#dcd6e8', gold:'#8f6f1c', gr:'#2f6448', grL:'#eaf1ec', grM:'#d4e3d9', grD:'#4f7a5f' };
 
-const NODE_TITLES = { determinants:'Déterminants structurels', rolesp:'Rôle de la santé publique',
-  conditions:'Conditions de vie favorables', pouvoir:'Pouvoir d’agir collectif', gouvcollab:'Gouvernance collaborative',
-  mobilisation:'Mobilisation des actifs', vision:'Vision commune', concertation:'Concertation',
-  participation:'Participation citoyenne', tissu:'Renforcement du tissu social', priorite:'Priorité locale', equite:'Équité en santé' };
+const NODE_TITLES = { rapports:'Rapports de pouvoir', numerique:'Transformation numérique', climat:'Changements climatiques',
+  institutions:'Institutions', philanthropie:'Philanthropie', prive:'Secteur privé', communautaire:'Milieu communautaire',
+  citoyens:'Citoyens et citoyennes', plaidoyer:'Plaidoyer', concertation:'Concertation', participation:'Participation citoyenne',
+  vision:'Vision commune', savoir:'Savoir', capital:'Capital social', financement:'Financement', gouvernance:'Gouvernance partagée',
+  evaluation:'Évaluation', impact:'Impact collectif sur les priorités locales', determinants:'Déterminants structurels', equite:'Équité en santé' };
 
-const NODE_TO_ZONE = { determinants:'déterminants', rolesp:'role', conditions:'conditions', pouvoir:'pouvoir',
-  gouvcollab:'gouvernance2', mobilisation:'mobilisation', vision:'vision', concertation:'concertation',
-  participation:'participation', tissu:'renforcement', equite:'_équité' };
+const NODE_TO_ZONE = { rapports:'rapports', numerique:'transformation', climat:'changements', plaidoyer:'participer',
+  concertation:'concertation', participation:'participation', vision:'vision', savoir:'connaissances', capital:'capital',
+  financement:'ressources', gouvernance:'gouvernance2', evaluation:'_évaluation', impact:'impact',
+  determinants:'déterminants', equite:'_équité' };
+
+/* Cadre DSL simplifié — pastel, texte noir, sans flèches (utilisé par les 2 onglets exemples) */
+const DSL_ROWS = [
+  { lab: 'Considérant les enjeux transversaux', c: '#e6e3de', fs: 15, chips: [['rapports','RAPPORTS DE POUVOIR'],['numerique','TRANSFORMATION NUMÉRIQUE'],['climat','CHANGEMENTS CLIMATIQUES']] },
+  { lab: 'et agissant en amont sur les', c: '#f3d6d8', fs: 16, chips: [['determinants','DÉTERMINANTS STRUCTURELS']] },
+  { lab: 'les parties prenantes', c: '#d9e7f0', fs: 13.5, chips: [['institutions','INSTITUTIONS'],['philanthropie','PHILANTHROPIE'],['prive','PRIVÉ'],['communautaire','COMMUNAUTAIRE'],['citoyens','CITOYENS']] },
+  { lab: 'utilisent', c: '#dcebe1', fs: 15, chips: [['plaidoyer','PLAIDOYER'],['concertation','CONCERTATION'],['participation','PARTICIPATION CITOYENNE']] },
+  { lab: 'pour arriver à une', c: '#c8e0d1', fs: 16, chips: [['vision','VISION COMMUNE']] },
+  { lab: 'mettant à profit', c: '#f5e8c9', fs: 15, chips: [['savoir','SAVOIR'],['capital','CAPITAL SOCIAL'],['financement','FINANCEMENT']] },
+  { lab: null, c: '#f5e8c9', fs: 15, chips: [['gouvernance','GOUVERNANCE PARTAGÉE'],['evaluation','ÉVALUATION']] },
+  { lab: 'pour avoir un', c: '#f6dcd0', fs: 15, chips: [['impact','IMPACT COLLECTIF SUR LES PRIORITÉS LOCALES']] },
+  { lab: 'ayant comme finalité', c: '#ede1b2', fs: 16, chips: [['equite','L’ÉQUITÉ EN SANTÉ']] }
+];
 
 function simpleSVG(tab) {
-  const prio = tab === 'verdun' ? 'Sécurité alimentaire' : 'Logement';
-  const t = (x,y,s,fill,size,w,anchor,ls) => `<text x="${x}" y="${y}" fill="${fill}" font-size="${size}" ${w?'font-weight="'+w+'"':''} text-anchor="${anchor||'middle'}" ${ls?'letter-spacing="'+ls+'"':''}>${s}</text>`;
-  const arrowV = (x,y1,y2,c) => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${c}" stroke-width="1.5"/><path d="M${x-4},${y2-5} L${x},${y2} L${x+4},${y2-5}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-  const arrowH = (x1,x2,y,c) => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${c}" stroke-width="1.5"/><path d="M${x2-5},${y-4} L${x2},${y} L${x2-5},${y+4}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-  return `<svg viewBox="0 0 612 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;font-family:inherit" role="group" aria-label="Cadre conceptuel simplifié">
-  <g class="snode" data-node="determinants"><rect class="box" x="6" y="6" width="340" height="74" rx="10" fill="${COL.redL}"/>
-    ${t(176,30,'DÉTERMINANTS STRUCTURELS',COL.red,13,700)}
-    ${t(176,48,'valeurs · gouvernance · lois, politiques,',COL.red,10.5)}
-    ${t(176,62,'règlements, budgets · pratiques institutionnelles',COL.red,10.5)}</g>
-  ${t(376,34,'agit sur',COL.blue,10)}${arrowH(398,354,43,COL.blue)}
-  <g class="snode" data-node="rolesp"><rect class="box" x="400" y="6" width="206" height="74" rx="10" fill="${COL.blue}"/>
-    ${t(503,36,'RÔLE DE LA SANTÉ PUBLIQUE','#fff',12,700)}
-    ${t(503,56,'mesurer · financer · outiller · plaider','#fff',10)}</g>
-  ${t(306,99,'Le DS produit les conditions pour le DC','#8a8a8a',10.5)}${arrowV(306,104,117,COL.red)}
-  <rect x="6" y="122" width="600" height="64" rx="10" fill="${COL.orL}"/>
-  <g class="snode" data-node="conditions"><rect class="box" x="16" y="132" width="188" height="44" rx="8" fill="#ffffff" fill-opacity="0.65" stroke="${COL.or}" stroke-width="0.75"/>${t(110,151,'Conditions de vie',COL.or,11.5,700)}${t(110,165,'favorables',COL.or,11.5,700)}</g>
-  <g class="snode" data-node="pouvoir"><rect class="box" x="212" y="132" width="188" height="44" rx="8" fill="#ffffff" fill-opacity="0.65" stroke="${COL.or}" stroke-width="0.75"/>${t(306,151,'Pouvoir d’agir',COL.or,11.5,700)}${t(306,165,'collectif',COL.or,11.5,700)}</g>
-  <g class="snode" data-node="gouvcollab"><rect class="box" x="408" y="132" width="188" height="44" rx="8" fill="#ffffff" fill-opacity="0.65" stroke="${COL.or}" stroke-width="0.75"/>${t(502,151,'Gouvernance',COL.or,11.5,700)}${t(502,165,'collaborative',COL.or,11.5,700)}</g>
-  ${arrowV(306,190,203,COL.gr)}
-  <rect x="6" y="208" width="600" height="224" rx="12" fill="none" stroke="${COL.gr}" stroke-dasharray="3 3" opacity="0.55"/>
-  ${t(306,224,'DÉVELOPPEMENT DES COMMUNAUTÉS (DC)',COL.gr,10.5,700,null,'.08em')}
-  <g class="snode" data-node="mobilisation"><rect class="box" x="18" y="234" width="576" height="52" rx="8" fill="${COL.grL}"/>
-    ${t(306,255,'Mobilisation des actifs (approche ABCD)',COL.gr,12,700)}
-    ${t(306,272,'connaissances · ressources et maillage · leadership',COL.gr,10.5)}</g>
-  <rect x="18" y="294" width="576" height="74" rx="8" fill="${COL.grM}"/>
-  ${t(306,310,'Mécanismes d’action collective',COL.gr,11,700)}
-  <g class="snode" data-node="vision"><rect class="box" x="28" y="320" width="180" height="34" rx="8" fill="#fff"/>${t(118,341,'Vision commune',COL.gr,11.5,700)}</g>
-  <g class="snode" data-node="concertation"><rect class="box" x="216" y="320" width="180" height="34" rx="8" fill="#fff"/>${t(306,341,'Concertation',COL.gr,11.5,700)}</g>
-  <g class="snode" data-node="participation"><rect class="box" x="404" y="320" width="180" height="34" rx="8" fill="#fff"/>${t(494,341,'Participation citoyenne',COL.gr,11.5,700)}</g>
-  <g class="snode" data-node="tissu"><rect class="box" x="18" y="376" width="576" height="48" rx="8" fill="${COL.grD}"/>
-    ${t(306,395,'Renforcement du tissu social','#fff',12,700)}
-    ${t(306,411,'cohésion sociale · capital social · résilience','#fff',10.5)}</g>
-  ${arrowV(306,436,449,COL.vio)}
-  <g class="snode" data-node="priorite"><rect class="box" x="6" y="454" width="380" height="60" rx="10" fill="${COL.vioL}"/>
-    ${t(196,477,'IMPACT COLLECTIF SUR LA PRIORITÉ LOCALE',COL.vio,9.5,600,null,'.12em')}
-    ${t(196,497,prio,COL.vio,14,700)}</g>
-  ${arrowH(396,434,484,COL.gold)}
-  <g class="snode" data-node="equite"><rect class="box" x="440" y="454" width="166" height="60" rx="10" fill="${COL.gold}"/>
-    ${t(523,489,'ÉQUITÉ EN SANTÉ','#fff',12.5,700)}</g>
-  </svg>`;
+  const W = 1040, X = 70, RW = 900, CH = 46, INK = '#212121';
+  let y = 118, out = [];
+  DSL_ROWS.forEach(row => {
+    if (row.lab) { out.push(`<text x="${W/2}" y="${y+24}" text-anchor="middle" font-size="16.5" fill="#7a766f">${row.lab}</text>`); y += 40; }
+    else { y += 6; }
+    const n = row.chips.length, gap = 6, cw = (RW - gap*(n-1))/n;
+    row.chips.forEach((ch, i) => {
+      const x = X + i*(cw+gap), fill = ch[2] || row.c;
+      out.push(`<g class="snode" data-node="${ch[0]}"><rect class="box" x="${x.toFixed(1)}" y="${y}" width="${cw.toFixed(1)}" height="${CH}" rx="${CH/2}" fill="${fill}"/>` +
+        `<text x="${(x+cw/2).toFixed(1)}" y="${y+CH/2+5.5}" text-anchor="middle" font-size="${row.fs}" font-weight="700" letter-spacing=".04em" fill="${INK}">${ch[1]}</text></g>`);
+    });
+    y += CH;
+  });
+  y += 30;
+  return `<svg viewBox="0 0 ${W} ${y}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;font-family:inherit" role="group" aria-label="Cadre conceptuel du développement social local">` +
+    `<text x="${W/2}" y="58" text-anchor="middle" font-size="27" font-weight="800" fill="${INK}">CADRE CONCEPTUEL DU DÉVELOPPEMENT SOCIAL LOCAL (DSL)</text>` +
+    out.join('') + `</svg>`;
 }
 
 /* ---- Contenus d'exemple : comment chaque projet illustre chaque concept ---- */
@@ -309,66 +301,86 @@ verdun: {
     ['Avril 2023','Plan d’action détaillé 2023-2026 : 58 actions']],
   srcs: [['PDCN 2022-2030 (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf'],['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']],
   nodes: {
-  determinants: { how: 'Les règles et budgets qui rendent le PDCN possible — et les vides qui le contraignent.', items: [
-    '<strong>MAPAQ</strong> : 40 000 $ (maximum du programme PDCN, enveloppe 500 000 $ 2020-2022) pour élaborer le plan; la Politique bioalimentaire 2018-2025 « Alimenter notre monde » (5 G$) fournit le cadre provincial.',
-    '<strong>PSOC</strong> : 252,2 M$ en mission globale aux organismes communautaires de Montréal (2023-2024) — le socle de financement des groupes qui livrent l’aide alimentaire.',
-    '<strong>Budget participatif de Montréal</strong> : 45 M$ (3e édition) — pratique institutionnelle qui a financé le Jardin Éthel (755 000 $).',
-    '<strong>SISA / PAGIEPS</strong> (DRSP) : 1 755 200 $ (2025-2029) en sécurité alimentaire.',
-    '<strong>Vide structurel</strong> : aucune loi québécoise contre le gaspillage alimentaire (PL 697 non adopté) — la récupération repose sur le volontariat.'],
-    src: [['MAPAQ – communautés nourricières','https://www.quebec.ca/agriculture-environnement-et-ressources-naturelles/agriculture/industrie-agricole-au-quebec/protection-mise-en-valeur-territoire-agricole/developpement-communaute-nourriciere'],['Bilan budget participatif','https://montreal.ca/articles/budget-participatif-de-montreal-bilan-de-la-troisieme-edition-2024-2025-87348']] },
-  rolesp: { how: 'La DRSP mesure, finance et documente; elle ne porte pas le plan.', items: [
-    '<strong>Mesurer</strong> : insécurité alimentaire à Montréal = 14,8 % des ménages (2020), presque doublée entre 2018 et 2022 (DRSP).',
-    '<strong>Financer</strong> : appels de projets SISA (~75 000 $/an/projet, 4 ans).',
-    '<strong>Partenaire structurel</strong> : la DRSP cofinance l’IMSDSL qui soutient la table de quartier (CDSV).',
-    '<strong>Éclairer</strong> : démarche « Faim zéro à Montréal » (2019, FGM avec DRSP, Centraide, Fondation Chagnon) — cartographie de l’écosystème.'],
-    src: [['Portrait DRSP 2020','https://santepubliquemontreal.ca/sites/drsp/files/media/document/DRSP_Pub_2024_06_26_PortraitInsecuriteAlimentaireMTL_2020.pdf']] },
-  conditions: { how: 'L’accès concret à une alimentation saine et abordable.', items: [
-    'Marchés fermiers de Verdun (CAUS) : ~26 exposants, les mercredis de juin à octobre.',
-    '<strong>Jardin Éthel</strong> : toit de stationnement transformé en espace nourricier — 755 000 $, 4 161 votes au budget participatif.',
-    'Paniers Manna à ~7 $/semaine; repas antigaspillage BGC Dawson à ~3 $; serres municipales (~20 000 pi² de production).'],
-    src: [['Jardin Éthel','https://montreal.ca/articles/le-jardin-ethel-30140']] },
-  pouvoir: { how: 'La communauté définit elle-même le problème et les priorités.', items: [
-    'Le comité <strong>Verdun sans faim</strong> (CDSV) a piloté la mise à jour du Système alimentaire verdunois : 10 défis présentés publiquement à la mairie d’arrondissement.',
-    'Collège citoyen au CA de la CDSV : des résidents siègent dans l’instance décisionnelle.',
-    'La vision du PDCN a été retravaillée après un vote populaire — la communauté a corrigé la copie.'],
-    src: [['CDSV','https://cdsv.org/qui-sommes-nous/']] },
-  gouvcollab: { how: 'Un pilotage partagé arrondissement-communauté.', items: [
-    'Comité de pilotage multi-acteurs (12 rencontres; le MAPAQ y siégeait) + comité interdirection municipal.',
-    'CDSV : CA représentatif de 5 collèges (communautaire, économique, scolaire, institutionnel, citoyen).',
-    'La <strong>DCSLDS</strong> (arrondissement) porte et arrime le plan — presque toutes les 58 actions la nomment.'],
-    src: [['PDCN (PDF), annexe 4','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
-  mobilisation: { how: 'Partir des forces du territoire plutôt que des manques.', items: [
-    'Actifs mobilisés : serres municipales (Grand Potager), toit de stationnement (Éthel), écoles, commerces de la Promenade Wellington, berges et jardins.',
-    'Expertise externe maillée : Vivre en Ville (cadre « communauté nourricière »), PME MTL Grand Sud-Ouest.',
-    'Le SAV (Système alimentaire verdunois) cartographie acteurs et projets existants depuis 2017 (né du PIC de Centraide).'],
-    src: [['Grand Potager','https://www.grandpotager.com/']] },
-  vision: { how: 'Une vision commune formellement votée.', items: [
-    'Vote populaire sur la vision et les orientations : <strong>243 répondants</strong> (énoncé gagnant à 54,3 %).',
-    'Résultat : 1 vision, 5 orientations, 15 priorités, 58 actions (2023-2026) — un agenda commun mesurable.'],
+  rapports: { how: 'Qui détient le pouvoir, qui le partage.', items: [
+    'L’arrondissement détient budget et compétences; il partage la décision via le comité de pilotage et un vote populaire (la vision gagnante à 54,3 % a été retravaillée).',
+    'L’insécurité alimentaire suit le revenu : gradient social, pas manque de nourriture.'],
+    src: [] },
+  numerique: { how: 'Le numérique comme canal de participation — et ses limites.', items: [
+    'Consultation numérique Réalisons Montréal : 1 402 visiteurs, 83 « engagés » (2021-2022).',
+    'Contre la fracture numérique : groupes de discussion et ateliers en personne (43 + 43 pers.).'],
+    src: [['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']] },
+  climat: { how: 'La communauté nourricière est une stratégie climatique locale.', items: [
+    'Circuits courts (marchés fermiers, serres, ~20 000 pi²), agriculture urbaine, compost (Multi-CAUS), lutte au gaspillage (repas ~3 $ BGC Dawson).'],
+    src: [] },
+  institutions: { how: 'Trois paliers publics dans un plan d’arrondissement.', items: [
+    '<strong>Arrondissement</strong> (DCSLDS) : porteur du PDCN, nommé dans presque toutes les 58 actions.',
+    '<strong>MAPAQ</strong> : 40 000 $ + siège au comité de pilotage.',
+    '<strong>DRSP</strong> : données (14,8 % d’insécurité, 2020) + SISA 1 755 200 $ (2025-2029); CIUSSS et écoles partenaires.'],
     src: [['PDCN (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
+  philanthropie: { how: 'La philanthropie a précédé et outillé le plan.', items: [
+    '<strong>Centraide</strong> : le PIC « Un toit, une table pour tous » (2016) a créé le Système alimentaire verdunois (2017); 70,3 M$ investis dans 375 organismes (2024-2025).',
+    '<strong>FGM + Fondation Chagnon</strong> : démarche « Faim zéro à Montréal » (2019) — cartographie de l’écosystème.'],
+    src: [['Centraide','https://www.centraide-mtl.org/en/media/centraide-investments-2024-2025/']] },
+  prive: { how: 'Le commerce local comme maillon du système alimentaire.', items: [
+    '<strong>SDC Wellington</strong> : verdissement, agriculture urbaine, mise en marché de proximité.',
+    'PME MTL Grand Sud-Ouest : accompagnement des entreprises alimentaires; commerces locaux : réduction du gaspillage et invendus.'],
+    src: [] },
+  communautaire: { how: 'Les organismes livrent le système au quotidien.', items: [
+    '<strong>CDSV</strong> (table de quartier) et son comité <strong>Verdun sans faim</strong>; Grand Potager (serres); CAUS (marchés fermiers, ~26 exposants); BGC Dawson et Manna (aide alimentaire); MEV (sensibilisation).'],
+    src: [['CDSV','https://cdsv.org/qui-sommes-nous/']] },
+  citoyens: { how: 'Des citoyens qui votent, siègent et jardinent.', items: [
+    '243 votes sur la vision; 43 pers. en groupes de discussion; 120 via outils collaboratifs.',
+    'Collège citoyen au CA de la CDSV; <strong>4 161 votes</strong> pour le Jardin Éthel au budget participatif.'],
+    src: [] },
+  plaidoyer: { how: 'Documenter, puis interpeller.', items: [
+    'Verdun sans faim présente les <strong>10 défis</strong> du Système alimentaire verdunois à la mairie d’arrondissement.',
+    'Le Conseil SAM porte les enjeux à l’agglomération; le Bilan-Faim (Moisson) sert d’argumentaire chiffré.'],
+    src: [['Les 10 défis du SAV','https://nouvellesdici.com/actu/les-defis-du-systeme-alimentaire-de-verdun-appel-a-laction-collective/']] },
   concertation: { how: 'Des espaces formels où les acteurs s’alignent.', items: [
-    '<strong>CDSV</strong> : table de quartier (2004; incorporée 2006), AG 3-4×/an, comités thématiques dont Verdun sans faim.',
-    '<strong>Conseil SAM</strong> (2018) : 1er conseil de politiques alimentaires d’une ville francophone; 150+ partenaires; plan d’action intégré 2023-2025.',
-    'Montréal – Métropole en santé porte le Conseil SAM; la CMM suit l’insécurité alimentaire dans ses indicateurs vitaux.'],
+    'Comité de pilotage PDCN : 12 rencontres multi-acteurs; CDSV : AG 3-4×/an, CA de 5 collèges.',
+    '<strong>Conseil SAM</strong> (2018) : 1er conseil de politiques alimentaires d’une ville francophone, 150+ partenaires.'],
     src: [['Conseil SAM','https://csam.ca/a-propos-conseil-sam/']] },
   participation: { how: 'Les résidents ont façonné le plan à chaque étape.', items: [
-    'Plateforme Réalisons Montréal (juin 2021 – mars 2022) : 1 402 visiteurs, 106 abonnés, 83 personnes « engagées ».',
-    '<strong>5 groupes de discussion</strong> (43 personnes) + sondages (19 organisations) + atelier de cocréation (43 personnes) + outils collaboratifs (120 personnes).',
-    'Vote populaire final : 243 répondants.'],
+    '5 groupes de discussion (43 pers.) + sondages (19 org.) + atelier de cocréation (43) + outils collaboratifs (120) + vote final (243).',
+    'Réalisons Montréal, juin 2021 – mars 2022 : 1 402 visiteurs.'],
     src: [['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']] },
-  tissu: { how: 'L’alimentation comme prétexte au lien social.', items: [
-    'Les marchés fermiers et le Jardin Éthel créent des lieux de rencontre de proximité.',
-    'Jardins collectifs et éducatifs (BGC Dawson, écoles, sociétés d’horticulture) tissent des liens intergénérationnels.',
-    'Le dépannage régulier (~222 ménages/mois à la banque alimentaire Dawson) s’accompagne de livraison aux personnes à mobilité réduite.'],
-    src: [['BGC Dawson','https://www.cbc.ca/news/canada/montreal/bgc-dawson-verdun-food-insecurity-1.6271311']] },
-  priorite: { how: 'Pourquoi la sécurité alimentaire est LA priorité locale.', items: [
-    'Montréal : <strong>14,8 %</strong> des ménages en insécurité alimentaire (2020) — contre 11,4 % dans le reste du Québec; la proportion a presque doublé entre 2018 et 2022.',
-    'Moisson Montréal : <strong>1 101 876 demandes d’aide/mois</strong> (Bilan-Faim 2025), +54 % vs 2021.',
-    'Verdun : portrait en sécurité alimentaire dès 2017 (CDSV) — la priorité vient du terrain, pas d’en haut.'],
+  vision: { how: 'Une vision commune formellement votée.', items: [
+    'Vote populaire : <strong>243 répondants</strong>, énoncé gagnant à 54,3 %.',
+    'Résultat : 1 vision, 5 orientations, 15 priorités, 58 actions (2023-2026).'],
+    src: [['PDCN (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
+  savoir: { how: 'Le plan repose sur un diagnostic, pas des impressions.', items: [
+    '<strong>Portrait diagnostic</strong> (nov. 2021, méthode FFOM, avec Vivre en Ville) + Portrait en sécurité alimentaire (CDSV, 2017).',
+    'Données DRSP : 14,8 % des ménages montréalais en insécurité alimentaire (2020), presque doublé 2018-2022.'],
+    src: [['Portrait diagnostic','https://portail-m4s.s3.montreal.ca/pdf/ver_pdcn_portraitdiagnostic_15_nov_2021_final.pdf']] },
+  capital: { how: 'L’alimentation crée du lien.', items: [
+    'Marchés fermiers et Jardin Éthel = lieux de rencontre; jardins collectifs et éducatifs (BGC Dawson, écoles) = liens intergénérationnels.',
+    'Réseaux du SAV actifs depuis 2017; livraison aux personnes à mobilité réduite (~222 ménages/mois au dépannage Dawson).'],
+    src: [] },
+  financement: { how: 'Petits montants dédiés + gros socles récurrents.', items: [
+    'Élaboration : <strong>MAPAQ 40 000 $</strong>; projets : budget participatif (Jardin Éthel <strong>755 000 $</strong>), SISA ~75 000 $/an/projet.',
+    'Socles : PSOC 252,2 M$/an en mission globale (Montréal); IMSDSL finance la CDSV (Ville + Centraide + DRSP).'],
+    src: [['Jardin Éthel','https://montreal.ca/articles/le-jardin-ethel-30140']] },
+  gouvernance: { how: 'Pilotage partagé arrondissement-communauté.', items: [
+    'Comité de pilotage multi-acteurs + comité interdirection municipal; reconduits pour la mise en œuvre.',
+    'CDSV : CA représentatif de 5 collèges (communautaire, économique, scolaire, institutionnel, citoyen).'],
+    src: [['PDCN, annexe 4','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
+  evaluation: { how: 'Le maillon faible — assumé.', items: [
+    'Pas d’indicateurs publics de suivi du PDCN à ce jour.',
+    'Suivi indirect : mise à jour du SAV (10 défis), Bilan-Faim annuel, portraits DRSP.'],
+    src: [] },
+  impact: { how: 'Priorité locale : la sécurité alimentaire. Des livrables concrets depuis 2022.', items: [
+    'Pourquoi cette priorité : <strong>14,8 %</strong> des ménages montréalais en insécurité alimentaire (2020) vs 11,4 % ailleurs au Québec; Moisson Montréal : <strong>1,1 M demandes/mois</strong> (2025), +54 % vs 2021.',
+    'Verdun documente l’enjeu depuis 2017 — la priorité vient du terrain.',
+    'Livrables : plan d’action 2023-2026 (<strong>58 actions</strong>); Jardin Éthel livré; marchés fermiers (11e saison, 2025); serres en production (~20 000 pi²).'],
     src: [['Bilan-Faim 2025','https://www.moissonmontreal.org/wp-content/uploads/2025/10/MMTL_85x11_bilanfaim2025-20-10-25-FR-WEB-1.pdf']] },
+  determinants: { how: 'Ce que le projet touche — et ne touche pas — dans les règles du jeu.', items: [
+    'Touché : pratiques municipales (budget participatif, plan décennal 2022-2030 adopté par l’arrondissement).',
+    'Cadre : Politique bioalimentaire Qc 2018-2025 (5 G$) puis 2025-2035.',
+    '<strong>Vide structurel</strong> : aucune loi québécoise anti-gaspillage (PL 697 non adopté) — la récupération reste volontaire.'],
+    src: [['Politique bioalimentaire','https://www.quebec.ca/gouvernement/politiques-orientations/politique-bioalimentaire']] },
   equite: { how: 'Universalisme proportionné appliqué à l’alimentation.', items: [
-    'Offre universelle (marchés, jardins, serres ouvertes à tous) + intensité accrue pour les plus vulnérables (dépannage, livraison, repas à ~3 $).',
-    'Le PDCN vise l’accès physique ET économique — agir sur le système, pas seulement sur l’urgence.'],
+    'Offre universelle (marchés, jardins, serres) + intensité accrue pour les plus vulnérables (dépannage ~222 ménages/mois, repas ~3 $, livraison).',
+    'Viser l’accès physique ET économique — le système, pas seulement l’urgence.'],
     src: [] }
 }},
 cdn: {
@@ -385,68 +397,90 @@ cdn: {
     ['2026','PL22 : les terrains passent à l’OBNL GALOPH; première phase enclenchée']],
   srcs: [['Les propositions (nh.conseilcdn.qc.ca)','https://nh.conseilcdn.qc.ca/les-propositions/'],['Rapport OCPM 2020','https://ocpm.qc.ca/sites/default/files/pdf/rapports/rapport-namur-hippodrome.pdf']],
   nodes: {
-  determinants: { how: 'Une cascade de lois et de budgets détermine ce qui peut se construire.', items: [
-    '<strong>LAU</strong> (RLRQ c. A-19.1) : hiérarchie OGAT (Québec) → PMAD (CMM, 2012) → schéma d’agglomération (2015) → PUM 2050 (juin 2025) → PDAD Namur-Hippodrome (déc. 2024).',
-    '<strong>RMM « 20-20-20 »</strong> (2021) : 20 % social + 20 % abordable + 20 % familial — abrogation annoncée en nov. 2025, remplacement par 20 % « hors marché ».',
-    '<strong>Budgets</strong> : entente 320,8 M$ (Ottawa 128,3 M$ + Ville 192,5 M$) pour les infrastructures; Québec 6 M$ au démarrage (2023); PHAQ 300 M$ + 650 M$; SCHL (FLA ~14,6 G$, ICRL ~4 G$).',
-    '<strong>PSL</strong> : le ménage paie 25 % de son revenu, l’État couvre l’écart — l’outil qui rend le « social » réellement abordable.',
-    '<strong>PL22</strong> (2026) : permet la cession des terrains à l’OBNL GALOPH, exempté de taxes foncières; <strong>Loi 31</strong> (2024) encadre cessions de bail et évictions dans le parc existant.'],
-    src: [['Entente 320 M$','https://ici.radio-canada.ca/nouvelle/2192495/quebec-ottawa-320-millions-quartier-namur-hippodrome'],['PHAQ','https://www.quebec.ca/habitation-territoire/construction-renovation/construction-logements-abordables/programme-habitation-abordable-quebec']] },
-  rolesp: { how: 'La santé publique fournit la preuve que le logement est un enjeu de santé.', items: [
-    '<strong>DRSP</strong> : les moisissures/humidité expliquent ~26 % des infections respiratoires et 13-17 % de l’asthme chez les enfants montréalais; ~9 100 ménages de CDN vivent avec des moisissures.',
-    'Mémoires de la DRSP : à la SHQ (logement sain et abordable) et sur le PUM devant l’OCPM.',
-    'Le <strong>CIUSSS du Centre-Ouest</strong> prête une organisatrice communautaire au comité communautaire N-H — un investissement institutionnel dans le pouvoir d’agir.',
-    'La proposition 5 du comité demande que la DRSP soit consultée sur le bruit, les vibrations et la pollution (corridor ferroviaire, autoroute).'],
-    src: [['DRSP – logement','https://santepubliquemontreal.ca/professionnels-et-partenaires/thematiques-de-sante-publique/logement']] },
-  conditions: { how: 'Ce que la communauté exige comme conditions de vie.', items: [
-    '≥ <strong>4 800 logements sociaux et communautaires</strong>, livrés en 8 ans ou moins.',
-    'PSL pour ≥ 60 % des logements sociaux; 60 % de grands logements familiaux (3 chambres+).',
-    'Dans le parc existant : 25 % des ménages de CDN rapportent des traces de moisissures; 10,8 % des logements locatifs exigent des réparations majeures.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  pouvoir: { how: '30 ans de mobilisation ont transformé la revendication en projet.', items: [
-    'FRAPRU, Projet Genèse et l’ŒIL militent depuis les années 1990 sur l’avenir du site.',
+  rapports: { how: 'Spéculation foncière vs communauté : un rapport de force construit sur 30 ans.', items: [
     'La revendication a grandi avec le rapport de force : 2 500 logements sociaux → 4 800 → « 100 % hors marché ».',
-    'Oct. 2025 : la communauté produit son propre <strong>plan de fiducie d’utilité sociale</strong> — elle ne réagit plus, elle propose.',
-    'La coalition action-salubrité (Projet Genèse, ŒIL, LogisAction NDG, CDC) vise des changements réglementaires systémiques.'],
-    src: [['Plan FUS','https://nh.conseilcdn.qc.ca/wp-content/uploads/2026/01/Plan-FUS-longue-MaJ-01-2026.pdf']] },
-  gouvcollab: { how: 'Des instances hybrides public-communautaire-privé.', items: [
-    '<strong>GALOPH</strong> : ~15 membres, coprésidé par Pierre Boivin (Claridge) et Janie Béïque (Fonds FTQ); devient l’OBNL propriétaire et maître d’œuvre du site (PL22, 2026).',
-    '<strong>Comité communautaire N-H</strong> (CDC CDN, 2023) : ROMEL, ŒIL, Groupe CDH, Ex Aequo, Femmes du Monde, Projet Genèse + soutien CIUSSS — l’interface communautaire du GALOPH.',
-    'Proposition 8 : gouvernance partagée chapeautée par la FUS, conformité de tout projet au PDAD, mise en réserve des terrains sociaux dès l’adoption.'],
-    src: [['Le développement','https://nh.conseilcdn.qc.ca/le-developpement/']] },
-  mobilisation: { how: 'L’actif décisif est foncier : un terrain public de 95 ha.', items: [
-    'La <strong>FUS</strong> garde le sol hors marché à perpétuité; les bâtiments versent des redevances — précédent montréalais : l’écoquartier Louvain.',
-    'Expertise communautaire mobilisée : Groupe CDH et ROMEL (développement immobilier communautaire), Ex Aequo et Société Logique (accessibilité universelle).',
-    'Le Portrait de quartier 2025 (CDC) documente les actifs et besoins : 47 % de population immigrante, 13 510 ménages à faible revenu.'],
-    src: [['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
-  vision: { how: 'Une vision écrite AVANT le plan officiel de la Ville.', items: [
-    '« La vision de la communauté » : 9 orientations publiées par le comité communautaire — stratégie résidentielle, FUS, inclusion, milieu de vie complet, écologie, gouvernance.',
-    'Mémoire déposé aux consultations sur le PDAD (2024); l’OCPM avait déjà recommandé 35-40 % de social (2020).'],
+    'Proposition 7 : prévenir l’éco-embourgeoisement; les villes liées contestent un emprunt de 20 M$ de l’agglomération.'],
     src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  concertation: { how: 'Une architecture de concertation en couches.', items: [
-    '<strong>Table habitation sociale</strong> (THS) : instance multiréseau logement du quartier (Projet Genèse, ROMEL, CIUSSS, OMHM, ŒIL, Hapopex...).',
-    '<strong>Chantier salubrité</strong> : CIUSSS, arrondissement (permis et inspections), OMHM, SPVM (PDQ 26), DRSP, Fondation Dr Julien...',
-    'Le tout coordonné par la <strong>CDC de CDN</strong>, table de quartier membre de la CMTQ, financée par l’IMSDSL.'],
+  numerique: { how: 'Le numérique amplifie la mobilisation.', items: [
+    'OCPM 2019-2020 : 788 répondants au sondage en ligne; consultation PDAD 2024 sur Réalisons Montréal.',
+    'nh.conseilcdn.qc.ca : vitrine permanente des propositions et appels à mobilisation.'],
+    src: [['nh.conseilcdn.qc.ca','https://nh.conseilcdn.qc.ca/']] },
+  climat: { how: 'Un écoquartier — à condition qu’il ne chasse personne.', items: [
+    'Milieu de vie complet et résilient (PNSP, activité 38); gestion des eaux pluviales incluse dans les 320,8 M$ d’infrastructures.',
+    'Proposition 7 : écologie avec et pour la population, biologiste à chaque étape.'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
+  institutions: { how: 'Trois gouvernements + leurs bras immobiliers et consultatifs.', items: [
+    '<strong>Ville</strong> : PDAD (déc. 2024) + 192,5 M$; <strong>Québec</strong> : terrain (2017), 6 M$, SHQ/PHAQ, PL22; <strong>Ottawa</strong> : 128,3 M$, SCHL.',
+    'OCPM (consultation), arrondissement CDN-NDG (permis, 500 000 $ volet logement 2025-2026), OMHM/Communia.',
+    '<strong>DRSP</strong> : preuve santé-logement (moisissures = ~26 % des infections respiratoires, 13-17 % de l’asthme des enfants); <strong>CIUSSS Centre-Ouest</strong> : organisatrice communautaire prêtée au comité.'],
+    src: [['Entente 320 M$','https://ici.radio-canada.ca/nouvelle/2192495/quebec-ottawa-320-millions-quartier-namur-hippodrome']] },
+  philanthropie: { how: 'Présente en appui, pas au centre.', items: [
+    'Centraide : PIC en planification à CDN; finance la CDC via l’IMSDSL.',
+    'Finance solidaire au GALOPH : Fonds de solidarité FTQ (coprésidence).'],
+    src: [] },
+  prive: { how: 'Le privé est dans la gouvernance ET dans le chantier.', items: [
+    '<strong>GALOPH</strong> coprésidé par Pierre Boivin (Claridge) et Janie Béïque (Fonds FTQ).',
+    'Coût total 8-10 G$ sur ~10 ans — majoritairement porté par des promoteurs; premier promoteur en lice (2026).'],
+    src: [['La Presse, mai 2026','https://www.lapresse.ca/affaires/marche-immobilier/2026-05-04/quartier-namur-hippodrome/le-signal-de-la-premiere-phase-enfin-donne.php']] },
+  communautaire: { how: 'Une coalition dense, coordonnée par la table de quartier.', items: [
+    '<strong>CDC de CDN</strong> + comité communautaire N-H (2023) : ROMEL, ŒIL, Groupe CDH, Ex Aequo, Femmes du Monde, Projet Genèse.',
+    'Expertise immobilière communautaire (Groupe CDH, ROMEL) et accessibilité (Ex Aequo, Société Logique); FRAPRU en appui provincial.'],
+    src: [['Le projet','https://nh.conseilcdn.qc.ca/le-projet/']] },
+  citoyens: { how: 'Les résidents pèsent dans les instances et les consultations.', items: [
+    '<strong>2 800+ participations</strong> à l’OCPM (2019-2020); 135 opinions et mémoires.',
+    'Comité N-H renouvelé (2026) : un résident architecte y siège; locataires mobilisés via Projet Genèse et l’ŒIL (salubrité).'],
+    src: [['Documentation OCPM','https://ocpm.qc.ca/fr/hippodrome/documentation']] },
+  plaidoyer: { how: 'Du mémoire à la contre-proposition.', items: [
+    'Mémoires : Projet Genèse à l’OCPM (2020), comité N-H au PDAD (2024); l’OCPM reprend 35-40 % de social.',
+    'Oct. 2025 : la communauté publie son propre <strong>plan de FUS</strong> — elle ne réagit plus, elle propose.',
+    'La coalition action-salubrité vise des changements réglementaires systémiques.'],
+    src: [['Plan FUS','https://nh.conseilcdn.qc.ca/wp-content/uploads/2026/01/Plan-FUS-longue-MaJ-01-2026.pdf']] },
+  concertation: { how: 'Une architecture en couches.', items: [
+    '<strong>Table habitation sociale</strong> (multiréseau); <strong>chantier salubrité</strong> (CIUSSS, arrondissement, OMHM, SPVM PDQ 26, DRSP, Fondation Dr Julien); coalition action-salubrité.',
+    'Le comité N-H fait l’interface avec le GALOPH; la CDC (CMTQ, financée par l’IMSDSL) coordonne le tout.'],
     src: [['La concertation (CDC)','https://conseilcdn.qc.ca/la-concertation/']] },
   participation: { how: 'La consultation publique a pesé sur le cadre officiel.', items: [
-    'OCPM 2019-2020 : <strong>2 800+ participations</strong>, 135 opinions et mémoires, 788 répondants au sondage en ligne.',
-    'Le rapport OCPM (2020) reprend la demande communautaire : 35-40 % de logement social.',
-    'Consultation PDAD 2024 (Réalisons Montréal) : mémoires et bonifications; mobilisation permanente via nh.conseilcdn.qc.ca.'],
-    src: [['Documentation OCPM','https://ocpm.qc.ca/fr/hippodrome/documentation']] },
-  tissu: { how: 'Le quartier projeté doit produire du lien, pas seulement des unités.', items: [
-    'Proposition 6 : filet social — cuisines collectives, lieux culturels et communautaires en rez-de-chaussée, fonds dédié.',
-    'Proposition 4 : accessibilité universelle partout, ADS+, « réflexe aîné », co-conception avec des personnes en situation d’itinérance.',
-    'Proposition 7 : prévenir l’éco-embourgeoisement — que le verdissement ne chasse pas ceux qu’il devait servir.'],
+    'OCPM 2019-2020 : 2 800+ participations, 135 mémoires, 788 répondants — rapport recommandant 35-40 % de social.',
+    'Proposition 4 : co-conception avec des personnes en situation d’itinérance; consultation PDAD 2024.'],
+    src: [['Rapport OCPM','https://ocpm.qc.ca/sites/default/files/pdf/rapports/rapport-namur-hippodrome.pdf']] },
+  vision: { how: 'Une vision écrite AVANT le plan officiel de la Ville.', items: [
+    '« La vision de la communauté » : 9 orientations — ≥4 800 logements sociaux, FUS, inclusion, milieu complet, écologie, gouvernance partagée.',
+    'Le PDAD (déc. 2024) en reprend une partie : 18 500-20 000 logements, dont ~10 000 « hors spéculation » sur l’hippodrome.'],
     src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  priorite: { how: 'Pourquoi le logement est LA priorité locale à CDN.', items: [
-    '<strong>13 510 ménages à faible revenu</strong>; 47 % de la population issue de l’immigration (23 % arrivée depuis moins de 5 ans).',
-    '10,8 % des logements locatifs nécessitent des réparations majeures; ~9 100 ménages exposés aux moisissures.',
-    'Namur-Hippodrome est le plus grand chantier d’habitation au pays — et la dernière chance foncière publique du quartier.'],
+  savoir: { how: 'Des données de quartier qui fondent chaque demande.', items: [
+    '<strong>Portrait de quartier 2025</strong> (CDC) : 47 % de pop. immigrante, 13 510 ménages à faible revenu, 10,8 % de logements à réparer.',
+    'DRSP : ~9 100 ménages de CDN exposés aux moisissures; précédent documenté : FUS de l’écoquartier Louvain.'],
     src: [['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
+  capital: { how: '30 ans de liens militants = le vrai capital du projet.', items: [
+    'Réseaux d’entraide locataires (Projet Genèse, ŒIL) bâtis depuis les années 1990.',
+    'Proposition 6 : filet social — cuisines collectives, lieux culturels et communautaires en rez-de-chaussée.'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
+  financement: { how: 'Un empilement à trois paliers, encore incomplet.', items: [
+    'Infrastructures phase 1 : <strong>320,8 M$</strong> (Ottawa 128,3 + Ville 192,5); Québec : terrain (2017, 50 % des profits) + 6 M$ (2023).',
+    'Programmes à mobiliser : PHAQ (300 + 650 M$), SCHL (FLA ~14,6 G$, ICRL ~4 G$), <strong>PSL</strong> (loyer = 25 % du revenu) exigé pour ≥60 % des logements sociaux.',
+    'Aucune ventilation publique du financement des 2 250 logements de la phase 1 à ce jour.'],
+    src: [['Entente 320 M$','https://ici.radio-canada.ca/nouvelle/2192495/quebec-ottawa-320-millions-quartier-namur-hippodrome']] },
+  gouvernance: { how: 'Hybride public-communautaire-privé, chapeautée à terme par la FUS.', items: [
+    '<strong>GALOPH</strong> : ~15 membres → OBNL propriétaire et maître d’œuvre du site (PL22, 2026), exempt de taxes.',
+    'Proposition 8 : gouvernance partagée sous la FUS; terrains sociaux mis en réserve dès l’adoption.'],
+    src: [['Le développement','https://nh.conseilcdn.qc.ca/le-developpement/']] },
+  evaluation: { how: 'Promise, pas encore construite.', items: [
+    'Proposition 5 : définir des <strong>indicateurs de qualité des milieux de vie</strong> avec des urbanistes — à faire.',
+    'Angle mort assumé : pas de cadre d’évaluation public du projet à ce jour.'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
+  impact: { how: 'Priorité locale : le logement. La mobilisation a déjà changé le cadre officiel.', items: [
+    'Pourquoi cette priorité : <strong>13 510 ménages à faible revenu</strong>; 10,8 % des logements locatifs à réparer; ~9 100 ménages exposés aux moisissures; 47 % de pop. immigrante.',
+    'PDAD adopté (déc. 2024) avec cibles sociales; <strong>320,8 M$</strong> débloqués; phase 1 (~2 250 logements) enclenchée en 2026.',
+    'La FUS communautaire est au cœur du montage retenu (PL22) — plus grand chantier d’habitation au pays, dernière réserve foncière publique du quartier.'],
+    src: [['Le Devoir','https://www.ledevoir.com/politique/montreal/966756/futur-quartier-namur-hippodrome-sera-entre-mains-obnl'],['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
+  determinants: { how: 'Ici, le projet change les règles elles-mêmes.', items: [
+    'Cascade LAU : OGAT → PMAD (2012) → schéma d’agglomération (2015) → PUM 2050 (2025) → <strong>PDAD N-H</strong> (2024) = nouveau cadre légal du secteur.',
+    '<strong>RMM 20-20-20</strong> (2021) : abrogation annoncée nov. 2025, remplacé par 20 % « hors marché »; <strong>PL22</strong> (2026) crée le véhicule OBNL; Loi 31 (2024) encadre le parc existant.',
+    'La <strong>FUS</strong> = nouveau modèle foncier : sol hors marché à perpétuité.'],
+    src: [['PL22 / OBNL','https://www.ledevoir.com/politique/montreal/966756/futur-quartier-namur-hippodrome-sera-entre-mains-obnl']] },
   equite: { how: 'Sortir le sol du marché pour pérenniser l’abordabilité.', items: [
-    'La FUS garantit que l’abordabilité ne s’érode pas à la revente — l’équité inscrite dans la structure foncière.',
-    'Abordabilité définie par le <strong>revenu des ménages</strong>, pas par le marché.',
-    'ADS+ et accessibilité universelle pour que le nouveau quartier n’exclue personne.'],
+    'FUS : l’abordabilité ne s’érode pas à la revente — l’équité inscrite dans la structure foncière.',
+    'Abordabilité définie par le <strong>revenu</strong> (PSL = 25 % du revenu), pas par le marché; ADS+ et accessibilité universelle partout.'],
     src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] }
 }}};
 
@@ -474,9 +508,9 @@ function renderExNode(tab, node) {
   lv.querySelectorAll('.snode').forEach(g => g.classList.toggle('active', g.dataset.node === node));
   const items = d.items.map(i => `<div class="ex-item">${i}</div>`).join('');
   const src = (d.src && d.src.length) ? `<div class="source">Sources. ${d.src.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ')}</div>` : '';
-  const zone = node === 'priorite' ? (tab === 'verdun' ? 'sécurité' : 'logement') : NODE_TO_ZONE[node];
+  const zone = NODE_TO_ZONE[node];
   const theory = zone && ZONEMAP[zone] ? `<div class="theory-link"><button onclick="openTheory('${zone}')">Voir la fiche théorique : ${esc(DATA[ZONEMAP[zone].slug].title)}</button></div>` : '';
-  const title = node === 'priorite' ? 'Priorité locale : ' + (tab === 'verdun' ? 'sécurité alimentaire' : 'logement') : NODE_TITLES[node];
+  const title = NODE_TITLES[node];
   contentEl.innerHTML = `<div class="section-banner"><div class="kicker">${esc(ex.kicker)}</div><h1>${esc(title)}</h1></div>
     <div class="concept-card"><div class="definition">${esc(d.how)}</div>${items}${theory}${src}</div>`;
   document.querySelector('.right').scrollTop = 0;
@@ -511,7 +545,7 @@ homeBtn.addEventListener('click', () => {
 /* Recherche : depuis un onglet exemple, ramène vers le concept (dans l'exemple si possible, sinon dans le cadre complet) */
 const ZONE_TO_NODE = {};
 Object.entries(NODE_TO_ZONE).forEach(([n, z]) => { ZONE_TO_NODE[z] = n; });
-ZONE_TO_NODE['sécurité'] = 'priorite'; ZONE_TO_NODE['logement'] = 'priorite';
+ZONE_TO_NODE['sécurité'] = 'impact'; ZONE_TO_NODE['logement'] = 'impact';
 searchResults.addEventListener('click', e => {
   const item = e.target.closest('.item');
   if (!item || !item.dataset.zone) return;
