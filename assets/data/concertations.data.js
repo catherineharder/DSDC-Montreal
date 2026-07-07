@@ -97,7 +97,7 @@ window.CONC = {
             "trsp",
             "car",
             "alliance",
-            "ccsp",
+            "conjoint-sp-mc",
             "instance-strat",
             "imsdsl-pilotage",
             "imsdsl-coord",
@@ -110,13 +110,15 @@ window.CONC = {
             "cop-eusp",
             "cop-langage",
             "cop-part",
-            "aspic"
+            "aspic",
+            "groupe-coeur",
+            "epup"
           ]
         },
         {
-          "id": "dlsp",
-          "ac": "DLSP",
-          "full": "Direction locale de santé publique",
+          "id": "dspu",
+          "ac": "DSPu",
+          "full": "Directions locales de santé publique",
           "coms": []
         },
         {
@@ -130,7 +132,7 @@ window.CONC = {
           "ac": "CCPSC",
           "full": "Clinique communautaire de Pointe-Saint-Charles",
           "coms": [
-            "ccsp",
+            "conjoint-sp-mc",
             "cop-eusp"
           ]
         }
@@ -151,7 +153,9 @@ window.CONC = {
           "id": "vdm",
           "ac": "VdM",
           "full": "Ville de Montréal (municipalité centrale)",
-          "coms": []
+          "coms": [
+            "citoyen-msam"
+          ]
         },
         {
           "id": "omhm",
@@ -402,7 +406,7 @@ window.CONC = {
           "ac": "CMTQ",
           "full": "Coalition montréalaise des tables de quartier",
           "coms": [
-            "ccsp",
+            "conjoint-sp-mc",
             "imsdsl-coord",
             "pic",
             "gt-insec-csam",
@@ -421,7 +425,7 @@ window.CONC = {
           "ac": "RIOCM",
           "full": "Regroupement intersectoriel des organismes communautaires de Montréal",
           "coms": [
-            "ccsp",
+            "conjoint-sp-mc",
             "instance-strat"
           ]
         },
@@ -475,6 +479,11 @@ window.CONC = {
           "coms": []
         },
         {
+          "id": "milieux-de-garde",
+          "ac": "Milieux de garde",
+          "coms": []
+        },
+        {
           "id": "lieux-de-culte",
           "ac": "Lieux de culte",
           "coms": []
@@ -490,11 +499,11 @@ window.CONC = {
   "famsC": [
     {
       "key": "g1",
-      "label": "Concertations nationales (TCNSP)"
+      "label": "Concertations nationales"
     },
     {
       "key": "g2",
-      "label": "Gouvernance régionale"
+      "label": "Concertations régionales"
     },
     {
       "key": "g3",
@@ -502,19 +511,19 @@ window.CONC = {
     },
     {
       "key": "g4",
-      "label": "Milieux de vie et cohabitation"
+      "label": "Comités citoyens"
     },
     {
       "key": "g5",
-      "label": "Sécurité alimentaire"
+      "label": "Comités internes"
     },
     {
       "key": "g6",
-      "label": "Équité, migration et communautés"
+      "label": "Autres comités intersectoriels ou inter-établissements"
     },
     {
       "key": "g7",
-      "label": "Communautés de pratique et comités internes"
+      "label": "VRAC-PARC (Plan régional d'adaptation aux changements climatiques)"
     }
   ],
   "committees": [
@@ -610,6 +619,49 @@ window.CONC = {
       ]
     },
     {
+      "id": "car",
+      "fam": "g2",
+      "name": "CAR",
+      "full": "Conférence administrative régionale",
+      "niv": "strat",
+      "drsp": "lead",
+      "man": "Coordination des ministères et organismes du gouvernement du Québec à l'échelle de la région de Montréal.",
+      "comp": [
+        {
+          "m": "Gouvernement du Québec (MAMH)",
+          "cat": "porteur"
+        },
+        {
+          "m": "Direction",
+          "cat": "DRSP"
+        },
+        {
+          "m": "DRSP (participante)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Dirigeantes et dirigeants régionaux des ministères et organismes du gouvernement du Québec",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "sous-car-ds",
+      "fam": "g2",
+      "name": "Sous-CAR DS",
+      "full": "Sous-comité développement social de la Conférence administrative régionale (CAR)",
+      "niv": "tact",
+      "drsp": "",
+      "man": "Sous-comité de la CAR consacré au développement social. Inactif.",
+      "under": "CAR",
+      "comp": [
+        {
+          "m": "Conférence administrative régionale (CAR)",
+          "cat": "porteur"
+        }
+      ]
+    },
+    {
       "id": "trsp",
       "fam": "g2",
       "name": "TRSP",
@@ -645,123 +697,14 @@ window.CONC = {
       ]
     },
     {
-      "id": "car",
+      "id": "conjoint-sp-mc",
       "fam": "g2",
-      "name": "CAR",
-      "full": "Conférence administrative régionale",
-      "niv": "strat",
-      "drsp": "lead",
-      "man": "Coordination des ministères et organismes du gouvernement du Québec à l'échelle de la région de Montréal.",
-      "comp": [
-        {
-          "m": "Gouvernement du Québec (MAMH)",
-          "cat": "porteur"
-        },
-        {
-          "m": "Direction",
-          "cat": "DRSP"
-        },
-        {
-          "m": "DRSP (participante)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Dirigeantes et dirigeants régionaux des ministères et organismes du gouvernement du Québec",
-          "cat": ""
-        }
-      ]
-    },
-    {
-      "id": "sous-car-ds",
-      "fam": "g2",
-      "name": "Sous-CAR DS",
-      "full": "Sous-comité développement social de la Conférence administrative régionale (CAR)",
-      "niv": "tact",
-      "drsp": "",
-      "man": "Sous-comité de la CAR consacré au développement social.",
-      "under": "CAR",
-      "comp": [
-        {
-          "m": "Conférence administrative régionale (CAR)",
-          "cat": "porteur"
-        }
-      ]
-    },
-    {
-      "id": "alliance",
-      "fam": "g2",
-      "name": "Alliance pour la solidarité",
-      "full": "Alliance pour la solidarité",
-      "niv": "tact",
-      "drsp": "lead",
-      "man": "Mécanisme régional de concertation et de financement de projets de lutte contre la pauvreté et l'exclusion sociale.",
-      "comp": [
-        {
-          "m": "Gouvernement du Québec, Plan d'action gouvernemental pour l'inclusion économique et la participation sociale (PAGIEPS); mandataire régional : Ville de Montréal (SDIS)",
-          "cat": "porteur"
-        },
-        {
-          "m": "EUSP",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Coordination secteur EUSP (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "MTESS, financement",
-          "cat": ""
-        },
-        {
-          "m": "Ville de Montréal, SDIS (mandataire régional)",
-          "cat": ""
-        },
-        {
-          "m": "Partenaires régionaux et communautaires (à préciser)",
-          "cat": ""
-        }
-      ]
-    },
-    {
-      "id": "alliance-sous",
-      "fam": "g2",
-      "name": "Alliance, sous-comités",
-      "full": "Alliance pour la solidarité, sous-comités",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Sous-comités de mise en œuvre de l'Alliance pour la solidarité.",
-      "under": "Alliance pour la solidarité",
-      "comp": [
-        {
-          "m": "Alliance pour la solidarité",
-          "cat": "porteur"
-        },
-        {
-          "m": "ÉCoS",
-          "cat": "DRSP"
-        }
-      ]
-    },
-    {
-      "id": "av-alliance",
-      "fam": "g2",
-      "name": "Comité aviseur des Alliances",
-      "full": "Comité aviseur des Alliances pour la solidarité",
-      "niv": "tact",
-      "drsp": "",
-      "man": "Comité aviseur des Alliances pour la solidarité.",
-      "neu": true,
-      "under": "Alliance pour la solidarité",
-      "comp": []
-    },
-    {
-      "id": "ccsp",
-      "fam": "g2",
-      "name": "CCSP",
-      "full": "Comité conjoint de santé publique",
+      "name": "Comité conjoint SP-communautaire",
+      "full": "Comité conjoint santé publique et milieu communautaire",
       "niv": "tact",
       "drsp": "lead",
       "man": "Plateforme de transmission d’information sur la santé publique régionale (enjeux, bons coups, besoins) de la part de tous les membres, à relayer dans les réseaux. Porte d’entrée pour amener des enjeux de santé publique régionaux, à travailler en sous-comité.",
+      "under": "TRSP",
       "comp": [
         {
           "m": "DRSP, secteur EUSP",
@@ -844,6 +787,204 @@ window.CONC = {
           "cat": ""
         }
       ]
+    },
+    {
+      "id": "ccsp",
+      "fam": "g2",
+      "name": "CCSP",
+      "full": "Comité de coordination de santé publique",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "Comité de coordination de santé publique, sous la TRSP. Regroupe notamment la CoP EUSP. <span class='tbc'>Structure tirée de l'organigramme 2024, à confirmer.</span>",
+      "under": "TRSP",
+      "comp": [
+        {
+          "m": "Coordonnatrices locales de santé publique",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "cop-eusp",
+      "fam": "g2",
+      "name": "CoP EUSP",
+      "full": "Communauté de pratique, EUSP",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Favoriser le développement professionnel des équipes de santé publique œuvrant au niveau local et travaillant à la réduction des inégalités sociales de santé et au développement des communautés.",
+      "under": "CCSP",
+      "comp": [
+        {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Professionnelles ÉCoS (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Équipes de santé publique locale des 5 CIUSSS de Montréal",
+          "cat": ""
+        },
+        {
+          "m": "CCPSC",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "cop-part",
+      "fam": "g2",
+      "name": "CoP Participation citoyenne",
+      "full": "Communauté de pratique, Participation citoyenne",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Communauté de pratique sur la participation citoyenne.",
+      "under": "CCSP",
+      "comp": [
+        {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Professionnel·les ÉCoS (DRSP)",
+          "cat": "DRSP"
+        }
+      ]
+    },
+    {
+      "id": "cop-langage",
+      "fam": "g2",
+      "name": "CoP Langage clair",
+      "full": "Communauté de pratique, Langage clair",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Communauté de pratique sur la communication en langage clair.",
+      "under": "CCSP",
+      "comp": [
+        {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Jeunesse",
+          "cat": "DRSP"
+        },
+        {
+          "m": "PCMI",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Professionnelles ÉCoS (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "CIUSSS",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "gt-secu-alim",
+      "fam": "g2",
+      "name": "GT sécurité alimentaire",
+      "full": "Groupe de travail sécurité alimentaire",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "<span class='tbc'>À confirmer.</span>",
+      "neu": true,
+      "under": "CCSP",
+      "comp": []
+    },
+    {
+      "id": "gt-noires",
+      "fam": "g2",
+      "name": "GT communautés noires",
+      "full": "Groupe de travail intersectoriel pour le bien-être des communautés noires",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "Groupe de travail intersectoriel pour le bien-être des communautés noires. <span class='tbc'>Rattachement au CCSP à confirmer.</span>",
+      "under": "CCSP",
+      "comp": []
+    },
+    {
+      "id": "alliance",
+      "fam": "g2",
+      "name": "Alliance pour la solidarité",
+      "full": "Alliance pour la solidarité",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "Mécanisme régional de concertation et de financement de projets de lutte contre la pauvreté et l'exclusion sociale.",
+      "comp": [
+        {
+          "m": "Gouvernement du Québec, Plan d'action gouvernemental pour l'inclusion économique et la participation sociale (PAGIEPS); mandataire régional : Ville de Montréal (SDIS)",
+          "cat": "porteur"
+        },
+        {
+          "m": "EUSP",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Coordination secteur EUSP (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "MTESS, financement",
+          "cat": ""
+        },
+        {
+          "m": "Ville de Montréal, SDIS (mandataire régional)",
+          "cat": ""
+        },
+        {
+          "m": "Partenaires régionaux et communautaires (à préciser)",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "alliance-sous",
+      "fam": "g2",
+      "name": "Alliance, sous-comités",
+      "full": "Alliance pour la solidarité, sous-comités",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Sous-comités de mise en œuvre de l'Alliance pour la solidarité.",
+      "under": "Alliance pour la solidarité",
+      "comp": [
+        {
+          "m": "Alliance pour la solidarité",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        }
+      ]
+    },
+    {
+      "id": "av-alliance",
+      "fam": "g2",
+      "name": "Comité aviseur des Alliances",
+      "full": "Comité aviseur des Alliances pour la solidarité",
+      "niv": "tact",
+      "drsp": "",
+      "man": "Comité aviseur des Alliances pour la solidarité.",
+      "neu": true,
+      "under": "Alliance pour la solidarité",
+      "comp": []
     },
     {
       "id": "instance-strat",
@@ -1041,6 +1182,7 @@ window.CONC = {
       "niv": "strat",
       "drsp": "",
       "man": "Gestion du Projet d'impact collectif. La DRSP y est participante.",
+      "under": "PIC",
       "comp": [
         {
           "m": "Centraide du Grand Montréal",
@@ -1071,18 +1213,258 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "groupe-coeur",
+      "id": "tec",
       "fam": "g3",
+      "name": "TEC",
+      "full": "Transition en commun (concertation)",
+      "niv": "strat",
+      "drsp": "lead",
+      "man": "Concertation sur la transition en commun, au niveau de l'équipe de direction. Voir aussi les GT logement, démotorisation et alimentation de TEC.",
+      "comp": [
+        {
+          "m": "Direction",
+          "cat": "DRSP"
+        }
+      ]
+    },
+    {
+      "id": "gt-log-tec",
+      "fam": "g3",
+      "name": "GT logement de TEC",
+      "full": "Groupe de travail sur le logement de TEC (Transition en commun)",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "",
+      "under": "TEC",
+      "comp": [
+        {
+          "m": "TEC, Transition en commun",
+          "cat": "porteur"
+        }
+      ]
+    },
+    {
+      "id": "gt-demo-tec",
+      "fam": "g3",
+      "name": "GT Démotorisation de TEC",
+      "full": "Groupe de travail sur la démotorisation de TEC (Transition en commun)",
+      "niv": "tact",
+      "drsp": "",
+      "man": "",
+      "under": "TEC",
+      "comp": [
+        {
+          "m": "TEC, Transition en commun",
+          "cat": "porteur"
+        }
+      ]
+    },
+    {
+      "id": "gt-alim-tec",
+      "fam": "g3",
+      "name": "GT alimentation de TEC",
+      "full": "Groupe de travail sur l'alimentation de TEC (Transition en commun)",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "Groupe de travail sur l'alimentation de Transition en commun (TEC).",
+      "under": "TEC",
+      "comp": [
+        {
+          "m": "TEC, Transition en commun",
+          "cat": "porteur"
+        }
+      ]
+    },
+    {
+      "id": "citoyen-msam",
+      "fam": "g4",
+      "name": "Comité citoyen MSAM",
+      "full": "Comité citoyen, personnes migrantes sans assurance médicale (MSAM)",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Comité citoyen lié aux personnes migrantes sans assurance médicale. En place depuis 2022, en collaboration avec Médecins du Monde.",
+      "comp": [
+        {
+          "m": "Coordonnatrice (DRSP de Montréal)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "4 personnes im/migrantes",
+          "cat": ""
+        },
+        {
+          "m": "Coordonnatrice (Ville de Montréal)",
+          "cat": ""
+        },
+        {
+          "m": "Médecins du Monde (collaboration)",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "conseil-equite",
+      "fam": "g4",
+      "name": "Conseil Citoyen Équité",
+      "full": "Conseil Citoyen Équité",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Conseil citoyen en équité.",
+      "neu": true,
+      "comp": [
+        {
+          "m": "DRSP",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Citoyennes et citoyens",
+          "cat": ""
+        }
+      ]
+    },
+    {
+      "id": "groupe-coeur",
+      "fam": "g5",
       "name": "Groupe cœur",
       "full": "Groupe cœur",
       "niv": "strat",
       "drsp": "lead",
+      "man": "Suivre l'avancement des activités du plan d'action et soutenir leur mise en œuvre afin de favoriser un changement de pratiques durable au sein de la DA-SP. Durée du mandat : 5 ans (2026-2031), soit la durée prévue du plan d'action.",
+      "comp": [
+        {
+          "m": "DRSP, DA-SP",
+          "cat": "porteur"
+        },
+        {
+          "m": "1 gestionnaire ou médecin gestionnaire par secteur, DA-SP et projets transversaux (base volontaire, priorité aux membres de l'ancien comité en sécurisation culturelle)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "6 à 8 personnes au total, dont 3 pour EUSP",
+          "cat": "DRSP"
+        }
+      ]
+    },
+    {
+      "id": "gt-secu-cult",
+      "fam": "g5",
+      "name": "GT sécurisation culturelle",
+      "full": "Groupe de travail sécurisation culturelle",
+      "niv": "tact",
+      "drsp": "lead",
       "man": "",
+      "neu": true,
+      "comp": []
+    },
+    {
+      "id": "pouvoir-jeun",
+      "fam": "g5",
+      "name": "Pouvoir d'agir Jeunesse",
+      "full": "Pouvoir d'agir Jeunesse",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Démarche visant à renforcer le pouvoir d'agir des jeunes.",
+      "comp": [
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Jeunesse",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Secteur Jeunesse (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Secteur EUSP (DRSP)",
+          "cat": "DRSP"
+        }
+      ]
+    },
+    {
+      "id": "aspic",
+      "fam": "g5",
+      "name": "ASPIC",
+      "full": "Action de santé publique et ISS en contexte de crise",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "Renforcer les actions de la DRSP de Montréal visant la réduction des impacts collatéraux et des inégalités sociales de santé liées aux interventions de santé publique, par la collaboration intersectorielle.",
+      "comp": [
+        {
+          "m": "DRSP, secteur EUSP",
+          "cat": "porteur"
+        },
+        {
+          "m": "ÉCoS",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Service ÉCoS (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Services SEMAU et BLICC (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Équipe Surveillance (DRSP)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Secteur Jeunesse (DRSP)",
+          "cat": "DRSP"
+        }
+      ]
+    },
+    {
+      "id": "codev",
+      "fam": "g5",
+      "name": "Groupes de CoDev",
+      "full": "Deux groupes de codéveloppement professionnel (CoDev)",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
+      "comp": []
+    },
+    {
+      "id": "arrimages-itin",
+      "fam": "g5",
+      "name": "Arrimages itinérance intra-DRSP",
+      "full": "Arrimages itinérance intra-DRSP",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
+      "comp": []
+    },
+    {
+      "id": "cellule-itin",
+      "fam": "g5",
+      "name": "Cellule rapide itinérance",
+      "full": "Cellule rapide itinérance",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
+      "comp": []
+    },
+    {
+      "id": "pouvoir-comm",
+      "fam": "g5",
+      "name": "Pouvoir d'agir des communautés locales",
+      "full": "Pouvoir d'agir des communautés locales",
+      "niv": "oper",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
       "comp": []
     },
     {
       "id": "prev-itin",
-      "fam": "g4",
+      "fam": "g6",
       "name": "Comité prévention de l'itinérance",
       "full": "Comité prévention de l'itinérance",
       "niv": "strat",
@@ -1093,7 +1475,7 @@ window.CONC = {
     },
     {
       "id": "gt-perte-log",
-      "fam": "g4",
+      "fam": "g6",
       "name": "GT prévention perte de logement",
       "full": "Groupe de travail, prévention de la perte de logement",
       "niv": "tact",
@@ -1105,7 +1487,7 @@ window.CONC = {
     },
     {
       "id": "heberg-log",
-      "fam": "g4",
+      "fam": "g6",
       "name": "Comité Hébergement-Logement",
       "full": "Comité Hébergement-Logement (itinérance)",
       "niv": "strat",
@@ -1115,7 +1497,7 @@ window.CONC = {
     },
     {
       "id": "cohab",
-      "fam": "g4",
+      "fam": "g6",
       "name": "Cohabitation sociale",
       "full": "Comité cohabitation sociale",
       "niv": "strat",
@@ -1125,8 +1507,55 @@ window.CONC = {
       "comp": []
     },
     {
+      "id": "couts-log",
+      "fam": "g6",
+      "name": "Coûts de la crise du logement",
+      "full": "Coûts sociaux et économiques de la crise du logement",
+      "niv": "tact",
+      "drsp": "",
+      "man": "",
+      "neu": true,
+      "comp": []
+    },
+    {
+      "id": "couts-log-pilotage",
+      "fam": "g6",
+      "name": "Comité de pilotage",
+      "full": "Comité de pilotage, coûts sociaux et économiques de la crise du logement",
+      "niv": "tact",
+      "drsp": "",
+      "man": "",
+      "neu": true,
+      "under": "Coûts de la crise du logement",
+      "comp": []
+    },
+    {
+      "id": "couts-log-mob",
+      "fam": "g6",
+      "name": "Comité de mobilisation",
+      "full": "Comité de mobilisation, coûts sociaux et économiques de la crise du logement",
+      "niv": "tact",
+      "drsp": "",
+      "man": "",
+      "neu": true,
+      "under": "Coûts de la crise du logement",
+      "comp": []
+    },
+    {
+      "id": "couts-log-sci",
+      "fam": "g6",
+      "name": "Comité scientifique",
+      "full": "Comité scientifique, coûts sociaux et économiques de la crise du logement",
+      "niv": "tact",
+      "drsp": "",
+      "man": "",
+      "neu": true,
+      "under": "Coûts de la crise du logement",
+      "comp": []
+    },
+    {
       "id": "tdb-itin",
-      "fam": "g4",
+      "fam": "g6",
       "name": "Tableau de bord régional itinérance",
       "full": "Comité Tableau de bord régional en itinérance",
       "niv": "tact",
@@ -1137,7 +1566,7 @@ window.CONC = {
     },
     {
       "id": "av-psi",
-      "fam": "g4",
+      "fam": "g6",
       "name": "Comité aviseur, mortalité des PSI",
       "full": "Comité aviseur du projet de recherche sur la vigie de la mortalité des personnes en situation d'itinérance (PSI)",
       "niv": "tact",
@@ -1148,7 +1577,7 @@ window.CONC = {
     },
     {
       "id": "av-oqi",
-      "fam": "g4",
+      "fam": "g6",
       "name": "Comité aviseur, OQI itinérance et climat",
       "full": "Comité aviseur du projet de recherche de l'OQI sur l'itinérance, les changements climatiques et les adaptations",
       "niv": "tact",
@@ -1171,38 +1600,39 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-log-tec",
-      "fam": "g4",
-      "name": "GT logement de TEC",
-      "full": "Groupe de travail sur le logement de TEC (Transition en commun)",
-      "niv": "tact",
-      "drsp": "lead",
-      "man": "",
-      "comp": [
-        {
-          "m": "TEC, Transition en commun",
-          "cat": "porteur"
-        }
-      ]
-    },
-    {
-      "id": "gt-demo-tec",
-      "fam": "g4",
-      "name": "GT Démotorisation de TEC",
-      "full": "Groupe de travail sur la démotorisation de TEC (Transition en commun)",
+      "id": "epup",
+      "fam": "g6",
+      "name": "Comité EPUP Tactique",
+      "full": "Comité EPUP (Engagement et partenariat avec les usagers et leurs proches), niveau tactique",
       "niv": "tact",
       "drsp": "",
-      "man": "",
+      "man": "Comité tactique lié au BEPUP, le Bureau de l'engagement et du partenariat avec les usagers et leurs proches du CIUSSS. La DRSP y compte un·e seul·e représentant·e et n'en assure pas la coordination.",
       "comp": [
         {
-          "m": "TEC, Transition en commun",
+          "m": "BEPUP, Bureau de l'engagement et du partenariat avec les usagers et leurs proches (CIUSSS)",
           "cat": "porteur"
+        },
+        {
+          "m": "DRSP (un·e seul·e représentant·e)",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Directions du CIUSSS (DEUR, DQÉPÉ)",
+          "cat": ""
+        },
+        {
+          "m": "Usagers-ressources",
+          "cat": ""
+        },
+        {
+          "m": "Présidente du CUCI, Comité des usagers du centre intégré (en transition vers le Comité des usagers d'établissement, CUE, sous Santé Québec)",
+          "cat": ""
         }
       ]
     },
     {
       "id": "secu-alim",
-      "fam": "g5",
+      "fam": "g6",
       "name": "Sécurité alimentaire et DDA",
       "full": "Concertation sécurité alimentaire et DDA (demandeurs·euses d'asile)",
       "niv": "tact",
@@ -1211,13 +1641,24 @@ window.CONC = {
       "comp": []
     },
     {
+      "id": "csam",
+      "fam": "g6",
+      "name": "CSAM",
+      "full": "Conseil du système alimentaire montréalais (CSAM)",
+      "niv": "strat",
+      "drsp": "",
+      "man": "Instance de concertation du système alimentaire montréalais.",
+      "comp": []
+    },
+    {
       "id": "gt-insec-csam",
-      "fam": "g5",
+      "fam": "g6",
       "name": "GT Insécurité alimentaire du CSAM",
       "full": "Groupe de travail sur l'insécurité alimentaire du CSAM (Conseil du système alimentaire montréalais)",
       "niv": "tact",
       "drsp": "",
       "man": "Groupe de travail du CSAM sur l'insécurité alimentaire.",
+      "under": "CSAM",
       "comp": [
         {
           "m": "CSAM (Conseil du système alimentaire montréalais)",
@@ -1295,12 +1736,13 @@ window.CONC = {
     },
     {
       "id": "gt-csam",
-      "fam": "g5",
+      "fam": "g6",
       "name": "GT Citoyenneté alimentaire du CSAM",
       "full": "Groupe de travail sur la citoyenneté alimentaire du CSAM (Conseil du système alimentaire montréalais)",
       "niv": "tact",
       "drsp": "",
       "man": "Groupe de travail du CSAM sur la citoyenneté alimentaire.",
+      "under": "CSAM",
       "comp": [
         {
           "m": "CSAM (Conseil du système alimentaire montréalais)",
@@ -1353,21 +1795,6 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-alim-tec",
-      "fam": "g5",
-      "name": "GT alimentation de TEC",
-      "full": "Groupe de travail sur l'alimentation de TEC (Transition en commun)",
-      "niv": "tact",
-      "drsp": "lead",
-      "man": "Groupe de travail sur l'alimentation de Transition en commun (TEC).",
-      "comp": [
-        {
-          "m": "TEC, Transition en commun",
-          "cat": "porteur"
-        }
-      ]
-    },
-    {
       "id": "strat-dda-msam",
       "fam": "g6",
       "name": "Comité stratégique DDA-MSAM",
@@ -1386,16 +1813,6 @@ window.CONC = {
       "drsp": "",
       "man": "Concertation pour la santé des personnes migrantes.",
       "neu": true,
-      "comp": []
-    },
-    {
-      "id": "gt-noires",
-      "fam": "g6",
-      "name": "GT communautés noires",
-      "full": "Groupe de travail intersectoriel pour le bien-être des communautés noires",
-      "niv": "tact",
-      "drsp": "lead",
-      "man": "Groupe de travail intersectoriel pour le bien-être des communautés noires.",
       "comp": []
     },
     {
@@ -1421,219 +1838,63 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "citoyen-msam",
-      "fam": "g6",
-      "name": "Comité citoyen MSAM",
-      "full": "Comité citoyen, personnes migrantes sans assurance médicale (MSAM)",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Comité citoyen lié aux personnes migrantes sans assurance médicale.",
-      "comp": [
-        {
-          "m": "DRSP",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Citoyennes et citoyens concernés",
-          "cat": ""
-        }
-      ]
-    },
-    {
-      "id": "conseil-equite",
-      "fam": "g6",
-      "name": "Conseil Citoyen Équité",
-      "full": "Conseil Citoyen Équité",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Conseil citoyen en équité.",
-      "neu": true,
-      "comp": [
-        {
-          "m": "DRSP",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Citoyennes et citoyens",
-          "cat": ""
-        }
-      ]
-    },
-    {
-      "id": "pouvoir-jeun",
-      "fam": "g6",
-      "name": "Pouvoir d'agir Jeunesse",
-      "full": "Pouvoir d'agir Jeunesse",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Démarche visant à renforcer le pouvoir d'agir des jeunes.",
-      "comp": [
-        {
-          "m": "ÉCoS",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Jeunesse",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Secteur Jeunesse (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Secteur EUSP (DRSP)",
-          "cat": "DRSP"
-        }
-      ]
-    },
-    {
-      "id": "cop-eusp",
+      "id": "vrac-parc",
       "fam": "g7",
-      "name": "CoP EUSP",
-      "full": "Communauté de pratique, EUSP",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Favoriser le développement professionnel des équipes de santé publique œuvrant au niveau local et travaillant à la réduction des inégalités sociales de santé et au développement des communautés.",
-      "comp": [
-        {
-          "m": "DRSP, secteur EUSP",
-          "cat": "porteur"
-        },
-        {
-          "m": "ÉCoS",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Professionnelles ÉCoS (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Équipes de santé publique locale des 5 CIUSSS de Montréal",
-          "cat": ""
-        },
-        {
-          "m": "CCPSC",
-          "cat": ""
-        }
-      ]
-    },
-    {
-      "id": "cop-langage",
-      "fam": "g7",
-      "name": "CoP Langage clair",
-      "full": "Communauté de pratique, Langage clair",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Communauté de pratique sur la communication en langage clair.",
-      "comp": [
-        {
-          "m": "DRSP, secteur EUSP",
-          "cat": "porteur"
-        },
-        {
-          "m": "ÉCoS",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Jeunesse",
-          "cat": "DRSP"
-        },
-        {
-          "m": "PCMI",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Professionnelles ÉCoS (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "CIUSSS",
-          "cat": ""
-        }
-      ]
-    },
-    {
-      "id": "cop-part",
-      "fam": "g7",
-      "name": "CoP Participation citoyenne",
-      "full": "Communauté de pratique, Participation citoyenne",
-      "niv": "oper",
-      "drsp": "lead",
-      "man": "Communauté de pratique sur la participation citoyenne.",
-      "comp": [
-        {
-          "m": "DRSP, secteur EUSP",
-          "cat": "porteur"
-        },
-        {
-          "m": "ÉCoS",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Professionnel·les ÉCoS (DRSP)",
-          "cat": "DRSP"
-        }
-      ]
-    },
-    {
-      "id": "tec",
-      "fam": "g7",
-      "name": "TEC",
-      "full": "Transition en commun (concertation)",
+      "name": "VRAC-PARC",
+      "full": "Démarche VRAC-PARC",
       "niv": "strat",
       "drsp": "lead",
-      "man": "Concertation sur la transition en commun, au niveau de l'équipe de direction. Voir aussi les GT logement, démotorisation et alimentation de TEC.",
-      "comp": [
-        {
-          "m": "Direction",
-          "cat": "DRSP"
-        }
-      ]
-    },
-    {
-      "id": "epup",
-      "fam": "g7",
-      "name": "Comité EPUP Tactique",
-      "full": "Comité EPUP, participation et populations (à confirmer), niveau tactique",
-      "niv": "tact",
-      "drsp": "lead",
-      "man": "<span class='tbc'>Sigle EPUP à confirmer (participation et populations).</span>",
+      "man": "Évaluation des vulnérabilités et risques régionaux liés aux changements climatiques (VRAC) et plan d'adaptation régional au climat (PARC). Démarche coordonnée par l'INSPQ (2019-2027), en partenariat avec le MELCCFP, le MSSS et Santé Québec.",
+      "neu": true,
       "comp": []
     },
     {
-      "id": "aspic",
+      "id": "ct-prime",
       "fam": "g7",
-      "name": "ASPIC",
-      "full": "Action de santé publique et ISS en contexte de crise",
-      "niv": "oper",
+      "name": "CT PRIME",
+      "full": "Comité de travail PRIME",
+      "niv": "tact",
       "drsp": "lead",
-      "man": "Renforcer les actions de la DRSP de Montréal visant la réduction des impacts collatéraux et des inégalités sociales de santé liées aux interventions de santé publique, par la collaboration intersectorielle.",
-      "comp": [
-        {
-          "m": "DRSP, secteur EUSP",
-          "cat": "porteur"
-        },
-        {
-          "m": "ÉCoS",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Service ÉCoS (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Services SEMAU et BLICC (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Équipe Surveillance (DRSP)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Secteur Jeunesse (DRSP)",
-          "cat": "DRSP"
-        }
-      ]
+      "man": "",
+      "neu": true,
+      "under": "VRAC-PARC",
+      "comp": []
+    },
+    {
+      "id": "ct-logement",
+      "fam": "g7",
+      "name": "CT Logement",
+      "full": "Comité de travail Logement",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
+      "under": "VRAC-PARC",
+      "comp": []
+    },
+    {
+      "id": "ct-itinerance",
+      "fam": "g7",
+      "name": "CT Itinérance",
+      "full": "Comité de travail Itinérance",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
+      "under": "VRAC-PARC",
+      "comp": []
+    },
+    {
+      "id": "ct-autochtone",
+      "fam": "g7",
+      "name": "CT Autochtone",
+      "full": "Comité de travail Autochtone",
+      "niv": "tact",
+      "drsp": "lead",
+      "man": "",
+      "neu": true,
+      "under": "VRAC-PARC",
+      "comp": []
     }
   ],
   "defs": [
