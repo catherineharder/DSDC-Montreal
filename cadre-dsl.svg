@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 1080">
+<text x="520.0" y="64" text-anchor="middle" font-size="29" font-weight="800" fill="#212121" font-family="Inter,Helvetica,Arial,sans-serif">CADRE CONCEPTUEL DU DÉVELOPPEMENT SOCIAL LOCAL (DSL)</text>
+<text x="520.0" y="142" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">Considérant les enjeux transversaux</text>
+<g class="snode" data-node="rapports"><rect class="box" x="70.0" y="158" width="296.0" height="46" rx="23.0" fill="#e8e5e0"/>
+<text x="218.0" y="186.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#5a5652" font-family="Inter,Helvetica,Arial,sans-serif">RAPPORTS DE POUVOIR</text></g>
+<g class="snode" data-node="numerique"><rect class="box" x="372.0" y="158" width="296.0" height="46" rx="23.0" fill="#e8e5e0"/>
+<text x="520.0" y="186.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#5a5652" font-family="Inter,Helvetica,Arial,sans-serif">TRANSFORMATION NUMÉRIQUE</text></g>
+<g class="snode" data-node="climat"><rect class="box" x="674.0" y="158" width="296.0" height="46" rx="23.0" fill="#e8e5e0"/>
+<text x="822.0" y="186.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#5a5652" font-family="Inter,Helvetica,Arial,sans-serif">CHANGEMENTS CLIMATIQUES</text></g>
+<text x="520.0" y="250" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">les parties prenantes</text>
+<g class="snode" data-node="institutions"><rect class="box" x="70.0" y="266" width="175.2" height="46" rx="23.0" fill="#e8eff5"/>
+<text x="157.6" y="294.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#28587a" font-family="Inter,Helvetica,Arial,sans-serif">INSTITUTIONS</text></g>
+<g class="snode" data-node="philanthropie"><rect class="box" x="251.2" y="266" width="175.2" height="46" rx="23.0" fill="#e8eff5"/>
+<text x="338.8" y="294.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#28587a" font-family="Inter,Helvetica,Arial,sans-serif">PHILANTHROPIE</text></g>
+<g class="snode" data-node="prive"><rect class="box" x="432.4" y="266" width="175.2" height="46" rx="23.0" fill="#e8eff5"/>
+<text x="520.0" y="294.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#28587a" font-family="Inter,Helvetica,Arial,sans-serif">PRIVÉ</text></g>
+<g class="snode" data-node="communautaire"><rect class="box" x="613.6" y="266" width="175.2" height="46" rx="23.0" fill="#e8eff5"/>
+<text x="701.2" y="294.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#28587a" font-family="Inter,Helvetica,Arial,sans-serif">COMMUNAUTAIRE</text></g>
+<g class="snode" data-node="citoyens"><rect class="box" x="794.8" y="266" width="175.2" height="46" rx="23.0" fill="#e8eff5"/>
+<text x="882.4" y="294.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#28587a" font-family="Inter,Helvetica,Arial,sans-serif">CITOYENS</text></g>
+<text x="520.0" y="358" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">utilisent</text>
+<g class="snode" data-node="plaidoyer"><rect class="box" x="70.0" y="374" width="296.0" height="46" rx="23.0" fill="#eaf1ec"/>
+<text x="218.0" y="402.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#2f6448" font-family="Inter,Helvetica,Arial,sans-serif">PLAIDOYER</text></g>
+<g class="snode" data-node="concertation"><rect class="box" x="372.0" y="374" width="296.0" height="46" rx="23.0" fill="#eaf1ec"/>
+<text x="520.0" y="402.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#2f6448" font-family="Inter,Helvetica,Arial,sans-serif">CONCERTATION</text></g>
+<g class="snode" data-node="participation"><rect class="box" x="674.0" y="374" width="296.0" height="46" rx="23.0" fill="#eaf1ec"/>
+<text x="822.0" y="402.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#2f6448" font-family="Inter,Helvetica,Arial,sans-serif">PARTICIPATION CITOYENNE</text></g>
+<text x="520.0" y="466" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">pour arriver à une</text>
+<g class="snode" data-node="vision"><rect class="box" x="70" y="482" width="900" height="46" rx="23.0" fill="#2f6448"/>
+<text x="520.0" y="511.0" text-anchor="middle" font-size="16" font-weight="700" letter-spacing=".06em" fill="#fff" font-family="Inter,Helvetica,Arial,sans-serif">VISION COMMUNE</text></g>
+<text x="520.0" y="574" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">mettant à profit</text>
+<g class="snode" data-node="savoir"><rect class="box" x="70.0" y="590" width="296.0" height="46" rx="23.0" fill="#f4e4cd"/>
+<text x="218.0" y="618.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#9c5a15" font-family="Inter,Helvetica,Arial,sans-serif">SAVOIR</text></g>
+<g class="snode" data-node="capital"><rect class="box" x="372.0" y="590" width="296.0" height="46" rx="23.0" fill="#f4e4cd"/>
+<text x="520.0" y="618.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#9c5a15" font-family="Inter,Helvetica,Arial,sans-serif">CAPITAL SOCIAL</text></g>
+<g class="snode" data-node="financement"><rect class="box" x="674.0" y="590" width="296.0" height="46" rx="23.0" fill="#f4e4cd"/>
+<text x="822.0" y="618.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#9c5a15" font-family="Inter,Helvetica,Arial,sans-serif">FINANCEMENT</text></g>
+<g class="snode" data-node="gouvernance"><rect class="box" x="70.0" y="642" width="447.0" height="46" rx="23.0" fill="#f4e4cd"/>
+<text x="293.5" y="670.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#9c5a15" font-family="Inter,Helvetica,Arial,sans-serif">GOUVERNANCE PARTAGÉE</text></g>
+<g class="snode" data-node="evaluation"><rect class="box" x="523.0" y="642" width="447.0" height="46" rx="23.0" fill="#f4e4cd"/>
+<text x="746.5" y="670.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#9c5a15" font-family="Inter,Helvetica,Arial,sans-serif">ÉVALUATION</text></g>
+<text x="520.0" y="734" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">pour avoir un</text>
+<g class="snode" data-node="impact"><rect class="box" x="70" y="750" width="900" height="46" rx="23.0" fill="#54437c"/>
+<text x="520.0" y="779.0" text-anchor="middle" font-size="16" font-weight="700" letter-spacing=".06em" fill="#fff" font-family="Inter,Helvetica,Arial,sans-serif">IMPACT COLLECTIF</text></g>
+<text x="520.0" y="842" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">sur les</text>
+<g class="snode" data-node="determinants"><rect class="box" x="70.0" y="858" width="447.0" height="46" rx="23.0" fill="#f7ede8"/>
+<text x="293.5" y="886.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#000000" font-family="Inter,Helvetica,Arial,sans-serif" style="fill:#b12638">DÉTERMINANTS STRUCTURELS</text></g>
+<g class="snode" data-node="priorites"><rect class="box" x="523.0" y="858" width="447.0" height="46" rx="23.0" fill="#dcd6e8"/>
+<text x="746.5" y="886.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#000000" font-family="Inter,Helvetica,Arial,sans-serif" style="fill:#54437c">PRIORITÉS LOCALES</text></g>
+<text x="520.0" y="950" text-anchor="middle" font-size="16.5" fill="#7a766f" font-family="Inter,Helvetica,Arial,sans-serif">ayant comme finalité</text>
+<g class="snode" data-node="equite"><rect class="box" x="70" y="966" width="900" height="50" rx="25.0" fill="#8f6f1c"/>
+<text x="520.0" y="997.0" text-anchor="middle" font-size="16" font-weight="700" letter-spacing=".06em" fill="#fff" font-family="Inter,Helvetica,Arial,sans-serif">L’ÉQUITÉ EN SANTÉ</text></g>
+<!-- boucle droite : évaluation -> vision (apprentissage) -->
+<path d="M974,665 h34 q14,0 14,-14 V519 q0,-14 -14,-14 h-24" fill="none" stroke="#9c5a15" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M992,498 l-10,7 10,7" fill="none" stroke="#9c5a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(-8,0)"/>
+<text x="1029" y="592" text-anchor="middle" font-size="13.5" font-style="italic" fill="#9c5a15" font-family="Inter,Helvetica,Arial,sans-serif" transform="rotate(-90 1029 592)">apprentissage</text>
+<!-- boucle gauche : déterminants -> contexte (agir en amont) -->
+<path d="M66,881 h-34 q-14,0 -14,-14 V303 q0,-14 14,-14 h24" fill="none" stroke="#b12638" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M46,282 l10,7 -10,7" fill="none" stroke="#b12638" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="11" y="592" text-anchor="middle" font-size="13.5" font-style="italic" fill="#b12638" font-family="Inter,Helvetica,Arial,sans-serif" transform="rotate(-90 11 592)">agir en amont — les déterminants façonnent aussi le contexte</text>
+
+</svg>

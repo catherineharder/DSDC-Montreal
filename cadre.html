@@ -31,17 +31,38 @@ html, body {
 }
 .app { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); height: 100vh; width: 100vw; }
 .left { position: relative; background: var(--bg); border-right: 1px solid var(--border); overflow-y: auto; padding: 24px 32px; }
-.left-header { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.home-btn { background: none; border: 1px solid var(--border); color: var(--gray); padding: 6px 12px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
+.left-header { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.home-btn { background: none; border: 1px solid var(--border); color: var(--gray); padding: 5px 10px; border-radius: 7px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
 .home-btn:hover { background: var(--pink-light); color: var(--red); border-color: var(--pink-medium); }
+/* Onglets — même langage visuel que la page Cartes (.map-pick) */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tab { appearance: none; background: transparent; border: 1.5px solid transparent; border-radius: 7px; font: inherit; font-size: 12.5px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); padding: 4px 10px; cursor: pointer; transition: color 120ms ease, border-color 120ms ease; }
+.tab:hover { color: #212121; }
+.tab[aria-current="page"] { border-color: #212121; color: #212121; }
+.tab:focus-visible { outline: 2px solid #212121; outline-offset: 1px; }
+/* Cadre simplifié interactif */
+.lview[hidden] { display: none; }
+.snode { cursor: pointer; }
+.snode .box { transition: filter 0.15s ease, stroke 0.15s ease; }
+.snode:hover .box { filter: brightness(0.94); }
+.snode.active .box { stroke: #212121; stroke-width: 1.75px; }
+.ex-item { background: #fff; border-left: 3px solid var(--pink-medium); padding: 9px 13px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.55; border-radius: 0 6px 6px 0; }
+.ex-item strong { color: var(--red); font-weight: 600; }
+.theory-link { margin: 14px 0; }
+.theory-link button { background: var(--pink-light); border: none; color: var(--red); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+.theory-link button:hover { background: var(--pink-medium); }
+.chrono { font-size: 13px; line-height: 1.6; margin: 10px 0 16px; }
+.chrono div { padding: 4px 0; border-bottom: 1px solid #f3f3f3; }
+.chrono b { color: var(--red); font-weight: 600; }
 .svg-wrap { position: relative; width: 100%; max-width: none; margin: 0; }
 .svg-wrap img { width: 100%; display: block; user-select: none; pointer-events: none; }
 .zone { position: absolute; cursor: pointer; border-radius: 6px; transition: background 0.18s ease, box-shadow 0.18s ease; border: 1.5px solid transparent; }
 .zone:hover { background: var(--red-soft); border-color: rgba(177, 38, 56, 0.40); }
 .zone.active { background: var(--red-hover); border-color: var(--red); box-shadow: 0 0 0 2px rgba(177, 38, 56, 0.10); }
 .right { background: #fbfaf9; overflow-y: auto; padding: 40px 48px 80px 48px; }
-.search-bar { position: relative; flex: 0 0 auto; width: 240px; max-width: 50%; }
-.search-bar input { width: 100%; padding: 8px 12px; font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: 8px; background: #fff; outline: none; transition: border-color 0.15s; }
+/* Barre de recherche — même hauteur/trait/couleur que l'encadré de l'onglet sélectionné (Cartes) */
+.search-bar { position: relative; flex: 0 0 auto; width: 240px; max-width: 50%; margin-left: auto; }
+.search-bar input { width: 100%; padding: 4px 11px; font-family: inherit; font-size: 12.5px; border: 1.5px solid #212121; border-radius: 7px; background: #fff; outline: none; transition: border-color 0.15s; }
 .search-bar input:focus { border-color: var(--red); }
 .search-results { position: absolute; top: 40px; left: auto; right: 0; width: 340px; max-width: 80vw; background: #fff; border: 1px solid var(--border); border-radius: 8px; max-height: 340px; overflow-y: auto; display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.06); z-index: 20; }
 .search-results.open { display: block; }
@@ -86,15 +107,24 @@ a { color: var(--red); }
 <div class="app">
   <div class="left">
     <div class="left-header">
+      <div class="tabs" role="tablist" aria-label="Choisir une vue">
+        <button class="tab" data-tab="cadre" aria-current="page">Cadre conceptuel</button>
+        <button class="tab" data-tab="verdun" aria-current="false">Sécurité alimentaire à Verdun</button>
+        <button class="tab" data-tab="cdn" aria-current="false">Logement à CDN</button>
+      </div>
       <button class="home-btn" id="homeBtn">Vue d'ensemble</button>
       <div class="search-bar">
         <input type="text" id="search" placeholder="Rechercher un concept...">
         <div class="search-results" id="searchResults"></div>
       </div>
     </div>
-    <div class="svg-wrap" id="svgwrap">
-      <img src="cadre.svg" alt="Cadre conceptuel DS-DC">
+    <div class="lview" id="lv-cadre">
+      <div class="svg-wrap" id="svgwrap">
+        <img src="cadre.svg" alt="Cadre conceptuel DS-DC">
+      </div>
     </div>
+    <div class="lview" id="lv-verdun" hidden></div>
+    <div class="lview" id="lv-cdn" hidden></div>
   </div>
   <div class="right" id="right">
     <div id="content"></div>
@@ -203,6 +233,300 @@ searchResults.addEventListener('click', e => {
 document.addEventListener('click', e => {
   if (!e.target.closest('.search-bar')) searchResults.classList.remove('open');
 });
+
+/* ================================================================
+   ONGLETS : Cadre conceptuel | Sécurité alimentaire à Verdun | Logement à CDN
+   Cadre simplifié (mêmes couleurs que le cadre complet) + contenus d'exemple
+   ================================================================ */
+
+const COL = { red:'#b12638', redL:'#f7ede8', blue:'#28587a', or:'#9c5a15', orL:'#f4e4cd',
+  vio:'#54437c', vioL:'#dcd6e8', gold:'#8f6f1c', gr:'#2f6448', grL:'#eaf1ec', grM:'#d4e3d9', grD:'#4f7a5f' };
+
+const NODE_TITLES = { determinants:'Déterminants structurels', rolesp:'Rôle de la santé publique',
+  conditions:'Conditions de vie favorables', pouvoir:'Pouvoir d’agir collectif', gouvcollab:'Gouvernance collaborative',
+  mobilisation:'Mobilisation des actifs', vision:'Vision commune', concertation:'Concertation',
+  participation:'Participation citoyenne', tissu:'Renforcement du tissu social', priorite:'Priorité locale', equite:'Équité en santé' };
+
+const NODE_TO_ZONE = { determinants:'déterminants', rolesp:'role', conditions:'conditions', pouvoir:'pouvoir',
+  gouvcollab:'gouvernance2', mobilisation:'mobilisation', vision:'vision', concertation:'concertation',
+  participation:'participation', tissu:'renforcement', equite:'_équité' };
+
+function simpleSVG(tab) {
+  const prio = tab === 'verdun' ? 'Sécurité alimentaire' : 'Logement';
+  const t = (x,y,s,fill,size,w,anchor,ls) => `<text x="${x}" y="${y}" fill="${fill}" font-size="${size}" ${w?'font-weight="'+w+'"':''} text-anchor="${anchor||'middle'}" ${ls?'letter-spacing="'+ls+'"':''}>${s}</text>`;
+  const arrowV = (x,y1,y2,c) => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${c}" stroke-width="1.5"/><path d="M${x-4},${y2-5} L${x},${y2} L${x+4},${y2-5}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const arrowH = (x1,x2,y,c) => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${c}" stroke-width="1.5"/><path d="M${x2-5},${y-4} L${x2},${y} L${x2-5},${y+4}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return `<svg viewBox="0 0 612 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;font-family:inherit" role="group" aria-label="Cadre conceptuel simplifié">
+  <g class="snode" data-node="determinants"><rect class="box" x="6" y="6" width="340" height="74" rx="10" fill="${COL.redL}"/>
+    ${t(176,30,'DÉTERMINANTS STRUCTURELS',COL.red,13,700)}
+    ${t(176,48,'valeurs · gouvernance · lois, politiques,',COL.red,10.5)}
+    ${t(176,62,'règlements, budgets · pratiques institutionnelles',COL.red,10.5)}</g>
+  ${t(376,34,'agit sur',COL.blue,10)}${arrowH(398,354,43,COL.blue)}
+  <g class="snode" data-node="rolesp"><rect class="box" x="400" y="6" width="206" height="74" rx="10" fill="${COL.blue}"/>
+    ${t(503,36,'RÔLE DE LA SANTÉ PUBLIQUE','#fff',12,700)}
+    ${t(503,56,'mesurer · financer · outiller · plaider','#fff',10)}</g>
+  ${t(306,99,'Le DS produit les conditions pour le DC','#8a8a8a',10.5)}${arrowV(306,104,117,COL.red)}
+  <rect x="6" y="122" width="600" height="64" rx="10" fill="${COL.orL}"/>
+  <g class="snode" data-node="conditions"><rect class="box" x="16" y="132" width="188" height="44" rx="8" fill="#ffffff" fill-opacity="0.65" stroke="${COL.or}" stroke-width="0.75"/>${t(110,151,'Conditions de vie',COL.or,11.5,700)}${t(110,165,'favorables',COL.or,11.5,700)}</g>
+  <g class="snode" data-node="pouvoir"><rect class="box" x="212" y="132" width="188" height="44" rx="8" fill="#ffffff" fill-opacity="0.65" stroke="${COL.or}" stroke-width="0.75"/>${t(306,151,'Pouvoir d’agir',COL.or,11.5,700)}${t(306,165,'collectif',COL.or,11.5,700)}</g>
+  <g class="snode" data-node="gouvcollab"><rect class="box" x="408" y="132" width="188" height="44" rx="8" fill="#ffffff" fill-opacity="0.65" stroke="${COL.or}" stroke-width="0.75"/>${t(502,151,'Gouvernance',COL.or,11.5,700)}${t(502,165,'collaborative',COL.or,11.5,700)}</g>
+  ${arrowV(306,190,203,COL.gr)}
+  <rect x="6" y="208" width="600" height="224" rx="12" fill="none" stroke="${COL.gr}" stroke-dasharray="3 3" opacity="0.55"/>
+  ${t(306,224,'DÉVELOPPEMENT DES COMMUNAUTÉS (DC)',COL.gr,10.5,700,null,'.08em')}
+  <g class="snode" data-node="mobilisation"><rect class="box" x="18" y="234" width="576" height="52" rx="8" fill="${COL.grL}"/>
+    ${t(306,255,'Mobilisation des actifs (approche ABCD)',COL.gr,12,700)}
+    ${t(306,272,'connaissances · ressources et maillage · leadership',COL.gr,10.5)}</g>
+  <rect x="18" y="294" width="576" height="74" rx="8" fill="${COL.grM}"/>
+  ${t(306,310,'Mécanismes d’action collective',COL.gr,11,700)}
+  <g class="snode" data-node="vision"><rect class="box" x="28" y="320" width="180" height="34" rx="8" fill="#fff"/>${t(118,341,'Vision commune',COL.gr,11.5,700)}</g>
+  <g class="snode" data-node="concertation"><rect class="box" x="216" y="320" width="180" height="34" rx="8" fill="#fff"/>${t(306,341,'Concertation',COL.gr,11.5,700)}</g>
+  <g class="snode" data-node="participation"><rect class="box" x="404" y="320" width="180" height="34" rx="8" fill="#fff"/>${t(494,341,'Participation citoyenne',COL.gr,11.5,700)}</g>
+  <g class="snode" data-node="tissu"><rect class="box" x="18" y="376" width="576" height="48" rx="8" fill="${COL.grD}"/>
+    ${t(306,395,'Renforcement du tissu social','#fff',12,700)}
+    ${t(306,411,'cohésion sociale · capital social · résilience','#fff',10.5)}</g>
+  ${arrowV(306,436,449,COL.vio)}
+  <g class="snode" data-node="priorite"><rect class="box" x="6" y="454" width="380" height="60" rx="10" fill="${COL.vioL}"/>
+    ${t(196,477,'IMPACT COLLECTIF SUR LA PRIORITÉ LOCALE',COL.vio,9.5,600,null,'.12em')}
+    ${t(196,497,prio,COL.vio,14,700)}</g>
+  ${arrowH(396,434,484,COL.gold)}
+  <g class="snode" data-node="equite"><rect class="box" x="440" y="454" width="166" height="60" rx="10" fill="${COL.gold}"/>
+    ${t(523,489,'ÉQUITÉ EN SANTÉ','#fff',12.5,700)}</g>
+  </svg>`;
+}
+
+/* ---- Contenus d'exemple : comment chaque projet illustre chaque concept ---- */
+const EX = {
+verdun: {
+  kicker: 'SÉCURITÉ ALIMENTAIRE À VERDUN',
+  title: 'Plan de développement de la communauté nourricière (PDCN) 2022-2030',
+  intro: 'Porté par l’arrondissement de Verdun (DCSLDS), accompagné par Vivre en Ville et financé par le MAPAQ, le PDCN articule 5 orientations, 15 priorités et un plan d’action 2023-2026 de 58 actions pour un système alimentaire local, sain et équitable.',
+  chrono: [
+    ['Janv. 2021','Comité de pilotage multi-acteurs (12 rencontres) + comité interdirection'],
+    ['Juin 2021','40 000 $ du MAPAQ; consultation lancée sur Réalisons Montréal'],
+    ['Nov. 2021','Dépôt du Portrait diagnostic (méthode FFOM, avec Vivre en Ville)'],
+    ['Déc. 2021 – janv. 2022','Vote populaire sur la vision (243 répondants)'],
+    ['29 juin 2022','Lancement du PDCN 2022-2030'],
+    ['Avril 2023','Plan d’action détaillé 2023-2026 : 58 actions']],
+  srcs: [['PDCN 2022-2030 (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf'],['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']],
+  nodes: {
+  determinants: { how: 'Les règles et budgets qui rendent le PDCN possible — et les vides qui le contraignent.', items: [
+    '<strong>MAPAQ</strong> : 40 000 $ (maximum du programme PDCN, enveloppe 500 000 $ 2020-2022) pour élaborer le plan; la Politique bioalimentaire 2018-2025 « Alimenter notre monde » (5 G$) fournit le cadre provincial.',
+    '<strong>PSOC</strong> : 252,2 M$ en mission globale aux organismes communautaires de Montréal (2023-2024) — le socle de financement des groupes qui livrent l’aide alimentaire.',
+    '<strong>Budget participatif de Montréal</strong> : 45 M$ (3e édition) — pratique institutionnelle qui a financé le Jardin Éthel (755 000 $).',
+    '<strong>SISA / PAGIEPS</strong> (DRSP) : 1 755 200 $ (2025-2029) en sécurité alimentaire.',
+    '<strong>Vide structurel</strong> : aucune loi québécoise contre le gaspillage alimentaire (PL 697 non adopté) — la récupération repose sur le volontariat.'],
+    src: [['MAPAQ – communautés nourricières','https://www.quebec.ca/agriculture-environnement-et-ressources-naturelles/agriculture/industrie-agricole-au-quebec/protection-mise-en-valeur-territoire-agricole/developpement-communaute-nourriciere'],['Bilan budget participatif','https://montreal.ca/articles/budget-participatif-de-montreal-bilan-de-la-troisieme-edition-2024-2025-87348']] },
+  rolesp: { how: 'La DRSP mesure, finance et documente; elle ne porte pas le plan.', items: [
+    '<strong>Mesurer</strong> : insécurité alimentaire à Montréal = 14,8 % des ménages (2020), presque doublée entre 2018 et 2022 (DRSP).',
+    '<strong>Financer</strong> : appels de projets SISA (~75 000 $/an/projet, 4 ans).',
+    '<strong>Partenaire structurel</strong> : la DRSP cofinance l’IMSDSL qui soutient la table de quartier (CDSV).',
+    '<strong>Éclairer</strong> : démarche « Faim zéro à Montréal » (2019, FGM avec DRSP, Centraide, Fondation Chagnon) — cartographie de l’écosystème.'],
+    src: [['Portrait DRSP 2020','https://santepubliquemontreal.ca/sites/drsp/files/media/document/DRSP_Pub_2024_06_26_PortraitInsecuriteAlimentaireMTL_2020.pdf']] },
+  conditions: { how: 'L’accès concret à une alimentation saine et abordable.', items: [
+    'Marchés fermiers de Verdun (CAUS) : ~26 exposants, les mercredis de juin à octobre.',
+    '<strong>Jardin Éthel</strong> : toit de stationnement transformé en espace nourricier — 755 000 $, 4 161 votes au budget participatif.',
+    'Paniers Manna à ~7 $/semaine; repas antigaspillage BGC Dawson à ~3 $; serres municipales (~20 000 pi² de production).'],
+    src: [['Jardin Éthel','https://montreal.ca/articles/le-jardin-ethel-30140']] },
+  pouvoir: { how: 'La communauté définit elle-même le problème et les priorités.', items: [
+    'Le comité <strong>Verdun sans faim</strong> (CDSV) a piloté la mise à jour du Système alimentaire verdunois : 10 défis présentés publiquement à la mairie d’arrondissement.',
+    'Collège citoyen au CA de la CDSV : des résidents siègent dans l’instance décisionnelle.',
+    'La vision du PDCN a été retravaillée après un vote populaire — la communauté a corrigé la copie.'],
+    src: [['CDSV','https://cdsv.org/qui-sommes-nous/']] },
+  gouvcollab: { how: 'Un pilotage partagé arrondissement-communauté.', items: [
+    'Comité de pilotage multi-acteurs (12 rencontres; le MAPAQ y siégeait) + comité interdirection municipal.',
+    'CDSV : CA représentatif de 5 collèges (communautaire, économique, scolaire, institutionnel, citoyen).',
+    'La <strong>DCSLDS</strong> (arrondissement) porte et arrime le plan — presque toutes les 58 actions la nomment.'],
+    src: [['PDCN (PDF), annexe 4','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
+  mobilisation: { how: 'Partir des forces du territoire plutôt que des manques.', items: [
+    'Actifs mobilisés : serres municipales (Grand Potager), toit de stationnement (Éthel), écoles, commerces de la Promenade Wellington, berges et jardins.',
+    'Expertise externe maillée : Vivre en Ville (cadre « communauté nourricière »), PME MTL Grand Sud-Ouest.',
+    'Le SAV (Système alimentaire verdunois) cartographie acteurs et projets existants depuis 2017 (né du PIC de Centraide).'],
+    src: [['Grand Potager','https://www.grandpotager.com/']] },
+  vision: { how: 'Une vision commune formellement votée.', items: [
+    'Vote populaire sur la vision et les orientations : <strong>243 répondants</strong> (énoncé gagnant à 54,3 %).',
+    'Résultat : 1 vision, 5 orientations, 15 priorités, 58 actions (2023-2026) — un agenda commun mesurable.'],
+    src: [['PDCN (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
+  concertation: { how: 'Des espaces formels où les acteurs s’alignent.', items: [
+    '<strong>CDSV</strong> : table de quartier (2004; incorporée 2006), AG 3-4×/an, comités thématiques dont Verdun sans faim.',
+    '<strong>Conseil SAM</strong> (2018) : 1er conseil de politiques alimentaires d’une ville francophone; 150+ partenaires; plan d’action intégré 2023-2025.',
+    'Montréal – Métropole en santé porte le Conseil SAM; la CMM suit l’insécurité alimentaire dans ses indicateurs vitaux.'],
+    src: [['Conseil SAM','https://csam.ca/a-propos-conseil-sam/']] },
+  participation: { how: 'Les résidents ont façonné le plan à chaque étape.', items: [
+    'Plateforme Réalisons Montréal (juin 2021 – mars 2022) : 1 402 visiteurs, 106 abonnés, 83 personnes « engagées ».',
+    '<strong>5 groupes de discussion</strong> (43 personnes) + sondages (19 organisations) + atelier de cocréation (43 personnes) + outils collaboratifs (120 personnes).',
+    'Vote populaire final : 243 répondants.'],
+    src: [['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']] },
+  tissu: { how: 'L’alimentation comme prétexte au lien social.', items: [
+    'Les marchés fermiers et le Jardin Éthel créent des lieux de rencontre de proximité.',
+    'Jardins collectifs et éducatifs (BGC Dawson, écoles, sociétés d’horticulture) tissent des liens intergénérationnels.',
+    'Le dépannage régulier (~222 ménages/mois à la banque alimentaire Dawson) s’accompagne de livraison aux personnes à mobilité réduite.'],
+    src: [['BGC Dawson','https://www.cbc.ca/news/canada/montreal/bgc-dawson-verdun-food-insecurity-1.6271311']] },
+  priorite: { how: 'Pourquoi la sécurité alimentaire est LA priorité locale.', items: [
+    'Montréal : <strong>14,8 %</strong> des ménages en insécurité alimentaire (2020) — contre 11,4 % dans le reste du Québec; la proportion a presque doublé entre 2018 et 2022.',
+    'Moisson Montréal : <strong>1 101 876 demandes d’aide/mois</strong> (Bilan-Faim 2025), +54 % vs 2021.',
+    'Verdun : portrait en sécurité alimentaire dès 2017 (CDSV) — la priorité vient du terrain, pas d’en haut.'],
+    src: [['Bilan-Faim 2025','https://www.moissonmontreal.org/wp-content/uploads/2025/10/MMTL_85x11_bilanfaim2025-20-10-25-FR-WEB-1.pdf']] },
+  equite: { how: 'Universalisme proportionné appliqué à l’alimentation.', items: [
+    'Offre universelle (marchés, jardins, serres ouvertes à tous) + intensité accrue pour les plus vulnérables (dépannage, livraison, repas à ~3 $).',
+    'Le PDCN vise l’accès physique ET économique — agir sur le système, pas seulement sur l’urgence.'],
+    src: [] }
+}},
+cdn: {
+  kicker: 'LOGEMENT À CÔTE-DES-NEIGES',
+  title: 'Projet Namur-Hippodrome : la vision de la communauté',
+  intro: 'Sur le dernier grand terrain public de Montréal (l’ancien hippodrome, cédé par Québec en 2017), la Ville planifie 18 500 à 20 000 logements (PDAD, déc. 2024). La communauté de CDN — CDC, comité communautaire N-H — exige au moins 4 800 logements sociaux et communautaires et une fiducie d’utilité sociale (FUS) pour sortir le site de la spéculation. Coût total estimé : 8-10 G$ sur 10 ans.',
+  chrono: [
+    ['2009-2017','Fin des courses (2009); Québec cède le terrain à Montréal (2017) contre 50 % des profits nets'],
+    ['2019-2020','Consultation OCPM : 2 800+ participations; rapport recommandant 35-40 % de logement social'],
+    ['Mai 2023','Création du GALOPH (Ville-Québec-Ottawa + milieux communautaire, immobilier, finance)'],
+    ['Déc. 2024','Adoption du PDAD : 18 500-20 000 logements sur 95 ha'],
+    ['Sept. 2025','Entente de 320,8 M$ (Ottawa 128,3 + Ville 192,5) pour les infrastructures de la phase 1 (~2 250 logements)'],
+    ['Oct. 2025','La communauté dévoile son plan de FUS'],
+    ['2026','PL22 : les terrains passent à l’OBNL GALOPH; première phase enclenchée']],
+  srcs: [['Les propositions (nh.conseilcdn.qc.ca)','https://nh.conseilcdn.qc.ca/les-propositions/'],['Rapport OCPM 2020','https://ocpm.qc.ca/sites/default/files/pdf/rapports/rapport-namur-hippodrome.pdf']],
+  nodes: {
+  determinants: { how: 'Une cascade de lois et de budgets détermine ce qui peut se construire.', items: [
+    '<strong>LAU</strong> (RLRQ c. A-19.1) : hiérarchie OGAT (Québec) → PMAD (CMM, 2012) → schéma d’agglomération (2015) → PUM 2050 (juin 2025) → PDAD Namur-Hippodrome (déc. 2024).',
+    '<strong>RMM « 20-20-20 »</strong> (2021) : 20 % social + 20 % abordable + 20 % familial — abrogation annoncée en nov. 2025, remplacement par 20 % « hors marché ».',
+    '<strong>Budgets</strong> : entente 320,8 M$ (Ottawa 128,3 M$ + Ville 192,5 M$) pour les infrastructures; Québec 6 M$ au démarrage (2023); PHAQ 300 M$ + 650 M$; SCHL (FLA ~14,6 G$, ICRL ~4 G$).',
+    '<strong>PSL</strong> : le ménage paie 25 % de son revenu, l’État couvre l’écart — l’outil qui rend le « social » réellement abordable.',
+    '<strong>PL22</strong> (2026) : permet la cession des terrains à l’OBNL GALOPH, exempté de taxes foncières; <strong>Loi 31</strong> (2024) encadre cessions de bail et évictions dans le parc existant.'],
+    src: [['Entente 320 M$','https://ici.radio-canada.ca/nouvelle/2192495/quebec-ottawa-320-millions-quartier-namur-hippodrome'],['PHAQ','https://www.quebec.ca/habitation-territoire/construction-renovation/construction-logements-abordables/programme-habitation-abordable-quebec']] },
+  rolesp: { how: 'La santé publique fournit la preuve que le logement est un enjeu de santé.', items: [
+    '<strong>DRSP</strong> : les moisissures/humidité expliquent ~26 % des infections respiratoires et 13-17 % de l’asthme chez les enfants montréalais; ~9 100 ménages de CDN vivent avec des moisissures.',
+    'Mémoires de la DRSP : à la SHQ (logement sain et abordable) et sur le PUM devant l’OCPM.',
+    'Le <strong>CIUSSS du Centre-Ouest</strong> prête une organisatrice communautaire au comité communautaire N-H — un investissement institutionnel dans le pouvoir d’agir.',
+    'La proposition 5 du comité demande que la DRSP soit consultée sur le bruit, les vibrations et la pollution (corridor ferroviaire, autoroute).'],
+    src: [['DRSP – logement','https://santepubliquemontreal.ca/professionnels-et-partenaires/thematiques-de-sante-publique/logement']] },
+  conditions: { how: 'Ce que la communauté exige comme conditions de vie.', items: [
+    '≥ <strong>4 800 logements sociaux et communautaires</strong>, livrés en 8 ans ou moins.',
+    'PSL pour ≥ 60 % des logements sociaux; 60 % de grands logements familiaux (3 chambres+).',
+    'Dans le parc existant : 25 % des ménages de CDN rapportent des traces de moisissures; 10,8 % des logements locatifs exigent des réparations majeures.'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
+  pouvoir: { how: '30 ans de mobilisation ont transformé la revendication en projet.', items: [
+    'FRAPRU, Projet Genèse et l’ŒIL militent depuis les années 1990 sur l’avenir du site.',
+    'La revendication a grandi avec le rapport de force : 2 500 logements sociaux → 4 800 → « 100 % hors marché ».',
+    'Oct. 2025 : la communauté produit son propre <strong>plan de fiducie d’utilité sociale</strong> — elle ne réagit plus, elle propose.',
+    'La coalition action-salubrité (Projet Genèse, ŒIL, LogisAction NDG, CDC) vise des changements réglementaires systémiques.'],
+    src: [['Plan FUS','https://nh.conseilcdn.qc.ca/wp-content/uploads/2026/01/Plan-FUS-longue-MaJ-01-2026.pdf']] },
+  gouvcollab: { how: 'Des instances hybrides public-communautaire-privé.', items: [
+    '<strong>GALOPH</strong> : ~15 membres, coprésidé par Pierre Boivin (Claridge) et Janie Béïque (Fonds FTQ); devient l’OBNL propriétaire et maître d’œuvre du site (PL22, 2026).',
+    '<strong>Comité communautaire N-H</strong> (CDC CDN, 2023) : ROMEL, ŒIL, Groupe CDH, Ex Aequo, Femmes du Monde, Projet Genèse + soutien CIUSSS — l’interface communautaire du GALOPH.',
+    'Proposition 8 : gouvernance partagée chapeautée par la FUS, conformité de tout projet au PDAD, mise en réserve des terrains sociaux dès l’adoption.'],
+    src: [['Le développement','https://nh.conseilcdn.qc.ca/le-developpement/']] },
+  mobilisation: { how: 'L’actif décisif est foncier : un terrain public de 95 ha.', items: [
+    'La <strong>FUS</strong> garde le sol hors marché à perpétuité; les bâtiments versent des redevances — précédent montréalais : l’écoquartier Louvain.',
+    'Expertise communautaire mobilisée : Groupe CDH et ROMEL (développement immobilier communautaire), Ex Aequo et Société Logique (accessibilité universelle).',
+    'Le Portrait de quartier 2025 (CDC) documente les actifs et besoins : 47 % de population immigrante, 13 510 ménages à faible revenu.'],
+    src: [['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
+  vision: { how: 'Une vision écrite AVANT le plan officiel de la Ville.', items: [
+    '« La vision de la communauté » : 9 orientations publiées par le comité communautaire — stratégie résidentielle, FUS, inclusion, milieu de vie complet, écologie, gouvernance.',
+    'Mémoire déposé aux consultations sur le PDAD (2024); l’OCPM avait déjà recommandé 35-40 % de social (2020).'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
+  concertation: { how: 'Une architecture de concertation en couches.', items: [
+    '<strong>Table habitation sociale</strong> (THS) : instance multiréseau logement du quartier (Projet Genèse, ROMEL, CIUSSS, OMHM, ŒIL, Hapopex...).',
+    '<strong>Chantier salubrité</strong> : CIUSSS, arrondissement (permis et inspections), OMHM, SPVM (PDQ 26), DRSP, Fondation Dr Julien...',
+    'Le tout coordonné par la <strong>CDC de CDN</strong>, table de quartier membre de la CMTQ, financée par l’IMSDSL.'],
+    src: [['La concertation (CDC)','https://conseilcdn.qc.ca/la-concertation/']] },
+  participation: { how: 'La consultation publique a pesé sur le cadre officiel.', items: [
+    'OCPM 2019-2020 : <strong>2 800+ participations</strong>, 135 opinions et mémoires, 788 répondants au sondage en ligne.',
+    'Le rapport OCPM (2020) reprend la demande communautaire : 35-40 % de logement social.',
+    'Consultation PDAD 2024 (Réalisons Montréal) : mémoires et bonifications; mobilisation permanente via nh.conseilcdn.qc.ca.'],
+    src: [['Documentation OCPM','https://ocpm.qc.ca/fr/hippodrome/documentation']] },
+  tissu: { how: 'Le quartier projeté doit produire du lien, pas seulement des unités.', items: [
+    'Proposition 6 : filet social — cuisines collectives, lieux culturels et communautaires en rez-de-chaussée, fonds dédié.',
+    'Proposition 4 : accessibilité universelle partout, ADS+, « réflexe aîné », co-conception avec des personnes en situation d’itinérance.',
+    'Proposition 7 : prévenir l’éco-embourgeoisement — que le verdissement ne chasse pas ceux qu’il devait servir.'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
+  priorite: { how: 'Pourquoi le logement est LA priorité locale à CDN.', items: [
+    '<strong>13 510 ménages à faible revenu</strong>; 47 % de la population issue de l’immigration (23 % arrivée depuis moins de 5 ans).',
+    '10,8 % des logements locatifs nécessitent des réparations majeures; ~9 100 ménages exposés aux moisissures.',
+    'Namur-Hippodrome est le plus grand chantier d’habitation au pays — et la dernière chance foncière publique du quartier.'],
+    src: [['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
+  equite: { how: 'Sortir le sol du marché pour pérenniser l’abordabilité.', items: [
+    'La FUS garantit que l’abordabilité ne s’érode pas à la revente — l’équité inscrite dans la structure foncière.',
+    'Abordabilité définie par le <strong>revenu des ménages</strong>, pas par le marché.',
+    'ADS+ et accessibilité universelle pour que le nouveau quartier n’exclue personne.'],
+    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] }
+}}};
+
+/* ---- Rendu des onglets exemples ---- */
+let activeTab = 'cadre';
+let activeNode = { verdun: null, cdn: null };
+
+function renderExHome(tab) {
+  const ex = EX[tab];
+  const chrono = ex.chrono.map(([d, e]) => `<div><b>${d}</b> — ${esc(e)}</div>`).join('');
+  const srcs = ex.srcs.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ');
+  contentEl.innerHTML = `<div class="section-banner"><div class="kicker">${esc(ex.kicker)}</div><h1>${esc(ex.title)}</h1></div>
+    <div class="concept-card"><div class="definition">${esc(ex.intro)}</div>
+    <div class="section-label">Chronologie</div><div class="chrono">${chrono}</div>
+    <div class="extra-block"><div class="label">Comment lire cet onglet</div>Cliquez sur un concept du cadre simplifié à gauche pour voir comment ce projet l'illustre concrètement — avec les lois, budgets, instances et acteurs en jeu.</div>
+    <div class="source">Sources principales. ${srcs}</div></div>`;
+  document.querySelector('.right').scrollTop = 0;
+}
+
+function renderExNode(tab, node) {
+  const ex = EX[tab]; const d = ex.nodes[node];
+  if (!d) return;
+  activeNode[tab] = node;
+  const lv = document.getElementById('lv-' + tab);
+  lv.querySelectorAll('.snode').forEach(g => g.classList.toggle('active', g.dataset.node === node));
+  const items = d.items.map(i => `<div class="ex-item">${i}</div>`).join('');
+  const src = (d.src && d.src.length) ? `<div class="source">Sources. ${d.src.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ')}</div>` : '';
+  const zone = node === 'priorite' ? (tab === 'verdun' ? 'sécurité' : 'logement') : NODE_TO_ZONE[node];
+  const theory = zone && ZONEMAP[zone] ? `<div class="theory-link"><button onclick="openTheory('${zone}')">Voir la fiche théorique : ${esc(DATA[ZONEMAP[zone].slug].title)}</button></div>` : '';
+  const title = node === 'priorite' ? 'Priorité locale : ' + (tab === 'verdun' ? 'sécurité alimentaire' : 'logement') : NODE_TITLES[node];
+  contentEl.innerHTML = `<div class="section-banner"><div class="kicker">${esc(ex.kicker)}</div><h1>${esc(title)}</h1></div>
+    <div class="concept-card"><div class="definition">${esc(d.how)}</div>${items}${theory}${src}</div>`;
+  document.querySelector('.right').scrollTop = 0;
+}
+
+function openTheory(zone) { setTab('cadre'); selectZone(zone); }
+window.openTheory = openTheory;
+
+function setTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
+  ['cadre', 'verdun', 'cdn'].forEach(t => { document.getElementById('lv-' + t).hidden = (t !== tab); });
+  if (tab === 'cadre') { goHome(); }
+  else { activeNode[tab] ? renderExNode(tab, activeNode[tab]) : renderExHome(tab); }
+}
+
+['verdun', 'cdn'].forEach(tab => {
+  const lv = document.getElementById('lv-' + tab);
+  lv.innerHTML = simpleSVG(tab);
+  lv.addEventListener('click', e => {
+    const g = e.target.closest('.snode');
+    if (g) renderExNode(tab, g.dataset.node);
+  });
+});
+
+document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+
+homeBtn.addEventListener('click', () => {
+  if (activeTab !== 'cadre') { activeNode[activeTab] = null; document.getElementById('lv-' + activeTab).querySelectorAll('.snode').forEach(g => g.classList.remove('active')); renderExHome(activeTab); }
+});
+
+/* Recherche : depuis un onglet exemple, ramène vers le concept (dans l'exemple si possible, sinon dans le cadre complet) */
+const ZONE_TO_NODE = {};
+Object.entries(NODE_TO_ZONE).forEach(([n, z]) => { ZONE_TO_NODE[z] = n; });
+ZONE_TO_NODE['sécurité'] = 'priorite'; ZONE_TO_NODE['logement'] = 'priorite';
+searchResults.addEventListener('click', e => {
+  const item = e.target.closest('.item');
+  if (!item || !item.dataset.zone) return;
+  const z = item.dataset.zone;
+  if (activeTab !== 'cadre') {
+    const n = ZONE_TO_NODE[z];
+    if (n && !(z === 'sécurité' && activeTab === 'cdn') && !(z === 'logement' && activeTab === 'verdun')) {
+      e.stopImmediatePropagation(); renderExNode(activeTab, n);
+      searchResults.classList.remove('open'); searchInput.value = '';
+      return;
+    }
+    e.stopImmediatePropagation(); setTab('cadre'); selectZone(z, true);
+    searchResults.classList.remove('open'); searchInput.value = '';
+  }
+}, true);
 </script>
 </body>
 </html>
