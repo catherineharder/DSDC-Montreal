@@ -112,7 +112,8 @@ window.CONC = {
             "cop-part",
             "aspic",
             "groupe-coeur",
-            "epup"
+            "epup",
+            "prev-itin"
           ]
         },
         {
@@ -1469,9 +1470,82 @@ window.CONC = {
       "full": "Comité prévention de l'itinérance",
       "niv": "strat",
       "drsp": "lead",
-      "man": "",
+      "man": "- Identifier, rehausser, soutenir la mise en œuvre d’interventions basées sur les meilleures pratiques en prévention de l’itinérance.\n\n- Favoriser la collaboration intersectorielle par l’animation d’un espace de concertation, arrimage et co-construction, sur la prévention de l’itinérance.\n\n· Arrimer lorsque requis, les actions de prévention de l’itinérance avec les objets traités dans les autres comités tactiques en place afin d’assurer une cohérence et synergie d’action.\n\n· Assurer l’intégration d’actions de prévention dans le prochain PCMI\n\n· Encadrer et accompagner les travaux des 2 chantiers (jeunesse et prévention de la perte de logement)",
       "neu": true,
-      "comp": []
+      "comp": [
+        {
+          "m": "DRSP",
+          "cat": "DRSP"
+        },
+        {
+          "m": "Représentantes des chantiers de travail",
+          "cat": "DRSP"
+        },
+        {
+          "m": "CCSMTL",
+          "cat": ""
+        },
+        {
+          "m": "SDIS – Ville de Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Service régional en itinérance-CCSMTL",
+          "cat": ""
+        },
+        {
+          "m": "RAPSIM",
+          "cat": ""
+        },
+        {
+          "m": "MMFIM",
+          "cat": ""
+        },
+        {
+          "m": "Représentants des deux DPJ-D Prog J de Montréal",
+          "cat": ""
+        },
+        {
+          "m": "Coalition Jeunes + Dans la rue YMCA",
+          "cat": ""
+        },
+        {
+          "m": "CCSMTL",
+          "cat": ""
+        },
+        {
+          "m": "FRAPRU",
+          "cat": ""
+        },
+        {
+          "m": "OMHM",
+          "cat": ""
+        },
+        {
+          "m": "FOHM",
+          "cat": ""
+        },
+        {
+          "m": "RAPSIM",
+          "cat": ""
+        },
+        {
+          "m": "Service de l’habitation - Ville de Montréal",
+          "cat": ""
+        },
+        {
+          "m": "DSMD - CCSMTL",
+          "cat": ""
+        },
+        {
+          "m": "CNIM",
+          "cat": ""
+        },
+        {
+          "m": "UQAM",
+          "cat": ""
+        }
+      ]
     },
     {
       "id": "gt-perte-log",
