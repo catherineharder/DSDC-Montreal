@@ -80,9 +80,9 @@ Une ligne = **un organisme membre** d'une table de quartier.
 
 ## 3. Concertations — feuille « Concertations — site »
 
-Elle a **quatre onglets** : `Partenaires`, `Comites`, `Composition`,
-`Definitions`. Les familles (groupes) ne sont plus un onglet à part : elles se
-déduisent automatiquement des colonnes `famille` / `groupe`.
+Elle a **cinq onglets** : `Partenaires`, `Comites`, `Composition`,
+`Definitions`, `Postures`. Les familles (groupes) ne sont plus un onglet à
+part : elles se déduisent automatiquement des colonnes `famille` / `groupe`.
 
 ### Onglet `Partenaires` — les cases « Partenaires »
 Un partenaire = une ligne.
@@ -137,6 +137,17 @@ soit listé sur sa propre fiche comme « présent dans » un comité, renseignez
 | **terme** | Le terme défini, ex. `Communauté de pratique` |
 | **acronym** | Son sigle (facultatif), ex. `CoP` |
 | **definition** | La définition (le HTML simple comme `<em>…</em>` est permis) |
+
+### Onglet `Postures` — les cinq postures de la DRSP
+Une posture = une ligne. Cet onglet est **facultatif** : s'il est absent ou
+vide, la section n'apparaît simplement pas sur le site.
+
+| Colonne | À mettre |
+|---|---|
+| **ordre** | Numéro d'affichage : `1`, `2`, `3`… |
+| **posture** | Le nom de la posture, ex. `Convocatrice` |
+| **description** | Une phrase décrivant la posture |
+| **exemple** | Exemples concrets (le HTML simple comme `<strong>…</strong>` est permis) |
 
 > L'**ordre des lignes** des onglets `Partenaires` et `Comites` fixe l'ordre
 > d'affichage ; les familles/groupes apparaissent dans l'ordre de leur première

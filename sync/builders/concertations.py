@@ -7,6 +7,7 @@ Onglets attendus (voir GUIDE-SUPERVISEUR.md) :
                   DRSP-coord | nouveau | mandat
   Composition   : ID-com | comite | ID-mem | membre | categorie
   Definitions   : terme | acronym | definition
+  Postures      : ordre | posture | description | exemple   (optionnel)
 
 `build(tabs)` : {onglet: csv} -> objet window.CONC (dict).
 `export(D)`   : window.CONC -> {onglet: csv}  (pré-remplissage + tests).
@@ -166,8 +167,15 @@ def build(tabs):
     defs_out = [{"t": _strip(d.get("terme")), "ac": _strip(d.get("acronym")),
                  "d": _strip(d.get("definition"))} for d in defs if _strip(d.get("terme"))]
 
+    # --- Postures de la DRSP (onglet optionnel)
+    post = csv_to_dicts(tabs.get("Postures") or "")
+    postures = [{"n": _strip(p.get("ordre")), "t": _strip(p.get("posture")),
+                 "d": _strip(p.get("description")), "ex": _strip(p.get("exemple"))}
+                for p in post if _strip(p.get("posture"))]
+    postures.sort(key=lambda p: (p["n"].zfill(3), p["t"]))
+
     return {"famsP": famsP, "famsC": famsC,
-            "committees": committees, "defs": defs_out}
+            "committees": committees, "defs": defs_out, "postures": postures}
 
 
 # ---------------------------------------------------------------------------
@@ -229,6 +237,9 @@ def export(D):
 
     drows = [[d.get("t", ""), d.get("ac", ""), d.get("d", "")] for d in D["defs"]]
 
+    porows = [[p.get("n", ""), p.get("t", ""), p.get("d", ""), p.get("ex", "")]
+              for p in D.get("postures", [])]
+
     return {
         "Partenaires": rows_to_csv(
             ["ID-par", "acronym", "partenaire", "famille", "parent"], prows),
@@ -238,6 +249,8 @@ def export(D):
         "Composition": rows_to_csv(
             ["ID-com", "comite", "ID-mem", "membre", "categorie"], comp_rows),
         "Definitions": rows_to_csv(["terme", "acronym", "definition"], drows),
+        "Postures": rows_to_csv(["ordre", "posture", "description", "exemple"],
+                                porows),
     }
 
 
@@ -256,13 +269,21 @@ def render_js(conc):
 
 
 TABS = ["Partenaires", "Comites", "Composition", "Definitions"]
+OPTIONAL_TABS = ["Postures"]
 
 
 def run(cfg, fetch, repo_root):
-    # Les 4 onglets sont fixés par le schéma ; on ignore tout « tabs » du config.
+    # Les onglets sont fixés par le schéma ; on ignore tout « tabs » du config.
     tabs = {t: fetch(cfg["sheet_id"], t) for t in TABS}
+    for t in OPTIONAL_TABS:
+        try:
+            tabs[t] = fetch(cfg["sheet_id"], t)
+        except Exception:  # noqa: BLE001 — onglet absent : section omise
+            print(f"[note] onglet optionnel « {t} » absent ou inaccessible ; "
+                  "section omise.")
     conc = build(tabs)
     (repo_root / cfg["output"]).write_text(render_js(conc), encoding="utf-8")
     return (f"{cfg['output']} — {len(conc['committees'])} comités, "
             f"{sum(len(f['boxes']) for f in conc['famsP'])} partenaires, "
-            f"{len(conc['defs'])} définitions")
+            f"{len(conc['defs'])} définitions, "
+            f"{len(conc['postures'])} postures")

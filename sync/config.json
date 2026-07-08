@@ -11,7 +11,8 @@
       "Partenaires",
       "Comites",
       "Composition",
-      "Definitions"
+      "Definitions",
+      "Postures"
     ],
     "output": "assets/data/concertations.data.js"
   },

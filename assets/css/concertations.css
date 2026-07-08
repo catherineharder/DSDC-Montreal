@@ -141,3 +141,14 @@
   .conc-app .layout{grid-template-columns:1fr;}
   .conc-app .pane-right{position:static;height:auto;border-left:none;border-top:1px solid var(--hairline);}
 }
+
+/* ---- Cinq postures de la DRSP ---- */
+.conc-app .postures{display:grid;grid-template-columns:1fr;gap:0;}
+.conc-app .post{display:flex;gap:16px;border-top:1px solid var(--rule);padding:14px 0;}
+.conc-app .post:first-child{border-top:1px solid var(--ink);}
+.conc-app .post .pnum{font-size:13pt;font-weight:600;color:var(--faint);line-height:1.2;min-width:30px;}
+.conc-app .post .pbody p{margin:0;}
+.conc-app .post .ptitle{font-weight:600;font-size:10.5pt;margin-bottom:3px;}
+.conc-app .post .pdesc{font-size:10pt;color:var(--muted);line-height:1.5;}
+.conc-app .post .pex{font-size:9.5pt;color:var(--soft);line-height:1.5;margin-top:4px;}
+.conc-app .post .pexl{font-weight:600;margin-right:6px;text-transform:uppercase;font-size:8.5pt;letter-spacing:.04em;}

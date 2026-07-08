@@ -1978,5 +1978,37 @@ window.CONC = {
       "ac": "",
       "d": "Concertation <em>locale et intersectorielle</em> à l'échelle d'un quartier : citoyens, organismes, CIUSSS et arrondissement réunis pour le développement social local."
     }
+  ],
+  "postures": [
+    {
+      "n": "1",
+      "t": "Convocatrice",
+      "d": "Réunit les parties prenantes autour d'un enjeu de santé publique et porte la table.",
+      "ex": "Tables thématiques régionales en logement, sécurité alimentaire, prévention de l'itinérance."
+    },
+    {
+      "n": "2",
+      "t": "Productrice de connaissances",
+      "d": "Surveille, analyse, diffuse données et avis pour alimenter la concertation.",
+      "ex": "<strong>SÉSAM</strong>, ÉIES, portraits régionaux par dossier."
+    },
+    {
+      "n": "3",
+      "t": "Influenceuse de politiques",
+      "d": "Porte des recommandations auprès du municipal et du gouvernemental.",
+      "ex": "Mémoires à l'<strong>OCPM</strong>, recommandations au <strong>MAMH</strong>, avis publics."
+    },
+    {
+      "n": "4",
+      "t": "Soutien financier et technique",
+      "d": "Finance, accompagne et outille les acteurs locaux et régionaux.",
+      "ex": "<strong>PSOC</strong>, <strong>IMSDSL</strong>, fonds spécifiques en sécurité alimentaire, vieillissement, climat."
+    },
+    {
+      "n": "5",
+      "t": "Partenaire",
+      "d": "Siège dans des concertations qu'elle ne convoque pas, en y apportant une lecture santé publique.",
+      "ex": "Tables de quartier, instances pilotées par la Ville ou par les fondations."
+    }
   ]
 };

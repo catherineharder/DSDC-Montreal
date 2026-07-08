@@ -27,6 +27,19 @@
       return '<div class="def"><dt>' + d.t + (d.ac ? '<span class="ac">' + d.ac + '</span>' : '') + '</dt><dd>' + d.d + '</dd></div>';
     }).join('');
   }
+  function posturesHTML(posts) {
+    if (!posts || !posts.length) return '';
+    var items = posts.map(function (p, i) {
+      var num = p.n || String(i + 1);
+      if (num.length < 2) num = '0' + num;
+      return '<div class="post"><span class="pnum">' + num + '</span><div class="pbody">'
+        + '<p class="ptitle">' + p.t + '</p>'
+        + '<p class="pdesc">' + p.d + '</p>'
+        + (p.ex ? '<p class="pex"><span class="pexl">Exemple</span>' + p.ex + '</p>' : '')
+        + '</div></div>';
+    }).join('');
+    return '<section class="cblock" id="c-postures"><h2>Cinq postures de la <em>DRSP</em></h2><div class="postures">' + items + '</div></section>';
+  }
   var LEG = '<div class="legend-box"><div class="legend-row">'
     + '<span class="lg"><span class="sw" style="background:var(--nf-strat)"></span>Stratégique</span>'
     + '<span class="lg"><span class="sw" style="background:var(--nf-tact)"></span>Tactique</span>'
@@ -41,6 +54,7 @@
     + '<section class="cblock" id="c-partenaires"><h2>Partenaires</h2>' + partnersHTML(D.famsP) + '</section>'
     + '<section class="cblock" id="c-comites"><h2>Comités</h2>' + LEG + '<div id="ctree"></div></section>'
     + '<section class="cblock" id="c-definitions"><h2>Définitions</h2><dl>' + defsHTML(D.defs) + '</dl></section>'
+    + posturesHTML(D.postures)
     + '</div>'
     + '<div class="pane-right" id="pane-right"><div class="info-inner" id="info">'
     + '<div class="info-empty"><span class="big">Aucune sélection.</span>Cliquez sur un comité ou un partenaire pour afficher l\'information ici.</div>'
@@ -174,9 +188,14 @@
         var hit = !nq || normC(d.textContent).indexOf(nq) >= 0;
         d.style.display = hit ? '' : 'none'; if (hit) total++;
       });
-      // Masque toute section (Partenaires / Comités / Définitions) sans résultat
+      // Postures
+      root.querySelectorAll('#c-postures .post').forEach(function (d) {
+        var hit = !nq || normC(d.textContent).indexOf(nq) >= 0;
+        d.style.display = hit ? '' : 'none'; if (hit) total++;
+      });
+      // Masque toute section (Partenaires / Comités / Définitions / Postures) sans résultat
       root.querySelectorAll('.cblock').forEach(function (sec) {
-        var anyVis = [].some.call(sec.querySelectorAll('.pbox, .cbox, .def'), function (n) { return n.style.display !== 'none'; });
+        var anyVis = [].some.call(sec.querySelectorAll('.pbox, .cbox, .def, .post'), function (n) { return n.style.display !== 'none'; });
         sec.style.display = (!nq || anyVis) ? '' : 'none';
       });
       if (noResult) noResult.style.display = (nq && total === 0) ? 'inline' : 'none';
