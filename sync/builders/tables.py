@@ -2,7 +2,7 @@
 """Tables de quartier : feuille « Membres » -> assets/data/tables-quartier.members.js.
 
 Colonnes attendues (repérées par leur EN-TÊTE, l'ordre est libre) :
-    table-de-quartier | organisme | category | lien (ou link)
+    table-de-quartier | organisme | categorie (ou category) | lien (ou link)
 
 Les anciennes colonnes ID-table / ID-org sont ignorées si elles sont présentes.
 
@@ -18,6 +18,7 @@ import csv
 import io
 import json
 import re
+import unicodedata
 import urllib.parse
 from collections import OrderedDict
 
@@ -36,6 +37,22 @@ def name_to_slug(data_js_text):
 def maps_link(org):
     q = urllib.parse.quote(f"{org}, Montréal, QC, Canada", safe="")
     return f"https://www.google.com/maps/search/?api=1&query={q}"
+
+
+def _norm_txt(s):
+    """minuscules, sans accents ni points médians — pour repérer les personnes."""
+    s = unicodedata.normalize("NFKD", (s or "").lower().replace("·", ""))
+    return "".join(c for c in s if not unicodedata.combining(c))
+
+
+# Les membres qui sont des personnes (citoyen·nes, résident·e·s) n'ont ni site
+# web ni adresse : on n'affiche aucun lien pour eux — ni celui de la feuille,
+# ni un lien Google Maps généré. (« président » ne déclenche pas la règle.)
+_PERSONNES = re.compile(r"(?:^|[^a-z])(?:citoyen|resident)")
+
+
+def est_personne(cat, org):
+    return bool(_PERSONNES.search(_norm_txt(cat)) or _PERSONNES.search(_norm_txt(org)))
 
 
 def build(rows, slug_map):
@@ -74,7 +91,10 @@ def build(rows, slug_map):
         items = cats.setdefault(cat, [])
         if org == "":
             continue
-        items.append({"n": org, "l": link or maps_link(org)})
+        if est_personne(cat, org):
+            items.append({"n": org})
+        else:
+            items.append({"n": org, "l": link or maps_link(org)})
     out = {slug: [{"c": c, "items": it} for c, it in cats.items()]
            for slug, cats in tbl.items()}
     return out, missing

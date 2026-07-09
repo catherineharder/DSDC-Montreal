@@ -56,13 +56,15 @@ Une ligne = **un organisme membre** d'une table de quartier.
 |---|---|
 | **table-de-quartier** | Le **nom exact** de la table, ex. `CDC Centre-Sud` |
 | **organisme** | Le nom de l'organisme membre |
-| **category** | La catégorie d'appartenance, ex. `Membres actifs`, `Partenaires`… |
+| **categorie** | La catégorie d'appartenance, ex. `Membres actifs`, `Partenaires`… |
 | **lien** | Lien Google Maps (facultatif : généré tout seul si vide) |
 
 - **Ajouter un membre** : nouvelle ligne avec le bon nom de table dans
   `table-de-quartier`, le nom de l'organisme, et sa catégorie.
 - **Le lien Google Maps est généré tout seul** à partir du nom de l'organisme :
   vous n'avez **aucune adresse à saisir**.
+- **Exception — les personnes** : si la catégorie ou le nom contient
+  « citoyen·nes » ou « résident·e·s », aucun lien n'est affiché (ni généré).
 - ⚠️ **Le nom dans `table-de-quartier` doit correspondre exactement** à une des 32
   tables connues du site (mêmes accents, mêmes traits d'union). Si le nom ne
   correspond à aucune table, la ligne est simplement ignorée (le reste du site

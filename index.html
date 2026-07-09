@@ -16,9 +16,9 @@
 <div class="app">
 
   <nav class="nav" aria-label="Sections">
-    <div class="brand">DS-DC Montréal</div>
+    <div class="brand" title="Retour à l'accueil">DS-DC Montréal</div>
     <div class="nav-items">
-      <button class="nav-item" id="nav-cartes" data-view="cartes" aria-current="page">Cartes</button>
+      <button class="nav-item" id="nav-cartes" data-view="cartes" aria-current="false">Cartes</button>
       <button class="nav-item" id="nav-conc" data-view="conc" aria-current="false">Concertations</button>
       <button class="nav-item" id="nav-cadre" data-view="cadre" aria-current="false">Cadre conceptuel</button>
       <button class="nav-item" id="nav-ressources" data-view="ressources" aria-current="false">Ressources</button>
@@ -29,8 +29,15 @@
 
   <div class="views">
 
+    <!-- Accueil : page d'atterrissage (cliquer la marque y ramène) -->
+    <section class="view active" id="view-accueil" aria-label="Accueil">
+      <div class="full"><h1>DS-DC Montréal</h1>
+        <div class="stub"><div class="frame"><h2>À venir</h2><p>Contenu de la page d'accueil à venir.</p></div></div>
+      </div>
+    </section>
+
     <!-- Santé Québec : CIUSSS map (geometry TODO) -->
-    <section class="view active" id="view-cartes" aria-label="Cartes">
+    <section class="view" id="view-cartes" aria-label="Cartes" hidden>
       <div class="views map-views">
         <section class="view active" id="view-sante" aria-label="Santé Québec">
       <div class="wrap">

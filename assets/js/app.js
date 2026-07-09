@@ -39,11 +39,12 @@ function initNav() {
   const baseEl = document.querySelector("base");
   const BASE = baseEl ? new URL(baseEl.href).pathname : "/";
   const VIEW_SLUG = {
-    cartes: "cartes", conc: "concertations", cadre: "cadre-conceptuel",
+    accueil: "", cartes: "cartes", conc: "concertations", cadre: "cadre",
     ressources: "ressources", gloss: "glossaire",
   };
   const SLUG_VIEW = {};
   Object.keys(VIEW_SLUG).forEach((v) => { SLUG_VIEW[VIEW_SLUG[v]] = v; });
+  SLUG_VIEW["cadre-conceptuel"] = "cadre"; // ancienne URL (liens existants)
 
   const apply = (view) => {
     buttons.forEach((b) => {
@@ -52,10 +53,17 @@ function initNav() {
       const v = el("view-" + b.dataset.view);
       if (v) { v.classList.toggle("active", on); v.toggleAttribute("hidden", !on); }
     });
+    // la page d'accueil n'a pas de bouton d'onglet : on la bascule à part
+    const home = el("view-accueil");
+    if (home) {
+      const on = view === "accueil";
+      home.classList.toggle("active", on);
+      home.toggleAttribute("hidden", !on);
+    }
   };
   const viewFromPath = () => {
     const seg = location.pathname.slice(BASE.length).replace(/^\/+|\/+$/g, "").split("/")[0];
-    return SLUG_VIEW[seg] || "cartes";
+    return SLUG_VIEW[seg] || "accueil";
   };
   const go = (view, push) => {
     apply(view);
@@ -63,6 +71,16 @@ function initNav() {
   };
 
   buttons.forEach((b) => b.addEventListener("click", () => go(b.dataset.view, true)));
+  // Cliquer la marque « DS-DC Montréal » ramène à la page d'accueil.
+  const brand = document.querySelector(".brand");
+  if (brand) {
+    brand.setAttribute("role", "link");
+    brand.setAttribute("tabindex", "0");
+    brand.addEventListener("click", () => go("accueil", true));
+    brand.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go("accueil", true); }
+    });
+  }
   window.addEventListener("popstate", () => apply(viewFromPath()));
   go(viewFromPath(), false); // état initial (sans empiler d'historique)
 }
@@ -232,7 +250,7 @@ function buildCartesSearch() {
     if (reg.select) reg.select(raw);
   };
   document.querySelectorAll("#view-cartes .map-eyebrow").forEach((eb) => {
-    eb.appendChild(makeSearch(combined, pick, "Rechercher un territoire, un organisme…"));
+    eb.appendChild(makeSearch(combined, pick)); // placeholder par défaut : « Rechercher… »
   });
 }
 document.addEventListener("DOMContentLoaded", buildCartesSearch);

@@ -54,6 +54,14 @@ def _strip(s):
     return (s or "").strip()
 
 
+def _sans_balises(s, *tags):
+    """Retire les balises HTML listées (ouvrantes et fermantes) d'une valeur.
+    Le contenu textuel est conservé : « un <em>mandat</em> » -> « un mandat »."""
+    for t in tags:
+        s = re.sub(r"</?%s\s*>" % t, "", s or "")
+    return s
+
+
 def truthy(s):
     return _strip(s).lower() in ("x", "1", "true", "vrai", "oui", "yes", "lead")
 
@@ -233,13 +241,18 @@ def build(tabs):
         c["comp"] = [{"m": it["m"], "cat": it["cat"]} for it in comp_by_com.get(cid, [])]
         committees.append(c)
 
+    # Les définitions sont affichées en texte simple : les <em> décoratifs
+    # éventuellement présents dans la feuille sont retirés.
     defs_out = [{"t": _strip(d.get("terme")), "ac": _strip(d.get("acronym")),
-                 "d": _strip(d.get("definition"))} for d in defs if _strip(d.get("terme"))]
+                 "d": _sans_balises(_strip(d.get("definition")), "em")}
+                for d in defs if _strip(d.get("terme"))]
 
-    # --- Postures de la DRSP (onglet optionnel)
+    # --- Postures de la DRSP (onglet optionnel) — les <strong> sont retirés.
     post = csv_to_dicts(tabs.get("Postures") or "")
-    postures = [{"n": _strip(p.get("ordre")), "t": _strip(p.get("posture")),
-                 "d": _strip(p.get("description")), "ex": _strip(p.get("exemple"))}
+    postures = [{"n": _strip(p.get("ordre")),
+                 "t": _sans_balises(_strip(p.get("posture")), "strong"),
+                 "d": _sans_balises(_strip(p.get("description")), "strong"),
+                 "ex": _sans_balises(_strip(p.get("exemple")), "strong")}
                 for p in post if _strip(p.get("posture"))]
     postures.sort(key=lambda p: (p["n"].zfill(3), p["t"]))
 

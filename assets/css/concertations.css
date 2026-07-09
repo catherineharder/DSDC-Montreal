@@ -29,7 +29,7 @@
 .conc-app .pagehead h1{font-size:46px;font-weight:700;line-height:1.12;letter-spacing:-.015em;margin:0;}
 
 .conc-app .conc-search{flex:0 0 auto;display:flex;align-items:center;gap:10px;}
-.conc-app .conc-search input{width:230px;max-width:46vw;padding:7px 12px;border:1px solid var(--hairline);border-radius:8px;font:inherit;font-size:10.5pt;color:var(--ink);background:#fff;outline:none;transition:border-color 120ms ease;}
+.conc-app .conc-search input{width:230px;max-width:46vw;padding:7px 12px;border:1.5px solid var(--ink);border-radius:8px;font:inherit;font-size:10.5pt;color:var(--ink);background:#fff;outline:none;transition:border-color 120ms ease;}
 .conc-app .conc-search input:focus{border-color:var(--accent);}
 .conc-app .conc-noresult{display:none;font-size:9.5pt;color:#000;}
 

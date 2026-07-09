@@ -12,7 +12,8 @@
 
   /* ---- Top navigation --------------------------------------------------- */
   .nav{display:flex;align-items:center;gap:30px;height:var(--nav-h);flex:0 0 auto;padding:0 26px;background:#fff;border-bottom:1px solid var(--rule);}
-  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:20px;letter-spacing:-.01em;white-space:nowrap;}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:20px;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;}
+  .brand:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:6px;}
   .brand img{width:30px;height:30px;display:block;}
   .nav-items{display:flex;gap:4px;}
   .nav-item{appearance:none;border:0;background:transparent;font:inherit;font-size:15px;font-weight:600;color:var(--ink);padding:7px 14px;border-radius:8px;cursor:pointer;transition:background 120ms ease;}
@@ -120,9 +121,10 @@
 
 /* ---- Shared map search: compact, pinned to the top-right of the eyebrow ---- */
 .map-search{position:relative;margin-left:auto;}
-.map-search input{width:280px;max-width:48vw;padding:6px 11px;border:1px solid var(--rule);border-radius:7px;font:inherit;font-size:12.5px;color:var(--ink);background:#fff;outline:none;transition:border-color 120ms ease;}
+/* même gabarit que la boîte de recherche de Concertations (.conc-search input) */
+.map-search input{width:230px;max-width:46vw;padding:7px 12px;border:1.5px solid var(--ink);border-radius:8px;font:inherit;font-size:10.5pt;color:var(--ink);background:#fff;outline:none;transition:border-color 120ms ease;}
 .map-search input:focus{border-color:var(--accent);}
-.map-results{position:absolute;top:32px;right:0;left:auto;width:320px;max-width:78vw;background:#fff;border:1px solid var(--rule);border-radius:8px;max-height:320px;overflow-y:auto;display:none;z-index:30;box-shadow:0 8px 20px rgba(0,0,0,.10);}
+.map-results{position:absolute;top:40px;right:0;left:auto;width:320px;max-width:78vw;background:#fff;border:1px solid var(--rule);border-radius:8px;max-height:320px;overflow-y:auto;display:none;z-index:30;box-shadow:0 8px 20px rgba(0,0,0,.10);}
 .map-results.open{display:block;}
 .map-results .mr-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 13px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--rule);}
 .map-results .mr-item:last-child{border-bottom:none;}

@@ -1980,77 +1980,77 @@ window.CONC = {
     {
       "t": "Communauté de pratique",
       "ac": "CoP",
-      "d": "Espace d'<em>apprentissage entre pairs</em> partageant un même champ de pratique. On y échange savoirs et outils, sans y prendre de décisions engageantes."
+      "d": "Espace d'apprentissage entre pairs partageant un même champ de pratique. On y échange savoirs et outils, sans y prendre de décisions engageantes."
     },
     {
       "t": "Concertation",
       "ac": "",
-      "d": "Processus structuré par lequel plusieurs acteurs <em>se coordonnent volontairement</em> pour partager une lecture commune et dégager des priorités. À distinguer de la simple consultation."
+      "d": "Processus structuré par lequel plusieurs acteurs se coordonnent volontairement pour partager une lecture commune et dégager des priorités. À distinguer de la simple consultation."
     },
     {
       "t": "Conférence administrative régionale",
       "ac": "CAR",
-      "d": "Lieu de coordination des <em>ministères et organismes du gouvernement du Québec</em> à l'échelle d'une région administrative."
+      "d": "Lieu de coordination des ministères et organismes du gouvernement du Québec à l'échelle d'une région administrative."
     },
     {
       "t": "Conseil",
       "ac": "",
-      "d": "Instance délibérante ou consultative dotée d'un <em>mandat formel</em> et d'une composition arrêtée (conseil d'administration, conseil consultatif)."
+      "d": "Instance délibérante ou consultative dotée d'un mandat formel et d'une composition arrêtée (conseil d'administration, conseil consultatif)."
     },
     {
       "t": "Corporation de développement communautaire",
       "ac": "CDC",
-      "d": "Regroupement d'organismes d'action communautaire d'un territoire qui favorise la <em>concertation</em> et le <em>développement social local</em>."
+      "d": "Regroupement d'organismes d'action communautaire d'un territoire qui favorise la concertation et le développement social local."
     },
     {
       "t": "Groupe de répondants",
       "ac": "GR",
-      "d": "Groupe rassemblant les <em>répondantes et répondants régionaux</em> d'une thématique pour décliner et coordonner les travaux d'une table nationale."
+      "d": "Groupe rassemblant les répondantes et répondants régionaux d'une thématique pour décliner et coordonner les travaux d'une table nationale."
     },
     {
       "t": "Groupe de travail",
       "ac": "GT",
-      "d": "Configuration <em>souple et temporaire</em> mise sur pied pour livrer un produit délimité, puis dissoute une fois le mandat accompli."
+      "d": "Configuration souple et temporaire mise sur pied pour livrer un produit délimité, puis dissoute une fois le mandat accompli."
     },
     {
       "t": "Instance",
       "ac": "",
-      "d": "Lieu formel doté d'un <em>mandat</em>, d'une <em>composition arrêtée</em> et de <em>règles de fonctionnement</em>. Plus permanente et engageante qu'un comité de travail."
+      "d": "Lieu formel doté d'un mandat, d'une composition arrêtée et de règles de fonctionnement. Plus permanente et engageante qu'un comité de travail."
     },
     {
       "t": "Intersectoriel",
       "ac": "",
-      "d": "Qui mobilise <em>plusieurs secteurs</em> (santé, éducation, municipal, communautaire, économique) autour d'un même enjeu."
+      "d": "Qui mobilise plusieurs secteurs (santé, éducation, municipal, communautaire, économique) autour d'un même enjeu."
     },
     {
       "t": "Niveau opérationnel",
       "ac": "",
-      "d": "Palier où l'on assure la <em>mise en œuvre concrète</em>, le suivi et la livraison des actions sur le terrain."
+      "d": "Palier où l'on assure la mise en œuvre concrète, le suivi et la livraison des actions sur le terrain."
     },
     {
       "t": "Niveau stratégique",
       "ac": "",
-      "d": "Palier où l'on arrête les <em>orientations</em>, alloue les <em>ressources</em> et engage les organisations."
+      "d": "Palier où l'on arrête les orientations, alloue les ressources et engage les organisations."
     },
     {
       "t": "Niveau tactique",
       "ac": "",
-      "d": "Palier intermédiaire qui traduit les orientations stratégiques en <em>plans coordonnés</em> et en arbitrages de mise en œuvre."
+      "d": "Palier intermédiaire qui traduit les orientations stratégiques en plans coordonnés et en arbitrages de mise en œuvre."
     },
     {
       "t": "Sectoriel",
       "ac": "",
-      "d": "Qui relève d'un <em>seul secteur</em> ou champ d'intervention, par opposition à intersectoriel."
+      "d": "Qui relève d'un seul secteur ou champ d'intervention, par opposition à intersectoriel."
     },
     {
       "t": "Statutaire",
       "ac": "",
-      "d": "Se dit d'une rencontre ou d'une instance prévue de façon <em>régulière et obligatoire</em> par un cadre, un règlement ou une entente."
+      "d": "Se dit d'une rencontre ou d'une instance prévue de façon régulière et obligatoire par un cadre, un règlement ou une entente."
     },
     {
       "t": "Table de quartier",
       "ac": "",
-      "d": "Concertation <em>locale et intersectorielle</em> à l'échelle d'un quartier : citoyens, organismes, CIUSSS et arrondissement réunis pour le développement social local."
+      "d": "Concertation locale et intersectorielle à l'échelle d'un quartier : citoyens, organismes, CIUSSS et arrondissement réunis pour le développement social local."
     }
   ],
   "postures": [
@@ -2064,19 +2064,19 @@ window.CONC = {
       "n": "2",
       "t": "Productrice de connaissances",
       "d": "Surveille, analyse, diffuse données et avis pour alimenter la concertation.",
-      "ex": "<strong>SÉSAM</strong>, ÉIES, portraits régionaux par dossier."
+      "ex": "SÉSAM, ÉIES, portraits régionaux par dossier."
     },
     {
       "n": "3",
       "t": "Influenceuse de politiques",
       "d": "Porte des recommandations auprès du municipal et du gouvernemental.",
-      "ex": "Mémoires à l'<strong>OCPM</strong>, recommandations au <strong>MAMH</strong>, avis publics."
+      "ex": "Mémoires à l'OCPM, recommandations au MAMH, avis publics."
     },
     {
       "n": "4",
       "t": "Soutien financier et technique",
       "d": "Finance, accompagne et outille les acteurs locaux et régionaux.",
-      "ex": "<strong>PSOC</strong>, <strong>IMSDSL</strong>, fonds spécifiques en sécurité alimentaire, vieillissement, climat."
+      "ex": "PSOC, IMSDSL, fonds spécifiques en sécurité alimentaire, vieillissement, climat."
     },
     {
       "n": "5",

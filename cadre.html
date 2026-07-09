@@ -60,9 +60,9 @@ html, body {
 .zone:hover { background: var(--red-soft); border-color: rgba(177, 38, 56, 0.40); }
 .zone.active { background: var(--red-hover); border-color: var(--red); box-shadow: 0 0 0 2px rgba(177, 38, 56, 0.10); }
 .right { background: #fbfaf9; overflow-y: auto; padding: 40px 48px 80px 48px; }
-/* Barre de recherche — même hauteur/trait/couleur que l'encadré de l'onglet sélectionné (Cartes) */
-.search-bar { position: relative; flex: 0 0 auto; width: 240px; max-width: 50%; margin-left: auto; }
-.search-bar input { width: 100%; padding: 4px 11px; font-family: inherit; font-size: 12.5px; border: 1.5px solid #212121; border-radius: 7px; background: #fff; outline: none; transition: border-color 0.15s; }
+/* Barre de recherche — même gabarit que celle de Concertations (.conc-search input) */
+.search-bar { position: relative; flex: 0 0 auto; width: 230px; max-width: 46vw; margin-left: auto; }
+.search-bar input { width: 100%; box-sizing: border-box; padding: 7px 12px; font-family: inherit; font-size: 10.5pt; color: #212121; border: 1.5px solid #212121; border-radius: 8px; background: #fff; outline: none; transition: border-color 0.15s; }
 .search-bar input:focus { border-color: var(--red); }
 .search-results { position: absolute; top: 40px; left: auto; right: 0; width: 340px; max-width: 80vw; background: #fff; border: 1px solid var(--border); border-radius: 8px; max-height: 340px; overflow-y: auto; display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.06); z-index: 20; }
 .search-results.open { display: block; }
@@ -136,7 +136,7 @@ table.dsl td a { color: var(--red); text-decoration: none; border-bottom: 1px do
       </div>
       <button class="home-btn" id="homeBtn">Vue d'ensemble</button>
       <div class="search-bar">
-        <input type="text" id="search" placeholder="Rechercher un concept...">
+        <input type="text" id="search" placeholder="Rechercher…" autocomplete="off">
         <div class="search-results" id="searchResults"></div>
       </div>
     </div>
