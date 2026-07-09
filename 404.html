@@ -5,11 +5,11 @@
 <title>Redirection…</title>
 <script>
 /* Routage par onglet sur GitHub Pages.
-   Pages renvoie ce fichier pour toute URL profonde (ex. /DSDC-Montreal/concertations).
+   Pages renvoie ce fichier pour toute URL profonde (ex. /concertations).
    On encode le chemin dans la requête puis on revient à index.html, qui le décode.
-   pathSegmentsToKeep = 1 : on conserve le segment du dépôt « DSDC-Montreal ». */
+   pathSegmentsToKeep = 0 : domaine personnalisé (dsdcmontreal.ca), site servi à la racine. */
 (function () {
-  var pathSegmentsToKeep = 1;
+  var pathSegmentsToKeep = 0;
   var l = window.location;
   l.replace(
     l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
