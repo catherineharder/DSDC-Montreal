@@ -54,11 +54,10 @@ Une ligne = **un organisme membre** d'une table de quartier.
 
 | Colonne | À mettre |
 |---|---|
-| **ID-table** | Code de la table, ex. `T01` (gardez le même pour toutes les lignes d'une même table) |
 | **table-de-quartier** | Le **nom exact** de la table, ex. `CDC Centre-Sud` |
-| **ID-org** | Code interne de l'organisme (facultatif, pour votre suivi) |
 | **organisme** | Le nom de l'organisme membre |
 | **category** | La catégorie d'appartenance, ex. `Membres actifs`, `Partenaires`… |
+| **lien** | Lien Google Maps (facultatif : généré tout seul si vide) |
 
 - **Ajouter un membre** : nouvelle ligne avec le bon nom de table dans
   `table-de-quartier`, le nom de l'organisme, et sa catégorie.
@@ -89,8 +88,7 @@ Un partenaire = une ligne.
 
 | Colonne | À mettre |
 |---|---|
-| **ID-par** | Identifiant court et unique, sans espace ni accent, ex. `mamh`. **C'est lui qui relie un partenaire aux comités** (voir `Composition`). |
-| **acronym** | Le sigle affiché en gras sur la case, ex. `MAMH` |
+| **acronym** | Le sigle affiché en gras sur la case, ex. `MAMH`. **Doit être unique** : c'est lui qui relie un partenaire aux comités (voir `Composition`). |
 | **partenaire** | Le **nom complet**, ex. `Ministère des Affaires municipales et de l'Habitation` |
 | **famille** | Le **nom de la famille** (regroupe et colore les cases), ex. `Ministères`, `Communautaire`… |
 | **parent** | Organisme parent, affiché entre parenthèses (facultatif), ex. `MSSS` |
@@ -106,8 +104,7 @@ Un comité = une ligne.
 
 | Colonne | À mettre |
 |---|---|
-| **ID-com** | Identifiant court unique, ex. `trsp`. Sert à relier la composition (voir `Composition`). |
-| **acronym** | Le sigle affiché en gras sur la case, ex. `TRSP` |
+| **acronym** | Le sigle affiché en gras sur la case, ex. `TRSP`. **Doit être unique** : c'est lui qui relie la composition (voir `Composition`). |
 | **comite** | Le **nom complet** (titre de la fiche), ex. `Table régionale de santé publique` |
 | **groupe** | Le **nom du regroupement** (sous-titre de section), ex. `Gouvernance régionale` |
 | **parent** | Instance / comité de rattachement, affiché en petit sous le nom (facultatif) |
@@ -121,15 +118,16 @@ Une ligne = **un membre** d'un comité.
 
 | Colonne | À mettre |
 |---|---|
-| **ID-com** | L'`ID-com` du comité (même valeur que dans l'onglet `Comites`) |
-| **comite** | Le nom du comité (pour vous repérer ; non affiché) |
-| **ID-mem** | Si ce membre est aussi un **partenaire**, mettez son `ID-par`. Le site crée alors automatiquement le lien « présent dans les comités ». Sinon, laissez vide. |
+| **comite** | L'**acronym** du comité (même valeur que dans l'onglet `Comites` ; son nom complet est aussi accepté). Majuscules et accents sans importance. |
 | **membre** | Le libellé du membre, ex. `Directions concernées des 5 CIUSSS` |
+| **partenaire** | Si ce membre est aussi un **partenaire**, mettez son `acronym` (celui de l'onglet `Partenaires`). Le site crée alors automatiquement le lien « présent dans les comités ». Sinon, laissez vide. |
 | **categorie** | Rôle affiché entre parenthèses après le nom : `porteur`, `DRSP`, ou vide. **Le `porteur` apparaît toujours en premier, puis les `DRSP`, puis le reste.** Ex. : `MAMH (porteur)`, `EUSP (DRSP)`. |
 
-Pour ajouter un siège : nouvelle ligne avec le bon `ID-com`. Pour qu'un partenaire
-soit listé sur sa propre fiche comme « présent dans » un comité, renseignez
-`ID-mem` avec son `ID-par`.
+Pour ajouter un siège : nouvelle ligne avec l'acronym du comité dans `comite`.
+Pour qu'un partenaire soit listé sur sa propre fiche comme « présent dans » un
+comité, renseignez `partenaire` avec son acronym. Une référence qui ne
+correspond à aucun comité / partenaire est signalée dans le journal de
+synchronisation et la ligne est ignorée.
 
 ### Onglet `Definitions` — le lexique de bas de section
 | Colonne | À mettre |
@@ -160,6 +158,9 @@ vide, la section n'apparaît simplement pas sur le site.
 - **Une modification, un test** : changez peu de choses à la fois, puis vérifiez
   le site le lendemain. C'est plus facile de repérer une erreur.
 - **Copiez une ligne existante** comme modèle plutôt que de partir de zéro.
+- Si vous **renommez l'acronym** d'un comité ou d'un partenaire, pensez à le
+  mettre à jour aussi dans l'onglet `Composition` (colonnes `comite` et
+  `partenaire`) : c'est lui qui fait le lien.
 - Les listes dans une cellule se séparent par un point-virgule `;`.
 - Les cases à cocher se notent `x` (ou rien).
 - En cas de doute, l'ancien contenu est toujours récupérable : chaque

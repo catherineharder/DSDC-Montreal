@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Tables de quartier : feuille « Membres » -> assets/data/tables-quartier.members.js.
 
-Colonnes attendues (mêmes que l'ancien tables_de_quartier.csv) :
-    ID-table | table-de-quartier | ID-org | organisme | category | link
+Colonnes attendues (repérées par leur EN-TÊTE, l'ordre est libre) :
+    table-de-quartier | organisme | category | lien (ou link)
+
+Les anciennes colonnes ID-table / ID-org sont ignorées si elles sont présentes.
 
 - Les lignes sont regroupées par table puis par catégorie, dans l'ordre de la feuille.
 - Le lien Google Maps est facultatif : s'il est vide, il est généré à partir du
@@ -38,12 +40,28 @@ def maps_link(org):
 
 def build(rows, slug_map):
     """rows : liste de listes (avec en-tête). Retourne (dict TDQ_MEMBERS, manquants)."""
-    data = rows[1:] if rows else []
+    header = [c.strip().lower() for c in (rows[0] if rows else [])]
+
+    def col(*names):
+        for n in names:
+            if n in header:
+                return header.index(n)
+        return -1
+
+    i_tbl, i_org = col("table-de-quartier"), col("organisme")
+    i_cat, i_lnk = col("category", "categorie"), col("lien", "link")
+    if i_tbl < 0 or i_org < 0:
+        raise RuntimeError(
+            "Onglet Membres : en-têtes « table-de-quartier » et « organisme » requis.")
+
+    def cell(row, i):
+        return row[i].strip() if 0 <= i < len(row) else ""
+
     tbl = OrderedDict()
     missing = set()
-    for row in data:
-        row = (row + ["", "", "", "", "", ""])[:6]
-        tid, tname, oid, org, cat, link = (c.strip() for c in row)
+    for row in rows[1:]:
+        tname, org = cell(row, i_tbl), cell(row, i_org)
+        cat, link = cell(row, i_cat), cell(row, i_lnk)
         if not tname:
             continue
         slug = slug_map.get(tname)
