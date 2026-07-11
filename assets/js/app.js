@@ -90,7 +90,7 @@ function initNav() {
    Montréal, Tables de quartier). Each map's left column lists the three names;
    the selected one is boxed (aria-current). Clicking a name swaps the map. */
 function initCartes() {
-  const maps = ["sante", "ville", "tdq"];
+  const maps = ["sante", "ville", "tdq", "deputes"];
   const picks = [...document.querySelectorAll(".map-pick")];
   if (!picks.length) return;
   const showMap = (map) => {
@@ -232,7 +232,7 @@ window.CARTES = window.CARTES || {};
    "switch map + select territory" — used by the tables-de-quartier member
    index ("tdqm"), whose entries select a table then highlight the member. */
 function buildCartesSearch() {
-  const order = ["sante", "ville", "tdq", "tdqm"];
+  const order = ["sante", "ville", "tdq", "deputes", "tdqm"];
   const combined = [];
   order.forEach((k) => {
     const reg = window.CARTES[k];
