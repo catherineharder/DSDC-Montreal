@@ -74,6 +74,8 @@ function initIndicMap() {
   };
   const IEMV_PAL6 = ["#f4f0f9", "#ded2ee", "#c0a8dc", "#9d7ac6", "#7a52ac", "#563385"];
   const IEMV_RAMP7 = ["#f4f0f9", "#e3d9f1", "#cbb5e2", "#b08fd2", "#9169bf", "#7247a8", "#552f8a"];
+  const MPC_PAL6 = ["#edf5ef", "#cfe5d5", "#a3ccae", "#6fae81", "#3f8a58", "#1e5e3a"];
+  const LOG_PAL6 = ["#fdeef3", "#f8ccdc", "#ef9dba", "#dd6494", "#b93a6e", "#8a1f4d"];
 
   /* mini-graphique d'évolution : % de la population en quintiles 4-5, deux courbes
      étiquetées directement, référence Montréal à 40 % (par construction, 40 % de la
@@ -119,6 +121,38 @@ function initIndicMap() {
     const g = DATA && DATA[grp] && DATA[grp].geo[geoId];
     return g ? g[slug] : null;
   };
+
+  /* fabrique d'indicateur « taux simple » : une valeur (%) par territoire,
+     comparée à la valeur montréalaise dans le panneau. */
+  const rateGroup = (cfg) => ({
+    id: cfg.id,
+    label: cfg.label,
+    available: !!(DATA && DATA[cfg.id]),
+    breaks: cfg.breaks,
+    dims: null,
+    dimTitle: () => cfg.title,
+    value: (geoId, slug) => { const r = rec(cfg.id, geoId, slug); return r ? r.v : null; },
+    pal: () => cfg.pal,
+    legendTitle: () => cfg.legendTitle,
+    legendNote: () => cfg.legendNote,
+    landing: (geo) => cfg.landing(geo),
+    panel: (geo, slug) => {
+      const r = rec(cfg.id, geo.id, slug);
+      if (!r) return `<p class="intro">Données non disponibles pour ce territoire.</p>`;
+      const overall = DATA[cfg.id].meta.overall;
+      const dark = cfg.pal[cfg.pal.length - 1];
+      return (
+        `<div class="indic-kpi">` +
+        `<div class="kpi"><div class="n" style="color:${dark}">${PCT(r.v)}</div><div class="l">${cfg.kpiLabel}</div></div>` +
+        (overall != null
+          ? `<div class="kpi"><div class="n" style="color:var(--muted)">${PCT(overall)}</div><div class="l">île de Montréal (comparaison)</div></div>`
+          : "") +
+        `</div>` +
+        `<p class="intro" style="margin-top:10px">${cfg.baseLine(r)} · ${r.nad} aires de diffusion</p>` +
+        `<p class="iq-note">${cfg.note}</p>`
+      );
+    },
+  });
 
   /* ---- registre des indicateurs (un sous-onglet chacun) ------------------- */
   const GROUPS = [
@@ -171,6 +205,57 @@ function initIndicMap() {
         );
       },
     },
+    rateGroup({
+      id: "mpc",
+      label: "Faible revenu",
+      title: "Faible revenu (MPC)",
+      breaks: [5, 10, 15, 20, 25],
+      pal: MPC_PAL6,
+      legendTitle: "Faible revenu selon la MPC (2021)",
+      legendNote: "% de la population sous la mesure\ndu panier de consommation (2020)",
+      kpiLabel: "population en situation de faible revenu selon la <strong>mesure du panier de consommation</strong> (MPC, revenus de 2020)",
+      baseLine: (r) => `Population en ménage privé : ${r.pop.toLocaleString("fr-CA")}`,
+      note: "La MPC est la mesure officielle de la pauvreté au Canada : elle établit le coût d'un panier de " +
+        "biens et services de base (logement, alimentation, vêtements, transport et autres nécessités) et " +
+        "compte les personnes dont le revenu disponible n'y suffit pas. Revenus de l'année 2020, marqués par " +
+        "les prestations d'urgence de la pandémie (PCU), qui ont abaissé temporairement les taux de faible revenu. " +
+        "Source : Statistique Canada, Recensement 2021, profil des aires de diffusion.",
+      landing: (geo) =>
+        `<p class="intro"><strong>Faible revenu selon la mesure du panier de consommation (MPC)</strong> — la ` +
+        `mesure officielle de la pauvreté au Canada : le pourcentage de personnes dont le revenu disponible ne ` +
+        `suffit pas au coût d'un panier de biens et services de base dans leur région. La carte montre ce taux ` +
+        `pour chaque territoire (revenus de 2020, recensement de 2021).</p>` +
+        `<p class="intro">Découpage affiché : <strong>${esc(geo.full)}</strong>. Cliquez un territoire pour le ` +
+        `détail ; cliquez hors de l'île pour revenir à cette fiche.</p>` +
+        `<p class="iq-note">Les revenus de 2020 incluent les prestations d'urgence de la pandémie (PCU), qui ont ` +
+        `temporairement abaissé les taux de faible revenu partout au pays. Source : Statistique Canada, ` +
+        `Recensement 2021 ; agrégation par aire de diffusion.</p>`,
+    }),
+    rateGroup({
+      id: "logement",
+      label: "Logement",
+      title: "Logement — taux d'effort ≥ 30 %",
+      breaks: [15, 20, 25, 30, 35],
+      pal: LOG_PAL6,
+      legendTitle: "Taux d'effort au logement ≥ 30 % (2021)",
+      legendNote: "% des ménages consacrant 30 % ou plus\nde leur revenu aux frais de logement",
+      kpiLabel: "ménages consacrant <strong>30 % ou plus</strong> de leur revenu aux frais de logement",
+      baseLine: (r) => `Ménages privés : ${r.men.toLocaleString("fr-CA")}`,
+      note: "Le seuil de 30 % est la norme canadienne d'abordabilité du logement : au-delà, un ménage risque de " +
+        "devoir comprimer ses autres dépenses essentielles. Ménages privés dont le rapport frais de " +
+        "logement / revenu est calculable (locataires et propriétaires). " +
+        "Source : Statistique Canada, Recensement 2021, profil des aires de diffusion.",
+      landing: (geo) =>
+        `<p class="intro"><strong>Taux d'effort au logement</strong> — le pourcentage des ménages qui consacrent ` +
+        `30 % ou plus de leur revenu total aux frais de logement (loyer ou paiements hypothécaires, services ` +
+        `publics, taxes). C'est la norme canadienne d'abordabilité : au-delà de ce seuil, le logement gruge les ` +
+        `autres dépenses essentielles du ménage.</p>` +
+        `<p class="intro">Découpage affiché : <strong>${esc(geo.full)}</strong>. Cliquez un territoire pour le ` +
+        `détail ; cliquez hors de l'île pour revenir à cette fiche.</p>` +
+        `<p class="iq-note">Source : Statistique Canada, Recensement 2021, profil des aires de diffusion. Les ` +
+        `frais de logement de 2021 sont mis en rapport avec les revenus de 2020 (année marquée par les ` +
+        `prestations d'urgence de la pandémie).</p>`,
+    }),
     {
       id: "iemv",
       label: "Équité des milieux de vie",

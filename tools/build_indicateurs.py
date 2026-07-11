@@ -33,6 +33,8 @@ import unicodedata
 import zipfile
 from pathlib import Path
 
+import csv
+
 import openpyxl
 import shapefile  # pyshp
 from pyproj import Transformer
@@ -147,7 +149,9 @@ def load_iemv():
             pt = Point(*tr(pt.x, pt.y))
         score = p.get("Indice_emv")
         score = None if score is None or (isinstance(score, float) and math.isnan(score)) else int(score)
-        out[ad] = {"pt": pt, "nom": p.get("NOM"), "score": score,
+        mpc = p.get("MPC21")
+        mpc = None if mpc is None or (isinstance(mpc, float) and math.isnan(mpc)) else float(mpc)
+        out[ad] = {"pt": pt, "nom": p.get("NOM"), "score": score, "mpc": mpc,
                    "pop": int(p.get("tot_pop") or 0)}
     print(f"IEMV : {path.name}, {len(out)} AD")
     return out
@@ -341,6 +345,79 @@ def main():
         t4 = sum(a["pop"] * a["p4"] / 100 for a in out.values())
         print(f"iemv {geo} : {len(out)} territoires | pop {tp:,} | ≥4 vulnérabilités {100*t4/tp:.1f} %")
 
+    # ---------------- mpc : taux MPC par AD (champ MPC21 du GeoJSON IEMV) --------
+    # moyenne des taux d'AD pondérée par la population de l'AD
+    mpc_data = {"geo": {}}
+    mpc_tot = [0.0, 0.0]
+    for geo in ("tq", "vdm", "sq"):
+        m = {}
+        for ad, v in iemv.items():
+            if v["mpc"] is None or v["pop"] == 0:
+                continue
+            if geo == "tq":  # totaux île : une seule fois
+                mpc_tot[0] += v["mpc"] * v["pop"]
+                mpc_tot[1] += v["pop"]
+            slug = geo_of_2021[geo].get(ad)
+            if slug is None:
+                continue
+            r = m.setdefault(slug, [0.0, 0.0, 0])
+            r[0] += v["mpc"] * v["pop"]
+            r[1] += v["pop"]
+            r[2] += 1
+        mpc_data["geo"][geo] = {s: {"v": round(a / b, 1), "pop": int(b), "nad": n}
+                                for s, (a, b, n) in sorted(m.items()) if b}
+    mpc_data["meta"] = {
+        "source": "Statistique Canada, Recensement 2021 ; champ MPC21 du jeu de données "
+                  "IEMV (Ville de Montréal)",
+        "overall": round(mpc_tot[0] / mpc_tot[1], 1) if mpc_tot[1] else None,
+        "annee": 2021,
+    }
+    print(f"mpc : île {mpc_data['meta']['overall']} % | " +
+          " | ".join(f"{g} {len(mpc_data['geo'][g])} terr." for g in ("tq", "vdm", "sq")))
+
+    # ---------------- logement : taux d'effort >= 30 % (profil du recensement) ---
+    # cache produit par tools/extract_census2021.py ; comptes de ménages :
+    # CID 1465 = base (ménages propriétaires et locataires, revenu > 0),
+    # CID 1467 = 30 % ou plus du revenu consacré aux frais de logement.
+    logement_data = None
+    cache = IND / "census2021_mtl.csv"
+    if cache.exists():
+        num = lambda s: None if s in ("", "..", "x", "F", "...") else float(s)
+        byad = {}
+        for row in csv.DictReader(open(cache, encoding="utf-8")):
+            byad.setdefault(row["DAUID"], {})[row["CID"]] = num(row["C1"])
+        logement_data = {"geo": {}}
+        log_tot = [0.0, 0.0]
+        for geo in ("tq", "vdm", "sq"):
+            lg = {}
+            for ad, vals in byad.items():
+                base, c30 = vals.get("1465"), vals.get("1467")
+                if not base or c30 is None:
+                    continue
+                if geo == "tq":
+                    log_tot[0] += c30
+                    log_tot[1] += base
+                slug = geo_of_2021[geo].get(ad)
+                if slug is None:
+                    continue
+                r = lg.setdefault(slug, [0.0, 0.0, 0])
+                r[0] += c30
+                r[1] += base
+                r[2] += 1
+            logement_data["geo"][geo] = {s: {"v": round(100 * a / b, 1), "men": int(b), "nad": n}
+                                         for s, (a, b, n) in sorted(lg.items()) if b}
+        logement_data["meta"] = {
+            "source": "Statistique Canada, Recensement 2021 (98-401-X2021006), "
+                      "profil des aires de diffusion",
+            "overall": round(100 * log_tot[0] / log_tot[1], 1) if log_tot[1] else None,
+            "annee": 2021,
+        }
+        print(f"logement 30 %+ : île {logement_data['meta']['overall']} % | " +
+              " | ".join(f"{g} {len(logement_data['geo'][g])} terr." for g in ("tq", "vdm", "sq")))
+    else:
+        print("census2021_mtl.csv absent — indicateur logement sauté "
+              "(lancer tools/extract_census2021.py)")
+
     # contrôle defavo : part régionale Q4-Q5 ≈ 40 %
     for y in years:
         agg = years_data[y]["sq"]
@@ -348,7 +425,12 @@ def main():
         tm = sum(a["mat"][3] + a["mat"][4] for a in agg.values())
         print(f"contrôle defavo {y} (sq) : pop {tp:,} | Q4-Q5 mat {100*tm/tp:.1f} % (attendu ≈ 40 %)")
 
-    data = {
+    data = {}
+    if mpc_data:
+        data["mpc"] = mpc_data
+    if logement_data:
+        data["logement"] = logement_data
+    data |= {
         "defavo": {
             "meta": {
                 "source": "INSPQ, Indice de défavorisation matérielle et sociale (2011, 2016, 2021) ; "
