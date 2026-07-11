@@ -40,7 +40,7 @@ function initNav() {
   const BASE = baseEl ? new URL(baseEl.href).pathname : "/";
   const VIEW_SLUG = {
     accueil: "", cartes: "cartes", conc: "concertations", cadre: "cadre",
-    ressources: "ressources", gloss: "glossaire",
+    indic: "indicateurs", ressources: "ressources", gloss: "glossaire",
   };
   const SLUG_VIEW = {};
   Object.keys(VIEW_SLUG).forEach((v) => { SLUG_VIEW[VIEW_SLUG[v]] = v; });

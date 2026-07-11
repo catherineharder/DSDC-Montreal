@@ -21,6 +21,7 @@
       <button class="nav-item" id="nav-cartes" data-view="cartes" aria-current="false">Cartes</button>
       <button class="nav-item" id="nav-conc" data-view="conc" aria-current="false">Concertations</button>
       <button class="nav-item" id="nav-cadre" data-view="cadre" aria-current="false">Cadre conceptuel</button>
+      <button class="nav-item" id="nav-indic" data-view="indic" aria-current="false">Indicateurs</button>
       <button class="nav-item" id="nav-ressources" data-view="ressources" aria-current="false">Ressources</button>
       <button class="nav-item" id="nav-gloss" data-view="gloss" aria-current="false">Glossaire</button>
     </div>
@@ -90,6 +91,19 @@
       <iframe class="gloss-frame" src="cadre.html" title="Cadre conceptuel DS-DC" loading="lazy"></iframe>
     </section>
 
+    <!-- Indicateurs : carte des indicateurs DS-DC par table de quartier
+         (même géométrie que la carte Tables de quartier) -->
+    <section class="view" id="view-indic" aria-label="Indicateurs" hidden>
+      <div class="wrap">
+        <section class="map-side">
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir un indicateur" id="indic-eyebrow"></div>
+          <div class="map-head"><h1 id="indic-title">Défavorisation</h1></div>
+          <div class="map-stage"><div class="legend indic-legend" id="indic-legend"></div><svg id="indic-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des indicateurs par territoire de table de quartier"></svg></div>
+        </section>
+        <aside class="panel" id="indic-panel" aria-live="polite"></aside>
+      </div>
+    </section>
+
     <section class="view" id="view-ressources" aria-label="Ressources" hidden>
       <div class="full"><h1>Ressources</h1>
         <div class="stub"><div class="frame"><h2>À venir</h2><p>Section à remplir.</p></div></div>
@@ -115,6 +129,9 @@
   <!-- carte Santé Québec : données puis logique -->
   <script src="assets/data/sante-quebec.data.js"></script>
   <script src="assets/js/sante-quebec.js"></script>
+  <!-- section Indicateurs : données (générées) puis logique — réutilise la géométrie TDQ -->
+  <script src="assets/data/indicateurs.data.js"></script>
+  <script src="assets/js/indicateurs.js"></script>
   <!-- section Concertations : données puis rendu -->
   <script src="assets/data/concertations.data.js"></script>
   <script src="assets/js/concertations.js"></script>

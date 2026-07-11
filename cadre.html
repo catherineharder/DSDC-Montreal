@@ -96,7 +96,7 @@ html, body {
 .related-links button { background: var(--pink-light); border: none; color: var(--red); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
 .related-links button:hover { background: var(--pink-medium); }
 a { color: var(--red); }
-/* Onglets pleine largeur : Indicateurs et Recommandations */
+/* Onglet pleine largeur : Recommandations */
 .app.full { grid-template-columns: 1fr; }
 .app.full .right { display: none; }
 .tabview { max-width: 1180px; margin: 0 auto; padding: 6px 4px 70px; }
@@ -131,7 +131,6 @@ table.dsl td a { color: var(--red); text-decoration: none; border-bottom: 1px do
         <button class="tab" data-tab="cadre" aria-current="page">Cadre</button>
         <button class="tab" data-tab="verdun" aria-current="false">Verdun</button>
         <button class="tab" data-tab="cdn" aria-current="false">CDN</button>
-        <button class="tab" data-tab="indicateurs" aria-current="false">Indicateurs</button>
         <button class="tab" data-tab="recos" aria-current="false">Recommandations</button>
       </div>
       <button class="home-btn" id="homeBtn">Vue d'ensemble</button>
@@ -147,7 +146,6 @@ table.dsl td a { color: var(--red); text-decoration: none; border-bottom: 1px do
     </div>
     <div class="lview" id="lv-verdun" hidden></div>
     <div class="lview" id="lv-cdn" hidden></div>
-    <div class="lview" id="lv-indicateurs" hidden></div>
     <div class="lview" id="lv-recos" hidden></div>
   </div>
   <div class="right" id="right">
@@ -543,12 +541,12 @@ function renderExNode(tab, node) {
 function openTheory(zone) { setTab('cadre'); selectZone(zone); }
 window.openTheory = openTheory;
 
-const ALL_TABS = ['cadre', 'verdun', 'cdn', 'indicateurs', 'recos'];
+const ALL_TABS = ['cadre', 'verdun', 'cdn', 'recos'];
 function setTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
   ALL_TABS.forEach(t => { document.getElementById('lv-' + t).hidden = (t !== tab); });
-  document.querySelector('.app').classList.toggle('full', tab === 'indicateurs' || tab === 'recos');
+  document.querySelector('.app').classList.toggle('full', tab === 'recos');
   if (tab === 'cadre') { goHome(); }
   else if (tab === 'verdun' || tab === 'cdn') { activeNode[tab] ? renderExNode(tab, activeNode[tab]) : renderExHome(tab); }
 }
@@ -563,8 +561,9 @@ function setTab(tab) {
 });
 
 /* ================================================================
-   ONGLETS : Indicateurs | Recommandations
+   ONGLET : Recommandations
    Couleurs = niveaux du cadre conceptuel DSL (cadre simplifié)
+   (Les indicateurs ont leur propre section dans le menu principal.)
    ================================================================ */
 
 const LVL = {
@@ -580,86 +579,6 @@ const LVL = {
 function lvlChip(k) { return `<span class="lvl-chip" style="background:${LVL[k][1]}">${LVL[k][0]}</span>`; }
 function legendDSL() { return `<div class="legend-dsl">${Object.values(LVL).map(([n, c]) => `<span style="background:${c}">${n}</span>`).join('')}</div>`; }
 function lk(u, t) { return `<a href="${u}" target="_blank" rel="noopener">${t}</a>`; }
-
-/* ---- INDICATEURS : mesurer le DS-DC avec des données déjà produites à Montréal ---- */
-const INDIC = [
-{ lvl: 'enjeux', rows: [
-  ['Îlots de chaleur et écarts de température', 'Exposition inéquitable aux extrêmes de chaleur',
-   lk('https://donneesquebec.ca/recherche/dataset/ilots-de-chaleur-fraicheur-urbains-et-ecarts-de-temperature-relatifs-2020-2022', 'INSPQ · CERFO, cartographie satellitaire (Données Québec)'), '2020-2022', 'Infra-quartier (raster)'],
-  ['Branchement Internet résidentiel', 'Fracture numérique — accès au canal participatif dominant',
-   lk('https://www.quebec.ca/gouvernement/ministeres-organismes/economie/publications/tableau-bord-numerique/acces-internet', 'ISQ (ECUI) · Tableau de bord numérique du Québec'), '2022', 'RMR / Québec — pas d’échelle quartier (limite)']
-]},
-{ lvl: 'determinants', rows: [
-  ['Population à faible revenu (MFR, MPC)', 'Le gradient social qui structure tous les autres écarts',
-   lk('https://indicateurs-vitaux.cmm.qc.ca/developpement-social/part-de-la-population-a-faible-revenu-selon-la-mesure-du-panier-de-consommation-mpc/', 'Recensement 2021 · Montréal en statistiques; Indicateurs vitaux du Grand Montréal (CMM)'), '2021', 'Arrondissement (secteur de recensement via StatCan)'],
-  ['Taux d’effort ≥ 30 % du revenu au logement', 'Abordabilité résidentielle',
-   lk('https://donnees.montreal.ca/dataset/profils-menages-logements', 'Recensement 2021 · Profils des ménages et des logements (Ville)'), '2021', 'Arrondissement'],
-  ['Logements nécessitant des réparations majeures', 'Salubrité et qualité du parc',
-   'Recensement 2021 · série « Inégalités sociales de santé », Infocentre de santé publique', '2021', 'Arrondissement'],
-  ['Insécurité alimentaire des ménages', 'Accès économique à l’alimentation (1 Montréalais·e sur 5; > 1 M de demandes/mois)',
-   lk('https://www.moissonmontreal.org/wp-content/uploads/2025/10/MMTL_85x11_bilanfaim2025-20-10-25-FR-WEB-1.pdf', 'DRSP (ESCC) · Bilan-Faim, Moisson Montréal'), '2025', 'Région (tendance annuelle)'],
-  ['Indice de défavorisation matérielle et sociale', 'Défavorisation combinée (Pampalon)',
-   lk('https://www.inspq.qc.ca/en/deprivation/material-and-social-deprivation-index', 'INSPQ'), '2021', 'Aire de diffusion']
-]},
-{ lvl: 'parties', rows: [
-  ['Ressources communautaires répertoriées et référencements', 'Densité du tissu communautaire (5 000+ ressources) et besoins exprimés',
-   lk('https://www.211qc.ca/en/about/annual-reports', '211 Grand Montréal, rapport annuel'), '2024-2025', 'Quartier (répertoire géolocalisé)'],
-  ['Financement PSOC en mission globale', 'Socle financier du communautaire (252,2 M$, ~550 organismes à Montréal)',
-   lk('https://statistique.quebec.ca/vitrine/developpement-durable/strategie-2023-2028/participation-de-tous/soutien-financier-organismes-communautaires', 'MSSS · CIUSSS (vitrine ISQ)'), '2023-2024', 'Région'],
-  ['Investissements philanthropiques', '75,9 M$ dans ~375 organismes du Grand Montréal',
-   lk('https://www.centraide-mtl.org/en/report-to-our-community/', 'Centraide du Grand Montréal'), '2025-2026', 'Grand Montréal (ventilation par quartier via le PIC)']
-]},
-{ lvl: 'moyens', rows: [
-  ['Participation électorale municipale', 'Participation démocratique de base (37,1 % en nov. 2025)',
-   lk('https://elections.montreal.ca/fr/compilation-des-resultats/', 'Élections Montréal'), '2025', 'District / arrondissement'],
-  ['Participation aux consultations publiques', 'Volume et diversité des participations (activités, mémoires, opinions)',
-   lk('https://ocpm.qc.ca/fr/node/3332', 'OCPM, rapports d’activité; Réalisons Montréal'), '2025', 'Par consultation'],
-  ['Couverture et vitalité des Tables de quartier', '32 tables; 31 soutenues par l’Initiative montréalaise (Ville · Centraide · DRSP)',
-   lk('https://montreal.ca/sujets/tables-de-quartier', 'CMTQ · IMSDSL'), 'Continu', 'Quartier']
-]},
-{ lvl: 'vision', rows: [
-  ['Quartiers dotés d’une planification de quartier à jour', 'Existence d’un agenda commun local — et % d’actions réalisées lorsque publié',
-   'Tables de quartier · CMTQ (planifications quinquennales publiées)', 'Continu', 'Quartier']
-]},
-{ lvl: 'leviers', rows: [
-  ['Sentiment d’appartenance à la communauté locale', 'Capital communautaire (~4 800 répondants montréalais)',
-   lk('https://santepubliquemontreal.ca/etat-de-sante-de-la-population-montrealaise/enquete-quebecoise-sur-la-sante-de-la-population', 'EQSP (ISQ)'), '2020-2021', 'RLS / CIUSSS'],
-  ['Capital social : confiance et entraide', 'Réseaux, confiance interpersonnelle et institutionnelle',
-   lk('https://numerique.banq.qc.ca/patrimoine/details/52327/4408989', 'Étude « Liens sociaux et COVID-19 » (Cité-ID)'), '2021', '6 arrondissements (ponctuel — à pérenniser)'],
-  ['Bénévolat et participation associative', 'Engagement dans la vie associative',
-   'Statistique Canada, ESG « Dons, bénévolat et participation »', '2018', 'Québec seulement — angle mort d’échelle locale']
-]},
-{ lvl: 'impact', rows: [
-  ['Vulnérabilité des enfants à la maternelle (EQDEM)', 'Priorité « développement de l’enfant » — % d’enfants vulnérables dans ≥ 1 domaine',
-   lk('https://santepubliquemontreal.ca/professionnels-et-partenaires/thematiques-de-sante-publique/enquete-quebecoise-sur-le-developpement-des-enfants-la-maternelle-eqdem', 'ISQ · rapports DRSP par territoire'), '2022', 'CLSC'],
-  ['Logements sociaux et abordables réalisés', 'Priorité « logement » — 263 ententes; 97 % des projets ont versé une compensation plutôt que de construire',
-   lk('https://montreal.ca/articles/metropole-mixte-les-retombees-ce-jour-28585', 'Ville de Montréal, bilans « Métropole Mixte » (20-20-20)'), '2024', 'Ville (mesure les contributions — limite)'],
-  ['Actes criminels et sentiment de sécurité', 'Sécurité des milieux de vie',
-   lk('https://donnees.montreal.ca/dataset/actes-criminels', 'SPVM, données ouvertes + sondage annuel'), 'Continu', 'Poste de quartier (PDQ)']
-]},
-{ lvl: 'equite', rows: [
-  ['Espérance de vie à la naissance par CLSC', 'La mesure-synthèse des ISS : écart d’environ 10 ans entre les CLSC extrêmes',
-   lk('https://santepubliquemontreal.ca/qui-sommes-nous/plan-daction-regional-integre-de-sante-publique-pari/regard-sur-la-sante-de-la-population-montrealaise', 'DRSP, Regard sur la santé de la population montréalaise'), '2016-2020', 'CLSC'],
-  ['Série « Inégalités sociales de santé »', 'Mortalité prématurée, insécurité alimentaire, logement, tabagisme… ventilés par défavorisation',
-   'Infocentre de santé publique (INSPQ)', 'Continu', 'Région / CLSC selon l’indicateur'],
-  ['Indice d’équité des milieux de vie', '23 indicateurs, 6 dimensions — outil de priorisation de l’universalisme proportionné (PUM 2050, QIR)',
-   lk('https://donnees.montreal.ca/dataset/indice-equite-milieux-vie', 'Ville de Montréal'), '2025', 'Aire de diffusion']
-]}];
-
-function renderIndicateurs() {
-  const rows = INDIC.map(g =>
-    `<tr class="band"><td colspan="4" style="background:${LVL[g.lvl][1]}">${LVL[g.lvl][0]}</td></tr>` +
-    g.rows.map(([n, note, src, an, ech]) =>
-      `<tr><td style="border-left:4px solid ${LVL[g.lvl][1]}"><span class="ind-name">${n}</span><span class="ind-note">${note}</span></td>` +
-      `<td><span class="src" style="margin-top:0">${src}</span></td><td>${an}</td><td>${ech}</td></tr>`).join('')
-  ).join('');
-  document.getElementById('lv-indicateurs').innerHTML = `<div class="tabview">
-    <h1>Indicateurs — suivre le DS et le DC à Montréal</h1>
-    <p class="lede">Des indicateurs <strong>déjà produits</strong> par des organismes établis — donc utilisables sans nouvelle collecte — classés selon les niveaux du cadre conceptuel du développement social local (couleurs ci-dessous). Critères de sélection : récurrence, source publique, échelle la plus fine possible. Les limites d’échelle ou de mesure sont signalées; les trous de données sont traités dans l’onglet Recommandations.</p>
-    ${legendDSL()}
-    <table class="dsl"><thead><tr><th style="width:34%">Indicateur</th><th style="width:36%">Source · instrument</th><th style="width:9%">Année</th><th style="width:21%">Échelle la plus fine</th></tr></thead><tbody>${rows}</tbody></table>
-  </div>`;
-}
 
 /* ---- RECOMMANDATIONS : angles morts, voix des groupes, exemples inspirants ---- */
 const RECOS = [
@@ -722,14 +641,13 @@ function renderRecos() {
   </div>`;
 }
 
-renderIndicateurs();
 renderRecos();
 
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 homeBtn.addEventListener('click', () => {
   if (activeTab === 'verdun' || activeTab === 'cdn') { activeNode[activeTab] = null; document.getElementById('lv-' + activeTab).querySelectorAll('.snode').forEach(g => g.classList.remove('active')); renderExHome(activeTab); }
-  else if (activeTab === 'indicateurs' || activeTab === 'recos') { document.querySelector('.left').scrollTop = 0; }
+  else if (activeTab === 'recos') { document.querySelector('.left').scrollTop = 0; }
 });
 
 /* Recherche : depuis un onglet exemple, ramène vers le concept (dans l'exemple si possible, sinon dans le cadre complet) */
@@ -740,7 +658,7 @@ searchResults.addEventListener('click', e => {
   const item = e.target.closest('.item');
   if (!item || !item.dataset.zone) return;
   const z = item.dataset.zone;
-  if (activeTab === 'indicateurs' || activeTab === 'recos') {
+  if (activeTab === 'recos') {
     e.stopImmediatePropagation(); setTab('cadre'); selectZone(z, true);
     searchResults.classList.remove('open'); searchInput.value = '';
     return;

@@ -32,6 +32,7 @@
   #nav-tdq,#view-tdq{--accent:#2e7d32;}
   #nav-conc,#view-conc{--accent:#c9a300;}
   #nav-cadre,#view-cadre{--accent:#7a4fb0;}
+  #nav-indic,#view-indic{--accent:#c2410c;}
   #nav-ressources,#view-ressources{--accent:#0d8a8a;}
   #nav-cartes,#view-cartes{--accent:#1f5fa8;}
   #nav-gloss,#view-gloss{--accent:#212121;}
@@ -132,6 +133,29 @@
 .map-results .mr-item.mr-none{color:var(--muted);cursor:default;}
 .map-results .mr-item.mr-none:hover{background:transparent;}
 .map-results .mr-g{flex:0 1 auto;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%;text-align:right;}
+
+/* ---- Indicateurs : choroplèthe par territoire de table de quartier ---- */
+/* Les couleurs de classe sont posées en fill inline par indicateurs.js ;
+   on neutralise donc l'opacité générique des .arr pour garder des teintes franches. */
+#view-indic .arr{fill-opacity:.92;}
+#view-indic .arr:hover{fill-opacity:1;}
+#view-indic .arr.active{fill-opacity:1;stroke-width:5;}
+#view-indic .arr.nodata{fill:#eceae4;cursor:default;}
+#view-indic .tdq-notable{fill:#8d8779;fill-opacity:.18;}
+/* légende : swatches colorés en inline, on retire la teinte accent générique */
+.indic-legend .sw{background:#fff;}
+/* barres de distribution par quintile dans le panneau */
+.iq-title{margin:16px 0 6px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.iq-row{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:3px 0;}
+.iq-row .lab{flex:0 0 26px;color:var(--muted);font-weight:600;}
+.iq-bar{flex:1;height:13px;background:#efece6;border-radius:3px;overflow:hidden;}
+.iq-bar span{display:block;height:100%;}
+.iq-val{flex:0 0 46px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;}
+.iq-note{margin-top:14px;font-size:11.5px;line-height:1.5;color:var(--muted);}
+.indic-kpi{display:flex;gap:12px;margin:12px 0 4px;}
+.indic-kpi .kpi{flex:1;border:1.5px solid var(--ink);border-radius:8px;padding:10px 12px;background:#fff;}
+.indic-kpi .kpi .n{font-size:22px;font-weight:700;letter-spacing:-.01em;}
+.indic-kpi .kpi .l{font-size:11px;color:var(--muted);line-height:1.35;margin-top:2px;}
 
 /* Organisme atteint via la recherche : surlignage temporaire dans le panneau TDQ */
 .member-hit{animation:member-hit 2.4s ease;border-radius:4px;}
