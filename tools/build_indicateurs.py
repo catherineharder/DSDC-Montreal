@@ -1,36 +1,32 @@
 #!/usr/bin/env python3
-"""Génère assets/data/indicateurs.data.js — indicateurs agrégés par table de quartier.
+"""Génère assets/data/indicateurs.data.js — indicateurs agrégés selon trois
+découpages : tables de quartier (tq), arrondissements et villes liées (vdm),
+réseaux locaux de services (sq).
 
-Indicateur 1 : indice de défavorisation matérielle et sociale (IDMS, INSPQ),
-recensements 2011, 2016 et 2021.
+Indicateurs :
+1. defavo — indice de défavorisation matérielle et sociale (IDMS, INSPQ),
+   recensements 2011, 2016, 2021. Quintiles régionaux (RSS 06 — Montréal).
+2. iemv — indice d'équité des milieux de vie (Ville de Montréal, version 2026),
+   nombre de vulnérabilités cumulées (0-6) par aire de diffusion.
 
-Méthode
--------
-1. Pour chaque année, lit la table de correspondance INSPQ (aire de diffusion ->
-   quintiles régionaux QuintMatRSS / QuintSocRSS) et garde les AD de la région
-   sociosanitaire de Montréal (RSS 06). Les AD scindées entre plusieurs CLSC
-   sont dédupliquées (mêmes quintiles, même population).
-2. Prend la géométrie des AD de la même année :
-   - 2021 : GeoJSON de l'Indice d'équité des milieux de vie (Ville de Montréal);
-   - 2016 / 2011 : fichiers des limites cartographiques de Statistique Canada
-     (lda_000b16a_e.zip / gda_000b11a_e.zip), lus directement dans le zip.
-3. Affecte chaque AD au territoire de table de quartier qui contient son point
-   représentatif (tables_de_quartier_32_2024.geojson, WGS84). Les AD des
-   secteurs sans table (villes liées non couvertes) sont exclues.
-4. Agrège la population par quintile régional pour chaque territoire :
-   - répartitions détaillées (5 quintiles) pour 2021;
-   - série 2011-2016-2021 du % de population en quintiles 4-5 (tendance).
+Affectation des aires de diffusion (AD) aux territoires :
+- tq  : point représentatif de l'AD dans les polygones WGS84 des 32 tables
+        (tables_de_quartier_32_2024.geojson). AD hors territoire exclues.
+- vdm : nom d'arrondissement / ville liée porté par chaque AD dans le GeoJSON
+        IEMV (2021) ; pour 2011 et 2016, AD rattachée au territoire de l'AD 2021
+        la plus proche (approximation aux frontières, négligeable à cette échelle).
+- sq  : code de RLS porté par chaque AD dans les tables INSPQ (exact, toutes
+        années). Pour 2011, l'AD scindée est rattachée au RLS dominant.
 
-L'IDMS est une mesure relative : les quintiles sont recalculés à chaque
-recensement, la tendance s'interprète donc comme l'évolution de la position
-du territoire par rapport au reste de la région.
+L'IDMS est une mesure relative (quintiles recalculés à chaque recensement) ;
+l'IEMV n'est pas comparable d'une version à l'autre (pas de tendance).
 
 Usage : python3 tools/build_indicateurs.py
-(chemins relatifs à la racine du dépôt github-pages)
 """
 
 import io
 import json
+import math
 import re
 import sys
 import unicodedata
@@ -42,11 +38,13 @@ import shapefile  # pyshp
 from pyproj import Transformer
 from shapely.geometry import Point, shape
 from shapely.prepared import prep
+from shapely.strtree import STRtree
 
 ROOT = Path(__file__).resolve().parent.parent          # github-pages/
 DRSP = ROOT.parent                                     # dossier DRSP
 IND = DRSP / "Indicators"
 TDQ_GEOJSON = DRSP / "tables_de_quartier_32_2024.geojson"
+VILLE_DATA_JS = ROOT / "assets" / "data" / "ville-montreal.data.js"
 OUT = ROOT / "assets" / "data" / "indicateurs.data.js"
 
 INSPQ_XLSX = {
@@ -55,8 +53,8 @@ INSPQ_XLSX = {
     2021: IND / "A-DonnéesIDMS_Qc2021_fr" / "1. TableCorrespondancesCompleteQuebec2021_fr.xlsx",
 }
 POPCOL = {2011: "ADPOP2011", 2016: "ADPOP2016", 2021: "ADPOP2021"}
+FRACCOL = {2011: "FRAC_RLS", 2016: "FRAC_CLSC", 2021: "FRAC_CLSC"}
 
-# Géométrie des AD par année.
 AD_GEOJSON_2021 = [IND / "resultats_iemv_v2026_agglo.geojson",
                    IND / "resultats_iemv_v2026_agglo.json"]
 AD_SHAPEZIP = {2016: IND / "lda_000b16a_e.zip", 2011: IND / "gda_000b11a_e.zip"}
@@ -64,12 +62,30 @@ STATCAN_EPSG = 3347  # Lambert conique conforme (fichiers des limites StatCan)
 
 
 def slugify(s):
+    s = s.replace("–", "-").replace("—", "-")  # tirets demi-cadratin (noms Ville)
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
     return re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
 
 
+def extract_js_object(text, marker):
+    """Extrait l'objet JSON qui suit `marker` dans un fichier .data.js."""
+    i = text.index(marker) + len(marker)
+    while text[i] != "{":
+        i += 1
+    depth = 0
+    for j in range(i, len(text)):
+        if text[j] == "{":
+            depth += 1
+        elif text[j] == "}":
+            depth -= 1
+            if depth == 0:
+                return json.loads(text[i:j + 1])
+    raise ValueError(marker)
+
+
+# ---------------------------------------------------------------- INSPQ ----
 def load_inspq(year):
-    """AD (RSS 06) -> (pop, quintMatRSS, quintSocRSS). Dédupliqué."""
+    """AD (RSS 06) -> {pop, qm, qs, rls}. AD scindée : rangée dominante (FRAC max)."""
     path = INSPQ_XLSX[year]
     if not path.exists():
         return None
@@ -77,57 +93,70 @@ def load_inspq(year):
     ws = wb["Données"]
     rows = ws.iter_rows(values_only=True)
     hdr = {h: i for i, h in enumerate(next(rows))}
+    best_frac = {}
     out = {}
     for r in rows:
         if str(r[hdr["RSS"]]) != "06":
             continue
         ad = str(r[hdr["AD"]])
-        if ad in out:
-            continue  # AD scindée entre CLSC : mêmes quintiles, même pop
-        pop = r[hdr[POPCOL[year]]] or 0
+        frac = r[hdr[FRACCOL[year]]] or 0
+        if ad in out and frac <= best_frac[ad]:
+            continue
         qm, qs = r[hdr["QuintMatRSS"]], r[hdr["QuintSocRSS"]]
         if qm is None or qs is None:
             continue
-        out[ad] = (pop, int(qm), int(qs))
+        best_frac[ad] = frac
+        out[ad] = {"pop": r[hdr[POPCOL[year]]] or 0, "qm": int(qm), "qs": int(qs),
+                   "rls": str(r[hdr["RLS"]])}
     return out
 
 
-def ad_id_from_props(props):
-    for k, v in props.items():
-        kl = k.lower()
-        if "adidu" in kl or "dauid" in kl or kl in ("ad", "geo_code"):
-            return str(v).split(".")[0]
-    return None
+def load_rls_2021():
+    """AD -> RLS pour toutes les AD 2021 (sans filtre sur les quintiles)."""
+    wb = openpyxl.load_workbook(INSPQ_XLSX[2021], read_only=True)
+    ws = wb["Données"]
+    rows = ws.iter_rows(values_only=True)
+    hdr = {h: i for i, h in enumerate(next(rows))}
+    out = {}
+    for r in rows:
+        if str(r[hdr["RSS"]]) == "06":
+            out.setdefault(str(r[hdr["AD"]]), str(r[hdr["RLS"]]))
+    return out
 
 
-def points_2021():
-    """ad -> Point WGS84, depuis le GeoJSON IEMV (EPSG variable, lu dans le fichier)."""
+# ------------------------------------------------------------- géométrie ----
+def load_iemv():
+    """GeoJSON IEMV : AD 2021 -> (Point WGS84, nom arrondissement/ville, score, pop)."""
     path = next((p for p in AD_GEOJSON_2021 if p.exists()), None)
     if path is None:
-        sys.exit("ERREUR : GeoJSON IEMV introuvable dans DRSP/Indicators/ "
-                 "(resultats_iemv_v2026_agglo.geojson/.json).")
+        sys.exit("ERREUR : GeoJSON IEMV introuvable dans DRSP/Indicators/.")
     gj = json.load(open(path, encoding="utf-8"))
     crs_name = ((gj.get("crs") or {}).get("properties") or {}).get("name", "")
     m = re.search(r"EPSG::?(\d+)", crs_name)
     epsg = int(m.group(1)) if m else 4326
     tr = (Transformer.from_crs(f"EPSG:{epsg}", "EPSG:4326", always_xy=True).transform
           if epsg != 4326 else None)
-    pts = {}
+    out = {}
     for f in gj["features"]:
-        ad = ad_id_from_props(f["properties"])
-        if ad is None or ad in pts:
+        p = f["properties"]
+        ad = str(p.get("ADIDU")).split(".")[0]
+        if ad in out:
             continue
-        p = shape(f["geometry"]).representative_point()
-        pts[ad] = Point(*tr(p.x, p.y)) if tr else p
-    print(f"  géométrie 2021 : {path.name}, {len(pts)} AD")
-    return pts
+        pt = shape(f["geometry"]).representative_point()
+        if tr:
+            pt = Point(*tr(pt.x, pt.y))
+        score = p.get("Indice_emv")
+        score = None if score is None or (isinstance(score, float) and math.isnan(score)) else int(score)
+        out[ad] = {"pt": pt, "nom": p.get("NOM"), "score": score,
+                   "pop": int(p.get("tot_pop") or 0)}
+    print(f"IEMV : {path.name}, {len(out)} AD")
+    return out
 
 
 def points_statcan(year):
-    """ad -> Point WGS84, depuis le fichier des limites StatCan (zip de shapefile,
-    ou dossier du zip décompressé). Filtré sur l'île de Montréal (DAUID 2466…)."""
+    """ad -> Point WGS84 (île de Montréal), zip StatCan ou dossier décompressé."""
     zpath = AD_SHAPEZIP[year]
-    folder = zpath.with_suffix("")  # zip décompressé dans un dossier du même nom
+    folder = zpath.with_suffix("")
     if zpath.exists():
         z = zipfile.ZipFile(zpath)
         base = next(n[:-4] for n in z.namelist() if n.lower().endswith(".shp"))
@@ -139,14 +168,11 @@ def points_statcan(year):
         shp = next(folder.glob("*.shp"), None)
         if shp is None:
             return None
-        zpath = shp
         rdr = shapefile.Reader(str(shp), encoding="latin-1")
     else:
         return None
     fields = [f[0] for f in rdr.fields[1:]]
     i_dauid = next(i for i, f in enumerate(fields) if f.upper() == "DAUID")
-    # 2016 : Lambert conique conforme (EPSG:3347) ; 2011 : déjà en degrés NAD83.
-    # On détecte par l'ordre de grandeur des coordonnées (mètres vs degrés).
     proj = abs(rdr.bbox[0]) > 360 or abs(rdr.bbox[1]) > 360
     tr = (Transformer.from_crs(f"EPSG:{STATCAN_EPSG}", "EPSG:4326", always_xy=True).transform
           if proj else None)
@@ -157,116 +183,200 @@ def points_statcan(year):
             continue
         p = shape(sr.shape.__geo_interface__).representative_point()
         pts[dauid] = Point(*tr(p.x, p.y)) if tr else p
-    print(f"  géométrie {year} : {zpath.name}, {len(pts)} AD (île de Montréal)")
+    print(f"géométrie {year} : {len(pts)} AD (île de Montréal)")
     return pts
 
 
-def assign(inspq, pts, tables):
-    """Agrège la population par quintile et par table de quartier."""
-    agg = {slug: {"pop": 0, "nad": 0, "mat": [0.0] * 5, "soc": [0.0] * 5}
-           for slug, _, _ in tables}
-    matched = no_table = no_geom = 0
-    pop_matched = pop_no_table = 0
-    for ad, (pop, qm, qs) in inspq.items():
-        pt = pts.get(ad)
-        if pt is None:
-            no_geom += 1
-            continue
-        hit = None
-        for slug, _, pg in tables:
+# ----------------------------------------------------------- affectations ----
+def tq_assigner():
+    tdq = json.load(open(TDQ_GEOJSON, encoding="utf-8"))
+    tables = [(slugify(f["properties"]["nom"]), prep(shape(f["geometry"])))
+              for f in tdq["features"]]
+
+    def assign(pt):
+        for slug, pg in tables:
             if pg.contains(pt):
-                hit = slug
-                break
-        if hit is None:
-            no_table += 1
-            pop_no_table += pop
-            continue
-        a = agg[hit]
-        a["pop"] += pop
-        a["nad"] += 1
-        a["mat"][qm - 1] += pop
-        a["soc"][qs - 1] += pop
-        matched += 1
-        pop_matched += pop
-    print(f"  appariées : {matched} (pop {pop_matched:,}) | hors territoire de table : "
-          f"{no_table} (pop {pop_no_table:,}) | sans géométrie : {no_geom}")
-    return agg
+                return slug
+        return None
+    return assign
+
+
+def vdm_name_to_slug():
+    """slugify(nom IEMV) -> slug de la carte Ville (arrondissements + villes liées)."""
+    text = VILLE_DATA_JS.read_text(encoding="utf-8")
+    boroughs = extract_js_object(text, "const BOROUGHS =")
+    geometry_suburbs = extract_js_object(text, "suburbs:")
+    m = {}
+    for slug, rec in boroughs.items():
+        m[slugify(rec["name"])] = slug
+    for slug in geometry_suburbs:
+        m[slugify(slug)] = slug
+    return m
+
+
+# ------------------------------------------------------------- agrégation ----
+def new_defavo():
+    return {"pop": 0, "nad": 0, "mat": [0.0] * 5, "soc": [0.0] * 5}
+
+
+def add_defavo(agg, slug, rec):
+    a = agg.setdefault(slug, new_defavo())
+    a["pop"] += rec["pop"]
+    a["nad"] += 1
+    a["mat"][rec["qm"] - 1] += rec["pop"]
+    a["soc"][rec["qs"] - 1] += rec["pop"]
+
+
+def pct(x, pop):
+    return round(100 * x / pop, 1)
 
 
 def q45(a, dim):
-    return None if a["pop"] == 0 else round(100 * (a[dim][3] + a[dim][4]) / a["pop"], 1)
+    return None if not a or a["pop"] == 0 else pct(a[dim][3] + a[dim][4], a["pop"])
 
 
 def main():
-    tdq = json.load(open(TDQ_GEOJSON, encoding="utf-8"))
-    tables = [(slugify(f["properties"]["nom"]), f["properties"]["nom"],
-               prep(shape(f["geometry"]))) for f in tdq["features"]]
-    print(f"Tables de quartier : {len(tables)}")
+    iemv = load_iemv()
+    tq_of = tq_assigner()
+    vdm_slug = vdm_name_to_slug()
+    rls2021 = load_rls_2021()
 
-    results = {}   # year -> agg
+    # correspondances AD 2021 -> territoire, pour chaque découpage
+    unmatched_vdm = {slugify(v["nom"]) for v in iemv.values()
+                     if slugify(v["nom"]) not in vdm_slug}
+    if unmatched_vdm:
+        print("WARN noms IEMV sans slug Ville :", unmatched_vdm)
+    geo_of_2021 = {
+        "tq": {ad: tq_of(v["pt"]) for ad, v in iemv.items()},
+        "vdm": {ad: vdm_slug.get(slugify(v["nom"])) for ad, v in iemv.items()},
+        "sq": {ad: ("rls-" + rls2021[ad]) if ad in rls2021 else None for ad in iemv},
+    }
+
+    # arbre des points 2021 pour rattacher les AD 2011/2016 (découpage vdm)
+    ads21 = list(iemv)
+    tree = STRtree([iemv[ad]["pt"] for ad in ads21])
+
+    def vdm_of_old(pt):
+        return geo_of_2021["vdm"][ads21[tree.nearest(pt)]]
+
+    # ---------------- defavo : 3 années × 3 découpages ----------------
+    years_data = {}
     for year in (2011, 2016, 2021):
         inspq = load_inspq(year)
         if inspq is None:
             print(f"{year} : table INSPQ absente — année sautée")
             continue
-        print(f"{year} : {len(inspq)} AD INSPQ (RSS 06), "
-              f"pop {sum(p for p, _, _ in inspq.values()):,}")
-        pts = points_2021() if year == 2021 else points_statcan(year)
-        if pts is None:
-            print(f"{year} : géométrie absente ({AD_SHAPEZIP.get(year)}) — année sautée")
-            continue
-        results[year] = assign(inspq, pts, tables)
+        if year == 2021:
+            pts = {ad: iemv[ad]["pt"] for ad in iemv}
+        else:
+            pts = points_statcan(year)
+            if pts is None:
+                print(f"{year} : géométrie absente — année sautée")
+                continue
+        agg = {"tq": {}, "vdm": {}, "sq": {}}
+        miss = 0
+        for ad, rec in inspq.items():
+            add_defavo(agg["sq"], "rls-" + rec["rls"], rec)
+            pt = pts.get(ad)
+            if pt is None:
+                miss += 1
+                continue
+            tq = geo_of_2021["tq"].get(ad) if year == 2021 else tq_of(pt)
+            if tq:
+                add_defavo(agg["tq"], tq, rec)
+            vd = geo_of_2021["vdm"].get(ad) if year == 2021 else vdm_of_old(pt)
+            if vd:
+                add_defavo(agg["vdm"], vd, rec)
+        years_data[year] = agg
+        print(f"defavo {year} : {len(inspq)} AD (sans géométrie : {miss}) | "
+              f"tq {len(agg['tq'])} | vdm {len(agg['vdm'])} | sq {len(agg['sq'])} territoires")
 
-    if 2021 not in results:
+    if 2021 not in years_data:
         sys.exit("ERREUR : l'année 2021 est requise.")
+    years = sorted(years_data)
 
-    years = sorted(results)
-    quartiers = {}
-    for slug, _, _ in sorted(tables):
-        a21 = results[2021][slug]
-        if a21["pop"] == 0:
-            print(f"WARN : aucune AD 2021 pour {slug}")
-            continue
-        rec = {
-            "pop": a21["pop"],
-            "nad": a21["nad"],
-            "mat": [round(100 * x / a21["pop"], 1) for x in a21["mat"]],
-            "soc": [round(100 * x / a21["pop"], 1) for x in a21["soc"]],
-        }
-        if len(years) > 1:
-            rec["trend"] = {
-                "years": years,
-                "mat": [q45(results[y][slug], "mat") for y in years],
-                "soc": [q45(results[y][slug], "soc") for y in years],
+    defavo_geo = {}
+    for geo in ("tq", "vdm", "sq"):
+        out = {}
+        for slug, a in sorted(years_data[2021][geo].items()):
+            if a["pop"] == 0:
+                continue
+            rec = {
+                "pop": a["pop"], "nad": a["nad"],
+                "mat": [pct(x, a["pop"]) for x in a["mat"]],
+                "soc": [pct(x, a["pop"]) for x in a["soc"]],
             }
-        quartiers[slug] = rec
+            if len(years) > 1:
+                rec["trend"] = {
+                    "years": years,
+                    "mat": [q45(years_data[y][geo].get(slug), "mat") for y in years],
+                    "soc": [q45(years_data[y][geo].get(slug), "soc") for y in years],
+                }
+            out[slug] = rec
+        defavo_geo[geo] = out
 
-    # contrôle : la part régionale en Q4-Q5 doit avoisiner 40 % chaque année
+    # ---------------- iemv : version 2026, 3 découpages ----------------
+    iemv_geo = {}
+    for geo in ("tq", "vdm", "sq"):
+        agg = {}
+        for ad, v in iemv.items():
+            slug = geo_of_2021[geo].get(ad)
+            if slug is None or v["score"] is None or v["pop"] == 0:
+                continue
+            a = agg.setdefault(slug, {"pop": 0, "nad": 0, "dist": [0.0] * 7})
+            a["pop"] += v["pop"]
+            a["nad"] += 1
+            a["dist"][v["score"]] += v["pop"]
+        out = {}
+        for slug, a in sorted(agg.items()):
+            if a["pop"] == 0:
+                continue
+            out[slug] = {
+                "pop": a["pop"], "nad": a["nad"],
+                "dist": [pct(x, a["pop"]) for x in a["dist"]],
+                "p4": pct(sum(a["dist"][4:]), a["pop"]),
+            }
+        iemv_geo[geo] = out
+        tp = sum(a["pop"] for a in out.values())
+        t4 = sum(a["pop"] * a["p4"] / 100 for a in out.values())
+        print(f"iemv {geo} : {len(out)} territoires | pop {tp:,} | ≥4 vulnérabilités {100*t4/tp:.1f} %")
+
+    # contrôle defavo : part régionale Q4-Q5 ≈ 40 %
     for y in years:
-        tp = sum(a["pop"] for a in results[y].values())
-        tm = sum(a["mat"][3] + a["mat"][4] for a in results[y].values())
-        ts = sum(a["soc"][3] + a["soc"][4] for a in results[y].values())
-        print(f"contrôle {y} : pop couverte {tp:,} | Q4-Q5 mat {100*tm/tp:.1f} % | "
-              f"soc {100*ts/tp:.1f} % (attendu ≈ 40 %)")
+        agg = years_data[y]["sq"]
+        tp = sum(a["pop"] for a in agg.values())
+        tm = sum(a["mat"][3] + a["mat"][4] for a in agg.values())
+        print(f"contrôle defavo {y} (sq) : pop {tp:,} | Q4-Q5 mat {100*tm/tp:.1f} % (attendu ≈ 40 %)")
 
-    meta = {
-        "source": "INSPQ, Indice de défavorisation matérielle et sociale (2011, 2016, 2021) ; "
-                  "Statistique Canada, recensements",
-        "reference": "Quintiles régionaux (RSS 06 — Montréal) : QuintMatRSS / QuintSocRSS",
-        "methode": "Population des aires de diffusion affectée au territoire de table de quartier "
-                   "contenant leur point représentatif (géométrie : IEMV Ville de Montréal pour 2021, "
-                   "limites cartographiques StatCan pour 2011 et 2016)",
-        "annees": years,
+    data = {
+        "defavo": {
+            "meta": {
+                "source": "INSPQ, Indice de défavorisation matérielle et sociale (2011, 2016, 2021) ; "
+                          "Statistique Canada, recensements",
+                "reference": "Quintiles régionaux (RSS 06 — Montréal)",
+                "annees": years,
+            },
+            "geo": defavo_geo,
+        },
+        "iemv": {
+            "meta": {
+                "source": "Ville de Montréal, Indice d'équité des milieux de vie, version 2026",
+                "annee": 2026,
+            },
+            "geo": iemv_geo,
+        },
     }
     js = ("/* Indicateurs — DONNÉES (généré par tools/build_indicateurs.py, ne pas éditer).\n"
-          "   INDIC_DEFAVO : IDMS agrégé par territoire de table de quartier.\n"
-          "   mat/soc = % de la population par quintile régional 2021 (Q1 favorisé … Q5 défavorisé) ;\n"
-          "   trend = % de la population en quintiles 4-5 par recensement. */\n"
-          "const INDIC_DEFAVO = " +
-          json.dumps({"meta": meta, "quartiers": quartiers}, ensure_ascii=False, separators=(",", ":")) +
-          ";\n")
+          "   INDIC_DATA.defavo : IDMS par territoire (mat/soc = % de population par quintile\n"
+          "   régional 2021 ; trend = % en quintiles 4-5 par recensement).\n"
+          "   INDIC_DATA.iemv : IEMV 2026 (dist = % de population par nombre de vulnérabilités\n"
+          "   0-6 ; p4 = % en zone vulnérable et prioritaire, ≥ 4).\n"
+          "   Découpages : tq (tables de quartier), vdm (arrondissements et villes liées),\n"
+          "   sq (réseaux locaux de services). */\n"
+          "const INDIC_DATA = " +
+          json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
     OUT.write_text(js, encoding="utf-8")
-    print(f"Écrit : {OUT} ({len(quartiers)} territoires, années {years})")
+    print(f"Écrit : {OUT}")
 
 
 if __name__ == "__main__":

@@ -97,7 +97,11 @@
       <div class="wrap">
         <section class="map-side">
           <div class="map-eyebrow" role="tablist" aria-label="Choisir un indicateur" id="indic-eyebrow"></div>
-          <div class="map-head"><h1 id="indic-title">Défavorisation</h1><div class="dim-switch" id="indic-dims" role="tablist" aria-label="Choisir une dimension"></div></div>
+          <div class="map-head"><h1 id="indic-title">Défavorisation</h1></div>
+          <div class="indic-controls">
+            <div class="dim-switch" id="indic-geos" role="tablist" aria-label="Choisir un découpage territorial"></div>
+            <div class="dim-switch" id="indic-dims" role="tablist" aria-label="Choisir une dimension"></div>
+          </div>
           <div class="map-stage"><div class="legend indic-legend" id="indic-legend"></div><svg id="indic-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des indicateurs par territoire de table de quartier"></svg></div>
         </section>
         <aside class="panel" id="indic-panel" aria-live="polite"></aside>
