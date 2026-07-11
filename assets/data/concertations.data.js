@@ -15,7 +15,7 @@ window.CONC = {
           "full": "Ministère des Affaires municipales et de l'Habitation",
           "coms": [
             "car",
-            "instance-strat"
+            "instance-strategique"
           ]
         },
         {
@@ -29,7 +29,7 @@ window.CONC = {
           "ac": "MTESS",
           "full": "Ministère du Travail, de l'Emploi et de la Solidarité sociale",
           "coms": [
-            "alliance"
+            "alliance-pour-la-solidarite"
           ]
         },
         {
@@ -37,8 +37,8 @@ window.CONC = {
           "ac": "MTQ",
           "full": "Ministère des Transports du Québec",
           "coms": [
-            "instance-strat",
-            "imsdsl-pilotage"
+            "instance-strategique",
+            "imsdsl-comite-de-pilotage"
           ]
         },
         {
@@ -96,24 +96,23 @@ window.CONC = {
           "coms": [
             "trsp",
             "car",
-            "alliance",
-            "conjoint-sp-mc",
-            "instance-strat",
-            "imsdsl-pilotage",
-            "imsdsl-coord",
+            "alliance-pour-la-solidarite",
+            "comite-conjoint-sp-communautaire",
+            "instance-strategique",
+            "imsdsl-comite-de-pilotage",
+            "imsdsl-comite-de-coordination",
             "pic",
-            "pic-gestion",
-            "av-oqi",
-            "citoyen-msam",
-            "conseil-equite",
-            "pouvoir-jeun",
+            "comite-de-gestion-du-pic",
+            "comite-aviseur-oqi-itinerance-et-climat",
+            "comite-citoyen-msam",
+            "conseil-citoyen-equite",
+            "pouvoir-d-agir-jeunesse",
             "cop-eusp",
-            "cop-langage",
-            "cop-part",
+            "cop-langage-clair",
+            "cop-participation-citoyenne",
             "aspic",
-            "groupe-coeur",
-            "epup",
-            "prev-itin"
+            "groupe-c-ur",
+            "comite-prevention-de-l-itinerance"
           ]
         },
         {
@@ -123,7 +122,7 @@ window.CONC = {
           "coms": []
         },
         {
-          "id": "5-ciusss",
+          "id": "5-sante-quebec",
           "ac": "5 Santé Québec",
           "full": "Anciennement CIUSSS (Centres intégrés universitaires de santé et de services sociaux)",
           "coms": []
@@ -133,7 +132,7 @@ window.CONC = {
           "ac": "CCPSC",
           "full": "Clinique communautaire de Pointe-Saint-Charles",
           "coms": [
-            "conjoint-sp-mc",
+            "comite-conjoint-sp-communautaire",
             "cop-eusp"
           ]
         }
@@ -155,7 +154,7 @@ window.CONC = {
           "ac": "VdM",
           "full": "Ville de Montréal (municipalité centrale)",
           "coms": [
-            "citoyen-msam"
+            "comite-citoyen-msam"
           ]
         },
         {
@@ -171,7 +170,7 @@ window.CONC = {
           "coms": []
         },
         {
-          "id": "15-villes-li-es",
+          "id": "15-villes-liees",
           "ac": "15 villes liées",
           "full": "Agglomération de Montréal",
           "coms": []
@@ -189,9 +188,9 @@ window.CONC = {
           "full": "Service de la diversité et de l'inclusion sociale",
           "rel": "VdM",
           "coms": [
-            "alliance",
-            "imsdsl-pilotage",
-            "imsdsl-coord"
+            "alliance-pour-la-solidarite",
+            "imsdsl-comite-de-pilotage",
+            "imsdsl-comite-de-coordination"
           ]
         },
         {
@@ -235,7 +234,7 @@ window.CONC = {
           "ac": "OQI",
           "full": "Observatoire québécois des inégalités",
           "coms": [
-            "av-oqi"
+            "comite-aviseur-oqi-itinerance-et-climat"
           ]
         },
         {
@@ -297,7 +296,7 @@ window.CONC = {
           "coms": []
         },
         {
-          "id": "cr-mis",
+          "id": "cremis",
           "ac": "CRÉMIS",
           "full": "Centre de recherche de Montréal sur les inégalités sociales, les discriminations et les pratiques alternatives de citoyenneté",
           "rel": "UdeM",
@@ -360,12 +359,12 @@ window.CONC = {
           "ac": "Centraide",
           "full": "Centraide du Grand Montréal",
           "coms": [
-            "instance-strat",
-            "imsdsl-pilotage",
-            "imsdsl-coord",
+            "instance-strategique",
+            "imsdsl-comite-de-pilotage",
+            "imsdsl-comite-de-coordination",
             "pic",
-            "pic-gestion",
-            "gt-insec-csam"
+            "comite-de-gestion-du-pic",
+            "gt-insecurite-alimentaire-du-csam"
           ]
         },
         {
@@ -385,7 +384,7 @@ window.CONC = {
           "ac": "FLAC",
           "full": "Fondation Lucie et André Chagnon",
           "coms": [
-            "instance-strat",
+            "instance-strategique",
             "pic"
           ]
         },
@@ -407,11 +406,11 @@ window.CONC = {
           "ac": "CMTQ",
           "full": "Coalition montréalaise des tables de quartier",
           "coms": [
-            "conjoint-sp-mc",
-            "imsdsl-coord",
+            "comite-conjoint-sp-communautaire",
+            "imsdsl-comite-de-coordination",
             "pic",
-            "gt-insec-csam",
-            "gt-csam"
+            "gt-insecurite-alimentaire-du-csam",
+            "gt-citoyennete-alimentaire-du-csam"
           ]
         },
         {
@@ -426,8 +425,8 @@ window.CONC = {
           "ac": "RIOCM",
           "full": "Regroupement intersectoriel des organismes communautaires de Montréal",
           "coms": [
-            "conjoint-sp-mc",
-            "instance-strat"
+            "comite-conjoint-sp-communautaire",
+            "instance-strategique"
           ]
         },
         {
@@ -453,12 +452,12 @@ window.CONC = {
           "id": "citoyennes-et-citoyens",
           "ac": "Citoyennes et citoyens",
           "coms": [
-            "citoyen-msam",
-            "conseil-equite"
+            "comite-citoyen-msam",
+            "conseil-citoyen-equite"
           ]
         },
         {
-          "id": "b-n-voles",
+          "id": "benevoles",
           "ac": "Bénévoles",
           "coms": []
         },
@@ -588,7 +587,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gr-alim",
+      "id": "gr-alimentation",
       "fam": "g1",
       "name": "GR Alimentation",
       "full": "Groupe de répondants en alimentation",
@@ -604,7 +603,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gr-pauv",
+      "id": "gr-pauvrete-et-dc",
       "fam": "g1",
       "name": "GR Pauvreté et DC",
       "full": "Groupe de répondants en pauvreté et développement des communautés",
@@ -698,7 +697,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "conjoint-sp-mc",
+      "id": "comite-conjoint-sp-communautaire",
       "fam": "g2",
       "name": "Comité conjoint SP-communautaire",
       "full": "Comité conjoint santé publique et milieu communautaire",
@@ -838,7 +837,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "cop-part",
+      "id": "cop-participation-citoyenne",
       "fam": "g2",
       "name": "CoP Participation citoyenne",
       "full": "Communauté de pratique, Participation citoyenne",
@@ -862,7 +861,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "cop-langage",
+      "id": "cop-langage-clair",
       "fam": "g2",
       "name": "CoP Langage clair",
       "full": "Communauté de pratique, Langage clair",
@@ -898,7 +897,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-secu-alim",
+      "id": "gt-securite-alimentaire",
       "fam": "g2",
       "name": "GT sécurité alimentaire",
       "full": "Groupe de travail sécurité alimentaire",
@@ -910,7 +909,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "gt-noires",
+      "id": "gt-communautes-noires",
       "fam": "g2",
       "name": "GT communautés noires",
       "full": "Groupe de travail intersectoriel pour le bien-être des communautés noires",
@@ -921,7 +920,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "alliance",
+      "id": "alliance-pour-la-solidarite",
       "fam": "g2",
       "name": "Alliance pour la solidarité",
       "full": "Alliance pour la solidarité",
@@ -956,7 +955,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "alliance-sous",
+      "id": "alliance-sous-comites",
       "fam": "g2",
       "name": "Alliance, sous-comités",
       "full": "Alliance pour la solidarité, sous-comités",
@@ -976,7 +975,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "av-alliance",
+      "id": "comite-aviseur-des-alliances",
       "fam": "g2",
       "name": "Comité aviseur des Alliances",
       "full": "Comité aviseur des Alliances pour la solidarité",
@@ -988,7 +987,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "instance-strat",
+      "id": "instance-strategique",
       "fam": "g3",
       "name": "Instance stratégique",
       "full": "Instance stratégique des bailleurs de fonds",
@@ -1055,7 +1054,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "imsdsl-pilotage",
+      "id": "imsdsl-comite-de-pilotage",
       "fam": "g3",
       "name": "IMSDSL Comité de pilotage",
       "full": "Initiative montréalaise de soutien au développement social local, Comité de pilotage",
@@ -1098,7 +1097,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "imsdsl-coord",
+      "id": "imsdsl-comite-de-coordination",
       "fam": "g3",
       "name": "IMSDSL Comité de coordination",
       "full": "Initiative montréalaise, Comité de coordination",
@@ -1176,7 +1175,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "pic-gestion",
+      "id": "comite-de-gestion-du-pic",
       "fam": "g3",
       "name": "Comité de gestion du PIC",
       "full": "Comité de gestion du Projet d'impact collectif (Centraide)",
@@ -1229,7 +1228,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-log-tec",
+      "id": "gt-logement-de-tec",
       "fam": "g3",
       "name": "GT logement de TEC",
       "full": "Groupe de travail sur le logement de TEC (Transition en commun)",
@@ -1245,7 +1244,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-demo-tec",
+      "id": "gt-demotorisation-de-tec",
       "fam": "g3",
       "name": "GT Démotorisation de TEC",
       "full": "Groupe de travail sur la démotorisation de TEC (Transition en commun)",
@@ -1261,7 +1260,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-alim-tec",
+      "id": "gt-alimentation-de-tec",
       "fam": "g3",
       "name": "GT alimentation de TEC",
       "full": "Groupe de travail sur l'alimentation de TEC (Transition en commun)",
@@ -1277,7 +1276,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "citoyen-msam",
+      "id": "comite-citoyen-msam",
       "fam": "g4",
       "name": "Comité citoyen MSAM",
       "full": "Comité citoyen, personnes migrantes sans assurance médicale (MSAM)",
@@ -1304,7 +1303,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "conseil-equite",
+      "id": "conseil-citoyen-equite",
       "fam": "g4",
       "name": "Conseil Citoyen Équité",
       "full": "Conseil Citoyen Équité",
@@ -1324,7 +1323,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "groupe-coeur",
+      "id": "groupe-c-ur",
       "fam": "g5",
       "name": "Groupe cœur",
       "full": "Groupe cœur",
@@ -1347,7 +1346,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-secu-cult",
+      "id": "gt-securisation-culturelle",
       "fam": "g5",
       "name": "GT sécurisation culturelle",
       "full": "Groupe de travail sécurisation culturelle",
@@ -1358,7 +1357,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "pouvoir-jeun",
+      "id": "pouvoir-d-agir-jeunesse",
       "fam": "g5",
       "name": "Pouvoir d'agir Jeunesse",
       "full": "Pouvoir d'agir Jeunesse",
@@ -1420,7 +1419,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "codev",
+      "id": "groupes-de-codev",
       "fam": "g5",
       "name": "Groupes de CoDev",
       "full": "Deux groupes de codéveloppement professionnel (CoDev)",
@@ -1431,7 +1430,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "arrimages-itin",
+      "id": "arrimages-itinerance-intra-drsp",
       "fam": "g5",
       "name": "Arrimages itinérance intra-DRSP",
       "full": "Arrimages itinérance intra-DRSP",
@@ -1442,7 +1441,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "cellule-itin",
+      "id": "cellule-rapide-itinerance",
       "fam": "g5",
       "name": "Cellule rapide itinérance",
       "full": "Cellule rapide itinérance",
@@ -1453,7 +1452,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "pouvoir-comm",
+      "id": "pouvoir-d-agir-des-communautes-locales",
       "fam": "g5",
       "name": "Pouvoir d'agir des communautés locales",
       "full": "Pouvoir d'agir des communautés locales",
@@ -1464,7 +1463,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "prev-itin",
+      "id": "comite-prevention-de-l-itinerance",
       "fam": "g6",
       "name": "Comité prévention de l'itinérance",
       "full": "Comité prévention de l'itinérance",
@@ -1548,7 +1547,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-perte-log",
+      "id": "gt-prevention-perte-de-logement",
       "fam": "g6",
       "name": "GT prévention perte de logement",
       "full": "Groupe de travail, prévention de la perte de logement",
@@ -1560,7 +1559,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "heberg-log",
+      "id": "comite-hebergement-logement",
       "fam": "g6",
       "name": "Comité Hébergement-Logement",
       "full": "Comité Hébergement-Logement (itinérance)",
@@ -1570,7 +1569,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "cohab",
+      "id": "cohabitation-sociale",
       "fam": "g6",
       "name": "Cohabitation sociale",
       "full": "Comité cohabitation sociale",
@@ -1581,7 +1580,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "couts-log",
+      "id": "couts-de-la-crise-du-logement",
       "fam": "g6",
       "name": "Coûts de la crise du logement",
       "full": "Coûts sociaux et économiques de la crise du logement",
@@ -1592,7 +1591,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "couts-log-pilotage",
+      "id": "comite-de-pilotage",
       "fam": "g6",
       "name": "Comité de pilotage",
       "full": "Comité de pilotage, coûts sociaux et économiques de la crise du logement",
@@ -1604,7 +1603,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "couts-log-mob",
+      "id": "comite-de-mobilisation",
       "fam": "g6",
       "name": "Comité de mobilisation",
       "full": "Comité de mobilisation, coûts sociaux et économiques de la crise du logement",
@@ -1616,7 +1615,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "couts-log-sci",
+      "id": "comite-scientifique",
       "fam": "g6",
       "name": "Comité scientifique",
       "full": "Comité scientifique, coûts sociaux et économiques de la crise du logement",
@@ -1628,7 +1627,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "tdb-itin",
+      "id": "tableau-de-bord-regional-itinerance",
       "fam": "g6",
       "name": "Tableau de bord régional itinérance",
       "full": "Comité Tableau de bord régional en itinérance",
@@ -1639,7 +1638,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "av-psi",
+      "id": "comite-aviseur-mortalite-des-psi",
       "fam": "g6",
       "name": "Comité aviseur, mortalité des PSI",
       "full": "Comité aviseur du projet de recherche sur la vigie de la mortalité des personnes en situation d'itinérance (PSI)",
@@ -1650,7 +1649,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "av-oqi",
+      "id": "comite-aviseur-oqi-itinerance-et-climat",
       "fam": "g6",
       "name": "Comité aviseur, OQI itinérance et climat",
       "full": "Comité aviseur du projet de recherche de l'OQI sur l'itinérance, les changements climatiques et les adaptations",
@@ -1674,38 +1673,17 @@ window.CONC = {
       ]
     },
     {
-      "id": "epup",
+      "id": "comite-epup-tactique",
       "fam": "g6",
       "name": "Comité EPUP Tactique",
       "full": "Comité EPUP (Engagement et partenariat avec les usagers et leurs proches), niveau tactique",
       "niv": "tact",
       "drsp": "",
       "man": "Comité tactique lié au BEPUP, le Bureau de l'engagement et du partenariat avec les usagers et leurs proches du CIUSSS. La DRSP y compte un·e seul·e représentant·e et n'en assure pas la coordination.",
-      "comp": [
-        {
-          "m": "BEPUP, Bureau de l'engagement et du partenariat avec les usagers et leurs proches (CIUSSS)",
-          "cat": "porteur"
-        },
-        {
-          "m": "DRSP (un·e seul·e représentant·e)",
-          "cat": "DRSP"
-        },
-        {
-          "m": "Directions du CIUSSS (DEUR, DQÉPÉ)",
-          "cat": ""
-        },
-        {
-          "m": "Usagers-ressources",
-          "cat": ""
-        },
-        {
-          "m": "Présidente du CUCI, Comité des usagers du centre intégré (en transition vers le Comité des usagers d'établissement, CUE, sous Santé Québec)",
-          "cat": ""
-        }
-      ]
+      "comp": []
     },
     {
-      "id": "secu-alim",
+      "id": "securite-alimentaire-et-dda",
       "fam": "g6",
       "name": "Sécurité alimentaire et DDA",
       "full": "Concertation sécurité alimentaire et DDA (demandeurs·euses d'asile)",
@@ -1725,7 +1703,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "gt-insec-csam",
+      "id": "gt-insecurite-alimentaire-du-csam",
       "fam": "g6",
       "name": "GT Insécurité alimentaire du CSAM",
       "full": "Groupe de travail sur l'insécurité alimentaire du CSAM (Conseil du système alimentaire montréalais)",
@@ -1809,7 +1787,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "gt-csam",
+      "id": "gt-citoyennete-alimentaire-du-csam",
       "fam": "g6",
       "name": "GT Citoyenneté alimentaire du CSAM",
       "full": "Groupe de travail sur la citoyenneté alimentaire du CSAM (Conseil du système alimentaire montréalais)",
@@ -1869,7 +1847,7 @@ window.CONC = {
       ]
     },
     {
-      "id": "strat-dda-msam",
+      "id": "comite-strategique-dda-msam",
       "fam": "g6",
       "name": "Comité stratégique DDA-MSAM",
       "full": "Comité stratégique DDA-MSAM et ses 4 lots de travail",
@@ -1890,7 +1868,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "dspu-secu",
+      "id": "concertation-dspu-securisation-culturelle",
       "fam": "g6",
       "name": "Concertation DSPu, sécurisation culturelle",
       "full": "Concertation des directions de santé publique (DSPu) régionales en sécurisation culturelle",
@@ -1901,7 +1879,7 @@ window.CONC = {
       "comp": []
     },
     {
-      "id": "av-hopital",
+      "id": "comite-aviseur-hopital-solidaire",
       "fam": "g6",
       "name": "Comité aviseur, Hôpital solidaire",
       "full": "Comité aviseur de l'évaluation du projet Hôpital solidaire",
