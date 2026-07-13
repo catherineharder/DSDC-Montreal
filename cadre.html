@@ -96,26 +96,6 @@ html, body {
 .related-links button { background: var(--pink-light); border: none; color: var(--red); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
 .related-links button:hover { background: var(--pink-medium); }
 a { color: var(--red); }
-/* Onglet pleine largeur : Recommandations */
-.app.full { grid-template-columns: 1fr; }
-.app.full .right { display: none; }
-.tabview { max-width: 1180px; margin: 0 auto; padding: 6px 4px 70px; }
-.tabview h1 { font-size: 22px; font-weight: 600; color: var(--red); margin-bottom: 8px; line-height: 1.25; }
-.tabview .lede { font-size: 13.5px; color: var(--gray); max-width: 900px; line-height: 1.55; margin-bottom: 12px; }
-.legend-dsl { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 18px; }
-.legend-dsl span { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; color: #212121; }
-table.dsl { width: 100%; border-collapse: collapse; font-size: 13px; }
-table.dsl th { text-align: left; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 8px 10px; border-bottom: 2px solid #212121; }
-table.dsl td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
-table.dsl tr.band td { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #212121; padding: 7px 10px; }
-table.dsl .ind-name { font-weight: 600; color: var(--text); }
-table.dsl .ind-note, table.dsl .src { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-table.dsl td a { color: var(--red); text-decoration: none; border-bottom: 1px dotted var(--pink-dark); }
-.lvl-chip { display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 2px 9px; border-radius: 100px; color: #212121; margin-bottom: 6px; }
-.am-grid { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 20px; }
-.am-grid span { font-size: 12px; font-weight: 600; color: #212121; padding: 5px 12px; border-radius: 7px; }
-.ex-cell { background: #fbfaf9; }
-@media (max-width: 800px) { table.dsl { font-size: 12px; } .tabview { padding-top: 0; } }
 @media (max-width: 1000px) {
   .app { grid-template-columns: 1fr; height: auto; }
   .left { border-right: none; border-bottom: 1px solid var(--border); }
@@ -131,7 +111,6 @@ table.dsl td a { color: var(--red); text-decoration: none; border-bottom: 1px do
         <button class="tab" data-tab="cadre" aria-current="page">Cadre</button>
         <button class="tab" data-tab="verdun" aria-current="false">Verdun</button>
         <button class="tab" data-tab="cdn" aria-current="false">CDN</button>
-        <button class="tab" data-tab="recos" aria-current="false">Recommandations</button>
       </div>
       <button class="home-btn" id="homeBtn">Vue d'ensemble</button>
       <div class="search-bar">
@@ -146,7 +125,6 @@ table.dsl td a { color: var(--red); text-decoration: none; border-bottom: 1px do
     </div>
     <div class="lview" id="lv-verdun" hidden></div>
     <div class="lview" id="lv-cdn" hidden></div>
-    <div class="lview" id="lv-recos" hidden></div>
   </div>
   <div class="right" id="right">
     <div id="content"></div>
@@ -541,12 +519,11 @@ function renderExNode(tab, node) {
 function openTheory(zone) { setTab('cadre'); selectZone(zone); }
 window.openTheory = openTheory;
 
-const ALL_TABS = ['cadre', 'verdun', 'cdn', 'recos'];
+const ALL_TABS = ['cadre', 'verdun', 'cdn'];
 function setTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
   ALL_TABS.forEach(t => { document.getElementById('lv-' + t).hidden = (t !== tab); });
-  document.querySelector('.app').classList.toggle('full', tab === 'recos');
   if (tab === 'cadre') { goHome(); }
   else if (tab === 'verdun' || tab === 'cdn') { activeNode[tab] ? renderExNode(tab, activeNode[tab]) : renderExHome(tab); }
 }
@@ -560,94 +537,11 @@ function setTab(tab) {
   });
 });
 
-/* ================================================================
-   ONGLET : Recommandations
-   Couleurs = niveaux du cadre conceptuel DSL (cadre simplifié)
-   (Les indicateurs ont leur propre section dans le menu principal.)
-   ================================================================ */
-
-const LVL = {
-  enjeux:       ['Enjeux transversaux', '#e6e3de'],
-  determinants: ['Déterminants structurels', '#f3d6d8'],
-  parties:      ['Parties prenantes', '#d9e7f0'],
-  moyens:       ['Plaidoyer · concertation · participation', '#dcebe1'],
-  vision:       ['Vision commune', '#c8e0d1'],
-  leviers:      ['Savoir · capital social · financement · gouvernance · évaluation', '#f5e8c9'],
-  impact:       ['Impact collectif sur les priorités locales', '#dcd6e8'],
-  equite:       ['Équité en santé', '#ede1b2']
-};
-function lvlChip(k) { return `<span class="lvl-chip" style="background:${LVL[k][1]}">${LVL[k][0]}</span>`; }
-function legendDSL() { return `<div class="legend-dsl">${Object.values(LVL).map(([n, c]) => `<span style="background:${c}">${n}</span>`).join('')}</div>`; }
-function lk(u, t) { return `<a href="${u}" target="_blank" rel="noopener">${t}</a>`; }
-
-/* ---- RECOMMANDATIONS : angles morts, voix des groupes, exemples inspirants ---- */
-const RECOS = [
-{ lvl: 'determinants', am: 'Écarts de revenu qui se creusent',
-  amtxt: 'Post-pandémie, le revenu du quintile le plus pauvre a reculé de 1,9 % pendant que celui du plus riche bondissait de 51,4 % (' + lk('https://www.lapresse.ca/affaires/finances-personnelles/2025-10-27/quebec-et-canada/l-ecart-entre-les-riches-et-les-pauvres-s-aggrave.php', 'Observatoire québécois des inégalités, 2025') + '). Le revenu viable à Montréal atteint 41 585 $ pour une personne seule — le salaire minimum n’en couvre que ~66 % (' + lk('https://iris-recherche.qc.ca/publications/revenu-viable-2026/', 'IRIS, 2026') + '). Les démarches de quartier n’ont pas de prise directe sur ces leviers.',
-  reco: 'IRIS et l’Observatoire : faire du revenu viable le seuil de référence des politiques. Banques alimentaires du Québec : s’attaquer aux causes structurelles de la pauvreté plutôt qu’à ses symptômes (' + lk('https://banquesalimentaires.org/wp-content/uploads/2025/10/Bilan-faim_2025.pdf', 'Bilan-Faim 2025') + ').',
-  ex: '<strong>Saint John (N.-B.) — Living SJ</strong> (Tamarack) : 100+ partenaires autour d’un agenda commun et d’une mesure partagée depuis 2014; ~14 % de réduction de la pauvreté; fonds provincial d’innovation sociale de 10 M$. ' + lk('https://www.tamarackcommunity.ca/case-studies/case-study-saint-john-stronger-together', 'Étude de cas') },
-{ lvl: 'parties', am: 'Personnes à statut migratoire précaire tenues à l’écart',
-  amtxt: 'La DRSP inclut explicitement les personnes à statut précaire dans « les communautés montréalaises », mais l’accès réel aux services — emploi, interprétariat, santé — reste inégal, et ces personnes sont peu présentes dans les instances de concertation.',
-  reco: 'TCRI (150+ organismes) : abolir les permis de travail fermés, ouvrir les services publics d’emploi aux personnes demandeuses d’asile, garantir l’interprétariat équitable (' + lk('https://tcri.qc.ca/2024/12/reconnaitre-lapport-des-migrant-e-s-et-lever-les-obstacles-qui-se-dressent-devant-eux/', 'revendications 2024-2025') + ').',
-  ex: '<strong>Edmonton — EndPoverty Edmonton</strong> : un Cercle autochtone intégré à la gouvernance même de la démarche et une Indigenous Housing Collaborative. Sa perte de financement municipal (2024-2026) est aussi une leçon : l’inclusion doit être institutionnalisée, pas seulement projetée. ' + lk('https://www.endpovertyedmonton.ca/who', 'endpovertyedmonton.ca') },
-{ lvl: 'moyens', am: 'Une participation qui reste consultative',
-  amtxt: 'Les avis de l’OCPM ne lient pas la Ville; la participation électorale municipale plafonne à 37,1 % (nov. 2025) et varie fortement entre arrondissements. Le pouvoir réellement délégué aux citoyen·nes demeure l’exception (budget participatif : 45 M$).',
-  reco: 'La CMTQ demande que le renouvellement du cadre de participation publique donne un poids réel aux quartiers (' + lk('http://www.tablesdequartiermontreal.org/une-annee-pareille-mais-pas-pareille/', 'bilan CMTQ') + '); viser les niveaux supérieurs de participation — partenariat et leadership citoyen (Lebel et Dufour, 2020).',
-  ex: '<strong>Barcelone — Decidim</strong> : plateforme libre de participation (~311 instances, 80 gouvernements; adoptée par New York en 2026) où propositions, suivi des engagements et redditions de comptes sont publics et traçables. ' + lk('https://decidim.org/', 'decidim.org') },
-{ lvl: 'leviers', am: 'Données : ni à l’échelle des quartiers, ni désagrégées',
-  amtxt: 'Les données sociosanitaires s’arrêtent au territoire de CLSC — rarement au quartier vécu; toujours pas de collecte systématique de données fondées sur la race, recommandée par l’OCPM dès 2020; le profilage racial a été jugé systémique au SPVM (Cour supérieure, 2024).',
-  reco: 'OCPM : 38 recommandations sur le racisme et la discrimination systémiques, dont les données désagrégées (' + lk('http://rds.ocpm.qc.ca/', 'rapport 2020') + '); Ligue des droits et libertés : un suivi indépendant et contraignant (' + lk('https://liguedesdroits.ca/racisme/', 'LDL') + ').',
-  ex: '<strong>Toronto — Neighbourhood Equity Index</strong>, remplacé par un Neighbourhoods’ Assessment Framework co-développé avec United Way par recherche participative (2023-2025) : 158 quartiers mesurés pour cibler les investissements. ' + lk('https://www.toronto.ca/city-government/accountability-operations-customer-service/long-term-vision-plans-and-strategies/toronto-strong-neighbourhoods-strategy/toronto-neighbourhood-assessment-framework/', 'toronto.ca') },
-{ lvl: 'leviers', am: 'Financement par projet, mission sous-financée',
-  amtxt: 'Le communautaire demandait 2,6 G$ de rehaussement à la mission; le budget du Québec 2025-2026 en a accordé 22,9 M$ (' + lk('https://rq-aca.org/2025/02/19/consultations-prebudgetaires-le-communautaire-demande-26-g-supplementaires-pour-pouvoir-repondre-aux-besoins-de-la-population/', 'RQ-ACA') + '). Les 32 tables de quartier ont fait de leur financement l’enjeu des élections municipales de 2025 (+25 000 $/table promis, ~800 000 $/an).',
-  reco: 'RQ-ACA (' + lk('https://rq-aca.org/2026/02/10/memoire-prebudgetaire-2026-2027/', 'mémoire 2026-2027') + ') : rehausser la mission et respecter l’autonomie; TNCDC : reconnaître les CDC comme actrices incontournables du DS (' + lk('https://www.tncdc.com/wp-content/uploads/2025/03/Les-CDC-actrices-incontournables-de-developpement-social_TNCDC-2024.pdf', 'position 2024') + '); CMTQ : rehausser et indexer l’Initiative montréalaise.',
-  ex: '<strong>Région de Waterloo (Ont.)</strong> — subventions participatives fondées sur la confiance (Tamarack) : les résident·es définissent les priorités, la reddition de comptes est allégée, les relations sont pluriannuelles. ' + lk('https://www.tamarackcommunity.ca/case-studies/region-of-waterloo-advancing-equity-through-trust-based-participatory-grant-making', 'Étude de cas') },
-{ lvl: 'leviers', am: 'Démarches collectives à la merci d’un bailleur',
-  amtxt: 'Le PIC (phase 2) se termine en 2027 et les structures porteuses (backbone) des démarches d’impact collectif dépendent souvent d’une seule source de financement — le définancement d’EndPoverty Edmonton après 2026 montre le risque.',
-  reco: 'Tamarack (cinq conditions de l’impact collectif) : financer durablement la structure porteuse (' + lk('https://www.tamarackcommunity.ca/collective-impact-toolkit', 'boîte à outils') + '); CMTQ : pérenniser l’Initiative montréalaise au-delà des cycles politiques et philanthropiques.',
-  ex: '<strong>Vancouver — Healthy City Strategy</strong> : stratégie inscrite dans l’appareil municipal (renouvelée en février 2026), tableau de bord public par quartier et gouvernance des données autochtones avec la MVAEC. ' + lk('https://vancouver.ca/news-calendar/city-updated-healthy-city-strategy-feb-2026.aspx', 'vancouver.ca') },
-{ lvl: 'leviers', am: 'Pas de système de mesure partagé',
-  amtxt: 'Aucun tableau de bord commun du DS-DC à l’échelle des 32 quartiers; le PDCN de Verdun n’a pas d’indicateurs publics de suivi; les bilans « Métropole Mixte » comptent des compensations financières (97 % des projets) plutôt que des logements construits.',
-  reco: 'Kania et Kramer / Tamarack : la mesure partagée est l’une des cinq conditions de l’impact collectif; RQDS : évaluer pour apprendre collectivement, pas seulement pour rendre des comptes aux bailleurs.',
-  ex: '<strong>Winnipeg — Peg</strong> (Centraide Winnipeg · IISD) : 50+ indicateurs choisis avec plus de 800 résident·es, données pour 12 sous-territoires, premier examen local volontaire des ODD au Canada. ' + lk('https://www.mypeg.ca/about/', 'mypeg.ca') },
-{ lvl: 'impact', am: 'Logement : compenser plutôt que construire',
-  amtxt: 'Sous le règlement 20-20-20, 97 % des projets ont versé une compensation au lieu d’inclure du logement social; le budget du Québec 2025-2026 ne finançait aucune nouvelle unité (FRAPRU).',
-  reco: 'FRAPRU : 150 000 logements sociaux en 15 ans (≥ 10 000/année), soit ~20 % du parc locatif (' + lk('https://www.frapru.qc.ca/campagne-municipale-2025/', 'campagne 2025') + '); comité Namur-Hippodrome : ≥ 4 800 logements sociaux et une fiducie d’utilité sociale (voir l’onglet CDN).',
-  ex: '<strong>Medicine Hat (Alb.) — Built for Zero</strong> : première ville canadienne à atteindre le « zéro fonctionnel » d’itinérance chronique (2021) grâce aux listes nominatives en temps réel; la remontée de 2023-2024 rappelle que l’atteinte se maintient, elle ne s’acquiert pas. ' + lk('https://caeh.ca/medicine-hat-functional-zero/', 'CAEH') },
-{ lvl: 'impact', am: 'Sécurité alimentaire : l’urgence sans le droit',
-  amtxt: '3,1 M de demandes d’aide alimentaire par mois au Québec (+37 % depuis 2022); plus de 1 M par mois à Montréal et 1 personne sur 5 en insécurité alimentaire — mais aucun droit à l’alimentation inscrit dans la loi (' + lk('https://banquesalimentaires.org/wp-content/uploads/2025/10/Bilan-faim_2025.pdf', 'Bilan-Faim 2025') + ').',
-  reco: 'BAQ : agir sur le revenu et le logement, causes de la faim; Sommet national sur le droit à l’alimentation (Sherbrooke, 2026) : une loi-cadre québécoise consacrant ce droit (' + lk('https://ici.radio-canada.ca/nouvelle/2246423/sommet-national-droit-alimentation-sherbrooke', 'Radio-Canada') + ').',
-  ex: '<strong>Sherbrooke</strong> : charte alimentaire municipale affirmant que l’alimentation est « un droit et non un privilège », plan de communauté nourricière avec gouvernance alimentaire locale, et ville hôte du premier Sommet national sur le droit à l’alimentation. ' + lk('https://infodelestrie.ca/sherbrooke-presente-son-plan-de-developpement-dune-communaute-nourriciere/', 'Info de l’Estrie') },
-{ lvl: 'impact', am: 'Institutions ancrées : un levier économique dormant',
-  amtxt: 'Les achats des grandes institutions montréalaises (CIUSSS, universités, Ville) sont peu orientés vers l’économie locale et sociale des quartiers; l’insertion socioprofessionnelle — priorité des tables — manque de levier économique structurant.',
-  reco: 'Approche « community wealth building », promue au Canada par l’Institut Tamarack : orienter l’approvisionnement des institutions d’ancrage vers les fournisseurs locaux et l’économie sociale.',
-  ex: '<strong>Preston (R.-U.)</strong> : la part des achats institutionnels restant dans la ville est passée de 5 % à 18 % (39 % → 79 % dans le Lancashire), ~70 M£ redirigées localement et ~4 500 emplois. ' + lk('https://www.preston.gov.uk/article/1339/What-is-Preston-Model', 'preston.gov.uk') },
-{ lvl: 'equite', am: '10 ans d’écart d’espérance de vie — sans partenariat d’équité formalisé',
-  amtxt: 'Environ 10 ans séparent l’espérance de vie des territoires de CLSC extrêmes de Montréal (2016-2020). Signes vitaux 2024 (FGM · Vivre en Ville) documente les iniquités territoriales — mais il n’existe pas de partenariat ville-santé avec cibles d’équité et monitoring dédié (' + lk('https://www.signesvitaux.ca/', 'signesvitaux.ca') + ').',
-  reco: 'DRSP (cadre de référence 2023) : universalisme proportionné, priorisation par l’indice d’équité des milieux de vie; FGM et Vivre en Ville : faire des iniquités territoriales un chantier métropolitain.',
-  ex: '<strong>Coventry (R.-U.) — « Marmot City »</strong> depuis 2013 : partenariat ville-santé publique avec outil de monitoring dédié; la ville a gagné 22 places au classement de défavorisation (2015-2019). ' + lk('https://www.instituteofhealthequity.org/resources-reports/ten-years-as-a-marmot-city-coventrys-reflections', 'Institute of Health Equity') }
-];
-
-function renderRecos() {
-  const chips = RECOS.map((r, i) => `<span style="background:${LVL[r.lvl][1]}">${i + 1}. ${r.am}</span>`).join('');
-  const rows = RECOS.map((r, i) =>
-    `<tr><td style="border-left:4px solid ${LVL[r.lvl][1]};width:30%">${lvlChip(r.lvl)}<br><span class="ind-name">${i + 1}. ${r.am}</span><span class="ind-note">${r.amtxt}</span></td>` +
-    `<td style="width:35%">${r.reco}</td><td class="ex-cell" style="width:35%">${r.ex}</td></tr>`).join('');
-  document.getElementById('lv-recos').innerHTML = `<div class="tabview">
-    <h1>Recommandations — angles morts du DS-DC à Montréal</h1>
-    <p class="lede">Onze angles morts du développement social et communautaire montréalais, vus par la lorgnette de la santé publique. Pour chacun : ce que recommandent les groupes de défense collective des droits et un exemple hors Montréal où l’enjeu est mieux traité — plusieurs documentés par l’<a href="https://www.tamarackcommunity.ca/" target="_blank" rel="noopener">Institut Tamarack</a>. Les couleurs renvoient aux niveaux du cadre conceptuel DSL.</p>
-    <div class="am-grid">${chips}</div>
-    <table class="dsl"><thead><tr><th>Angle mort</th><th>Ce que recommandent les groupes</th><th>Exemple inspirant (hors Montréal)</th></tr></thead><tbody>${rows}</tbody></table>
-  </div>`;
-}
-
-renderRecos();
 
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 homeBtn.addEventListener('click', () => {
   if (activeTab === 'verdun' || activeTab === 'cdn') { activeNode[activeTab] = null; document.getElementById('lv-' + activeTab).querySelectorAll('.snode').forEach(g => g.classList.remove('active')); renderExHome(activeTab); }
-  else if (activeTab === 'recos') { document.querySelector('.left').scrollTop = 0; }
 });
 
 /* Recherche : depuis un onglet exemple, ramène vers le concept (dans l'exemple si possible, sinon dans le cadre complet) */
@@ -658,11 +552,6 @@ searchResults.addEventListener('click', e => {
   const item = e.target.closest('.item');
   if (!item || !item.dataset.zone) return;
   const z = item.dataset.zone;
-  if (activeTab === 'recos') {
-    e.stopImmediatePropagation(); setTab('cadre'); selectZone(z, true);
-    searchResults.classList.remove('open'); searchInput.value = '';
-    return;
-  }
   if (activeTab !== 'cadre') {
     const n = ZONE_TO_NODE[z];
     if (n && !(z === 'sécurité' && activeTab === 'cdn') && !(z === 'logement' && activeTab === 'verdun')) {
