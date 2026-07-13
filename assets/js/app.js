@@ -169,6 +169,11 @@ function createMap(opts) {
     wire(p, slug, select, rec ? rec.name : slug);
   });
 
+  // Cliquer hors des régions (fond vide de la carte, contour ou secteurs inertes)
+  // ramène à la vue d'ensemble. Les tracés cliquables interceptent leur propre
+  // clic ; seuls les clics sur le fond du <svg> arrivent jusqu'ici.
+  svg.addEventListener("click", (ev) => { if (ev.target === svg) reset(); });
+
   reset();
   return { select, reset };
 }
