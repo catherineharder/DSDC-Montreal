@@ -103,18 +103,23 @@
       <iframe class="gloss-frame" src="cadre.html" title="Cadre conceptuel DS-DC" loading="lazy"></iframe>
     </section>
 
-    <!-- Indicateurs : carte des indicateurs DS-DC par table de quartier
-         (même géométrie que la carte Tables de quartier) -->
+    <!-- Indicateurs : quatre onglets (Défavorisation, Équité des milieux de vie,
+         Capital social, Résultats transitoires), menu déroulant d'indicateurs,
+         sélecteur de découpage SQ / VdM / TQ -->
     <section class="view" id="view-indic" aria-label="Indicateurs" hidden>
       <div class="wrap">
         <section class="map-side">
-          <div class="map-eyebrow" role="tablist" aria-label="Choisir un indicateur" id="indic-eyebrow"></div>
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir un onglet" id="indic-eyebrow"></div>
           <div class="map-head"><h1 id="indic-title">Défavorisation</h1></div>
           <div class="indic-controls">
+            <select class="indic-select" id="indic-select" aria-label="Choisir un indicateur"></select>
             <div class="dim-switch" id="indic-geos" role="tablist" aria-label="Choisir un découpage territorial"></div>
-            <div class="dim-switch" id="indic-dims" role="tablist" aria-label="Choisir une dimension"></div>
           </div>
-          <div class="map-stage"><div class="legend indic-legend" id="indic-legend"></div><svg id="indic-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des indicateurs par territoire de table de quartier"></svg></div>
+          <div class="map-stage">
+            <div class="legend indic-legend" id="indic-legend"></div>
+            <svg id="indic-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des indicateurs par territoire"></svg>
+            <div class="indic-graph" id="indic-graph" hidden></div>
+          </div>
         </section>
         <aside class="panel" id="indic-panel" aria-live="polite"></aside>
       </div>
@@ -150,6 +155,7 @@
   <script src="assets/js/deputes.js"></script>
   <!-- section Indicateurs : données (générées) puis logique — réutilise la géométrie TDQ -->
   <script src="assets/data/indicateurs.data.js"></script>
+  <script src="assets/data/indicateurs-iemv-geo.data.js"></script>
   <script src="assets/js/indicateurs.js"></script>
   <!-- section Concertations : données puis rendu -->
   <script src="assets/data/concertations.data.js"></script>

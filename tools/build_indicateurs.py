@@ -38,7 +38,7 @@ import csv
 import openpyxl
 import shapefile  # pyshp
 from pyproj import Transformer
-from shapely.geometry import Point, shape
+from shapely.geometry import Point, Polygon, shape
 from shapely.prepared import prep
 from shapely.strtree import STRtree
 
@@ -46,8 +46,21 @@ ROOT = Path(__file__).resolve().parent.parent          # github-pages/
 DRSP = ROOT.parent                                     # dossier DRSP
 IND = DRSP / "Indicators"
 TDQ_GEOJSON = DRSP / "tables_de_quartier_32_2024.geojson"
+SILHOUETTE_GEOJSON = DRSP / "Concertations et Partenariats" / "montreal-silhouette.geojson"
+CAPITAL_XLSX = IND / "données catherine 13.07.26.xlsx"
 VILLE_DATA_JS = ROOT / "assets" / "data" / "ville-montreal.data.js"
 OUT = ROOT / "assets" / "data" / "indicateurs.data.js"
+OUT_GEO = ROOT / "assets" / "data" / "indicateurs-iemv-geo.data.js"
+
+# dimensions de l'IEMV : champ ACP_* du GeoJSON -> clé courte + libellé
+IEMV_DIMS = [
+    ("cult", "ACP_CultSportLoisir", "Culture, sports et loisirs"),
+    ("prox", "ACP_proximite", "Ressources et proximité"),
+    ("secu", "ACP_securite", "Sécurité urbaine"),
+    ("envi", "ACP_envi", "Environnemental"),
+    ("eco", "ACP_eco", "Économique"),
+    ("soci", "ACP_soci", "Social"),
+]
 
 INSPQ_XLSX = {
     2011: IND / "A-DonnéesIDMS_Qc2011_fr" / "1.a TableCorrespondances_Qc2011_NouveauDecoupage_fr.xlsx",
@@ -144,15 +157,21 @@ def load_iemv():
         ad = str(p.get("ADIDU")).split(".")[0]
         if ad in out:
             continue
-        pt = shape(f["geometry"]).representative_point()
+        geom = shape(f["geometry"])
+        pt = geom.representative_point()
         if tr:
             pt = Point(*tr(pt.x, pt.y))
         score = p.get("Indice_emv")
         score = None if score is None or (isinstance(score, float) and math.isnan(score)) else int(score)
         mpc = p.get("MPC21")
         mpc = None if mpc is None or (isinstance(mpc, float) and math.isnan(mpc)) else float(mpc)
+        acp = {}
+        for key, field, _lbl in IEMV_DIMS:
+            v = p.get(field)
+            acp[key] = None if v is None or (isinstance(v, float) and math.isnan(v)) else int(v)
         out[ad] = {"pt": pt, "nom": p.get("NOM"), "score": score, "mpc": mpc,
-                   "pop": int(p.get("tot_pop") or 0)}
+                   "pop": int(p.get("tot_pop") or 0), "acp": acp,
+                   "geom": geom, "tr": tr}
     print(f"IEMV : {path.name}, {len(out)} AD")
     return out
 
@@ -216,6 +235,219 @@ def vdm_name_to_slug():
     for slug in geometry_suburbs:
         m[slugify(slug)] = slug
     return m
+
+
+# ---------------------------------------------- IEMV : mosaïque d'AD (SVG) ----
+W, H, PAD = 1000, 875, 2.0
+LAT0 = 45.55
+
+
+def make_projector(bounds, lat0=LAT0):
+    """Même projection que build_tables_quartier.py (calibrée sur la silhouette)."""
+    minlon, minlat, maxlon, maxlat = bounds
+    k = math.cos(math.radians(lat0))
+    x0, x1 = minlon * k, maxlon * k
+    cw, ch = (x1 - x0), (maxlat - minlat)
+    aw, ah = W - 2 * PAD, H - 2 * PAD
+    scale = min(aw / cw, ah / ch)
+    ox = PAD + (aw - scale * cw) / 2
+    oy = PAD + (ah - scale * ch) / 2
+
+    def project(lon, lat):
+        return (ox + (lon * k - x0) * scale, oy + (maxlat - lat) * scale)
+    return project
+
+
+def _poly_parts(geom):
+    t = geom.geom_type
+    if t == "Polygon":
+        return [geom]
+    if t in ("MultiPolygon", "GeometryCollection"):
+        out = []
+        for g in geom.geoms:
+            out += _poly_parts(g)
+        return out
+    return []
+
+
+def geom_to_path(geom, nd=1):
+    """Géométrie shapely (espace SVG) -> attribut d du path."""
+    fmt = f"%.{nd}f"
+    parts = []
+    for p in _poly_parts(geom):
+        for ring in [p.exterior, *p.interiors]:
+            pts = list(ring.coords)
+            parts.append("M" + " ".join(
+                (fmt % x).rstrip("0").rstrip(".") + "," + (fmt % y).rstrip("0").rstrip(".")
+                for x, y in pts[:-1]) + "Z")
+    return "".join(parts)
+
+
+def iemv_class(v, score):
+    """Classe d'une AD pour une dimension (v = flag ACP) ou l'ensemble (v=None).
+       pv = vulnérable et prioritaire, vnp = vulnérable non prioritaire,
+       nv = non vulnérable."""
+    if score is None:
+        return None
+    if v is None:  # ensemble : niveau selon le nombre de vulnérabilités
+        return "pv" if score >= 4 else ("vnp" if score == 3 else "nv")
+    if v == 1:
+        return "pv" if score >= 4 else "vnp"
+    return "nv"
+
+
+def build_iemv_geo(iemv):
+    """Dissout les AD par option (ensemble + 6 dimensions) et par classe,
+       projetées dans le viewBox 1000x875 du site."""
+    from shapely.ops import unary_union
+    sil = json.load(open(SILHOUETTE_GEOJSON, encoding="utf-8"))
+    sil_geom = unary_union([make_valid_safe(shape(f["geometry"]))
+                            for f in sil["features"]])
+    project = make_projector(sil_geom.bounds)
+
+    # projeter chaque AD une seule fois
+    projected = {}
+    for ad, v in iemv.items():
+        if v["score"] is None:
+            continue
+        tr = v["tr"]
+        polys = []
+        for p in _poly_parts(v["geom"]):
+            ext = ([tr(x, y) for x, y in p.exterior.coords] if tr
+                   else list(p.exterior.coords))
+            ext = [project(lon, lat) for lon, lat in ext]
+            try:
+                polys.append(make_valid_safe(Polygon(ext)).buffer(0))
+            except Exception:
+                continue
+        if polys:
+            projected[ad] = unary_union(polys)
+
+    options = [("ens", None)] + [(key, key) for key, _f, _l in IEMV_DIMS]
+    out = {}
+    for opt, dim in options:
+        groups = {"pv": [], "vnp": [], "nv": []}
+        for ad, g in projected.items():
+            v = iemv[ad]
+            cls = iemv_class(None if dim is None else v["acp"].get(dim), v["score"])
+            if cls:
+                groups[cls].append(g)
+        out[opt] = {}
+        for cls, geoms in groups.items():
+            if not geoms:
+                continue
+            u = unary_union(geoms).simplify(0.4)
+            out[opt][cls] = geom_to_path(u)
+        print(f"iemv geo {opt} : " + " | ".join(f"{c} {len(g)} AD" for c, g in groups.items()))
+    return out
+
+
+def make_valid_safe(g):
+    from shapely.validation import make_valid
+    try:
+        return make_valid(g)
+    except Exception:
+        return g.buffer(0)
+
+
+# --------------------------------------- Capital social (xlsx Infocentre) ----
+def load_capital():
+    """Extrait sentiment d'appartenance (ESCC), satisfaction vie sociale et
+       degré de solitude (EQSP) du classeur Infocentre fourni."""
+    if not CAPITAL_XLSX.exists():
+        print("capital : classeur absent — section sautée")
+        return None
+    wb = openpyxl.load_workbook(CAPITAL_XLSX, data_only=True)
+    num = lambda v: isinstance(v, (int, float))
+
+    # sentiment d'appartenance fort (très + plutôt), Montréal vs Québec, par cycle
+    ws = wb["senti-appartenance"]
+    cycle, terr, series = None, None, {}
+    for row in ws.iter_rows(values_only=True):
+        c0 = str(row[0]) if row[0] else ""
+        m = re.search(r"ESCC (\d{4})-(\d{4})", c0)
+        if m:
+            cycle = m.group(1) + "-" + m.group(2)[2:]
+            terr = None
+            continue
+        if "Montréal" in c0:
+            terr = "mtl"
+        elif "Québec" in c0:
+            terr = "qc"
+        if cycle and terr and row[1] == "Total" and row[2] in ("Très fort", "Plutôt fort") and num(row[5]):
+            series.setdefault(cycle, {}).setdefault(terr, 0.0)
+            series[cycle][terr] += float(row[5])
+    cycles = sorted(series)
+    appart = {"cycles": cycles,
+              "mtl": [round(series[c].get("mtl"), 1) for c in cycles],
+              "qc": [round(series[c].get("qc"), 1) for c in cycles]}
+
+    # satisfaction vie sociale par RTS — deux cycles (2014-2015, 2020-2021)
+    ws = wb["satis-vie-sociale CIUSSS"]
+    cats = ["Très satisfaisante", "Plutôt satisfaisante",
+            "Plutôt insatisfaisante", "Très insatisfaisante"]
+    tables, cur, current_terr = [], None, None
+    for row in ws.iter_rows(values_only=True):
+        c0 = str(row[0]) if row[0] else ""
+        if c0.startswith("Répartition"):
+            cur = {}
+            tables.append(cur)
+            current_terr = None
+        if cur is None:
+            continue
+        m = re.match(r"^(06\d)\s*-", c0)
+        if m:
+            current_terr = m.group(1)
+        elif c0.startswith("Total de la région"):
+            current_terr = "mtl"
+        if current_terr and row[1] in cats and num(row[5]):
+            cur.setdefault(current_terr, {})[cats.index(str(row[1]).replace("\n", " "))] = round(float(row[5]), 1)
+    satisf = {"cats": cats,
+              "c2014": {t: [v[i] for i in range(4)] for t, v in tables[0].items()} if tables else {},
+              "c2020": {t: [v[i] for i in range(4)] for t, v in tables[1].items()} if len(tables) > 1 else {}}
+
+    # degré de solitude (EQSP 2020-2021)
+    ws = wb["degré-solitude"]
+    solitude = {}
+    for row in ws.iter_rows(values_only=True):
+        if row[0] == "06 Montréal" and num(row[3]):
+            solitude["mtl"] = {"moy": round(float(row[3]), 2),
+                               "ic": [round(float(row[6]), 2), round(float(row[7]), 2)]}
+        elif row[0] == "Ensemble du Québec" and num(row[3]):
+            solitude["qc"] = {"moy": round(float(row[3]), 2),
+                              "ic": [round(float(row[6]), 2), round(float(row[7]), 2)]}
+
+    print(f"capital : appartenance {len(cycles)} cycles | satisfaction {len(tables)} cycles | solitude {list(solitude)}")
+    return {"appartenance": appart, "satisfaction": satisf, "solitude": solitude}
+
+
+# --------- Données saisies à la main (sources publiques, voir méta) ----------
+# Insécurité alimentaire des ménages, Québec, ECR 2018-2023 (ISQ, mars 2026) ;
+# Montréal 2023 : 22 % (même publication).
+ALIM_DATA = {
+    "meta": {"source": "Institut de la statistique du Québec, « L'insécurité alimentaire au "
+                       "Québec entre 2018 et 2023 » (Enquête canadienne sur le revenu), mars 2026",
+             "url": "https://statistique.quebec.ca/fr/produit/publication/insecurite-alimentaire-2018-2023-faits-saillants"},
+    "years": [2018, 2019, 2020, 2021, 2022, 2023],
+    "qc": [14.0, 11.6, 13.1, 13.8, 16.4, 19.0],
+    "mtl2023": 22.0,
+    "laval2023": 23.0,
+}
+
+# Taux de participation, élection municipale du 7 novembre 2021, par
+# arrondissement (mairie d'arrondissement ; Ville-Marie : moyenne pondérée des
+# trois districts). Source : Élections Montréal, résultats officiels.
+PARTICIPATION_2021 = {
+    "meta": {"source": "Élections Montréal, élection générale du 7 novembre 2021 — résultats officiels",
+             "overall": 38.3, "annee": 2021},
+    "geo": {  # slugs de la carte Ville de Montréal (arrondissements seulement)
+        "ahuntsic": 42.3, "anjou": 40.3, "cdnndg": 34.2, "ilebizard": 49.0,
+        "lachine": 39.2, "lasalle": 30.9, "mhm": 41.6, "mtlnord": 33.5,
+        "outremont": 55.9, "pfdsrox": 30.5, "plateau": 44.7, "rdp": 39.0,
+        "rosemont": 47.9, "stlaurent": 29.0, "stleonard": 32.7, "sudouest": 35.1,
+        "verdun": 42.8, "villemarie": 34.0, "villeray": 37.0,
+    },
+}
 
 
 # ------------------------------------------------------------- agrégation ----
@@ -320,6 +552,7 @@ def main():
         defavo_geo[geo] = out
 
     # ---------------- iemv : version 2026, 3 découpages ----------------
+    dim_keys = [k for k, _f, _l in IEMV_DIMS]
     iemv_geo = {}
     for geo in ("tq", "vdm", "sq"):
         agg = {}
@@ -327,10 +560,19 @@ def main():
             slug = geo_of_2021[geo].get(ad)
             if slug is None or v["score"] is None or v["pop"] == 0:
                 continue
-            a = agg.setdefault(slug, {"pop": 0, "nad": 0, "dist": [0.0] * 7})
+            a = agg.setdefault(slug, {"pop": 0, "nad": 0, "dist": [0.0] * 7,
+                                      "niv": [0.0, 0.0, 0.0],
+                                      "dims": {k: [0.0, 0.0] for k in dim_keys}})
             a["pop"] += v["pop"]
             a["nad"] += 1
             a["dist"][v["score"]] += v["pop"]
+            cls = iemv_class(None, v["score"])
+            a["niv"][{"nv": 0, "vnp": 1, "pv": 2}[cls]] += v["pop"]
+            for k in dim_keys:
+                if v["acp"].get(k) == 1:
+                    a["dims"][k][0] += v["pop"]              # vulnérable (dimension)
+                    if v["score"] >= 4:
+                        a["dims"][k][1] += v["pop"]          # ... et zone prioritaire
         out = {}
         for slug, a in sorted(agg.items()):
             if a["pop"] == 0:
@@ -339,11 +581,34 @@ def main():
                 "pop": a["pop"], "nad": a["nad"],
                 "dist": [pct(x, a["pop"]) for x in a["dist"]],
                 "p4": pct(sum(a["dist"][4:]), a["pop"]),
+                "niv": [pct(x, a["pop"]) for x in a["niv"]],
+                "dims": {k: [pct(x, a["pop"]) for x in a["dims"][k]] for k in dim_keys},
             }
         iemv_geo[geo] = out
         tp = sum(a["pop"] for a in out.values())
         t4 = sum(a["pop"] * a["p4"] / 100 for a in out.values())
         print(f"iemv {geo} : {len(out)} territoires | pop {tp:,} | ≥4 vulnérabilités {100*t4/tp:.1f} %")
+
+    # totaux île pour l'IEMV (comparaison dans le panneau)
+    iemv_tot = {"pop": 0, "niv": [0.0, 0.0, 0.0], "dims": {k: [0.0, 0.0] for k in dim_keys}}
+    for v in iemv.values():
+        if v["score"] is None or v["pop"] == 0:
+            continue
+        iemv_tot["pop"] += v["pop"]
+        cls = iemv_class(None, v["score"])
+        iemv_tot["niv"][{"nv": 0, "vnp": 1, "pv": 2}[cls]] += v["pop"]
+        for k in dim_keys:
+            if v["acp"].get(k) == 1:
+                iemv_tot["dims"][k][0] += v["pop"]
+                if v["score"] >= 4:
+                    iemv_tot["dims"][k][1] += v["pop"]
+    iemv_overall = {
+        "niv": [pct(x, iemv_tot["pop"]) for x in iemv_tot["niv"]],
+        "dims": {k: [pct(x, iemv_tot["pop"]) for x in iemv_tot["dims"][k]] for k in dim_keys},
+    }
+
+    # ---------------- iemv : mosaïque d'AD dissoute (fichier géométrie) --------
+    iemv_paths = build_iemv_geo(iemv)
 
     # ---------------- mpc : taux MPC par AD (champ MPC21 du GeoJSON IEMV) --------
     # moyenne des taux d'AD pondérée par la population de l'AD
@@ -444,21 +709,49 @@ def main():
             "meta": {
                 "source": "Ville de Montréal, Indice d'équité des milieux de vie, version 2026",
                 "annee": 2026,
+                "dims": {k: lbl for k, _f, lbl in IEMV_DIMS},
+                "overall": iemv_overall,
             },
             "geo": iemv_geo,
         },
+        "alim": ALIM_DATA,
+        "participation": PARTICIPATION_2021,
     }
+    capital = load_capital()
+    if capital:
+        data["capital"] = capital
+        data["capital"]["meta"] = {
+            "appartenance": "Statistique Canada, ESCC 2007-2008 à 2019-2020 ; Infocentre de santé publique (INSPQ). "
+                            "Population de 12 ans et plus déclarant un sentiment d'appartenance très ou plutôt fort à sa communauté locale.",
+            "satisfaction": "EQSP 2014-2015 et 2020-2021 ; Infocentre de santé publique (INSPQ). Population de 15 ans et plus. "
+                            "Les deux cycles ne sont pas directement comparables.",
+            "solitude": "EQSP 2020-2021 ; Infocentre de santé publique (INSPQ). Degré moyen de solitude "
+                        "(population de 15 ans et plus ; un score plus élevé indique un degré de solitude plus grand).",
+        }
     js = ("/* Indicateurs — DONNÉES (généré par tools/build_indicateurs.py, ne pas éditer).\n"
           "   INDIC_DATA.defavo : IDMS par territoire (mat/soc = % de population par quintile\n"
           "   régional 2021 ; trend = % en quintiles 4-5 par recensement).\n"
-          "   INDIC_DATA.iemv : IEMV 2026 (dist = % de population par nombre de vulnérabilités\n"
-          "   0-6 ; p4 = % en zone vulnérable et prioritaire, ≥ 4).\n"
+          "   INDIC_DATA.iemv : IEMV 2026 (dist = % par nombre de vulnérabilités 0-6 ;\n"
+          "   p4 = % en zone vulnérable et prioritaire ; niv = % [non vuln., vuln. non\n"
+          "   prioritaire, vuln. et prioritaire] ; dims = % [vulnérable, vulnérable et\n"
+          "   prioritaire] par dimension).\n"
+          "   INDIC_DATA.alim / capital / participation : voir les méta de chaque bloc.\n"
           "   Découpages : tq (tables de quartier), vdm (arrondissements et villes liées),\n"
           "   sq (réseaux locaux de services). */\n"
           "const INDIC_DATA = " +
           json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
     OUT.write_text(js, encoding="utf-8")
     print(f"Écrit : {OUT}")
+
+    jsg = ("/* Indicateurs — GÉOMÉTRIE IEMV (généré par tools/build_indicateurs.py, ne pas\n"
+           "   éditer). Aires de diffusion 2021 dissoutes par option (ens = ensemble,\n"
+           "   cult/prox/secu/envi/eco/soci = dimensions) et par classe :\n"
+           "   pv = vulnérable et prioritaire, vnp = vulnérable non prioritaire,\n"
+           "   nv = non vulnérable. Espace SVG 1000x875 (même projection que les cartes). */\n"
+           "const IEMV_GEO = " +
+           json.dumps(iemv_paths, ensure_ascii=False, separators=(",", ":")) + ";\n")
+    OUT_GEO.write_text(jsg, encoding="utf-8")
+    print(f"Écrit : {OUT_GEO} ({OUT_GEO.stat().st_size/1024:.0f} ko)")
 
 
 if __name__ == "__main__":
