@@ -20,5 +20,11 @@
     "sheet_id": "11P0JPIxhEmf3EFvXxVx2z_NYmQ-oNo7u",
     "tab": "Membres",
     "output": "assets/data/tables-quartier.members.js"
+  },
+  "deputes": {
+    "_aide": "Feuille « Députés » : colonnes Circonscription | Député | Parti | Coordonnées. Un onglet nommé « Deputes ». Partager « Tout le monde disposant du lien : Lecteur », puis coller l'ID ci-dessous (remplacer le TODO).",
+    "sheet_id": "TODO_coller_ID_feuille_Deputes",
+    "tab": "Deputes",
+    "output": "assets/data/deputes-overrides.data.js"
   }
 }

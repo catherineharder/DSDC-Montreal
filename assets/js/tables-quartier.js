@@ -57,10 +57,17 @@ function initTdqMap() {
       `<p class="intro">Membres de la table de quartier. ` +
       `Cliquez un organisme pour ouvrir sa fiche Google Maps.</p>` +
       membersHTML(t.slug),
-    renderLanding: () =>
-      `<h2>Tables de quartier${editPencil(EDIT_SHEETS.tables)}</h2><hr class="rule">` +
-      `<p class="intro">${esc(intro)}</p>` +
-      `<p class="intro">Cliquez un territoire pour afficher sa table de quartier.</p>`,
+    renderLanding: () => {
+      const noms = (typeof TDQ_TABLES !== "undefined"
+        ? Object.keys(TDQ_TABLES).map((s) => TDQ_TABLES[s].name) : [])
+        .sort((a, b) => a.localeCompare(b, "fr"));
+      return `<h2>Tables de quartier${editPencil(EDIT_SHEETS.tables)}</h2><hr class="rule">` +
+        `<p class="intro">${esc(intro)}</p>` +
+        `<div class="mx-video"><iframe src="https://www.youtube.com/embed/33QoTYiHokg" title="Les tables de quartier de Montréal" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>` +
+        `<p class="intro">Cliquez un territoire sur la carte, ou repérez une table dans la liste.</p>` +
+        `<div class="block"><p class="block-title">Les tables de quartier (${noms.length})</p>` +
+        `<ul class="items">${noms.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></div>`;
+    },
   });
 
   // Contour net de l'île, par-dessus tout (inerte, laisse passer les clics).

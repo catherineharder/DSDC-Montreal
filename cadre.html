@@ -7,17 +7,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --red: #b12638;
-  --red-soft: rgba(177, 38, 56, 0.08);
-  --red-hover: rgba(177, 38, 56, 0.16);
-  --pink-light: #f7ede8;
-  --pink-medium: #e7c4bc;
-  --pink-dark: #d4918a;
-  --gray: #726f6f;
-  --text: #2a2a2a;
-  --muted: #8a8a8a;
-  --bg: #ffffff;
-  --border: #ececec;
+  /* Palette DSDC : accent teal, texte/lignes noirs, fond crème */
+  --red: #46747F;
+  --red-soft: rgba(70, 116, 127, 0.10);
+  --red-hover: rgba(70, 116, 127, 0.18);
+  --pink-light: #e7eeef;
+  --pink-medium: #bcd0d4;
+  --pink-dark: #7ea3aa;
+  --gray: #000000;
+  --text: #000000;
+  --muted: #000000;
+  --bg: #F2EEE4;
+  --border: #000000;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
@@ -37,36 +38,36 @@ html, body {
 /* Onglets — même langage visuel que la page Cartes (.map-pick) */
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .tab { appearance: none; background: transparent; border: 1.5px solid transparent; border-radius: 7px; font: inherit; font-size: 12.5px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); padding: 4px 10px; cursor: pointer; transition: color 120ms ease, border-color 120ms ease; }
-.tab:hover { color: #212121; }
-.tab[aria-current="page"] { border-color: #212121; color: #212121; }
-.tab:focus-visible { outline: 2px solid #212121; outline-offset: 1px; }
+.tab:hover { color: #000000; }
+.tab[aria-current="page"] { border-color: #000000; color: #000000; }
+.tab:focus-visible { outline: 2px solid #000000; outline-offset: 1px; }
 /* Cadre simplifié interactif */
 .lview[hidden] { display: none; }
 .snode { cursor: pointer; }
 .snode .box { transition: filter 0.15s ease, stroke 0.15s ease; }
 .snode:hover .box { filter: brightness(0.94); }
-.snode.active .box { stroke: #212121; stroke-width: 1.75px; }
+.snode.active .box { stroke: #000000; stroke-width: 1.75px; }
 .ex-item { background: #fff; border-left: 3px solid var(--pink-medium); padding: 9px 13px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.55; border-radius: 0 6px 6px 0; }
 .ex-item strong { color: var(--red); font-weight: 600; }
 .theory-link { margin: 14px 0; }
 .theory-link button { background: var(--pink-light); border: none; color: var(--red); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
 .theory-link button:hover { background: var(--pink-medium); }
 .chrono { font-size: 13px; line-height: 1.6; margin: 10px 0 16px; }
-.chrono div { padding: 4px 0; border-bottom: 1px solid #f3f3f3; }
+.chrono div { padding: 4px 0; border-bottom: 1px solid #000000; }
 .chrono b { color: var(--red); font-weight: 600; }
 .svg-wrap { position: relative; width: 100%; max-width: none; margin: 0; }
 .svg-wrap img { width: 100%; display: block; user-select: none; pointer-events: none; }
 .zone { position: absolute; cursor: pointer; border-radius: 6px; transition: background 0.18s ease, box-shadow 0.18s ease; border: 1.5px solid transparent; }
 .zone:hover { background: var(--red-soft); border-color: rgba(177, 38, 56, 0.40); }
 .zone.active { background: var(--red-hover); border-color: var(--red); box-shadow: 0 0 0 2px rgba(177, 38, 56, 0.10); }
-.right { background: #fbfaf9; overflow-y: auto; padding: 40px 48px 80px 48px; }
+.right { background: #F2EEE4; overflow-y: auto; padding: 40px 48px 80px 48px; }
 /* Barre de recherche — même gabarit que celle de Concertations (.conc-search input) */
 .search-bar { position: relative; flex: 0 0 auto; width: 230px; max-width: 46vw; margin-left: auto; }
-.search-bar input { width: 100%; box-sizing: border-box; padding: 7px 12px; font-family: inherit; font-size: 10.5pt; color: #212121; border: 1.5px solid #212121; border-radius: 8px; background: #fff; outline: none; transition: border-color 0.15s; }
+.search-bar input { width: 100%; box-sizing: border-box; padding: 7px 12px; font-family: inherit; font-size: 10.5pt; color: #000000; border: 1.5px solid #000000; border-radius: 8px; background: #fff; outline: none; transition: border-color 0.15s; }
 .search-bar input:focus { border-color: var(--red); }
 .search-results { position: absolute; top: 40px; left: auto; right: 0; width: 340px; max-width: 80vw; background: #fff; border: 1px solid var(--border); border-radius: 8px; max-height: 340px; overflow-y: auto; display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.06); z-index: 20; }
 .search-results.open { display: block; }
-.search-results .item { padding: 10px 16px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #f3f3f3; }
+.search-results .item { padding: 10px 16px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #000000; }
 .search-results .item:hover { background: var(--pink-light); }
 .search-results .item:last-child { border-bottom: none; }
 .welcome { color: var(--muted); padding-top: 4px; }
@@ -222,7 +223,7 @@ searchInput.addEventListener('input', e => {
   });
   if (!matches.length) { searchResults.innerHTML = '<div class="item">Aucun résultat</div>'; }
   else {
-    searchResults.innerHTML = matches.slice(0, 20).map(([z, t, g]) => `<div class="item" data-zone="${z}">${esc(t)} <span style="color:#999;font-size:11px;margin-left:6px">${esc(g)}</span></div>`).join('');
+    searchResults.innerHTML = matches.slice(0, 20).map(([z, t, g]) => `<div class="item" data-zone="${z}">${esc(t)} <span style="color:#000000;font-size:11px;margin-left:6px">${esc(g)}</span></div>`).join('');
   }
   searchResults.classList.add('open');
 });
@@ -239,11 +240,11 @@ document.addEventListener('click', e => {
    Cadre simplifié (mêmes couleurs que le cadre complet) + contenus d'exemple
    ================================================================ */
 
-const COL = { red:'#b12638', redL:'#f7ede8', blue:'#28587a', or:'#9c5a15', orL:'#f4e4cd',
-  vio:'#54437c', vioL:'#dcd6e8', gold:'#8f6f1c', gr:'#2f6448', grL:'#eaf1ec', grM:'#d4e3d9', grD:'#4f7a5f' };
+const COL = { red:'#C43E42', redL:'#f1d9da', blue:'#46747F', or:'#b3651c', orL:'#f0e4c8',
+  vio:'#6C6F3F', vioL:'#e4e7d6', gold:'#8f6f1c', gr:'#3f6a5c', grL:'#e7eeef', grM:'#bcd0d4', grD:'#46747F' };
 
 const NODE_TITLES = { rapports:'Rapports de pouvoir', numerique:'Transformation numérique', climat:'Changements climatiques',
-  institutions:'Institutions', philanthropie:'Philanthropie', prive:'Secteur privé', communautaire:'Milieu communautaire',
+  institutions:'Institutions', philanthropie:'Philanthropie', prive:'Secteur privé (incl. philanthropie)', communautaire:'Milieu communautaire',
   citoyens:'Citoyens et citoyennes', plaidoyer:'Plaidoyer', concertation:'Concertation', participation:'Participation citoyenne',
   vision:'Vision commune', savoir:'Savoir', capital:'Capital social', financement:'Financement', gouvernance:'Gouvernance partagée',
   evaluation:'Évaluation', impact:'Impact collectif sur les priorités locales', determinants:'Déterminants structurels', equite:'Équité en santé' };
@@ -255,22 +256,22 @@ const NODE_TO_ZONE = { rapports:'rapports', numerique:'transformation', climat:'
 
 /* Cadre DSL simplifié — pastel, texte noir, sans flèches (utilisé par les 2 onglets exemples) */
 const DSL_ROWS = [
-  { lab: 'Considérant les enjeux transversaux', c: '#e6e3de', fs: 15, chips: [['rapports','RAPPORTS DE POUVOIR'],['numerique','TRANSFORMATION NUMÉRIQUE'],['climat','CHANGEMENTS CLIMATIQUES']] },
-  { lab: 'et agissant en amont sur les', c: '#f3d6d8', fs: 16, chips: [['determinants','DÉTERMINANTS STRUCTURELS']] },
-  { lab: 'les parties prenantes', c: '#d9e7f0', fs: 13.5, chips: [['institutions','INSTITUTIONS'],['philanthropie','PHILANTHROPIE'],['prive','PRIVÉ'],['communautaire','COMMUNAUTAIRE'],['citoyens','CITOYENS']] },
-  { lab: 'utilisent', c: '#dcebe1', fs: 15, chips: [['plaidoyer','PLAIDOYER'],['concertation','CONCERTATION'],['participation','PARTICIPATION CITOYENNE']] },
-  { lab: 'pour arriver à une', c: '#c8e0d1', fs: 16, chips: [['vision','VISION COMMUNE']] },
-  { lab: 'mettant à profit', c: '#f5e8c9', fs: 15, chips: [['savoir','SAVOIR'],['capital','CAPITAL SOCIAL'],['financement','FINANCEMENT']] },
-  { lab: null, c: '#f5e8c9', fs: 15, chips: [['gouvernance','GOUVERNANCE PARTAGÉE'],['evaluation','ÉVALUATION']] },
-  { lab: 'pour avoir un', c: '#dcd6e8', fs: 15, chips: [['impact','IMPACT COLLECTIF SUR LES PRIORITÉS LOCALES']] },
-  { lab: 'ayant comme finalité', c: '#ede1b2', fs: 16, chips: [['equite','L’ÉQUITÉ EN SANTÉ']] }
+  { lab: 'Considérant les enjeux transversaux', c: '#ede7d9', fs: 15, chips: [['rapports','RAPPORTS DE POUVOIR'],['numerique','TRANSFORMATION NUMÉRIQUE'],['climat','CHANGEMENTS CLIMATIQUES']] },
+  { lab: 'et agissant en amont sur les', c: '#f1d9da', fs: 16, chips: [['determinants','DÉTERMINANTS STRUCTURELS']] },
+  { lab: 'les parties prenantes', c: '#dde7e9', fs: 13.5, chips: [['institutions','INSTITUTIONS'],['prive','PRIVÉ'],['communautaire','COMMUNAUTAIRE'],['citoyens','CITOYENS']] },
+  { lab: 'utilisent', c: '#e4e7d6', fs: 15, chips: [['plaidoyer','PLAIDOYER'],['concertation','CONCERTATION'],['participation','PARTICIPATION CITOYENNE']] },
+  { lab: 'pour arriver à une', c: '#d9ddca', fs: 16, chips: [['vision','VISION COMMUNE']] },
+  { lab: 'mettant à profit', c: '#f0e4c8', fs: 15, chips: [['savoir','SAVOIR'],['capital','CAPITAL SOCIAL'],['financement','FINANCEMENT'],['gouvernance','GOUVERNANCE PARTAGÉE']] },
+  { lab: 'amélioré par un processus d’', c: '#f0e4c8', fs: 15, chips: [['evaluation','ÉVALUATION']] },
+  { lab: 'pour avoir un', c: '#e5e0d2', fs: 15, chips: [['impact','IMPACT COLLECTIF SUR LES PRIORITÉS LOCALES']] },
+  { lab: 'ayant comme finalité', c: '#efe1b6', fs: 16, chips: [['equite','L’ÉQUITÉ EN SANTÉ']] }
 ];
 
 function simpleSVG(tab) {
-  const W = 1040, X = 70, RW = 900, CH = 46, INK = '#212121';
+  const W = 1040, X = 70, RW = 900, CH = 46, INK = '#000000';
   let y = 118, out = [];
   DSL_ROWS.forEach(row => {
-    if (row.lab) { out.push(`<text x="${W/2}" y="${y+24}" text-anchor="middle" font-size="16.5" fill="#7a766f">${row.lab}</text>`); y += 40; }
+    if (row.lab) { out.push(`<text x="${W/2}" y="${y+24}" text-anchor="middle" font-size="16.5" fill="#000000">${row.lab}</text>`); y += 40; }
     else { y += 6; }
     const n = row.chips.length, gap = 6, cw = (RW - gap*(n-1))/n;
     row.chips.forEach((ch, i) => {

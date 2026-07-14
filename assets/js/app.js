@@ -27,6 +27,47 @@ const editPencil = (url) =>
   `stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">` +
   `<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></a>`;
 
+/* ---- Boîte-lumière : agrandir une image (structure, organigrammes) --------
+   openLightbox(src, caption) affiche l'image en plein écran ; Échap ou clic
+   hors de l'image referme. */
+window.openLightbox = function (src, caption) {
+  const ov = document.createElement("div");
+  ov.className = "lb-ov";
+  ov.innerHTML =
+    '<div class="lb-inner"><button class="lb-close" aria-label="Fermer">×</button>' +
+    '<img src="' + esc(src) + '" alt="' + esc(caption || "") + '">' +
+    (caption ? '<p class="lb-cap">' + esc(caption) + "</p>" : "") +
+    "</div>";
+  document.body.appendChild(ov);
+  const close = () => { ov.remove(); document.removeEventListener("keydown", onKey); };
+  const onKey = (e) => { if (e.key === "Escape") close(); };
+  ov.addEventListener("click", (e) => {
+    if (e.target === ov || e.target.classList.contains("lb-close")) close();
+  });
+  document.addEventListener("keydown", onKey);
+};
+
+/* Rend cliquables les figures « agrandir » d'un panneau : si l'image est
+   réellement chargée, on l'agrandit ; sinon on ouvre la source. Les figures
+   sans image affichent un aperçu générique (classe mx-missing). */
+window.wireMapExtras = function (root) {
+  (root || document).querySelectorAll(".mx-fig[data-enlarge]").forEach((fig) => {
+    const img = fig.querySelector("img");
+    const src = fig.getAttribute("data-enlarge");
+    const source = fig.getAttribute("data-source") || "";
+    if (img) {
+      const markMissing = () => { fig.classList.add("mx-missing"); fig.style.cursor = source ? "pointer" : "default"; };
+      if (img.complete && img.naturalWidth === 0) markMissing();
+      img.addEventListener("error", markMissing);
+    }
+    fig.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return; // laisser les liens de légende agir
+      if (fig.classList.contains("mx-missing")) { if (source) window.open(source, "_blank", "noopener"); }
+      else window.openLightbox(src, fig.getAttribute("data-caption") || "");
+    });
+  });
+};
+
 /* ---- Navigation: show one view at a time ---------------------------------
    Plain nav semantics (aria-current="page"), not the ARIA tab pattern: the
    buttons are page switches, and Tab-to-focus + Enter is the expected model. */
@@ -40,7 +81,7 @@ function initNav() {
   const BASE = baseEl ? new URL(baseEl.href).pathname : "/";
   const VIEW_SLUG = {
     accueil: "", cartes: "cartes", conc: "concertations", cadre: "cadre",
-    indic: "indicateurs", ressources: "ressources", gloss: "glossaire",
+    indic: "indicateurs", reco: "recommandations", ressources: "ressources", gloss: "glossaire",
   };
   const SLUG_VIEW = {};
   Object.keys(VIEW_SLUG).forEach((v) => { SLUG_VIEW[VIEW_SLUG[v]] = v; });
@@ -81,6 +122,11 @@ function initNav() {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go("accueil", true); }
     });
   }
+  // Tuiles / boutons de la page d'accueil : [data-goto="cartes"] bascule vers l'onglet.
+  document.querySelectorAll("[data-goto]").forEach((b) => {
+    b.addEventListener("click", () => go(b.dataset.goto, true));
+  });
+
   window.addEventListener("popstate", () => apply(viewFromPath()));
   go(viewFromPath(), false); // état initial (sans empiler d'historique)
 }

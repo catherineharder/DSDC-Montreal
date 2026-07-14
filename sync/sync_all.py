@@ -29,11 +29,13 @@ import common          # noqa: E402
 import glossaire       # noqa: E402
 import concertations   # noqa: E402
 import tables          # noqa: E402
+import deputes         # noqa: E402
 
 RUNNERS = {
     "glossaire": glossaire.run,
     "concertations": concertations.run,
     "tables": tables.run,
+    "deputes": deputes.run,
 }
 
 

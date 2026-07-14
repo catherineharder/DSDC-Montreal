@@ -9,6 +9,27 @@ function initDeputesMap() {
   const panel = el("deputes-panel");
   if (!svg || !panel || typeof DEPUTES_GEOMETRY === "undefined") return;
 
+  // Surcharge facultative depuis la feuille Google « Députés » (synchronisée
+  // chaque nuit) : Circonscription | député | parti | coordonnées. Elle prime
+  // sur les valeurs générées. Rapprochement par nom de circonscription (accents
+  // et casse ignorés). Sans fichier de surcharge, rien ne change.
+  (function applyOverrides() {
+    const OV = window.DEPUTES_OVERRIDES;
+    if (!OV) return;
+    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+    const byName = {};
+    Object.keys(DEPUTES).forEach((slug) => { byName[norm(DEPUTES[slug].name)] = slug; });
+    Object.keys(OV).forEach((circ) => {
+      const slug = byName[norm(circ)];
+      if (!slug) return;
+      const o = OV[circ];
+      if (o.depute) DEPUTES[slug].depute = o.depute;
+      if (o.party) DEPUTES[slug].party = o.party;
+      if (o.partyShort) DEPUTES[slug].partyShort = o.partyShort;
+      if (o.coord) DEPUTES[slug].coord = o.coord;
+    });
+  })();
+
   const lookup = (slug) => (DEPUTES[slug] ? { ...DEPUTES[slug], slug } : null);
   const partyColor = (d) => PARTY_COLORS[d.partyShort] || PARTY_COLORS.IND;
   const partyDot = (d) =>
@@ -29,16 +50,21 @@ function initDeputesMap() {
     panel,
     shapes: DEPUTES_GEOMETRY,
     lookup,
-    renderPanel: (d) =>
-      `<h2>${esc(d.name)}</h2><hr class="rule">` +
-      `<p class="depute-nom">${esc(d.depute)}</p>` +
-      `<p class="depute-parti">${partyDot(d)}${esc(d.party)}</p>` +
-      `<div class="block"><p class="block-title">Coordonnées</p><ul class="items">` +
-      (d.email ? `<li><a class="tdq-org" href="mailto:${esc(d.email)}">${esc(d.email)}</a></li>` : "") +
-      (d.url ? `<li><a class="tdq-org" href="${esc(d.url)}" target="_blank" rel="noopener">Fiche à l'Assemblée nationale</a></li>` : "") +
-      `</ul></div>`,
+    renderPanel: (d) => {
+      const contact = d.coord
+        ? esc(d.coord)
+        : (d.email
+            ? `<a class="tdq-org" href="mailto:${esc(d.email)}">${esc(d.email)}</a>`
+            : (d.url ? `<a class="tdq-org" href="${esc(d.url)}" target="_blank" rel="noopener">Fiche à l'Assemblée nationale</a>` : "Coordonnées à venir"));
+      return `<h2>${esc(d.name)}</h2><hr class="rule">` +
+        `<p class="depute-nom">${esc(d.depute)}</p>` +
+        `<ul class="items depute-bullets" style="--accent:${partyColor(d)}">` +
+        `<li>${esc(d.party)}</li>` +
+        `<li>${contact}</li>` +
+        `</ul>`;
+    },
     renderLanding: () =>
-      `<h2>Députés de l'île de Montréal</h2><hr class="rule">` +
+      `<h2>Circonscriptions de l'île de Montréal</h2><hr class="rule">` +
       `<p class="intro">Les 27 circonscriptions électorales provinciales de l'île de Montréal ` +
       `et leur député ou députée à l'Assemblée nationale du Québec (43<sup>e</sup> législature : ` +
       `élections générales de 2022, élections partielles et changements d'allégeance depuis). ` +

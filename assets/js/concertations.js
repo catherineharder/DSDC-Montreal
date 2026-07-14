@@ -7,6 +7,51 @@
   if (!root || !window.CONC) return;
   var D = window.CONC;
 
+  /* ---- Réorganisation d'affichage (survit à la synchronisation) -------------
+     1. Le groupe « Autres comités intersectoriels ou inter-établissements » est
+        éclaté en trois thèmes : Sécurité alimentaire · Logement et itinérance ·
+        Immigration, racisation et sécurisation culturelle.
+     2. Le groupe « Comités internes » est renvoyé à la fin.
+     Le tout se fait au rendu, sans toucher au fichier généré. Dès que la
+     feuille Google est relabellisée (colonne « groupe »), ces libellés
+     disparaissent et cette transformation devient sans effet. */
+  (function reorganize() {
+    var norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+    var isAutres = function (lab) { return norm(lab).indexOf('autres comites intersectoriels') === 0; };
+    var isInternes = function (lab) { return norm(lab).indexOf('comites internes') >= 0; };
+    var SPLIT = [
+      { key: 'g-secalim', label: 'Sécurité alimentaire' },
+      { key: 'g-logitin', label: 'Logement et itinérance' },
+      { key: 'g-immrac', label: 'Immigration, racisation et sécurisation culturelle' },
+    ];
+    var classify = function (c) {
+      var t = norm((c.name || '') + ' ' + (c.full || ''));
+      if (/aliment/.test(t) || /csam/.test(t)) return 'g-secalim';
+      if (/logement|itinerance|hebergement|cohabitation|\bpsi\b|mortalite/.test(t)) return 'g-logitin';
+      return 'g-immrac';
+    };
+    var autres = D.famsC.filter(function (f) { return isAutres(f.label); });
+    if (autres.length) {
+      var autreKeys = {};
+      autres.forEach(function (f) { autreKeys[f.key] = true; });
+      D.committees.forEach(function (c) { if (autreKeys[c.fam]) c.fam = classify(c); });
+    }
+    // Reconstruit famsC : remplace « Autres » par les 3 thèmes (non vides), garde
+    // l'ordre, et pousse « Comités internes » à la toute fin.
+    var used = {};
+    D.committees.forEach(function (c) { used[c.fam] = true; });
+    var internes = [], out = [];
+    D.famsC.forEach(function (f) {
+      if (isInternes(f.label)) { internes.push(f); return; }
+      if (isAutres(f.label)) {
+        SPLIT.forEach(function (s) { if (used[s.key]) out.push({ key: s.key, label: s.label }); });
+        return;
+      }
+      out.push(f);
+    });
+    D.famsC = out.concat(internes);
+  })();
+
   var INT = {dir:["Direction","var(--i-dir)"],eusp:["EUSP","var(--i-eusp)"],jeun:["Jeunesse","var(--i-jeun)"],pcmi:["PCMI","var(--i-pcmi)"],ecos:["ÉCoS","var(--i-ecos)"]};
   var SECT = {min:["Ministères","var(--min)"],rss:["Santé / RSSS","var(--rss)"],mun:["Municipal","var(--gov)"],rec:["Recherche","var(--rec)"],fond:["Philanthropie","var(--fond)"],comm:["Communautaire","var(--comm)"],cit:["Citoyens","var(--cit)"],drsp:["DRSP / EUSP","var(--drsp-sect)"]};
   var PAR2SECT = {min:"min",mun:"mun",com:"comm",ciu:"rss",fond:"fond"};

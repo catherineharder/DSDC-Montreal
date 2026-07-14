@@ -1,7 +1,7 @@
 
 .conc-app{
-  --ink:#000; --muted:#000; --soft:#000; --faint:#b8b8b8;
-  --hairline:#e5e5e5; --rule:#ececec; --soft-fill:#fafafa;
+  --ink:#000; --muted:#000; --soft:#000; --faint:#000;
+  --hairline:#000; --rule:#000; --soft-fill:#F2EEE4;
   --accent:#3b6fa8; --accent-fill:#e7eef6; --warn:#b07b6b;
   /* familles de partenaires : palette froide, hues distincts (vert > plum) */
   --rec:#2e8b57; --rss:#138f8f; --gov:#1aa3d4; --min:#2a52be; --comm:#6a4ce0; --fond:#9b51d4; --cit:#c14fb0;

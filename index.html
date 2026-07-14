@@ -8,9 +8,10 @@
 /* Restaure l'URL propre encodée par 404.html (routage par onglet sur GitHub Pages). */
 (function(){var l=window.location;if(l.search[1]==='/'){var d=l.search.slice(1).split('&').map(function(s){return s.replace(/~and~/g,'&');}).join('?');window.history.replaceState(null,null,l.pathname.slice(0,-1)+d+l.hash);}})();
 </script>
-<title>Ressources EUSP</title>
+<title>DSDC Montréal</title>
   <link rel="stylesheet" href="assets/css/app.css">
   <link rel="stylesheet" href="assets/css/concertations.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
 </head>
 <body>
 <div class="app">
@@ -22,6 +23,7 @@
       <button class="nav-item" id="nav-conc" data-view="conc" aria-current="false">Concertations</button>
       <button class="nav-item" id="nav-cadre" data-view="cadre" aria-current="false">Cadre conceptuel</button>
       <button class="nav-item" id="nav-indic" data-view="indic" aria-current="false">Indicateurs</button>
+      <button class="nav-item" id="nav-reco" data-view="reco" aria-current="false">Recommandations</button>
       <button class="nav-item" id="nav-ressources" data-view="ressources" aria-current="false">Ressources</button>
       <button class="nav-item" id="nav-gloss" data-view="gloss" aria-current="false">Glossaire</button>
     </div>
@@ -30,10 +32,116 @@
 
   <div class="views">
 
-    <!-- Accueil : page d'atterrissage (cliquer la marque y ramène) -->
+    <!-- Accueil : page d'atterrissage plein écran, sections en séquence -->
     <section class="view active" id="view-accueil" aria-label="Accueil">
-      <div class="full"><h1>DS-DC Montréal</h1>
-        <div class="stub"><div class="frame"><h2>À venir</h2><p>Contenu de la page d'accueil à venir.</p></div></div>
+      <div class="land">
+
+        <!-- 1. Héros -->
+        <section class="land-sec land-hero">
+          <p class="kicker">Développement social et des communautés</p>
+          <h1>DSDC Montréal</h1>
+          <p class="tagline">Ensemble, éradiquons la pauvreté et la faim à Montréal.</p>
+          <div class="accent-bar" aria-hidden="true">
+            <span style="background:#D7B063"></span><span style="background:#D97A22"></span><span style="background:#C43E42"></span><span style="background:#6C6F3F"></span><span style="background:#46747F"></span>
+          </div>
+          <div class="land-scroll-cue" aria-hidden="true">
+            <span>Explorer</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+          </div>
+        </section>
+
+        <!-- 2. Développement social -->
+        <section class="land-sec">
+          <div class="land-eyebrow"><span class="num">01</span><span class="lab">Développement social</span></div>
+          <h2>Qu'est-ce que le développement social&nbsp;?</h2>
+          <div class="land-def">
+            <div>
+              <p class="lead">Le développement social est&nbsp;:</p>
+              <ul>
+                <li>l'amélioration des conditions de vie&nbsp;;</li>
+                <li>la réduction des inégalités&nbsp;;</li>
+                <li>l'inclusion sociale&nbsp;;</li>
+                <li>et le renforcement du pouvoir d'agir individuel et collectif&nbsp;;</li>
+              </ul>
+              <p class="lead">découlant de la participation active et intersectorielle d'acteurs&nbsp;:</p>
+              <ul class="actors">
+                <li>communautaires&nbsp;;</li>
+                <li>municipaux&nbsp;;</li>
+                <li>institutionnels&nbsp;;</li>
+                <li>étatiques&nbsp;;</li>
+                <li>ainsi que de l'engagement citoyen.</li>
+              </ul>
+              <p class="src">Source&nbsp;: <a href="https://rqds.org/a-propos/" target="_blank" rel="noopener">Réseau québécois de développement social (RQDS)</a></p>
+            </div>
+            <aside class="land-card-aside">
+              <h3>Un cadre partagé</h3>
+              <p>Cette définition guide l'ensemble de la démarche DSDC&nbsp;: du cadre conceptuel aux indicateurs, jusqu'aux recommandations.</p>
+              <a class="land-btn" href="https://rqds.org/a-propos/" target="_blank" rel="noopener">En savoir plus
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></a>
+              <div style="height:12px"></div>
+              <button class="land-btn ghost" type="button" data-goto="cadre">Voir le cadre conceptuel
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+            </aside>
+          </div>
+        </section>
+
+        <!-- 3. Développement des communautés -->
+        <section class="land-sec">
+          <div class="land-eyebrow"><span class="num">02</span><span class="lab">Développement des communautés</span></div>
+          <h2>Développement des communautés</h2>
+          <div class="land-two">
+            <div class="land-def">
+              <div>
+                <p class="lead">Le développement des communautés mise sur le pouvoir d'agir collectif des milieux&nbsp;: mobiliser les acteurs d'un territoire pour améliorer, ensemble et durablement, les conditions de vie.</p>
+                <p class="src">Source&nbsp;: <a href="https://www.collectifpdc.org/le-developpement-des-communautes" target="_blank" rel="noopener">Collectif des partenaires en développement des communautés</a></p>
+              </div>
+            </div>
+            <figure class="land-figure">
+              <div class="ph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 16 5-5c.9-.9 2.1-.9 3 0l5 5"/><path d="m14 14 1-1c.9-.9 2.1-.9 3 0l3 3"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span class="ph-t">Illustration à ajouter</span>
+              </div>
+              <figcaption>Schéma « Développement des communautés » — <a href="https://www.collectifpdc.org/le-developpement-des-communautes" target="_blank" rel="noopener">collectifpdc.org</a></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 4. Explorer les sections -->
+        <section class="land-sec land-explore">
+          <div class="land-eyebrow"><span class="num">03</span><span class="lab">Explorer le site</span></div>
+          <h2>Les sections</h2>
+          <div class="land-grid">
+            <button class="land-tile" type="button" data-goto="cartes">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 3-6 3v15l6-3 6 3 6-3V3l-6 3-6-3Z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Cartes</h3><p>Santé Québec, Ville de Montréal, tables de quartier et circonscriptions.</p>
+            </button>
+            <button class="land-tile" type="button" data-goto="conc">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><circle cx="5" cy="17" r="2.5"/><circle cx="19" cy="17" r="2.5"/><path d="M12 11v3M9.5 15.5 7 16.5M14.5 15.5 17 16.5"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Concertations</h3><p>La cartographie des comités et tables de concertation.</p>
+            </button>
+            <button class="land-tile" type="button" data-goto="cadre">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Cadre conceptuel</h3><p>La logique du DSDC, des intrants aux résultats visés.</p>
+            </button>
+            <button class="land-tile" type="button" data-goto="indic">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 5-7"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Indicateurs</h3><p>Défavorisation, équité, participation, sécurité alimentaire…</p>
+            </button>
+            <button class="land-tile" type="button" data-goto="reco">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Recommandations</h3><p>Huit pistes d'action concrètes issues de la démarche.</p>
+            </button>
+            <button class="land-tile" type="button" data-goto="ressources">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path d="M14 4v5h5"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Ressources</h3><p>Toutes les sources documentaires, cherchables et filtrables.</p>
+            </button>
+            <button class="land-tile" type="button" data-goto="gloss">
+              <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><span class="t-arrow">→</span></div>
+              <h3>Glossaire</h3><p>Les acronymes du milieu, de A à Z.</p>
+            </button>
+          </div>
+        </section>
+
       </div>
     </section>
 
@@ -43,7 +151,7 @@
         <section class="view active" id="view-sante" aria-label="Santé Québec">
       <div class="wrap">
         <section class="map-side">
-          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Députés</button></div>
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Circonscriptions</button></div>
           <div class="map-head"><img class="logo" style="transform:translateY(14px)" src="assets/logos/sante-quebec.png" alt="Santé Québec"></div>
           <div class="map-stage"><div class="legend"><div><span class="sw low"></span>Région sociosanitaire (RSS) de Montréal</div><div><span class="sw mid"></span>Les 5 réseaux territoriaux de services (RTS)</div><div><span class="sw high"></span>Les réseaux locaux de services (RLS)</div></div><svg id="sante-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des territoires de CIUSSS"></svg></div>
         </section>
@@ -58,7 +166,7 @@
     <section class="view" id="view-ville" aria-label="Ville de Montréal" hidden>
       <div class="wrap">
         <section class="map-side">
-          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Députés</button></div>
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Circonscriptions</button></div>
           <div class="map-head"><img class="logo" src="assets/logos/logo-montreal.png" alt="Ville de Montréal"></div>
           <div class="map-stage"><div class="legend"><div><span class="sw mid"></span>Arrondissement</div><div><span class="sw low"></span>Ville liée</div></div><svg id="ville-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des arrondissements"></svg></div>
         </section>
@@ -70,7 +178,7 @@
     <section class="view" id="view-tdq" aria-label="Tables de quartier" hidden>
       <div class="wrap">
         <section class="map-side">
-          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Députés</button></div>
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Circonscriptions</button></div>
           <div class="map-head"><img class="logo" style="transform:scale(2);transform-origin:left top" src="assets/logos/tables-de-quartier.png" alt="Tables de quartier"></div>
           <div class="map-stage"><div class="legend"><div><span class="sw mid"></span>Table de quartier</div><div><span class="sw low"></span>Secteur sans table</div></div><svg id="tdq-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des 32 tables de quartier de l'île de Montréal"></svg></div>
         </section>
@@ -82,9 +190,9 @@
     <section class="view" id="view-deputes" aria-label="Députés" hidden>
       <div class="wrap">
         <section class="map-side">
-          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Députés</button></div>
-          <div class="map-head"><h1>Assemblée nationale du Québec</h1></div>
-          <div class="map-stage"><div class="legend"><div><span class="sw" style="background:color-mix(in srgb,#d31f2c 60%,transparent)"></span>Parti libéral du Québec</div><div><span class="sw" style="background:color-mix(in srgb,#ff5605 60%,transparent)"></span>Québec solidaire</div><div><span class="sw" style="background:color-mix(in srgb,#00addc 60%,transparent)"></span>Coalition avenir Québec</div><div><span class="sw" style="background:color-mix(in srgb,#1a3c8f 60%,transparent)"></span>Parti québécois</div><div><span class="sw" style="background:color-mix(in srgb,#8a8f98 60%,transparent)"></span>Indépendant·e</div></div><svg id="deputes-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des 27 circonscriptions provinciales de l'île de Montréal"></svg></div>
+          <div class="map-eyebrow" role="tablist" aria-label="Choisir une carte"><button class="map-pick" data-map="sante">Santé Québec</button><button class="map-pick" data-map="ville">Ville de Montréal</button><button class="map-pick" data-map="tdq">Tables de quartier</button><button class="map-pick" data-map="deputes">Circonscriptions</button></div>
+          <div class="map-head"><img class="logo" style="--logo-h:96px" src="assets/logos/assemblee-nationale.png" onerror="this.onerror=null;this.src='https://www.emploisenadministration.com/uploads/logos/original/bb4ea068b14f3f19f54fa09462b79f89ca1a6226.png'" alt="Assemblée nationale du Québec"></div>
+          <div class="map-stage"><div class="legend"><div><span class="sw" style="background:#d31f2c"></span>Parti libéral du Québec</div><div><span class="sw" style="background:#ff5605"></span>Québec solidaire</div><div><span class="sw" style="background:#00addc"></span>Coalition avenir Québec</div><div><span class="sw" style="background:#1a3c8f"></span>Parti québécois</div><div><span class="sw" style="background:#8a8f98"></span>Indépendant·e</div></div><svg id="deputes-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Carte des 27 circonscriptions provinciales de l'île de Montréal"></svg></div>
         </section>
         <aside class="panel" id="deputes-panel" aria-live="polite"></aside>
       </div>
@@ -125,6 +233,68 @@
       </div>
     </section>
 
+    <!-- Recommandations : 8 pistes d'action, style « landing » -->
+    <section class="view" id="view-reco" aria-label="Recommandations" hidden>
+      <div class="reco-wrap">
+        <header class="reco-hero">
+          <p class="kicker">Démarche DSDC</p>
+          <h1>Recommandations</h1>
+          <p>Huit pistes d'action concrètes pour renforcer le développement social et des communautés à Montréal — issues de la comparaison des pratiques internes et externes.</p>
+        </header>
+        <div class="reco-grid">
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">1</span>
+            <span class="r-tag">Plaidoyer</span>
+            <h3>Renforcer les contacts politiques</h3>
+            <p>Multiplier et entretenir les liens avec les élu·e·s et les paliers décisionnels pour porter les enjeux du développement social plus haut dans l'agenda public.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">2</span>
+            <span class="r-tag">Participation</span>
+            <h3>Rehausser la participation citoyenne</h3>
+            <p>Passer d'une consultation ponctuelle à un véritable engagement communautaire, où les citoyen·ne·s contribuent aux décisions qui les concernent.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">3</span>
+            <span class="r-tag">Données</span>
+            <h3>Produire des données désagrégées</h3>
+            <p>Descendre à l'échelle des territoires et des populations pour révéler les inégalités que les moyennes masquent, et mieux cibler l'action.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">4</span>
+            <span class="r-tag">Financement</span>
+            <h3>Assurer un financement souple</h3>
+            <p>Privilégier un financement à la mission, pluriannuel et adaptable, qui laisse aux milieux la marge d'agir sur le long terme.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">5</span>
+            <span class="r-tag">Gouvernance</span>
+            <h3>Simplifier les comités</h3>
+            <p>Alléger et clarifier l'architecture de concertation pour réduire la charge de coordination et concentrer les efforts sur l'action.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">6</span>
+            <span class="r-tag">Partenariats</span>
+            <h3>Inclure le privé et les commerces</h3>
+            <p>Mobiliser les acteurs économiques locaux comme partenaires du développement social, au-delà du seul mécénat.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">7</span>
+            <span class="r-tag">Innovation</span>
+            <h3>Favoriser l'innovation et l'achat local</h3>
+            <p>Encourager les approches nouvelles et l'approvisionnement de proximité pour ancrer les retombées dans les communautés.</p>
+          </article>
+          <article class="reco-card">
+            <span class="r-num" aria-hidden="true">8</span>
+            <span class="r-tag">Confiance</span>
+            <h3>Bâtir la confiance avec les citoyens</h3>
+            <p>Cultiver la transparence, la constance et la reddition de comptes pour établir un lien de confiance durable avec la population.</p>
+          </article>
+        </div>
+        <p class="reco-note">Formulation de travail à valider avec l'équipe DSDC. Ces recommandations découlent de l'objectif&nbsp;6 du mandat de stage — «&nbsp;Formuler des recommandations&nbsp;» — et alimentent la synthèse finale.</p>
+      </div>
+    </section>
+
     <section class="view" id="view-ressources" aria-label="Ressources" hidden>
       <div class="full"><h1>Ressources</h1>
         <div class="stub"><div class="frame"><h2>À venir</h2><p>Section à remplir.</p></div></div>
@@ -150,8 +320,9 @@
   <!-- carte Santé Québec : données puis logique -->
   <script src="assets/data/sante-quebec.data.js"></script>
   <script src="assets/js/sante-quebec.js"></script>
-  <!-- carte Députés : 27 circonscriptions provinciales de l'île (données générées) -->
+  <!-- carte Circonscriptions : 27 circonscriptions provinciales de l'île (données générées) -->
   <script src="assets/data/deputes.data.js"></script>
+  <script src="assets/data/deputes-overrides.data.js"></script>
   <script src="assets/js/deputes.js"></script>
   <!-- section Indicateurs : données (générées) puis logique — réutilise la géométrie TDQ -->
   <script src="assets/data/indicateurs.data.js"></script>
@@ -160,5 +331,8 @@
   <!-- section Concertations : données puis rendu -->
   <script src="assets/data/concertations.data.js"></script>
   <script src="assets/js/concertations.js"></script>
+  <!-- section Ressources : catalogue de sources puis rendu -->
+  <script src="assets/data/ressources.data.js"></script>
+  <script src="assets/js/ressources.js"></script>
 </body>
 </html>

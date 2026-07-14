@@ -40,12 +40,32 @@ function initSanteMap() {
   const keyAct = (p, fn) => p.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fn(); } });
 
+  const PDF_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+  const santeExtrasHTML = () =>
+    `<div class="map-extra">` +
+      `<p class="block-title">Structure du système</p>` +
+      `<figure class="mx-fig" data-enlarge="images/cartes/structure-systeme-sante.png" ` +
+        `data-caption="Structure du système de santé et de services sociaux du Québec" ` +
+        `data-source="https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/systeme-quebecois-de-sante-et-de-services-sociaux/structure-systeme-sante-services-sociaux-quebec">` +
+        `<img src="images/cartes/structure-systeme-sante.png" alt="Structure du système de santé et de services sociaux du Québec">` +
+        `<div class="mx-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 16 5-5 4 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg><span>Structure du système — image à ajouter<br>(cliquer pour la source)</span></div>` +
+        `<figcaption>Cliquer pour agrandir · <a href="https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/systeme-quebecois-de-sante-et-de-services-sociaux/structure-systeme-sante-services-sociaux-quebec" target="_blank" rel="noopener">source&nbsp;: quebec.ca</a></figcaption>` +
+      `</figure>` +
+      `<div class="mx-btns">` +
+        `<a class="mx-btn" href="https://cdn-contenu.quebec.ca/cdn-contenu/premier-ministre/equipe/conseil-ministre/conseil-ministres.pdf" target="_blank" rel="noopener">${PDF_ICON}<span class="mx-lab">Conseil des ministres</span></a>` +
+        `<a class="mx-btn" href="https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/sante-services-sociaux/publications-adm/ORG_organigramme_MSSS_01.pdf" target="_blank" rel="noopener">${PDF_ICON}<span class="mx-lab">Organigramme du MSSS</span></a>` +
+        `<a class="mx-btn" href="https://fichier.sitesq.apps.ti.sante.quebec/sq-1/2026-03/Structure%20organisationnelle_Sant%C3%A9%20Qu%C3%A9bec_v27.02.2026.pdf" target="_blank" rel="noopener">${PDF_ICON}<span class="mx-lab">Haute direction de Santé Québec</span></a>` +
+      `</div>` +
+    `</div>`;
+
   const landingHTML = () =>
     `<h2>Santé Québec &ndash; Île de Montréal</h2><hr class="rule">` +
     `<p class="intro">L'île de Montréal est divisée en 5 territoires de Santé Québec ` +
     `(anciens CIUSSS). Survolez ou cliquez un territoire pour le mettre en évidence et ` +
     `afficher ses réseaux locaux de services (RLS) ; cliquez un RLS pour voir ses CLSC.</p>` +
-    `<ul class="items">${order.map((s) => `<li>${esc(SANTE[s].name)}</li>`).join("")}</ul>`;
+    `<ul class="items">${order.map((s) => `<li>${esc(SANTE[s].name)}</li>`).join("")}</ul>` +
+    santeExtrasHTML();
 
   const terrHTML = (t) =>
     `<h2>${esc(t.name)}</h2><hr class="rule">` +
@@ -61,6 +81,7 @@ function initSanteMap() {
     panel.scrollTop = 0;
     if (activeSlug) panel.querySelectorAll(".rls-card").forEach((c) =>
       c.addEventListener("click", () => pickRLS(c.dataset.rls)));
+    else if (window.wireMapExtras) window.wireMapExtras(panel);
   };
 
   const render = () => {
