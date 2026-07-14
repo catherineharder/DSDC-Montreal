@@ -19,6 +19,9 @@ TEMPLATE = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1480">
 <title>Glossaire des acronymes, DRSP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #1a1a1a;
@@ -27,11 +30,12 @@ TEMPLATE = """<!DOCTYPE html>
     --accent: #3b6fa8;
     --tag-bg: #f1f1f1;
     --tag-ink: #5a5a5a;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, 'Helvetica Neue', Arial, sans-serif;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     color: var(--ink);
     background: #ffffff;
     font-size: 12pt;

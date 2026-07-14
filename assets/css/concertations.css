@@ -17,7 +17,7 @@
   --i-dir:#e0644b; --i-eusp:#f0a93e; --i-jeun:#6cb04e; --i-pcmi:#4a90d9; --i-ecos:#8a6fc0;
   --drsp:#000; --new:#000;
   color:var(--ink);
-  font-family:Helvetica,"Helvetica Neue",Arial,sans-serif;
+  font-family:var(--font-sans);
   font-size:12pt; line-height:1.5;
 }
 .conc-app *{box-sizing:border-box;}
