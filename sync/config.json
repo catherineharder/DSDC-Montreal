@@ -26,5 +26,11 @@
     "sheet_id": "TODO_coller_ID_feuille_Deputes",
     "tab": "Deputes",
     "output": "assets/data/deputes-overrides.data.js"
+  },
+  "assets": {
+    "_aide": "Visuels depuis Notion. Créer une intégration Notion, la partager avec la page « Assets », et fournir le jeton via la variable d'environnement NOTION_TOKEN (voir GUIDE-ASSETS.md). Le page_id est déjà rempli. Chaque image doit avoir une LÉGENDE (caption) = son étiquette.",
+    "page_id": "39d6918e-9ac2-80b1-a686-c311c9d88d7c",
+    "images_dir": "images/assets",
+    "output": "assets/data/assets-manifest.js"
   }
 }

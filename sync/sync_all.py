@@ -30,18 +30,22 @@ import glossaire       # noqa: E402
 import concertations   # noqa: E402
 import tables          # noqa: E402
 import deputes         # noqa: E402
+import assets          # noqa: E402
 
 RUNNERS = {
     "glossaire": glossaire.run,
     "concertations": concertations.run,
     "tables": tables.run,
     "deputes": deputes.run,
+    "assets": assets.run,
 }
 
 
 def configured(cfg):
-    sid = (cfg or {}).get("sheet_id", "")
-    return bool(sid) and not sid.upper().startswith("TODO")
+    # Une source est active si son identifiant (feuille Google OU page Notion)
+    # est renseigné et ne commence pas par « TODO ».
+    ident = (cfg or {}).get("sheet_id") or (cfg or {}).get("page_id") or ""
+    return bool(ident) and not ident.upper().startswith("TODO")
 
 
 def main(argv):

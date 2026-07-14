@@ -63,7 +63,11 @@ window.wireMapExtras = function (root) {
     fig.addEventListener("click", (e) => {
       if (e.target.closest("a")) return; // laisser les liens de légende agir
       if (fig.classList.contains("mx-missing")) { if (source) window.open(source, "_blank", "noopener"); }
-      else window.openLightbox(src, fig.getAttribute("data-caption") || "");
+      else {
+        // privilégie l'image réellement chargée (chemin du manifeste), sinon data-enlarge
+        const big = (img && img.src && img.naturalWidth > 0) ? img.src : src;
+        window.openLightbox(big, fig.getAttribute("data-caption") || "");
+      }
     });
   });
 };

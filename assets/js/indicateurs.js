@@ -59,6 +59,16 @@ function initIndicMap() {
       name: (slug) => (typeof TDQ_TABLES !== "undefined" && TDQ_TABLES[slug])
         ? TDQ_TABLES[slug].name : slug },
   ];
+  // Découpage supplémentaire (hors bascule SQ/VdM/TQ) : circonscriptions
+  // provinciales de l'île, réutilisé par la participation provinciale.
+  const circGeo = {
+    id: "circ", label: "Circ.", full: "Circonscriptions provinciales de l'île",
+    unit: "circonscriptions provinciales",
+    shapes: () => (typeof DEPUTES_GEOMETRY !== "undefined" ? DEPUTES_GEOMETRY : {}),
+    backdrop: () => ({}),
+    name: (slug) => (typeof DEPUTES !== "undefined" && DEPUTES[slug]) ? DEPUTES[slug].name : slug,
+  };
+  const GEOS_ALL = GEOS.concat([circGeo]);
 
   /* ---- couleurs ---------------------------------------------------------- */
   /* Rampes alignées sur la palette DSDC : orange (matérielle), teal (sociale),
@@ -798,13 +808,44 @@ function initIndicMap() {
         `Sources : Élections Montréal (2021) ; Élections Québec (2022) ; Élections Canada (2021).</p></div>`;
     },
   });
+  // Provincial : vraie carte découpée par circonscription (géométrie des députés).
+  const participProvMap = (data) => ({
+    id: "part-prov", label: "Provinciale (2022)", short: "Provincial", dimC: "#a8842f",
+    kind: "map", fixedGeo: "circ",
+    available: !!(data && data.byCirc && typeof DEPUTES_GEOMETRY !== "undefined"),
+    breaks: [52, 56, 60, 64, 68],
+    value: (g, s) => (data && data.byCirc && data.byCirc[s] != null ? data.byCirc[s] : null),
+    pal: () => PART_PAL6,
+    legendTitle: () => "Participation provinciale (2022)",
+    legendNote: () => (data && data.exactPerRiding
+      ? "% des inscrits ayant voté,\npar circonscription"
+      : "% des inscrits ayant voté — taux de zone\n(Ouest / Est) en attendant les taux exacts"),
+    landing: (geo) =>
+      `<p class="intro"><strong>Participation provinciale (2022)</strong> — élection générale du 3 octobre 2022, ` +
+      `par circonscription de l'île. Participation d'ensemble du Québec : <strong>66,06 %</strong>.</p>` +
+      (data && !data.exactPerRiding
+        ? `<p class="intro">Chaque circonscription est colorée au taux de sa zone (Ouest 55,25 % · Est 62,09 %) ` +
+          `en attendant les taux exacts par circonscription.</p>` : "") +
+      `<p class="intro">Cliquez une circonscription pour son taux.</p>` + srcNote(esc(data ? data.meta : "")),
+    panel: (geo, slug) => {
+      const v = data && data.byCirc && data.byCirc[slug];
+      if (v == null) return `<p class="intro">Donnée non disponible pour cette circonscription.</p>`;
+      return lead(big(v, PART_PAL6[5], 1),
+          `des personnes inscrites ont voté — <strong>${esc(geo.name(slug))}</strong> (provincial, 2022) ` +
+          `<span class="indic-ref">· Québec : 66,06 %</span>`) + srcNote(esc(data ? data.meta : ""));
+    },
+  });
   function participTabOptions() {
+    const pv = PART_EXTRA && PART_EXTRA.provincial, fd = PART_EXTRA && PART_EXTRA.federal;
+    const provOpt = (pv && pv.byCirc && typeof DEPUTES_GEOMETRY !== "undefined")
+      ? participProvMap(pv)
+      : participStat("prov", "Provinciale (2022)", "Provincial", pv);
     return [
       participLevel("mun", "Municipale (2021)", "Municipal",
         "Source : Élections Montréal, élection générale du 7 novembre 2021.",
         PART ? PART.geo : null, PART ? PART.meta.overall : null, [30, 35, 40, 45, 50]),
-      participStat("prov", "Provinciale (2022)", "Provincial", PART_EXTRA && PART_EXTRA.provincial),
-      participStat("fed", "Fédérale (2021)", "Fédéral", PART_EXTRA && PART_EXTRA.federal),
+      provOpt,
+      participStat("fed", "Fédérale (2021)", "Fédéral", fd),
     ];
   }
 
@@ -827,7 +868,7 @@ function initIndicMap() {
       }) : "";
       const solChart = (CAP.solitude && solitudeOption.render) ? solitudeOption.render() : "";
       return `<div class="soc-page">` +
-        `<header class="soc-hero"><span class="soc-kicker">Capital social</span>` +
+        `<header class="soc-hero">` +
         `<h2>Les liens qui tiennent un milieu</h2>` +
         `<p>Trois lectures complémentaires du tissu social montréalais.</p></header>` +
 
@@ -839,12 +880,29 @@ function initIndicMap() {
         `<div class="soc-chart">${appartChart}</div>` +
         `<p class="soc-src">${esc(CAP.meta ? CAP.meta.appartenance : "")}</p></div></section>` +
 
-        `<section class="soc-sec"><div class="soc-num" style="color:#46747F">81&nbsp;%</div>` +
-        `<div class="soc-body"><h3>Satisfaction de la vie sociale</h3>` +
-        `<p>En 2020-2021, <strong>81&nbsp;%</strong> des Montréalais·es de 15 ans et plus se disaient très ou plutôt ` +
-        `satisfait·es de leur vie sociale (Québec&nbsp;: 85&nbsp;%). Autrement dit, près d'une personne sur cinq ` +
-        `(18,5&nbsp;%) s'en disait insatisfaite — une proportion qui varie selon les territoires.</p>` +
-        `<p class="soc-src">${esc(CAP.meta ? CAP.meta.satisfaction : "")}</p></div></section>` +
+        (function () {
+          const sat = CAP.satisfaction;
+          if (!sat) return "";
+          const SAT_C = ["#46747F", "#9dbcc1", "#D97A22", "#C43E42"];
+          const stack = (dist) => `<div class="sat-stack">` + dist.map((v, i) =>
+            `<span class="sat-seg" style="width:${v}%;background:${SAT_C[i]}" title="${esc(sat.cats[i])} : ${FR(v, 1)} %">` +
+            (v >= 9 ? FR(v, 0) : "") + `</span>`).join("") + `</div>`;
+          const legend = `<div class="sat-legend">` + sat.cats.map((c, i) =>
+            `<span><span class="sat-sw" style="background:${SAT_C[i]}"></span>${esc(c)}</span>`).join("") + `</div>`;
+          const rts = ["061", "062", "063", "064", "065"].filter((c) => sat.c2020[c]).map((c) =>
+            `<div class="sat-row"><span class="sat-lab">${esc(RTS_NAMES[c] || c)}</span>${stack(sat.c2020[c])}</div>`).join("");
+          return `<section class="soc-sec"><div class="soc-num" style="color:#46747F">81&nbsp;%</div>` +
+            `<div class="soc-body"><h3>Satisfaction de la vie sociale</h3>` +
+            `<p>En 2020-2021, <strong>81&nbsp;%</strong> des Montréalais·es de 15 ans et plus se disaient satisfait·es ` +
+            `de leur vie sociale — mais la satisfaction a <strong>reculé</strong> depuis 2014-2015 (93&nbsp;%), la part ` +
+            `« plutôt ou très insatisfaite » passant de 7&nbsp;% à près de 19&nbsp;%.</p>` +
+            legend +
+            `<p class="iq-title">Montréal — 2014-2015 vs 2020-2021</p>` +
+            `<div class="sat-row"><span class="sat-lab">2014-2015</span>${stack(sat.c2014.mtl)}</div>` +
+            `<div class="sat-row"><span class="sat-lab">2020-2021</span>${stack(sat.c2020.mtl)}</div>` +
+            `<p class="iq-title">Par territoire (RTS, 2020-2021)</p>${rts}` +
+            `<p class="soc-src">${esc(CAP.meta ? CAP.meta.satisfaction : "")}</p></div></section>`;
+        })() +
 
         `<section class="soc-sec"><div class="soc-num" style="color:${ACCENT}">5,11</div>` +
         `<div class="soc-body"><h3>Degré de solitude</h3>` +
@@ -877,36 +935,50 @@ function initIndicMap() {
         labels: years, ymin: 0, ymax: 26,
         series: [{ vals: a.qc, c: INK, lbl: "Québec", nd: 0 }, { vals: mtlVals, c: ACCENT, lbl: "Montréal", nd: 0 }],
       });
-      return `<div class="soc-page">` +
-        `<header class="soc-hero"><span class="soc-kicker">Sécurité alimentaire</span>` +
-        `<h2>Se nourrir à Montréal</h2>` +
-        `<p>Une insécurité alimentaire en forte hausse, plus marquée dans la métropole qu'ailleurs au Québec.</p></header>` +
+      const qc2023 = a.qc[a.years.indexOf(2023)];
+      const qc2021 = a.qc[a.years.indexOf(2021)];
+      const rise = (a.mtl2023 != null && qc2021 != null) ? null : null;
+      const regBar = (lab, v, c) =>
+        `<div class="pc-row"><span class="pc-lab">${esc(lab)}</span>` +
+        `<div class="pc-bar"><span style="width:${Math.min(100, v * 3)}%;background:${c}"></span></div>` +
+        `<span class="pc-val">${FR(v, 0)} %</span></div>`;
+      return `<div class="soc-page alim-page">` +
+        `<header class="soc-hero alim-hero"><h2>Se nourrir à Montréal</h2>` +
+        `<p>Manger à sa faim n'est pas acquis pour tout le monde. À Montréal, l'insécurité alimentaire — quand le ` +
+        `manque d'argent limite l'accès à une nourriture suffisante et saine — a bondi ces dernières années.</p></header>` +
 
-        `<section class="soc-sec"><div class="soc-num" style="color:${ACCENT}">22&nbsp;%</div>` +
-        `<div class="soc-body"><h3>des ménages montréalais en 2023</h3>` +
-        `<p>En 2023, <strong>22&nbsp;% des ménages montréalais</strong> vivaient une forme d'insécurité alimentaire ` +
-        `(marginale, modérée ou grave) — plus que dans l'ensemble du Québec (19&nbsp;%), et en forte hausse depuis ` +
-        `2021. Montréal et Laval sont les régions les plus touchées.</p>` +
+        `<section class="soc-sec alim-big"><div class="soc-num alim-figure" style="color:${ACCENT}">22&nbsp;%</div>` +
+        `<div class="soc-body"><h3>des ménages montréalais en situation d'insécurité alimentaire (2023)</h3>` +
+        `<p>Soit plus d'un ménage sur cinq — insécurité marginale, modérée ou grave. C'est davantage que dans ` +
+        `l'ensemble du Québec (${FR(qc2023, 0)}&nbsp;%), et en <strong>forte hausse</strong> depuis 2021.</p></div></section>` +
+
+        `<section class="soc-sec"><div class="soc-num" style="color:${ACCENT}">↗</div>` +
+        `<div class="soc-body"><h3>Une montée rapide depuis 2021</h3>` +
+        `<p>Au Québec, la proportion est passée de ${FR(qc2021, 0)}&nbsp;% en 2021 à ${FR(qc2023, 0)}&nbsp;% en 2023. ` +
+        `L'inflation alimentaire et la crise du logement rognent le budget consacré à la nourriture.</p>` +
         `<div class="soc-chart">${chart}</div>` +
         `<p class="soc-src">Source : <a href="${esc(a.meta.url)}" target="_blank" rel="noopener">Institut de la ` +
         `statistique du Québec, « L'insécurité alimentaire au Québec entre 2018 et 2023 » (ECR)</a>, mars 2026.</p></div></section>` +
 
-        `<section class="soc-sec"><div class="soc-num" style="color:#6C6F3F">↗</div>` +
-        `<div class="soc-body"><h3>Un enjeu structurel, pas seulement conjoncturel</h3>` +
-        `<p>La hausse récente s'explique par l'inflation alimentaire et la crise du logement, qui rognent le budget ` +
-        `consacré à la nourriture. L'insécurité alimentaire touche davantage les ménages locataires, les familles ` +
-        `monoparentales et les personnes seules — recoupant les territoires les plus défavorisés de la carte.</p>` +
+        `<section class="soc-sec"><div class="soc-num" style="color:#6C6F3F">3</div>` +
+        `<div class="soc-body"><h3>Montréal et Laval, régions les plus touchées (2023)</h3>` +
+        `<div class="part-compare">` +
+          regBar("Ensemble du Québec", qc2023, "#6C6F3F") +
+          regBar("Montréal", a.mtl2023, ACCENT) +
+          (a.laval2023 != null ? regBar("Laval", a.laval2023, "#C43E42") : "") +
+        `</div>` +
+        `<p class="soc-src">Barres à l'échelle relative. Source : ISQ, ECR 2018-2023.</p></div></section>` +
+
+        `<section class="soc-sec"><div class="soc-num" style="color:#46747F">≈</div>` +
+        `<div class="soc-body"><h3>Les mêmes territoires que la défavorisation</h3>` +
+        `<p>L'insécurité alimentaire frappe surtout les ménages locataires, les familles monoparentales et les ` +
+        `personnes seules — et se concentre dans les milieux les plus défavorisés. Elle se lit donc en écho aux ` +
+        `cartes de <strong>défavorisation</strong> et d'<strong>équité</strong> de cette section.</p>` +
         `<p class="soc-src">Mise en contexte : Communauté métropolitaine de Montréal, ` +
         `<a href="https://indicateurs-vitaux.cmm.qc.ca/developpement-social/part-de-la-population-en-situation-d-insecurite-alimentaire/" ` +
-        `target="_blank" rel="noopener">Indicateurs vitaux — insécurité alimentaire</a>.</p></div></section>` +
-
-        `<section class="soc-sec"><div class="soc-num" style="color:#46747F">DRSP</div>` +
-        `<div class="soc-body"><h3>Le portrait de santé montréalais</h3>` +
-        `<p>La Direction régionale de santé publique documente les liens entre insécurité alimentaire, défavorisation ` +
-        `et santé dans son portrait régional — une lecture complémentaire des cartes de défavorisation et d'équité ` +
-        `de cette section.</p>` +
-        `<p class="soc-src">Source : <a href="https://santepubliquemontreal.ca/sites/drsp/files/media/document/Pub_20260507_PortraitSante.pdf" ` +
-        `target="_blank" rel="noopener">DRSP de Montréal, Portrait de santé de la population (2026)</a>.</p></div></section>` +
+        `target="_blank" rel="noopener">Indicateurs vitaux — insécurité alimentaire</a> ; DRSP de Montréal, ` +
+        `<a href="https://santepubliquemontreal.ca/sites/drsp/files/media/document/Pub_20260507_PortraitSante.pdf" ` +
+        `target="_blank" rel="noopener">Portrait de santé de la population (2026)</a>.</p></div></section>` +
         `</div>`;
     },
   };
@@ -920,7 +992,7 @@ function initIndicMap() {
         defavoOption("mpc"),
         defavoOption("log"),
       ] },
-    { id: "equite", label: "Équité", boxSelect: true,
+    { id: "equite", label: "Équité", title: "Équité des milieux de vie", boxSelect: true,
       options: [
         equiteOption("ens", null),
         equiteOption("cult", "cult"),
@@ -930,7 +1002,7 @@ function initIndicMap() {
         equiteOption("eco", "eco"),
         equiteOption("soci", "soci"),
       ] },
-    { id: "particip", label: "Participation électorale", toggle: true,
+    { id: "particip", label: "Participation", title: "Participation électorale", toggle: true, hideGeo: true,
       options: participTabOptions() },
     { id: "social", label: "Social", options: [socialOption], noSelect: true },
     { id: "alim", label: "Alimentaire", options: [alimScrollOption], noSelect: true },
@@ -1031,6 +1103,16 @@ function initIndicMap() {
     } else if (graph) {
       graph.innerHTML = option.render ? option.render() : "";
     }
+    // Pages défilantes : révélation progressive des sections au défilement.
+    if (option.pageMode && graph) {
+      const secs = graph.querySelectorAll(".soc-sec");
+      if (window.IntersectionObserver) {
+        const io = new IntersectionObserver((ents) => {
+          ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("reveal-in"); io.unobserve(e.target); } });
+        }, { root: graph, threshold: 0.12 });
+        secs.forEach((s) => { s.classList.add("reveal"); io.observe(s); });
+      }
+    }
     renderLegend();
   };
 
@@ -1072,16 +1154,21 @@ function initIndicMap() {
       if (optSwitch) optSwitch.style.display = "none";
       return;
     }
+    const mapStage = document.querySelector("#view-indic .map-stage");
     if (tab.boxSelect) {
-      // boîte verticale « comme la légende » : 7 options, la sélectionnée se colore
+      // boîte verticale « comme la légende » : superposée à la carte (n'ampute
+      // pas la hauteur de carte), 7 options, la sélectionnée se colore.
       selectEl.style.display = "none";
       optSwitch.style.display = "";
+      if (mapStage && optSwitch.parentNode !== mapStage) mapStage.appendChild(optSwitch);
       optSwitch.className = "indic-boxselect";
-      optSwitch.innerHTML = tab.options.map((o) =>
+      optSwitch.innerHTML = `<div class="bs-title">Dimension</div>` + tab.options.map((o) =>
         `<button data-opt="${o.id}" aria-current="${o.id === option.id}">` +
         `<span class="bs-sw"></span>${esc(o.short || o.label)}</button>`).join("");
       return;
     }
+    // hors boxSelect : ramener la bascule dans la rangée de contrôles
+    if (optSwitch.parentNode !== selectEl.parentNode) selectEl.parentNode.insertBefore(optSwitch, geosEl);
     if (tab.toggle) {
       selectEl.style.display = "none";
       optSwitch.style.display = "";
@@ -1102,7 +1189,7 @@ function initIndicMap() {
   const renderGeos = () => {
     if (!geosEl) return;
     const mapKind = option.kind === "map" || option.kind === "mosaic";
-    if (!mapKind) { geosEl.innerHTML = ""; return; }
+    if (tab.hideGeo || !mapKind) { geosEl.innerHTML = ""; return; }
     geosEl.innerHTML = GEOS.map((g) => {
       const off = option.fixedGeo && option.fixedGeo !== g.id;
       return `<button data-geo="${g.id}" title="${esc(off
@@ -1120,7 +1207,7 @@ function initIndicMap() {
 
   const setOption = (id) => {
     option = tab.options.find((o) => o.id === id) || tab.options[0];
-    if (option.fixedGeo) geo = GEOS.find((g) => g.id === option.fixedGeo) || geo;
+    if (option.fixedGeo) geo = GEOS_ALL.find((g) => g.id === option.fixedGeo) || geo;
     renderSelect();
     renderGeos();
     renderStage();
@@ -1129,7 +1216,7 @@ function initIndicMap() {
 
   const setTab = (id) => {
     tab = TABS.find((t) => t.id === id) || TABS[0];
-    if (title) title.textContent = tab.label;
+    if (title) title.textContent = tab.title || tab.label;
     if (eyebrow) [...eyebrow.querySelectorAll(".map-pick")].forEach((b) =>
       b.setAttribute("aria-current", b.dataset.tab === tab.id ? "page" : "false"));
     setOption(tab.options[0].id);

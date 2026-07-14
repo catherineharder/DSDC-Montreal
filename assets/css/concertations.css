@@ -9,9 +9,11 @@
   --rec1:#1f7a4d; --rec2:#5cb085;
   --drsp-sect:#16307a;
   /* niveau = remplissage des boites : stratégique / tactique / opérationnel (pastels doux) */
-  --nf-strat:#efd3cc; --nf-tact:#f6e6df; --nf-oper:#fcf5f1;
-  /* marqueurs : cercle noir = DRSP coordonnatrice, étoile jaune = nouveau */
-  --drsp-mark:#000; --new-mark:#f2c200;
+  /* niveau (remplissage des boîtes) aux teintes de la palette :
+     stratégique = rouge · tactique = orange · opérationnel = jaune (sable) */
+  --nf-strat:#e9c4c6; --nf-tact:#f0d6b3; --nf-oper:#f4e7b6;
+  /* marqueurs : cercle noir = DRSP coordonnatrice, étoile noire = nouveau */
+  --drsp-mark:#000; --new-mark:#000;
   --i-dir:#e0644b; --i-eusp:#f0a93e; --i-jeun:#6cb04e; --i-pcmi:#4a90d9; --i-ecos:#8a6fc0;
   --drsp:#000; --new:#000;
   color:var(--ink);
@@ -19,9 +21,9 @@
   font-size:12pt; line-height:1.5;
 }
 .conc-app *{box-sizing:border-box;}
-.conc-app.embed{height:100%;flex:1;min-width:0;overflow-y:auto;background:#fff;}
+.conc-app.embed{height:100%;flex:1;min-width:0;overflow-y:auto;background:var(--soft-fill);}
 
-.conc-app .c-toc{position:sticky;top:0;z-index:30;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:14px 40px;font-size:10pt;display:flex;gap:24px;align-items:center;}
+.conc-app .c-toc{position:sticky;top:0;z-index:30;background:rgba(242,238,228,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:14px 40px;font-size:10pt;display:flex;gap:24px;align-items:center;}
 .conc-app .c-toc .brand{font-weight:600;color:var(--ink);}
 .conc-app .c-toc .sub{color:var(--soft);}
 
@@ -37,7 +39,7 @@
 .conc-app .pane-left{padding:0 34px 80px;min-width:0;}
 .conc-app .pane-right{position:sticky;top:0;align-self:start;height:calc(100vh - 60px);overflow-y:auto;border-left:1px solid var(--hairline);background:var(--soft-fill);}
 
-.conc-app .leftnav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:10px 0 9px;margin:0 0 6px;display:flex;gap:22px;flex-wrap:wrap;font-size:9.5pt;}
+.conc-app .leftnav{position:sticky;top:0;z-index:10;background:rgba(242,238,228,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:10px 0 9px;margin:0 0 6px;display:flex;gap:22px;flex-wrap:wrap;font-size:9.5pt;}
 .conc-app .leftnav a{color:var(--soft);text-decoration:none;}
 .conc-app .leftnav a:hover{color:var(--accent);}
 

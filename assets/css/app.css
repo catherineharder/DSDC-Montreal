@@ -81,7 +81,9 @@
   /* ---- Side panel ------------------------------------------------------- */
   .panel{flex:1 1 33.333%;background:var(--bg);overflow-y:auto;padding:26px 30px 36px;min-width:0;}
   .panel h2{margin:0 0 4px;font-size:23px;font-weight:700;letter-spacing:-.01em;}
-  .panel .intro{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--muted);}
+  .panel .intro{margin:0 0 14px;font-size:13.5px;line-height:1.55;color:var(--muted);}
+  /* Taille de texte des panneaux de droite : plancher à 12px, homogène d'un onglet à l'autre */
+  .panel .items li{font-size:13.5px;}
   .panel .rule{height:1.5px;margin:14px 0;border:0;background:var(--ink);}
   .block{margin:0 0 18px;}
   .block-title{margin:0;font-size:15px;font-weight:700;line-height:1.3;}
@@ -99,9 +101,9 @@
   #deputes-panel .items a.tdq-org:hover,#deputes-panel .items a.tdq-org:focus-visible{color:var(--accent);text-decoration:underline;}
   /* Circonscriptions : couleur de parti saturée en tout temps ; la sélection
      épaissit le contour (pas de changement d'opacité). */
-  #view-deputes .arr{fill-opacity:1;transition:stroke-width 140ms ease;}
-  #view-deputes .arr:hover{fill-opacity:1;stroke-width:4;}
-  #view-deputes .arr.active{fill-opacity:1;stroke-width:6.5;}
+  #view-deputes .arr{fill-opacity:.78;transition:fill-opacity 140ms ease,stroke-width 140ms ease;}
+  #view-deputes .arr:hover{fill-opacity:.9;stroke-width:4;}
+  #view-deputes .arr.active{fill-opacity:.95;stroke-width:6.5;}
   #view-deputes .arr:focus-visible{stroke-width:6.5;}
   /* deux puces colorées au parti, sous le nom du député ou de la députée */
   #deputes-panel .depute-bullets{margin-top:10px;}
@@ -170,12 +172,12 @@
 .indic-legend .sw{background:#fff;}
 /* barres de distribution par quintile dans le panneau */
 .iq-title{margin:16px 0 6px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
-.iq-row{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:3px 0;}
+.iq-row{display:flex;align-items:center;gap:8px;font-size:13px;margin:3px 0;}
 .iq-row .lab{flex:0 0 26px;color:var(--muted);font-weight:600;}
 .iq-bar{flex:1;height:13px;background:#e7e1d3;border:1px solid var(--ink);border-radius:3px;overflow:hidden;}
 .iq-bar span{display:block;height:100%;}
 .iq-val{flex:0 0 46px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;}
-.iq-note{margin-top:14px;font-size:11.5px;line-height:1.5;color:var(--muted);}
+.iq-note{margin-top:14px;font-size:12px;line-height:1.5;color:var(--muted);}
 /* rangée de contrôles sous le titre : découpage (SQ/VdM/TQ) puis dimension */
 .indic-controls{display:flex;align-items:center;gap:12px;padding:8px 26px 0;flex-wrap:wrap;}
 /* barre coulissante entre la carte et le panneau d'information */
@@ -257,8 +259,11 @@
 .dv4-lab{flex:1;font-size:13px;line-height:1.3;}
 .dv4-val{flex:0 0 auto;font-weight:700;font-variant-numeric:tabular-nums;font-size:14px;}
 
-/* Équité : boîte-sélecteur verticale « comme la légende » (7 options) */
-.indic-boxselect{display:flex;flex-direction:column;gap:2px;border:1.5px solid var(--ink);border-radius:8px;padding:6px;background:var(--paper);}
+/* Équité : boîte-sélecteur verticale « comme la légende » (7 options),
+   superposée en haut à droite de la carte pour ne pas réduire sa taille. */
+.map-stage .indic-boxselect{position:absolute;top:16px;right:16px;z-index:3;max-width:236px;box-shadow:0 1px 6px rgba(0,0,0,.12);}
+.indic-boxselect{display:flex;flex-direction:column;gap:2px;border:1.5px solid var(--ink);border-radius:8px;padding:7px;background:var(--paper);}
+.indic-boxselect .bs-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px 6px;}
 .indic-boxselect button{appearance:none;display:flex;align-items:center;gap:9px;text-align:left;font:inherit;font-size:12.5px;
   font-weight:700;color:var(--ink);background:transparent;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;transition:background 120ms ease;}
 .indic-boxselect button .bs-sw{width:13px;height:13px;border:1.5px solid var(--ink);border-radius:3px;background:var(--paper);flex:0 0 auto;}
@@ -313,3 +318,22 @@
 .pc-bar span{display:block;height:100%;}
 .pc-val{flex:0 0 auto;font-weight:700;font-variant-numeric:tabular-nums;font-size:14px;}
 @media (max-width:640px){.pc-lab{flex-basis:38%;}}
+
+/* ---- Social : barres empilées de satisfaction ---- */
+.sat-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:6px 0 14px;font-size:12px;}
+.sat-legend span{display:inline-flex;align-items:center;gap:6px;}
+.sat-sw{width:13px;height:13px;border:1.5px solid var(--ink);border-radius:3px;flex:0 0 auto;}
+.sat-row{display:flex;align-items:center;gap:10px;margin:6px 0;}
+.sat-lab{flex:0 0 132px;font-size:12.5px;line-height:1.2;}
+.sat-stack{flex:1;display:flex;height:22px;border:1.5px solid var(--ink);border-radius:5px;overflow:hidden;}
+.sat-seg{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff;min-width:0;overflow:hidden;}
+.sat-seg:nth-child(2){color:#000;}
+@media (max-width:640px){.sat-lab{flex-basis:92px;}}
+
+/* ---- Pages défilantes : révélation au défilement + emphase Alimentaire ---- */
+.soc-sec.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
+.soc-sec.reveal.reveal-in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){.soc-sec.reveal{opacity:1;transform:none;transition:none;}}
+.alim-hero h2{font-size:clamp(30px,4.5vw,50px);}
+.alim-big .alim-figure{font-size:clamp(56px,8vw,92px);font-weight:800;letter-spacing:-.04em;line-height:.9;}
+.alim-big .soc-body h3{font-size:22px;}
