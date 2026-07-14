@@ -762,18 +762,49 @@ function initIndicMap() {
         srcNote(meta || "");
     },
   });
+  // Provincial / fédéral : pas de carte par arrondissement (les circonscriptions
+  // ne coïncident pas). On affiche les taux réels d'ensemble + la comparaison
+  // entre paliers, en page défilante. Aucune valeur par territoire inventée.
+  const participStat = (id, label, short, data) => ({
+    id: "part-" + id, label, short, dimC: "#a8842f", kind: "graph", pageMode: true,
+    available: !!data,
+    landing: () => !data ? `<p class="intro">Données à intégrer.</p>` :
+      `<p class="intro"><strong>${esc(label)}</strong></p>` +
+      `<p class="intro">Participation d'ensemble : <strong style="color:#a8842f">${FR(data.overall, 2)} %</strong> ` +
+      `(${esc(data.ref)}).</p>` +
+      (data.zones ? `<p class="intro">Sur l'île de Montréal : ` +
+        data.zones.map((z) => `${esc(z.nom)} <strong>${FR(z.taux, 2)} %</strong>`).join(" · ") + `.</p>` : "") +
+      `<p class="intro">Le détail par circonscription individuelle reste à saisir depuis le fichier officiel.</p>` +
+      srcNote(`Source : <a href="${esc(data.url)}" target="_blank" rel="noopener">${esc(data.meta)}</a>`),
+    render: () => {
+      if (!data) return `<p class="intro">Données à intégrer.</p>`;
+      const pv = PART_EXTRA && PART_EXTRA.provincial, fd = PART_EXTRA && PART_EXTRA.federal;
+      const rows = [["Municipale — Ville de Montréal (2021)", PART ? PART.meta.overall : null, "#a8842f"]];
+      if (pv) {
+        (pv.zones || []).forEach((z) => rows.push([`Provinciale — ${z.nom} (2022)`, z.taux, "#c69f45"]));
+        rows.push(["Provinciale — ensemble du Québec (2022)", pv.overall, "#8a6a1f"]);
+      }
+      if (fd) rows.push(["Fédérale — ensemble du Canada (2021)", fd.overall, "#7d6120"]);
+      return `<div class="soc-page"><header class="soc-hero"><span class="soc-kicker">Participation électorale</span>` +
+        `<h2>${esc(label)}</h2><p>Taux de participation selon le palier de gouvernement. Plus l'élection est ` +
+        `« locale » (municipale), plus la participation tend à être faible.</p></header>` +
+        `<div class="part-compare">` + rows.map(([lb, v, c]) => v == null ? "" :
+          `<div class="pc-row"><span class="pc-lab">${esc(lb)}</span>` +
+          `<div class="pc-bar"><span style="width:${Math.min(100, v)}%;background:${c}"></span></div>` +
+          `<span class="pc-val">${FR(v, 1)} %</span></div>`).join("") +
+        `</div>` +
+        `<p class="soc-src">Les taux provincial et fédéral sont des taux d'ensemble ; la ventilation montréalaise ` +
+        `provinciale (Ouest / Est de l'île) est publiée, le détail par circonscription reste à ajouter. ` +
+        `Sources : Élections Montréal (2021) ; Élections Québec (2022) ; Élections Canada (2021).</p></div>`;
+    },
+  });
   function participTabOptions() {
-    const pv = PART_EXTRA && PART_EXTRA.provincial, fd = PART_EXTRA && PART_EXTRA.federal;
     return [
       participLevel("mun", "Municipale (2021)", "Municipal",
         "Source : Élections Montréal, élection générale du 7 novembre 2021.",
         PART ? PART.geo : null, PART ? PART.meta.overall : null, [30, 35, 40, 45, 50]),
-      participLevel("prov", "Provinciale (2022)", "Provincial",
-        pv ? pv.meta : "Données provinciales par territoire à intégrer.",
-        pv ? pv.geo : null, pv ? pv.overall : null, [50, 55, 60, 65, 70]),
-      participLevel("fed", "Fédérale (2021)", "Fédéral",
-        fd ? fd.meta : "Données fédérales par territoire à intégrer.",
-        fd ? fd.geo : null, fd ? fd.overall : null, [55, 60, 65, 70, 75]),
+      participStat("prov", "Provinciale (2022)", "Provincial", PART_EXTRA && PART_EXTRA.provincial),
+      participStat("fed", "Fédérale (2021)", "Fédéral", PART_EXTRA && PART_EXTRA.federal),
     ];
   }
 
