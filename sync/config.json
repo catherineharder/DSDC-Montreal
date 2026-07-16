@@ -28,9 +28,13 @@
     "output": "assets/data/deputes-overrides.data.js"
   },
   "assets": {
-    "_aide": "Visuels depuis Notion. Créer une intégration Notion, la partager avec la page « Assets », et fournir le jeton via la variable d'environnement NOTION_TOKEN (voir GUIDE-ASSETS.md). Le page_id est déjà rempli. Chaque image doit avoir une LÉGENDE (caption) = son étiquette.",
+    "_aide": "Visuels depuis Notion. Créer une intégration Notion, la partager avec la page « Assets », et fournir le jeton via la variable d'environnement NOTION_TOKEN (voir GUIDE-ASSETS.md). Le page_id est déjà rempli. Étiquette d'une image = sa légende, ou le titre du toggle qui la contient. 'aliases' traduit une étiquette Notion vers l'étiquette data-asset du site.",
     "page_id": "39d6918e-9ac2-80b1-a686-c311c9d88d7c",
     "images_dir": "images/assets",
-    "output": "assets/data/assets-manifest.js"
+    "output": "assets/data/assets-manifest.js",
+    "aliases": {
+      "dc-definition": "developpement-des-communautes",
+      "an-logo": "assemblee-nationale"
+    }
   }
 }

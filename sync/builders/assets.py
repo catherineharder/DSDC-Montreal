@@ -1,13 +1,22 @@
 # -*- coding: utf-8 -*-
 """Assets : page Notion « Assets » -> images/assets/ + manifeste JS.
 
-Katie ajoute des images à la page Notion « Assets » et donne à chacune une
-LÉGENDE (caption) = son étiquette (p. ex. « structure-systeme-sante » ou
-« Logo partenaire X »). Ce script :
-  1. lit les blocs de la page via l'API Notion ;
-  2. télécharge chaque image dans images/assets/<slug-de-l-étiquette>.<ext> ;
-  3. écrit assets/data/assets-manifest.js :
-         window.ASSETS = { "structure-systeme-sante": "images/assets/…png", … }
+Katie ajoute des images à la page Notion « Assets ». L'étiquette d'une image
+vient (par ordre de priorité) :
+  1. de sa LÉGENDE (caption), si elle en a une ;
+  2. du TITRE DU BLOC PARENT (toggle/dépliant ou titre repliable) qui la
+     contient — c.-à-d. « déposer l'image dans un toggle nommé "DC definition" »
+     suffit ;
+  3. sinon « image-N ».
+Le script :
+  1. lit les blocs de la page via l'API Notion (récursivement, pour trouver
+     les images placées dans des toggles) ;
+  2. applique les alias de sync/config.json (clé "aliases" : étiquette Notion
+     -> étiquette du site, p. ex. "dc-definition" ->
+     "developpement-des-communautes") ;
+  3. télécharge chaque image dans images/assets/<slug-de-l-étiquette>.<ext> ;
+  4. écrit assets/data/assets-manifest.js :
+         window.ASSETS = { "developpement-des-communautes": "images/assets/…png", … }
 Le site (assets/js/assets.js) remplace ensuite tout <img data-asset="étiquette">
 par l'image correspondante si elle existe.
 
@@ -61,6 +70,29 @@ def _blocks(page_id, token):
     return out
 
 
+def _rich_text(block):
+    """Texte brut d'un bloc (toggle, titre, paragraphe…)."""
+    payload = block.get(block.get("type"), {}) or {}
+    parts = payload.get("rich_text") or []
+    return "".join(p.get("plain_text", "") for p in parts).strip()
+
+
+def _images(page_id, token, parent_label="", depth=0):
+    """Paires (bloc image, étiquette héritée du bloc parent), récursif.
+    Une image placée dans un toggle « DC definition » hérite de cette étiquette."""
+    if depth > 3:
+        return []
+    out = []
+    for b in _blocks(page_id, token):
+        t = b.get("type")
+        if t == "image":
+            out.append((b, parent_label))
+        elif b.get("has_children"):
+            label = _rich_text(b) or parent_label
+            out.extend(_images(b["id"], token, label, depth + 1))
+    return out
+
+
 def _caption(img):
     parts = img.get("caption") or []
     return "".join(p.get("plain_text", "") for p in parts).strip()
@@ -83,16 +115,16 @@ def run(cfg, fetch, repo_root):
     out_dir = repo_root / cfg.get("images_dir", "images/assets")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    blocks = _blocks(page_id, token)
+    aliases = {_slug(k): v for k, v in (cfg.get("aliases") or {}).items()}
     manifest, seen, n = {}, {}, 0
-    for b in blocks:
-        if b.get("type") != "image":
-            continue
+    for b, parent_label in _images(page_id, token):
         img = b.get("image", {})
         url = _image_url(img)
         if not url:
             continue
-        label = _caption(img) or ("image-%d" % (n + 1))
+        label = _caption(img) or parent_label or ("image-%d" % (n + 1))
+        # alias : étiquette Notion -> étiquette attendue par le site
+        label = aliases.get(_slug(label), label)
         slug = _slug(label)
         # évite d'écraser deux images homonymes
         if slug in seen:

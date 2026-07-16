@@ -1,1 +1,228 @@
-<svg viewBox="0 0 1040 888" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,Helvetica,Arial,sans-serif" role="group" aria-label="Cadre conceptuel du développement social local"><text x="520" y="58" text-anchor="middle" font-size="27" font-weight="800" fill="#212121">CADRE CONCEPTUEL DU DÉVELOPPEMENT SOCIAL LOCAL (DSL)</text><text x="520" y="142" text-anchor="middle" font-size="16.5" fill="#7a766f">Considérant les enjeux transversaux</text><g class="snode" data-node="rapports"><rect class="box" x="70.0" y="158" width="296.0" height="46" rx="23" fill="#e6e3de"/><text x="218.0" y="186.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">RAPPORTS DE POUVOIR</text></g><g class="snode" data-node="numerique"><rect class="box" x="372.0" y="158" width="296.0" height="46" rx="23" fill="#e6e3de"/><text x="520.0" y="186.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">TRANSFORMATION NUMÉRIQUE</text></g><g class="snode" data-node="climat"><rect class="box" x="674.0" y="158" width="296.0" height="46" rx="23" fill="#e6e3de"/><text x="822.0" y="186.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">CHANGEMENTS CLIMATIQUES</text></g><text x="520" y="228" text-anchor="middle" font-size="16.5" fill="#7a766f">et agissant en amont sur les</text><g class="snode" data-node="determinants"><rect class="box" x="70.0" y="244" width="900.0" height="46" rx="23" fill="#f3d6d8"/><text x="520.0" y="272.5" text-anchor="middle" font-size="16" font-weight="700" letter-spacing=".04em" fill="#212121">DÉTERMINANTS STRUCTURELS</text></g><text x="520" y="314" text-anchor="middle" font-size="16.5" fill="#7a766f">les parties prenantes</text><g class="snode" data-node="institutions"><rect class="box" x="70.0" y="330" width="175.2" height="46" rx="23" fill="#d9e7f0"/><text x="157.6" y="358.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#212121">INSTITUTIONS</text></g><g class="snode" data-node="philanthropie"><rect class="box" x="251.2" y="330" width="175.2" height="46" rx="23" fill="#d9e7f0"/><text x="338.8" y="358.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#212121">PHILANTHROPIE</text></g><g class="snode" data-node="prive"><rect class="box" x="432.4" y="330" width="175.2" height="46" rx="23" fill="#d9e7f0"/><text x="520.0" y="358.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#212121">PRIVÉ</text></g><g class="snode" data-node="communautaire"><rect class="box" x="613.6" y="330" width="175.2" height="46" rx="23" fill="#d9e7f0"/><text x="701.2" y="358.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#212121">COMMUNAUTAIRE</text></g><g class="snode" data-node="citoyens"><rect class="box" x="794.8" y="330" width="175.2" height="46" rx="23" fill="#d9e7f0"/><text x="882.4" y="358.5" text-anchor="middle" font-size="13.5" font-weight="700" letter-spacing=".04em" fill="#212121">CITOYENS</text></g><text x="520" y="400" text-anchor="middle" font-size="16.5" fill="#7a766f">utilisent</text><g class="snode" data-node="plaidoyer"><rect class="box" x="70.0" y="416" width="296.0" height="46" rx="23" fill="#dcebe1"/><text x="218.0" y="444.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">PLAIDOYER</text></g><g class="snode" data-node="concertation"><rect class="box" x="372.0" y="416" width="296.0" height="46" rx="23" fill="#dcebe1"/><text x="520.0" y="444.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">CONCERTATION</text></g><g class="snode" data-node="participation"><rect class="box" x="674.0" y="416" width="296.0" height="46" rx="23" fill="#dcebe1"/><text x="822.0" y="444.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">PARTICIPATION CITOYENNE</text></g><text x="520" y="486" text-anchor="middle" font-size="16.5" fill="#7a766f">pour arriver à une</text><g class="snode" data-node="vision"><rect class="box" x="70.0" y="502" width="900.0" height="46" rx="23" fill="#c8e0d1"/><text x="520.0" y="530.5" text-anchor="middle" font-size="16" font-weight="700" letter-spacing=".04em" fill="#212121">VISION COMMUNE</text></g><text x="520" y="572" text-anchor="middle" font-size="16.5" fill="#7a766f">mettant à profit</text><g class="snode" data-node="savoir"><rect class="box" x="70.0" y="588" width="296.0" height="46" rx="23" fill="#f5e8c9"/><text x="218.0" y="616.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">SAVOIR</text></g><g class="snode" data-node="capital"><rect class="box" x="372.0" y="588" width="296.0" height="46" rx="23" fill="#f5e8c9"/><text x="520.0" y="616.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">CAPITAL SOCIAL</text></g><g class="snode" data-node="financement"><rect class="box" x="674.0" y="588" width="296.0" height="46" rx="23" fill="#f5e8c9"/><text x="822.0" y="616.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">FINANCEMENT</text></g><g class="snode" data-node="gouvernance"><rect class="box" x="70.0" y="640" width="447.0" height="46" rx="23" fill="#f5e8c9"/><text x="293.5" y="668.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">GOUVERNANCE PARTAGÉE</text></g><g class="snode" data-node="evaluation"><rect class="box" x="523.0" y="640" width="447.0" height="46" rx="23" fill="#f5e8c9"/><text x="746.5" y="668.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">ÉVALUATION</text></g><text x="520" y="710" text-anchor="middle" font-size="16.5" fill="#7a766f">pour avoir un</text><g class="snode" data-node="impact"><rect class="box" x="70.0" y="726" width="900.0" height="46" rx="23" fill="#dcd6e8"/><text x="520.0" y="754.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing=".04em" fill="#212121">IMPACT COLLECTIF SUR LES PRIORITÉS LOCALES</text></g><text x="520" y="796" text-anchor="middle" font-size="16.5" fill="#7a766f">ayant comme finalité</text><g class="snode" data-node="equite"><rect class="box" x="70.0" y="812" width="900.0" height="46" rx="23" fill="#ede1b2"/><text x="520.0" y="840.5" text-anchor="middle" font-size="16" font-weight="700" letter-spacing=".04em" fill="#212121">L’ÉQUITÉ EN SANTÉ</text></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1036.08 978.78">
+  <!-- Generator: Adobe Illustrator 30.5.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 3)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+        font-size: 16px;
+        letter-spacing: .06em;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11 {
+        isolation: isolate;
+      }
+
+      .st0, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10 {
+        font-family: Helvetica-Bold, Helvetica;
+        font-weight: 700;
+      }
+
+      .st1, .st4 {
+        fill: #9c5a15;
+      }
+
+      .st1, .st9, .st10, .st11 {
+        font-size: 13.5px;
+      }
+
+      .st1, .st11 {
+        font-family: Helvetica-Oblique, Helvetica;
+        font-style: oblique;
+      }
+
+      .st12, .st6 {
+        fill: #54437c;
+      }
+
+      .st2 {
+        fill: #7a766f;
+        font-family: Helvetica, Helvetica;
+        font-size: 16.5px;
+      }
+
+      .st13 {
+        fill: #e8eff5;
+      }
+
+      .st14, .st15 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .st14, .st15, .st16, .st17 {
+        fill: none;
+        stroke-width: 2px;
+      }
+
+      .st14, .st16 {
+        stroke: #b12638;
+      }
+
+      .st3, .st4, .st6, .st7, .st8 {
+        font-size: 15px;
+        letter-spacing: .04em;
+      }
+
+      .st3, .st11 {
+        fill: #b12638;
+      }
+
+      .st5 {
+        fill: #212121;
+        font-size: 29px;
+      }
+
+      .st18 {
+        fill: #f7ede8;
+      }
+
+      .st7 {
+        fill: #5a5652;
+      }
+
+      .st8, .st19 {
+        fill: #2f6448;
+      }
+
+      .st15, .st17 {
+        stroke: #9c5a15;
+      }
+
+      .st20 {
+        fill: #f4e4cd;
+      }
+
+      .st16, .st17 {
+        stroke-dasharray: 5 4;
+      }
+
+      .st21 {
+        fill: #e8e5e0;
+      }
+
+      .st9 {
+        letter-spacing: .04em;
+      }
+
+      .st9, .st10 {
+        fill: #28587a;
+      }
+
+      .st10 {
+        letter-spacing: .04em;
+      }
+
+      .st22 {
+        fill: #eaf1ec;
+      }
+
+      .st23 {
+        fill: #8f6f1c;
+      }
+
+      .st24 {
+        fill: #dcd6e8;
+      }
+    </style>
+  </defs>
+  <text class="st5" transform="translate(51.71 26.78)"><tspan x="0" y="0">CADRE CONCEPTUEL DU DÉVELOPPEMENT SOCIAL LOCAL (DSL)</tspan></text>
+  <text class="st2" transform="translate(387.15 104.78)"><tspan x="0" y="0">Considérant les enjeux transversaux</tspan></text>
+  <g data-node="rapports">
+    <path class="st21" d="M93.59,120.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st7" transform="translate(122.05 149.28)"><tspan x="0" y="0">RAPPORTS DE POUVOIR</tspan></text>
+  </g>
+  <g data-node="numerique">
+    <path class="st21" d="M395.59,120.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-250c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st7" transform="translate(394.78 149.28)"><tspan x="0" y="0">TRANSFORMATION NUMÉRIQUE</tspan></text>
+  </g>
+  <g data-node="climat">
+    <path class="st21" d="M697.59,120.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-250c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st7" transform="translate(703.74 149.28)"><tspan x="0" y="0">CHANGEMENTS CLIMATIQUES</tspan></text>
+  </g>
+  <text class="st2" transform="translate(444.01 212.78)"><tspan x="0" y="0">les parties prenantes</tspan></text>
+  <g data-node="institutions">
+    <path class="st13" d="M93.59,228.78h129.2c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st10" transform="translate(108.08 257.28)"><tspan x="0" y="0">INSTITUTIONS</tspan></text>
+  </g>
+  <g data-node="philanthropie">
+    <path class="st13" d="M274.79,228.78h129.2c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-129.2c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st10" transform="translate(280.75 257.28)"><tspan x="0" y="0">PHILANTHROPIE</tspan></text>
+  </g>
+  <g data-node="prive">
+    <path class="st13" d="M455.99,228.78h129.2c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-129.2c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st10" transform="translate(498.99 257.28)"><tspan x="0" y="0">PRIVÉ</tspan></text>
+  </g>
+  <g data-node="communautaire">
+    <path class="st13" d="M637.19,228.78h129.2c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-129.2c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st9" transform="translate(637.66 257.28)"><tspan x="0" y="0">COMMUNAUTAIRE</tspan></text>
+  </g>
+  <g data-node="citoyens">
+    <path class="st13" d="M818.39,228.78h129.2c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-129.2c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st9" transform="translate(846.45 257.28)"><tspan x="0" y="0">CITOYENS</tspan></text>
+  </g>
+  <text class="st2" transform="translate(492.62 320.78)"><tspan x="0" y="0">utilisent</tspan></text>
+  <g data-node="plaidoyer">
+    <path class="st22" d="M93.59,336.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st8" transform="translate(172.14 365.28)"><tspan x="0" y="0">PLAIDOYER</tspan></text>
+  </g>
+  <g data-node="concertation">
+    <path class="st22" d="M395.59,336.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-250c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st8" transform="translate(457.68 365.28)"><tspan x="0" y="0">CONCERTATION</tspan></text>
+  </g>
+  <g data-node="participation">
+    <path class="st22" d="M697.59,336.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-250c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st8" transform="translate(713.31 365.28)"><tspan x="0" y="0">PARTICIPATION CITOYENNE</tspan></text>
+  </g>
+  <text class="st2" transform="translate(455.47 428.78)"><tspan x="0" y="0">pour arriver à une</tspan></text>
+  <g data-node="vision">
+    <path class="st19" d="M93.59,444.78h854c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st0" transform="translate(442.31 473.78)"><tspan x="0" y="0">VISION COMMUNE</tspan></text>
+  </g>
+  <text class="st2" transform="translate(465.56 536.78)"><tspan x="0" y="0">mettant à profit</tspan></text>
+  <g data-node="savoir">
+    <path class="st20" d="M93.59,552.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st4" transform="translate(188.59 581.28)"><tspan x="0" y="0">SAVOIR</tspan></text>
+  </g>
+  <g data-node="capital">
+    <path class="st20" d="M395.59,552.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-250c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st4" transform="translate(454.16 581.28)"><tspan x="0" y="0">CAPITAL SOCIAL</tspan></text>
+  </g>
+  <g data-node="financement">
+    <path class="st20" d="M697.59,552.78h250c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-250c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st4" transform="translate(764.71 581.28)"><tspan x="0" y="0">FINANCEMENT</tspan></text>
+  </g>
+  <g data-node="gouvernance">
+    <path class="st20" d="M93.59,604.78h401c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st4" transform="translate(186.27 633.28)"><tspan x="0" y="0">GOUVERNANCE PARTAGÉE</tspan></text>
+  </g>
+  <g data-node="evaluation">
+    <path class="st20" d="M546.59,604.78h401c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-401c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st4" transform="translate(696.45 633.28)"><tspan x="0" y="0">ÉVALUATION</tspan></text>
+  </g>
+  <text class="st2" transform="translate(472.44 696.78)"><tspan x="0" y="0">pour avoir un</tspan></text>
+  <g data-node="impact">
+    <path class="st12" d="M93.59,712.78h854c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st0" transform="translate(435.73 741.78)"><tspan x="0" y="0">IMPACT COLLECTIF</tspan></text>
+  </g>
+  <text class="st2" transform="translate(496.29 804.78)"><tspan x="0" y="0">sur les</tspan></text>
+  <g data-node="determinants">
+    <path class="st18" d="M93.59,820.78h401c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23H93.59c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st3" transform="translate(169.39 849.28)"><tspan x="0" y="0">DÉTERMINANTS STRUCTURELS</tspan></text>
+  </g>
+  <g data-node="priorites">
+    <path class="st24" d="M546.59,820.78h401c12.7,0,23,10.3,23,23h0c0,12.7-10.3,23-23,23h-401c-12.7,0-23-10.3-23-23h0c0-12.7,10.3-23,23-23Z"/>
+    <text class="st6" transform="translate(663.65 849.28)"><tspan x="0" y="0">PRIORITÉS LOCALES</tspan></text>
+  </g>
+  <text class="st2" transform="translate(444.93 912.78)"><tspan x="0" y="0">ayant comme finalité</tspan></text>
+  <g data-node="equite">
+    <path class="st23" d="M95.59,928.78h850c13.81,0,25,11.19,25,25h0c0,13.81-11.19,25-25,25H95.59c-13.81,0-25-11.19-25-25h0c0-13.81,11.19-25,25-25Z"/>
+    <text class="st0" transform="translate(433.31 959.78)"><tspan x="0" y="0">L’ÉQUITÉ EN SANTÉ</tspan></text>
+  </g>
+  <path class="st17" d="M974.59,627.78h34c9.33,0,14-4.67,14-14v-132c0-9.33-4.67-14-14-14h-24"/>
+  <path class="st15" d="M984.59,460.78l-10,7,10,7"/>
+  <text class="st1" transform="translate(1029.5918 597.1826) rotate(-90)"><tspan x="0" y="0">apprentissage</tspan></text>
+  <path class="st16" d="M66.59,843.78h-34c-9.33,0-14-4.67-14-14V265.78c0-9.33,4.67-14,14-14h24"/>
+  <path class="st14" d="M46.59,244.78l10,7-10,7"/>
+  <text class="st11" transform="translate(11.59 739.76) rotate(-90)"><tspan x="0" y="0">agir en amont — les déterminants façonnent aussi le contexte</tspan></text>
+</svg>
