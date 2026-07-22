@@ -105,6 +105,9 @@
     + '<div class="info-empty"><span class="big">Aucune sélection.</span>Cliquez sur un comité ou un partenaire pour afficher l\'information ici.</div>'
     + '</div></div></div>';
 
+  /* barre coulissante entre le contenu et le panneau de droite (comme les autres onglets) */
+  if (window.makeGridSplitter) window.makeGridSplitter(root.querySelector('.layout'), 'concSplit');
+
   var C = D.committees, P = [];
   D.famsP.forEach(function (F) { F.boxes.forEach(function (b) { P.push(b); }); });
 

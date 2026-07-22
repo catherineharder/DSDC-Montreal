@@ -105,6 +105,9 @@ function initNav() {
       home.classList.toggle("active", on);
       home.toggleAttribute("hidden", !on);
     }
+    // la barre coulissante en position:fixed (Concertations) doit se réaligner
+    // quand sa vue passe de masquée à visible.
+    requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
   };
   const viewFromPath = () => {
     const seg = location.pathname.slice(BASE.length).replace(/^\/+|\/+$/g, "").split("/")[0];
@@ -342,6 +345,64 @@ window.makeSplitter = function (wrap, key) {
     const p = Math.max(35, Math.min(85, 100 * (e.clientX - rct.left) / rct.width));
     apply(p);
     try { localStorage.setItem(key, p.toFixed(1)); } catch (_) { /* ignoré */ }
+  });
+  const stop = () => { dragging = false; handle.classList.remove("dragging"); document.body.style.userSelect = ""; };
+  handle.addEventListener("pointerup", stop);
+  handle.addEventListener("pointercancel", stop);
+};
+
+/* ---- Variante « grille » de la barre coulissante --------------------------
+   Concertations et Cadre conceptuel n'utilisent pas la structure flex des
+   cartes mais une grille à deux colonnes (contenu | panneau). On y ajoute une
+   poignée superposée (positionnée en absolu au-dessus du filet existant, donc
+   sans décaler la mise en page) qui ajuste `grid-template-columns` au glissé.
+   `leftDefault` = pourcentage de largeur de la colonne de gauche par défaut. */
+window.makeGridSplitter = function (grid, key, leftDefault) {
+  if (!grid || grid.querySelector(":scope > .split-handle")) return;
+  const left = grid.children[0], right = grid.children[1];
+  if (!left || !right) return;
+  const handle = document.createElement("div");
+  handle.className = "split-handle split-handle--overlay";
+  handle.title = "Glisser pour redimensionner";
+  handle.setAttribute("role", "separator");
+  handle.setAttribute("aria-orientation", "vertical");
+  grid.appendChild(handle);
+  let pct = leftDefault || 60.8;
+  let saved = null;
+  try { saved = parseFloat(localStorage.getItem(key)); } catch (_) { /* stockage indisponible */ }
+  if (saved && saved >= 35 && saved <= 85) pct = saved;
+  const applyCols = () => {
+    grid.style.gridTemplateColumns = "minmax(0," + pct + "fr) minmax(0," + (100 - pct) + "fr)";
+  };
+  /* La poignée est en position:fixed (le contenu défile sous elle) : on la
+     réaligne sur le filet à chaque défilement/redimensionnement. */
+  const clip = grid.closest(".views"); // borne la poignée à la zone des vues (sous la barre de navigation)
+  const sync = () => {
+    const r = grid.getBoundingClientRect();
+    if (r.width === 0) return; // vue masquée
+    const c = clip ? clip.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+    const top = Math.max(c.top, r.top);
+    const bottom = Math.min(c.bottom, r.bottom);
+    handle.style.left = (r.left + r.width * pct / 100) + "px";
+    handle.style.top = top + "px";
+    handle.style.height = Math.max(0, bottom - top) + "px";
+  };
+  applyCols(); sync();
+  window.addEventListener("scroll", sync, true); // capture : capte aussi les conteneurs internes
+  window.addEventListener("resize", sync);
+  let dragging = false;
+  handle.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    handle.classList.add("dragging");
+    handle.setPointerCapture(e.pointerId);
+    document.body.style.userSelect = "none";
+  });
+  handle.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const r = grid.getBoundingClientRect();
+    pct = Math.max(35, Math.min(85, 100 * (e.clientX - r.left) / r.width));
+    applyCols(); sync();
+    try { localStorage.setItem(key, pct.toFixed(1)); } catch (_) { /* ignoré */ }
   });
   const stop = () => { dragging = false; handle.classList.remove("dragging"); document.body.style.userSelect = ""; };
   handle.addEventListener("pointerup", stop);
