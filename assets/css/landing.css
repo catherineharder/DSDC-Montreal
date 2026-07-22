@@ -162,11 +162,11 @@
   border:1.5px solid var(--ink);border-radius:999px;padding:3px 9px;background:var(--rt-c,var(--sand));}
 .res-meta h3{margin:0;font-size:14.5px;font-weight:700;line-height:1.28;}
 .res-meta .res-date{font-size:12.5px;font-weight:600;}
-.res-tag[data-tag="Cadre"]{background:#46747F;color:var(--cream);}
-.res-tag[data-tag="Gouvernance"]{background:#6C6F3F;color:var(--cream);}
-.res-tag[data-tag="Indicateurs"]{background:#D97A22;}
-.res-tag[data-tag="Outil"]{background:#C43E42;color:var(--cream);}
-.res-tag[data-tag="Pratiques"]{background:#D7B063;}
+.res-tag[data-tag="Contexte"]{background:#6C6F3F;color:var(--cream);}
+.res-tag[data-tag="DS"]{background:#46747F;color:var(--cream);}
+.res-tag[data-tag="DC"]{background:#D97A22;}
+.res-tag[data-tag="Montréal"]{background:#C43E42;color:var(--cream);}
+.res-tag[data-tag="Outils"]{background:#D7B063;}
 .res-empty{padding:40px clamp(24px,6vw,90px);font-size:15px;}
 
 /* ============================================================================

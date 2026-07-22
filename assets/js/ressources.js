@@ -16,7 +16,7 @@
     if (m) { const mois = ["janv.","févr.","mars","avr.","mai","juin","juill.","août","sept.","oct.","nov.","déc."]; return mois[+m[2] - 1] + " " + m[1]; }
     return String(d);
   };
-  const TAGS = ["Cadre", "Gouvernance", "Indicateurs", "Outil", "Pratiques"];
+  const TAGS = ["Contexte", "DS", "DC", "Montréal", "Outils"];
 
   const state = { q: "", tags: new Set(), sort: "date-desc" };
 
