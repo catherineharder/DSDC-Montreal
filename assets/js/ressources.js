@@ -16,6 +16,11 @@
     if (m) { const mois = ["janv.","févr.","mars","avr.","mai","juin","juill.","août","sept.","oct.","nov.","déc."]; return mois[+m[2] - 1] + " " + m[1]; }
     return String(d);
   };
+  const yearOnly = (d) => {
+    if (!d) return "s. d.";
+    const m = String(d).match(/(\d{4})/);
+    return m ? m[1] : String(d);
+  };
   const TAGS = ["Contexte", "DS", "DC", "Montréal", "Outils"];
 
   const state = { q: "", tags: new Set(), sort: "date-desc" };
@@ -59,7 +64,8 @@
       '<div class="res-meta">' +
         '<span class="res-tag" data-tag="' + esc(r.tag) + '">' + esc(r.tag) + '</span>' +
         '<h3>' + esc(r.title) + '</h3>' +
-        '<span class="res-date">' + esc(r.org) + ' · ' + prettyDate(r.date) + '</span>' +
+        '<span class="res-org">' + esc(r.org) + '</span>' +
+    '<span class="res-date">' + yearOnly(r.date) + '</span>' +
       '</div></a>';
   };
 
