@@ -1241,40 +1241,11 @@ function initIndicMap() {
   /* clic hors de l'île (fond du svg) : retour à la fiche de l'indicateur */
   svg.addEventListener("click", (e) => { if (e.target === svg) reset(); });
 
-  /* ---- barre coulissante entre carte et panneau ----------------------------- */
-  const initSplitter = () => {
-    const wrap = document.querySelector("#view-indic .wrap");
-    const side = wrap && wrap.querySelector(".map-side");
-    if (!wrap || !side) return;
-    const handle = document.createElement("div");
-    handle.className = "split-handle";
-    handle.title = "Glisser pour redimensionner";
-    wrap.insertBefore(handle, side.nextSibling);
-    const KEY = "indicSplit";
-    const apply = (p) => { side.style.flex = "0 0 " + p + "%"; };
-    let saved = null;
-    try { saved = parseFloat(localStorage.getItem(KEY)); } catch (_) { /* stockage indisponible */ }
-    if (saved && saved >= 35 && saved <= 85) apply(saved);
-    let dragging = false;
-    handle.addEventListener("pointerdown", (e) => {
-      dragging = true;
-      handle.classList.add("dragging");
-      handle.setPointerCapture(e.pointerId);
-      document.body.style.userSelect = "none";
-    });
-    handle.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const rct = wrap.getBoundingClientRect();
-      const p = Math.max(35, Math.min(85, 100 * (e.clientX - rct.left) / rct.width));
-      apply(p);
-      try { localStorage.setItem(KEY, p.toFixed(1)); } catch (_) { /* ignoré */ }
-    });
-    const stop = () => { dragging = false; handle.classList.remove("dragging"); document.body.style.userSelect = ""; };
-    handle.addEventListener("pointerup", stop);
-    handle.addEventListener("pointercancel", stop);
-  };
+  /* ---- barre coulissante entre carte et panneau -----------------------------
+     Utilise la fabrique partagée de app.js (window.makeSplitter) pour un
+     comportement identique aux cartes ; conserve la clé « indicSplit ». */
+  if (window.makeSplitter) window.makeSplitter(document.querySelector("#view-indic .wrap"), "indicSplit");
 
-  initSplitter();
   setTab(TABS[0].id);
 }
 

@@ -310,5 +310,58 @@ function buildCartesSearch() {
 }
 document.addEventListener("DOMContentLoaded", buildCartesSearch);
 
+/* ---- Barre coulissante entre la carte et le panneau (partagée) -----------
+   Ajoute une poignée « col-resize » entre .map-side et .panel dans un .wrap.
+   La largeur choisie est mémorisée par vue (localStorage[key]). Réutilisée par
+   toutes les cartes ET par la section Indicateurs, pour un comportement
+   identique partout. Idempotente : n'insère pas deux poignées dans un même wrap. */
+window.makeSplitter = function (wrap, key) {
+  if (!wrap) return;
+  const side = wrap.querySelector(".map-side");
+  if (!side || wrap.querySelector(":scope > .split-handle")) return;
+  const handle = document.createElement("div");
+  handle.className = "split-handle";
+  handle.title = "Glisser pour redimensionner";
+  handle.setAttribute("role", "separator");
+  handle.setAttribute("aria-orientation", "vertical");
+  wrap.insertBefore(handle, side.nextSibling);
+  const apply = (p) => { side.style.flex = "0 0 " + p + "%"; };
+  let saved = null;
+  try { saved = parseFloat(localStorage.getItem(key)); } catch (_) { /* stockage indisponible */ }
+  if (saved && saved >= 35 && saved <= 85) apply(saved);
+  let dragging = false;
+  handle.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    handle.classList.add("dragging");
+    handle.setPointerCapture(e.pointerId);
+    document.body.style.userSelect = "none";
+  });
+  handle.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const rct = wrap.getBoundingClientRect();
+    const p = Math.max(35, Math.min(85, 100 * (e.clientX - rct.left) / rct.width));
+    apply(p);
+    try { localStorage.setItem(key, p.toFixed(1)); } catch (_) { /* ignoré */ }
+  });
+  const stop = () => { dragging = false; handle.classList.remove("dragging"); document.body.style.userSelect = ""; };
+  handle.addEventListener("pointerup", stop);
+  handle.addEventListener("pointercancel", stop);
+};
+
+/* Applique la poignée à chaque carte (Indicateurs se gère dans son propre module,
+   avec la même fonction partagée, pour conserver sa clé de stockage historique). */
+function initSplitters() {
+  [
+    ["view-sante", "splitSante"],
+    ["view-ville", "splitVille"],
+    ["view-tdq", "splitTdq"],
+    ["view-deputes", "splitDeputes"],
+  ].forEach(([id, key]) => {
+    const v = el(id);
+    if (v) window.makeSplitter(v.querySelector(".wrap"), key);
+  });
+}
+document.addEventListener("DOMContentLoaded", initSplitters);
+
 initNav();
 initCartes();
