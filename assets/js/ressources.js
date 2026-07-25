@@ -29,7 +29,6 @@
     '<div class="res-wrap">' +
       '<header class="res-hero">' +
         '<h1>Ressources</h1>' +
-        '<p>Toutes les sources documentaires citées dans le site, réunies en un seul endroit. Cherchez par nom, filtrez par thème, puis cliquez une fiche pour ouvrir le document.</p>' +
       '</header>' +
       '<div class="res-tools">' +
         '<div class="res-search"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>' +

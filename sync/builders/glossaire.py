@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 """Glossaire : feuille « Acronymes » (Acronyme | Signification | Source) -> acronymes.html.
 
-Reprend le gabarit éprouvé de l'ancien scripts/sync_acronymes.py.
+Gabarit aligné sur l'identité visuelle DSDC Montréal (crème #F2EEE4, accents
+terreux, tout cerné de noir, Inter) — mêmes jetons que assets/css/app.css.
+La page est affichée en iframe dans l'onglet « Glossaire » : elle n'a donc pas
+de barre de navigation propre, mais reprend la même grammaire visuelle que les
+onglets Ressources et Recommandations.
 Bibliothèque standard seulement.
 """
 import csv
@@ -17,189 +21,165 @@ TEMPLATE = """<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1480">
-<title>Glossaire des acronymes, DRSP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossaire des acronymes — DSDC Montréal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* ---- Jetons de design (identiques à assets/css/app.css) ---------------- */
   :root {
-    --ink: #1a1a1a;
-    --muted: #5a5a5a;
-    --hairline: #e5e5e5;
-    --accent: #3b6fa8;
-    --tag-bg: #f1f1f1;
-    --tag-ink: #5a5a5a;
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, 'Helvetica Neue', Arial, sans-serif;
+    --ink:#000000; --rule:#000000;
+    --cream:#F2EEE4; --paper:#ffffff;
+    --sand:#D7B063; --orange:#D97A22; --red:#C43E42; --olive:#6C6F3F; --teal:#46747F;
+    --accent:#000000;            /* accent de l'onglet Glossaire */
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,'Helvetica Neue',Arial,sans-serif;
+    --tools-h:118px;
   }
   * { box-sizing: border-box; }
-  html, body {
-    margin: 0; padding: 0;
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0 0 0;
     font-family: var(--font-sans);
     color: var(--ink);
-    background: #ffffff;
-    font-size: 12pt;
-    line-height: 1.45;
-  }
-  nav.toc {
-    position: sticky; top: 0;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--hairline);
-    padding: 14px 48px;
-    font-size: 10pt;
-    z-index: 10;
-    display: flex; gap: 24px; align-items: center;
-  }
-  nav.toc a { color: var(--muted); text-decoration: none; }
-  nav.toc a:hover { color: var(--accent); }
-  nav.toc .brand { font-weight: 500; color: var(--ink); margin-right: auto; }
-
-  main { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
-
-  .hero {
-    padding: 30px 0 24px;
-    border-bottom: 1px solid var(--hairline);
-  }
-  .hero .label {
-    font-size: 10pt; color: var(--muted);
-    letter-spacing: 0.06em; margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: 46px; font-weight: 700;
-    line-height: 1.05; letter-spacing: -0.02em;
-    margin: 0 0 24px;
-  }
-  .hero p.lead {
-    font-size: 13pt; color: var(--muted);
-    max-width: 720px; margin: 0;
-    line-height: 1.55;
+    background: var(--cream);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .controls {
-    display: flex; gap: 16px; align-items: center;
-    padding: 24px 0 8px;
-    border-bottom: 1px solid var(--hairline);
-    margin-bottom: 32px;
-    position: sticky; top: 0;
-    background: #fff; z-index: 5;
-  }
-  .controls input {
-    flex: 1; max-width: 360px;
-    padding: 10px 14px;
-    border: 1px solid var(--hairline);
-    border-radius: 6px;
-    font-size: 11pt;
-    font-family: inherit;
-    color: var(--ink);
-    outline: none;
-  }
-  .controls input:focus { border-color: var(--accent); }
-  .controls .count {
-    font-size: 10pt; color: var(--muted);
-  }
-  .alpha-index {
-    display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--hairline);
-    margin-bottom: 32px;
-    font-size: 10pt;
-  }
-  .gloss-search {
-    margin-left: auto; min-width: 280px; flex: 0 0 auto;
-    padding: 9px 13px; border: 1px solid var(--hairline); border-radius: 6px;
-    font: inherit; font-size: 11pt; color: var(--ink); outline: none;
-  }
-  .gloss-search:focus { border-color: var(--accent); }
-  .alpha-index a {
-    display: inline-block;
-    min-width: 28px;
-    text-align: center;
-    padding: 4px 8px;
-    color: var(--muted);
-    text-decoration: none;
-    border-radius: 4px;
-  }
-  .alpha-index a:hover {
-    color: var(--accent);
-    background: #f4f4f4;
+  /* ---- Titre (pas de surtitre ni de sous-titre : le titre est seul) ------ */
+  .g-hero { padding: 44px clamp(24px,6vw,90px) 24px; border-bottom: 2px solid var(--ink); }
+  .g-hero h1 {
+    margin: 0;
+    font-size: clamp(34px,5vw,60px); font-weight: 800; letter-spacing: -.02em; line-height: 1.02;
   }
 
-  .letter-block { margin-bottom: 40px; scroll-margin-top: 120px; }
-  .letter-block h3.letter {
-    font-size: 24pt; font-weight: 400;
-    color: var(--accent);
-    margin: 0 0 16px;
-    letter-spacing: -0.02em;
-    border-bottom: 1px solid var(--hairline);
-    padding-bottom: 8px;
+  /* crayon d'édition : ouvre la feuille Google source */
+  .edit-pencil {
+    display: inline-flex; align-items: center; vertical-align: middle;
+    margin-left: 12px; color: var(--ink); opacity: .45;
+    transition: opacity 120ms ease, transform 120ms ease;
   }
+  .edit-pencil:hover, .edit-pencil:focus-visible { opacity: 1; transform: translateY(-2px); }
+
+  /* ---- Barre d'outils collante (recherche + index A-Z) ------------------- */
+  .g-tools {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--cream);
+    padding: 16px clamp(24px,6vw,90px) 14px;
+    border-bottom: 1.5px solid var(--ink);
+    display: flex; flex-wrap: wrap; gap: 12px 14px; align-items: center;
+  }
+  .g-search { flex: 1 1 260px; position: relative; max-width: 420px; }
+  .g-search input {
+    width: 100%; padding: 10px 14px 10px 40px;
+    border: 1.5px solid var(--ink); border-radius: 10px;
+    font: inherit; font-size: 15px;
+    background: var(--paper); color: var(--ink); outline: none;
+  }
+  .g-search input:focus { box-shadow: 3px 3px 0 var(--ink); }
+  .g-search svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 18px; pointer-events: none;
+  }
+  .g-count {
+    font-size: 13px; font-weight: 700;
+    border: 1.5px solid var(--ink); border-radius: 999px;
+    padding: 6px 14px; background: var(--sand); white-space: nowrap;
+  }
+  .g-alpha { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 6px; }
+  .g-alpha a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 32px; padding: 5px 9px;
+    font-size: 13px; font-weight: 700; text-decoration: none;
+    color: var(--ink); background: var(--paper);
+    border: 1.5px solid var(--ink); border-radius: 999px;
+    transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+  }
+  .g-alpha a:hover, .g-alpha a:focus-visible { background: var(--ink); color: var(--cream); transform: translateY(-1px); }
+  .g-alpha a.off { opacity: .25; pointer-events: none; }
+
+  /* ---- Corps ------------------------------------------------------------ */
+  main { padding: 30px clamp(24px,6vw,90px) 10px; }
+
+  .letter-block { margin: 0 0 38px; scroll-margin-top: calc(var(--tools-h) + 12px); }
+  .letter-block h2.letter {
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 0 14px;
+  }
+  .letter-block h2.letter .l-badge {
+    flex: 0 0 auto;
+    width: 46px; height: 46px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    border: 2px solid var(--ink); border-radius: 12px;
+    background: var(--paper); box-shadow: 4px 4px 0 var(--ink);
+  }
+  .letter-block h2.letter .l-rule { flex: 1; height: 2px; background: var(--ink); }
+
   .letter-block dl { margin: 0; }
   .entry {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 16px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
+    display: grid; grid-template-columns: 190px minmax(0,1fr);
+    gap: 8px 20px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule);
   }
-  .entry dt {
-    font-weight: 500;
-    font-size: 10.5pt;
-    color: var(--ink);
-  }
-  .entry dd {
-    margin: 0;
-    font-size: 10.5pt;
-    color: var(--ink);
-    line-height: 1.5;
-  }
+  .entry:first-of-type { border-top: 1px solid var(--rule); }
+  .entry:nth-of-type(even) { background: rgba(255,255,255,.5); }
+  .entry dt { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -.005em; }
+  .entry dd { margin: 0; font-size: 14.5px; line-height: 1.5; }
   .entry .src {
-    display: inline-block;
-    margin-left: 8px;
-    padding: 1px 8px;
-    background: var(--tag-bg);
-    color: var(--tag-ink);
-    font-size: 8.5pt;
-    border-radius: 3px;
-    font-weight: 400;
-    vertical-align: 2px;
-    white-space: nowrap;
+    display: inline-block; margin-left: 10px;
+    padding: 2px 10px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    border: 1.5px solid var(--ink); border-radius: 999px;
+    background: var(--sand); white-space: nowrap; vertical-align: 1px;
   }
   .entry.hidden { display: none; }
 
-  /* Crayon d'édition : ouvre la feuille Google source (lecture seule sans accès). */
-  .edit-pencil {
-    display: inline-flex; align-items: center;
-    vertical-align: middle; margin-left: 10px;
-    color: var(--muted); opacity: .45;
-    transition: opacity 120ms ease, color 120ms ease;
+  .g-empty {
+    margin: 10px 0 0; padding: 30px;
+    font-size: 15px; font-weight: 600; text-align: center;
+    border: 2px dashed var(--ink); border-radius: 14px; background: var(--paper);
   }
-  .edit-pencil:hover, .edit-pencil:focus-visible { opacity: 1; color: var(--accent); }
+  .g-empty[hidden] { display: none; }
 
+  /* ---- Pied de page ----------------------------------------------------- */
   footer {
-    border-top: 1px solid var(--hairline);
-    padding: 32px 48px 64px;
-    color: var(--muted);
-    font-size: 10pt;
-    max-width: 1100px;
-    margin: 56px auto 0;
+    margin: 40px 0 0;
+    padding: 22px clamp(24px,6vw,90px) 60px;
+    border-top: 2px solid var(--ink);
+    font-size: 13px; font-weight: 600;
+    background: var(--paper);
+  }
+
+  @media (max-width: 720px) {
+    .entry { grid-template-columns: 1fr; gap: 2px; padding: 12px 10px; }
+    .g-count { order: 3; }
   }
 </style>
 </head>
 <body>
 
-<main>
+<header class="g-hero">
+  <h1>Glossaire des acronymes<a class="edit-pencil" href="{{SHEET_URL}}" target="_blank" rel="noopener" title="Suggérer une modification (ouvre la feuille Google)" aria-label="Suggérer une modification"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></a></h1>
+</header>
 
-  <section class="hero">
-    <h1>Glossaire des acronymes<a class="edit-pencil" href="{{SHEET_URL}}" target="_blank" rel="noopener" title="Suggérer une modification (ouvre la feuille Google)" aria-label="Suggérer une modification"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></a></h1>
-    </section>
-
-  <div class="alpha-index">
-{{ALPHA_INDEX}}
-    <input id="q" type="search" class="gloss-search" placeholder="Rechercher un acronyme…" autocomplete="off">
+<div class="g-tools">
+  <div class="g-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Rechercher un acronyme ou un mot…" autocomplete="off" aria-label="Rechercher un acronyme">
   </div>
+  <span class="g-count" id="count">{{COUNT}} acronymes</span>
+  <nav class="g-alpha" aria-label="Index alphabétique">
+{{ALPHA_INDEX}}
+  </nav>
+</div>
 
+<main>
 {{LETTER_BLOCKS}}
+  <p class="g-empty" id="empty" hidden>Aucun acronyme ne correspond à cette recherche.</p>
 </main>
 
 <footer>
@@ -210,24 +190,30 @@ TEMPLATE = """<!DOCTYPE html>
 (function(){
   const q = document.getElementById('q');
   const countEl = document.getElementById('count');
+  const emptyEl = document.getElementById('empty');
   const entries = Array.from(document.querySelectorAll('.entry'));
   const blocks = Array.from(document.querySelectorAll('.letter-block'));
+  const chips = Array.from(document.querySelectorAll('.g-alpha a'));
   const total = entries.length;
-  function norm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  function norm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,''); }
+  function label(n){ return n + (n === 1 ? ' acronyme' : ' acronymes'); }
   q.addEventListener('input', () => {
     const term = norm(q.value.trim());
     let visible = 0;
     entries.forEach(e => {
-      if (!term) { e.classList.remove('hidden'); visible++; return; }
-      const text = norm(e.textContent);
-      if (text.includes(term)) { e.classList.remove('hidden'); visible++; }
-      else e.classList.add('hidden');
+      const hit = !term || norm(e.textContent).includes(term);
+      e.classList.toggle('hidden', !hit);
+      if (hit) visible++;
     });
+    const live = new Set();
     blocks.forEach(b => {
-      const anyVisible = b.querySelectorAll('.entry:not(.hidden)').length > 0;
-      b.style.display = anyVisible ? '' : 'none';
+      const any = b.querySelector('.entry:not(.hidden)') !== null;
+      b.style.display = any ? '' : 'none';
+      if (any) live.add(b.id);
     });
-    if (countEl) countEl.textContent = visible + (visible === 1 ? ' entrée' : ' entrées') + (term ? ' (filtré)' : '');
+    chips.forEach(c => c.classList.toggle('off', !!term && !live.has(c.getAttribute('href').slice(1))));
+    if (emptyEl) emptyEl.hidden = visible !== 0;
+    if (countEl) countEl.textContent = label(visible) + (term ? ' trouvés' : '');
   });
 })();
 </script>
@@ -288,8 +274,11 @@ def build_letter_blocks(entries):
         body = "\n".join(render_entry(*e) for e in groups[letter])
         blocks_html.append(
             f'<section class="letter-block" id="lt-{letter}">\n'
-            f'  <h3 class="letter">{letter}</h3>\n  <dl>\n{body}\n  </dl>\n</section>')
-    alpha_links = " ".join(f'<a href="#lt-{l}">{l}</a>' for l in order)
+            f'  <h2 class="letter"><span class="l-badge">{letter}</span>'
+            f'<span class="l-rule" aria-hidden="true"></span></h2>\n'
+            f'  <dl>\n{body}\n  </dl>\n</section>')
+    alpha_links = "\n".join(
+        f'    <a href="#lt-{l}">{l}</a>' for l in order)
     return alpha_links, "\n".join(blocks_html), len(entries)
 
 
@@ -306,6 +295,7 @@ def build(rows, sheet_url=""):
     return (TEMPLATE
             .replace("{{ALPHA_INDEX}}", alpha)
             .replace("{{LETTER_BLOCKS}}", blocks)
+            .replace("{{COUNT}}", str(count))
             .replace("{{SHEET_URL}}", sheet_url)
             .replace("{{FOOTER_DATE}}", french_month_year())), count
 

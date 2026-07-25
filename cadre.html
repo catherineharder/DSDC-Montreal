@@ -78,7 +78,6 @@ html, body {
 .welcome p { font-size: 13.5px; max-width: 460px; margin-bottom: 10px; line-height: 1.5; }
 .welcome .hint { display: inline-block; margin-top: 14px; padding: 10px 16px; border-radius: 8px; background: var(--pink-light); color: var(--red); font-size: 13px; font-weight: 500; }
 .section-banner { margin-bottom: 22px; padding-bottom: 14px; border-bottom: 2px solid var(--red); }
-.section-banner .kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
 .section-banner h1 { font-size: 23px; font-weight: 700; color: var(--red); line-height: 1.2; letter-spacing: -.01em; }
 .concept-card { margin-bottom: 28px; padding-bottom: 22px; }
 .concept-card .definition { font-size: 13.5px; color: var(--text); line-height: 1.55; margin-bottom: 16px; white-space: pre-line; }
@@ -202,7 +201,7 @@ function selectZone(id, fromSearch) {
   if (!m) return;
   document.querySelectorAll('.zone').forEach(z => z.classList.toggle('active', z.dataset.zone === id));
   const c = DATA[m.slug];
-  contentEl.innerHTML = `<div class="section-banner"><div class="kicker">${esc(m.group)}</div><h1>${esc(c.title)}</h1></div>${termCard(m.slug)}`;
+  contentEl.innerHTML = `<div class="section-banner"><h1>${esc(c.title)}</h1></div>${termCard(m.slug)}`;
   document.querySelector('.right').scrollTop = 0;
   searchResults.classList.remove('open');
   if (!fromSearch) searchInput.value = '';
@@ -502,7 +501,7 @@ function renderExHome(tab) {
   const ex = EX[tab];
   const chrono = ex.chrono.map(([d, e]) => `<div><b>${d}</b> — ${esc(e)}</div>`).join('');
   const srcs = ex.srcs.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ');
-  contentEl.innerHTML = `<div class="section-banner"><div class="kicker">${esc(ex.kicker)}</div><h1>${esc(ex.title)}</h1></div>
+  contentEl.innerHTML = `<div class="section-banner"><h1>${esc(ex.title)}</h1></div>
     <div class="concept-card"><div class="definition">${esc(ex.intro)}</div>
     <div class="section-label">Chronologie</div><div class="chrono">${chrono}</div>
     <div class="extra-block"><div class="label">Comment lire cet onglet</div>Cliquez sur un concept du cadre simplifié à gauche pour voir comment ce projet l'illustre concrètement — avec les lois, budgets, instances et acteurs en jeu.</div>
@@ -521,7 +520,7 @@ function renderExNode(tab, node) {
   const zone = NODE_TO_ZONE[node];
   const theory = zone && ZONEMAP[zone] ? `<div class="theory-link"><button onclick="openTheory('${zone}')">Voir la fiche théorique : ${esc(DATA[ZONEMAP[zone].slug].title)}</button></div>` : '';
   const title = NODE_TITLES[node];
-  contentEl.innerHTML = `<div class="section-banner"><div class="kicker">${esc(ex.kicker)}</div><h1>${esc(title)}</h1></div>
+  contentEl.innerHTML = `<div class="section-banner"><h1>${esc(title)}</h1></div>
     <div class="concept-card"><div class="definition">${esc(d.how)}</div>${items}${theory}${src}</div>`;
   document.querySelector('.right').scrollTop = 0;
 }

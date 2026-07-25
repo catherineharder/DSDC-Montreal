@@ -656,11 +656,7 @@ function initIndicMap() {
   const rtCleanRevers = (s) => String(s || "").replace(/^\s*Revers\s*[—–-]\s*/i, "");
   const rtVerticalHTML = () =>
     `<div class="outil-page">` +
-    `<header class="outil-head"><span class="soc-kicker">Outil d'appréciation</span>` +
-    `<h2>Les 12 résultats transitoires</h2>` +
-    `<p>Les événements marquants que les réseaux intersectoriels locaux enchaînent pour transformer ` +
-    `concrètement les milieux de vie, regroupés en trois fonctions. La boîte verte décrit le résultat ; ` +
-    `la boîte jaune, son « revers » lorsqu'il existe.</p></header>` +
+    `<header class="outil-head"><h2>Les 12 résultats transitoires</h2></header>` +
     RT_FONCTIONS.map((f) =>
       `<section class="outil-fn"><h3>${esc(f.nom)}</h3><p class="outil-fdescr">${esc(f.descr)}</p>` +
       f.rts.map((n) => {
@@ -795,9 +791,8 @@ function initIndicMap() {
         rows.push(["Provinciale — ensemble du Québec (2022)", pv.overall, "#8a6a1f"]);
       }
       if (fd) rows.push(["Fédérale — ensemble du Canada (2021)", fd.overall, "#7d6120"]);
-      return `<div class="soc-page"><header class="soc-hero"><span class="soc-kicker">Participation électorale</span>` +
-        `<h2>${esc(label)}</h2><p>Taux de participation selon le palier de gouvernement. Plus l'élection est ` +
-        `« locale » (municipale), plus la participation tend à être faible.</p></header>` +
+      return `<div class="soc-page"><header class="soc-hero">` +
+        `<h2>${esc(label)}</h2></header>` +
         `<div class="part-compare">` + rows.map(([lb, v, c]) => v == null ? "" :
           `<div class="pc-row"><span class="pc-lab">${esc(lb)}</span>` +
           `<div class="pc-bar"><span style="width:${Math.min(100, v)}%;background:${c}"></span></div>` +
@@ -869,8 +864,7 @@ function initIndicMap() {
       const solChart = (CAP.solitude && solitudeOption.render) ? solitudeOption.render() : "";
       return `<div class="soc-page">` +
         `<header class="soc-hero">` +
-        `<h2>Les liens qui tiennent un milieu</h2>` +
-        `<p>Trois lectures complémentaires du tissu social montréalais.</p></header>` +
+        `<h2>Les liens qui tiennent un milieu</h2></header>` +
 
         `<section class="soc-sec"><div class="soc-num" style="color:${ACCENT}">65&nbsp;%</div>` +
         `<div class="soc-body"><h3>Sentiment d'appartenance</h3>` +
@@ -943,9 +937,7 @@ function initIndicMap() {
         `<div class="pc-bar"><span style="width:${Math.min(100, v * 3)}%;background:${c}"></span></div>` +
         `<span class="pc-val">${FR(v, 0)} %</span></div>`;
       return `<div class="soc-page alim-page">` +
-        `<header class="soc-hero alim-hero"><h2>Se nourrir à Montréal</h2>` +
-        `<p>Manger à sa faim n'est pas acquis pour tout le monde. À Montréal, l'insécurité alimentaire — quand le ` +
-        `manque d'argent limite l'accès à une nourriture suffisante et saine — a bondi ces dernières années.</p></header>` +
+        `<header class="soc-hero alim-hero"><h2>Se nourrir à Montréal</h2></header>` +
 
         `<section class="soc-sec alim-big"><div class="soc-num alim-figure" style="color:${ACCENT}">22&nbsp;%</div>` +
         `<div class="soc-body"><h3>des ménages montréalais en situation d'insécurité alimentaire (2023)</h3>` +
