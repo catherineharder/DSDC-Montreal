@@ -843,15 +843,17 @@ function initIndicMap() {
     ];
   }
 
-  /* ================= Onglet — Social (carte + récit défilant) ==============
-     En tête : carte des 5 réseaux territoriaux de services (RTS) colorée par
-     la part de la population insatisfaite de sa vie sociale ; cliquer un
-     territoire remplit le panneau de droite (4 catégories, comparaison des
-     deux cycles, repère pointillé Montréal). Sous la carte, en faisant
-     défiler : sentiment d'appartenance et degré de solitude. */
+  /* ================= Onglet — Social (carte seule + panneau) ===============
+     La scène ne porte que la carte des 5 réseaux territoriaux de services
+     (RTS), colorée par la part de la population SATISFAITE de sa vie sociale
+     — comme les autres onglets à carte. Tout le récit vit dans le panneau de
+     droite : à l'ouverture, la satisfaction (Montréal et par territoire) puis
+     le sentiment d'appartenance et le degré de solitude ; au clic sur un
+     territoire, son détail (4 catégories, deux cycles, repère Montréal). */
 
   const SAT_C = ["#46747F", "#9dbcc1", "#D97A22", "#C43E42"];
-  const SAT_BREAKS = [16, 18, 20];
+  /* seuils sur la part satisfaite (très + plutôt satisfaisante), 2020-2021 */
+  const SAT_BREAKS = [79, 81, 83];
   /* clés de SANTE_TERR -> codes de RTS utilisés par les données EQSP */
   const TERR_CODE = { "ouest": "061", "centre-ouest": "062", "centre-sud": "063",
     "nord": "064", "est": "065" };
@@ -878,18 +880,19 @@ function initIndicMap() {
       `<span><span class="sat-sw" style="background:${SAT_C[i]}"></span>${esc(c)}</span>`).join("") + `</div>`;
   };
 
-  /* carte RTS en ligne (même projection 1000x875 que les autres cartes) */
+  /* carte RTS (même projection 1000x875 que les autres cartes), colorée par
+     la part satisfaite de sa vie sociale */
   const socialMapSVG = () => {
     if (typeof SANTE_TERR === "undefined" || !CAP || !CAP.satisfaction) return "";
     const sat = CAP.satisfaction.c2020;
     const shapes = Object.entries(SANTE_TERR).map(([key, d]) => {
       const code = TERR_CODE[key];
-      const v = (code && sat[code]) ? insat(sat[code]) : null;
+      const v = (code && sat[code]) ? satisfPart(sat[code]) : null;
       const cl = satClass(v);
       const fill = cl < 0 ? "var(--cream)" : SAT_PAL4[cl];
       return `<path class="soc-rts" d="${d}" data-rts="${code}" fill="${fill}" tabindex="0" role="button" ` +
-        `aria-label="${esc(RTS_NAMES[code] || key)} — ${PCT(v, 1)} de la population insatisfaite">` +
-        `<title>${esc(RTS_NAMES[code] || key)} — ${PCT(v, 1)} insatisfait·es</title></path>`;
+        `aria-label="${esc(RTS_NAMES[code] || key)} — ${PCT(v, 1)} de la population satisfaite">` +
+        `<title>${esc(RTS_NAMES[code] || key)} — ${PCT(v, 1)} satisfait·es</title></path>`;
     }).join("");
     const outline = (typeof TDQ_SILHOUETTE !== "undefined")
       ? `<path class="tdq-outline" d="${TDQ_SILHOUETTE}" aria-hidden="true"/>` : "";
@@ -899,26 +902,60 @@ function initIndicMap() {
       const lab = lo == null ? `< ${hi} %` : hi == null ? `≥ ${lo} %` : `${lo} – ${hi} %`;
       return `<div><span class="sw" style="background:${c}"></span>${lab}</div>`;
     }).join("");
-    /* pastilles sous la carte : nom du RTS, sa couleur et sa valeur — elles
-       tiennent lieu d'étiquettes (les territoires sont trop imbriqués pour
-       porter un texte lisible) et sélectionnent le même territoire au clic. */
-    const chips = Object.keys(SANTE_TERR).map((key) => {
-      const code = TERR_CODE[key];
-      const v = (code && sat[code]) ? insat(sat[code]) : null;
-      const cl = satClass(v);
-      return `<button type="button" class="soc-chip" data-rts="${code}">` +
-        `<span class="sw" style="background:${cl < 0 ? "var(--cream)" : SAT_PAL4[cl]}"></span>` +
-        `${esc(RTS_NAMES[code] || key)}<span class="soc-chip-v">${PCT(v, 1)}</span></button>`;
-    }).join("");
     return `<div class="soc-map-wrap">` +
-      `<div class="soc-map-legend"><div class="sml-t">Insatisfaction de sa vie sociale<br>(2020-2021)</div>${keys}</div>` +
+      `<div class="soc-map-legend"><div class="sml-t">Satisfaction de sa vie sociale<br>(2020-2021)</div>${keys}` +
+      `<div class="sml-n">Population de 15 ans et plus,<br>par réseau territorial de services</div></div>` +
       `<svg class="soc-map" viewBox="0 0 1000 875" preserveAspectRatio="xMidYMid meet" role="group" ` +
       `aria-label="Carte de la satisfaction de la vie sociale par réseau territorial de services">` +
-      `${shapes}${outline}</svg>` +
-      `<div class="soc-chips">${chips}</div>` +
-      `<p class="soc-map-hint">Cliquez un territoire — sur la carte ou dans la liste — pour voir sa répartition ` +
-      `et son évolution depuis 2014-2015.</p>` +
-      `</div>`;
+      `${shapes}${outline}</svg></div>`;
+  };
+
+  /* ---- petits graphiques du panneau (format étroit) ----------------------- */
+  const miniLine = (cfg) => {
+    const { labels, series, ymin, ymax } = cfg;
+    const W = 320, H = 168, L = 24, R = 10, T = 30, B = 22;
+    const iw = W - L - R, ih = H - T - B;
+    const x = (i) => L + iw * i / (labels.length - 1);
+    const y = (v) => T + ih * (1 - (v - ymin) / (ymax - ymin));
+    let out = `<svg viewBox="0 0 ${W} ${H}" role="img" class="trend-svg mini-line">`;
+    out += series.map((s, i) =>
+      `<circle cx="${L + i * 96 + 4}" cy="${T - 18}" r="4" fill="${s.c}"/>` +
+      `<text x="${L + i * 96 + 12}" y="${T - 14}" class="tc-lab" fill="${s.c}">${esc(s.lbl)}</text>`).join("");
+    out += `<line x1="${L}" y1="${T + ih}" x2="${W - R}" y2="${T + ih}" stroke="#000" stroke-width="1"/>`;
+    out += labels.map((lb, i) => (i % 2 === 0 || i === labels.length - 1)
+      ? `<text x="${x(i)}" y="${H - 6}" text-anchor="middle" class="tc-axis">${esc(lb)}</text>` : "").join("");
+    series.forEach((s) => {
+      out += `<polyline points="${s.vals.map((v, i) => `${x(i)},${y(v)}`).join(" ")}" fill="none" ` +
+        `stroke="${s.c}" stroke-width="2.2" stroke-linejoin="round"/>`;
+      s.vals.forEach((v, i) => { out += `<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="${s.c}"/>`; });
+      const last = s.vals.length - 1;
+      out += `<text x="${x(last)}" y="${y(s.vals[last]) - 8}" text-anchor="end" class="tc-val" ` +
+        `fill="${s.c}">${FR(s.vals[last], 0)}</text>`;
+    });
+    return out + `</svg>`;
+  };
+
+  const miniSolitude = () => {
+    const s = CAP && CAP.solitude;
+    if (!s) return "";
+    const W = 320, H = 130, L = 58, R = 16;
+    const iw = W - L - R, xmin = 4.7, xmax = 5.5;
+    const x = (v) => L + iw * (v - xmin) / (xmax - xmin);
+    const row = (lbl, d, c, yy) =>
+      `<text x="${L - 8}" y="${yy + 4}" text-anchor="end" class="tc-lab" fill="${c}">${lbl}</text>` +
+      `<line x1="${x(d.ic[0])}" y1="${yy}" x2="${x(d.ic[1])}" y2="${yy}" stroke="${c}" stroke-width="2.5" opacity=".45"/>` +
+      `<line x1="${x(d.ic[0])}" y1="${yy - 5}" x2="${x(d.ic[0])}" y2="${yy + 5}" stroke="${c}" stroke-width="2" opacity=".45"/>` +
+      `<line x1="${x(d.ic[1])}" y1="${yy - 5}" x2="${x(d.ic[1])}" y2="${yy + 5}" stroke="${c}" stroke-width="2" opacity=".45"/>` +
+      `<circle cx="${x(d.moy)}" cy="${yy}" r="5" fill="${c}"/>` +
+      `<text x="${x(d.moy)}" y="${yy - 11}" text-anchor="middle" class="tc-val" fill="${c}">${FR(d.moy, 2)}</text>`;
+    let out = `<svg viewBox="0 0 ${W} ${H}" role="img" class="trend-svg">`;
+    [4.8, 5.0, 5.2, 5.4].forEach((v) => {
+      out += `<line x1="${x(v)}" y1="18" x2="${x(v)}" y2="${H - 26}" stroke="#e6e1d5" stroke-width="1"/>` +
+        `<text x="${x(v)}" y="${H - 10}" text-anchor="middle" class="tc-axis">${FR(v, 1)}</text>`;
+    });
+    out += row("Montréal", s.mtl, ACCENT, 42);
+    out += row("Québec", s.qc, INK, 84);
+    return out + `</svg>`;
   };
 
   /* détail d'un RTS : 4 catégories + comparaison des deux cycles */
@@ -930,9 +967,9 @@ function initIndicMap() {
     const s20 = satisfPart(v20), s14 = v14 ? satisfPart(v14) : null;
     const ms20 = satisfPart(m20), ms14 = satisfPart(m14);
     const delta = (s14 != null) ? +(s20 - s14).toFixed(1) : null;
-    return lead(big(insat(v20), SAT_C[0], 1),
-        `de la population de 15 ans et plus se dit <strong>plutôt ou très insatisfaite</strong> de sa vie sociale ` +
-        `en 2020-2021 <span class="indic-ref">· Montréal : ${PCT(insat(m20), 1)}</span>`) +
+    return lead(big(s20, SAT_C[0], 1),
+        `de la population de 15 ans et plus se dit <strong>très ou plutôt satisfaite</strong> de sa vie sociale ` +
+        `en 2020-2021 <span class="indic-ref">· Montréal : ${PCT(ms20, 1)}</span>`) +
       satLegend() +
       `<p class="iq-title">Répartition (2020-2021)</p>` +
       satStack(v20, ms20, `Montréal : ${FR(ms20, 1)} % satisfait·es`) +
@@ -952,87 +989,71 @@ function initIndicMap() {
       srcNote(esc(CAP.meta ? CAP.meta.satisfaction : ""));
   };
 
+  /* panneau par défaut : satisfaction (Montréal + territoires), puis
+     sentiment d'appartenance et degré de solitude */
+  const socialLanding = () => {
+    if (!CAP) return `<p class="intro">Données en cours d'intégration.</p>`;
+    const sat = CAP.satisfaction, a = CAP.appartenance;
+    const satBlock = sat
+      ? `<p class="intro"><strong>Satisfaction de sa vie sociale</strong> — en 2020-2021, ` +
+        `<strong>${PCT(satisfPart(sat.c2020.mtl), 0)}</strong> des Montréalais·es de 15 ans et plus se disaient ` +
+        `très ou plutôt satisfait·es, contre ${PCT(satisfPart(sat.c2014.mtl), 0)} en 2014-2015. La carte colore ` +
+        `chaque territoire selon cette part&nbsp;; cliquez-en un pour son détail.</p>` +
+        satLegend() +
+        `<p class="iq-title">Montréal — 2014-2015 vs 2020-2021</p>` +
+        `<div class="sat-row"><span class="sat-lab">2014-2015</span>${satStack(sat.c2014.mtl)}</div>` +
+        `<div class="sat-row"><span class="sat-lab">2020-2021</span>${satStack(sat.c2020.mtl)}</div>` +
+        `<p class="iq-title">Par territoire (RTS, 2020-2021)</p>` +
+        ["061", "062", "063", "064", "065"].filter((c) => sat.c2020[c]).map((c) =>
+          `<div class="sat-row"><span class="sat-lab">${esc(RTS_NAMES[c] || c)}</span>` +
+          `${satStack(sat.c2020[c])}</div>`).join("") +
+        srcNote(esc(CAP.meta ? CAP.meta.satisfaction : ""))
+      : "";
+    const appartBlock = a
+      ? `<hr class="rule">` +
+        `<p class="intro"><strong>Sentiment d'appartenance</strong> — part de la population de 12 ans et plus dont ` +
+        `le sentiment d'appartenance à sa communauté locale est très ou plutôt fort. À Montréal, il progresse&nbsp;: ` +
+        `<strong style="color:${ACCENT}">${PCT(a.mtl[a.mtl.length - 1], 0)} en ${esc(a.cycles[a.cycles.length - 1])}</strong>, ` +
+        `contre ${PCT(a.mtl[0], 0)} dix ans plus tôt — légèrement au-dessus de la moyenne québécoise.</p>` +
+        miniLine({
+          labels: a.cycles.map((c) => c.replace(/^20/, "")), ymin: 50, ymax: 70,
+          series: [{ vals: a.mtl, c: ACCENT, lbl: "Montréal" }, { vals: a.qc, c: INK, lbl: "Québec" }],
+        }) +
+        srcNote(esc(CAP.meta ? CAP.meta.appartenance : ""))
+      : "";
+    const solBlock = (CAP.solitude && CAP.solitude.mtl)
+      ? `<hr class="rule">` +
+        `<p class="intro"><strong>Degré de solitude</strong> — score moyen déclaré (EQSP 2020-2021 ; un score plus ` +
+        `élevé = plus de solitude). Il est <strong style="color:${ACCENT}">légèrement plus élevé à Montréal ` +
+        `(${FR(CAP.solitude.mtl.moy, 2)})</strong> que dans l'ensemble du Québec (${FR(CAP.solitude.qc.moy, 2)})&nbsp;; ` +
+        `l'écart est faible mais les intervalles de confiance ne se recoupent presque pas.</p>` +
+        miniSolitude() +
+        srcNote(esc(CAP.meta ? CAP.meta.solitude : ""))
+      : "";
+    return satBlock + appartBlock + solBlock;
+  };
+
   const socialOption = {
-    id: "social", label: "Social", kind: "graph", pageMode: true, available: !!CAP,
-    landing: () =>
-      `<p class="intro"><strong>Capital social</strong> — la trame de liens, d'appartenance et de soutien qui relie ` +
-      `les personnes à leur milieu. La carte montre la <strong>satisfaction de la vie sociale</strong> par réseau ` +
-      `territorial de services (RTS)&nbsp;; en faisant défiler sous la carte&nbsp;: le sentiment d'appartenance et ` +
-      `le degré de solitude.</p>` +
-      `<p class="intro">En 2020-2021, <strong>81 %</strong> des Montréalais·es de 15 ans et plus se disaient ` +
-      `satisfait·es de leur vie sociale — mais la satisfaction a <strong>reculé</strong> depuis 2014-2015 (93 %), ` +
-      `la part « plutôt ou très insatisfaite » passant de 7 % à près de 19 %. La carte colore chacun des cinq RTS ` +
-      `selon cette part insatisfaite.</p>` +
-      `<p class="intro">Cliquez un territoire pour sa répartition détaillée et son évolution depuis 2014-2015.</p>` +
-      srcNote("Sources : Institut de la statistique du Québec (ESCC, EQSP) — voir chaque section."),
-    render: () => {
-      if (!CAP) return `<p class="intro">Données en cours d'intégration.</p>`;
-      const a = CAP.appartenance;
-      const appartChart = a ? bigLine({
-        labels: a.cycles, ymin: 40, ymax: 75,
-        series: [{ vals: a.mtl, c: ACCENT, lbl: "Montréal" }, { vals: a.qc, c: INK, lbl: "Québec" }],
-      }) : "";
-      const solChart = (CAP.solitude && solitudeOption.render) ? solitudeOption.render() : "";
-      const sat = CAP.satisfaction;
-      return `<div class="soc-page">` +
-        `<header class="soc-hero">` +
-        `<h2>Les liens qui tiennent un milieu</h2></header>` +
-
-        (sat
-          ? `<section class="soc-sec soc-sec-map"><div class="soc-body">` +
-            socialMapSVG() +
-            satLegend() +
-            `<p class="iq-title">Montréal — 2014-2015 vs 2020-2021</p>` +
-            `<div class="sat-row"><span class="sat-lab">2014-2015</span>${satStack(sat.c2014.mtl)}</div>` +
-            `<div class="sat-row"><span class="sat-lab">2020-2021</span>${satStack(sat.c2020.mtl)}</div>` +
-            `<p class="soc-src">${esc(CAP.meta ? CAP.meta.satisfaction : "")}</p></div></section>`
-          : "") +
-
-        `<section class="soc-sec"><div class="soc-num" style="color:${ACCENT}">65&nbsp;%</div>` +
-        `<div class="soc-body"><h3>Sentiment d'appartenance</h3>` +
-        `<p>Part de la population de 12 ans et plus dont le sentiment d'appartenance à sa communauté locale est ` +
-        `très ou plutôt fort. À Montréal, il progresse&nbsp;: <strong>65&nbsp;% en 2019-2020</strong>, contre 59&nbsp;% ` +
-        `dix ans plus tôt — légèrement au-dessus de la moyenne québécoise.</p>` +
-        `<div class="soc-chart">${appartChart}</div>` +
-        `<p class="soc-src">${esc(CAP.meta ? CAP.meta.appartenance : "")}</p></div></section>` +
-
-        `<section class="soc-sec"><div class="soc-num" style="color:${ACCENT}">5,11</div>` +
-        `<div class="soc-body"><h3>Degré de solitude</h3>` +
-        `<p>Score moyen déclaré (échelle EQSP 2020-2021 ; un score plus élevé = plus de solitude). Le degré moyen ` +
-        `est <strong>légèrement plus élevé à Montréal (5,11)</strong> que dans l'ensemble du Québec (4,99) ; l'écart ` +
-        `est faible mais les intervalles de confiance ne se recoupent presque pas.</p>` +
-        `<div class="soc-chart">${solChart}</div>` +
-        `<p class="soc-src">${esc(CAP.meta ? CAP.meta.solitude : "")}</p></div></section>` +
-        `</div>`;
-    },
-    /* interactions de la carte en ligne (formes + pastilles) */
+    id: "social", label: "Social", kind: "graph", available: !!CAP,
+    landing: socialLanding,
+    render: () => (CAP ? socialMapSVG() : `<p class="intro">Données en cours d'intégration.</p>`),
+    /* interactions de la carte */
     mount: (root) => {
       const map = root.querySelector(".soc-map");
       if (!map) return;
-      const marks = () => root.querySelectorAll(".soc-rts, .soc-chip");
-      const clear = () => marks().forEach((q) => {
-        q.classList.remove("active");
-        if (q.tagName === "BUTTON") q.setAttribute("aria-pressed", "false");
-      });
+      const shapes = root.querySelectorAll(".soc-rts");
+      const clear = () => shapes.forEach((q) => q.classList.remove("active"));
       const pick = (code) => {
         clear();
-        marks().forEach((q) => {
-          if (q.dataset.rts !== code) return;
-          q.classList.add("active");
-          if (q.tagName === "BUTTON") q.setAttribute("aria-pressed", "true");
-        });
+        shapes.forEach((q) => { if (q.dataset.rts === code) q.classList.add("active"); });
         panel.innerHTML = `<h2>${esc(RTS_NAMES[code] || code)}</h2><hr class="rule">` + socialRtsPanel(code);
         panel.scrollTop = 0;
       };
-      root.querySelectorAll(".soc-rts").forEach((p) => {
+      shapes.forEach((p) => {
         p.addEventListener("click", () => pick(p.dataset.rts));
         p.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(p.dataset.rts); }
         });
-      });
-      root.querySelectorAll(".soc-chip").forEach((b) => {
-        b.setAttribute("aria-pressed", "false");
-        b.addEventListener("click", () => pick(b.dataset.rts));
       });
       map.addEventListener("click", (e) => {
         if (e.target === map || e.target.classList.contains("tdq-outline")) {
