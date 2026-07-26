@@ -339,10 +339,38 @@
 .sat-sw{width:13px;height:13px;border:1.5px solid var(--ink);border-radius:3px;flex:0 0 auto;}
 .sat-row{display:flex;align-items:center;gap:10px;margin:6px 0;}
 .sat-lab{flex:0 0 132px;font-size:12.5px;line-height:1.2;}
-.sat-stack{flex:1;display:flex;height:22px;border:1.5px solid var(--ink);border-radius:5px;overflow:hidden;}
+.sat-stack{position:relative;flex:1;display:flex;height:22px;border:1.5px solid var(--ink);border-radius:5px;overflow:hidden;}
 .sat-seg{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff;min-width:0;overflow:hidden;}
 .sat-seg:nth-child(2){color:#000;}
+/* repère pointillé : valeur de référence montréalaise sur une barre de territoire */
+.sat-mark{position:absolute;top:-2px;bottom:-2px;width:0;border-left:2px dashed var(--ink);pointer-events:none;}
+.sat-mark-key{display:inline-block;width:0;height:11px;border-left:2px dashed var(--ink);vertical-align:-2px;margin-right:7px;}
 @media (max-width:640px){.sat-lab{flex-basis:92px;}}
+
+/* ---- Social : carte RTS en tête de la page défilante ---- */
+.soc-sec-map{grid-template-columns:1fr;}
+.soc-sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;}
+.soc-num-inline{font-size:40px;}
+.soc-sec-head h3{margin:0;}
+.soc-map-wrap{position:relative;margin:10px 0 18px;}
+.soc-map{width:100%;max-width:620px;height:auto;display:block;margin:0 auto;overflow:visible;}
+.soc-rts{stroke:var(--ink);stroke-width:3;stroke-linejoin:round;cursor:pointer;transition:filter 140ms ease;}
+.soc-rts:hover{filter:brightness(1.08);}
+.soc-rts.active{stroke-width:6;}
+.soc-rts:focus{outline:none;}
+.soc-rts:focus-visible{stroke-width:6;stroke-dasharray:9 5;}
+.soc-chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px;}
+.soc-chip{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;line-height:1;padding:6px 11px;background:var(--paper);border:1.5px solid var(--ink);border-radius:999px;cursor:pointer;}
+.soc-chip .sw{width:13px;height:13px;border:1.5px solid var(--ink);border-radius:3px;flex:0 0 auto;}
+.soc-chip-v{font-weight:700;font-variant-numeric:tabular-nums;}
+.soc-chip:hover{background:color-mix(in srgb,var(--accent) 14%,var(--paper));}
+.soc-chip.active{background:var(--ink);color:var(--paper);}
+.soc-chip.active .sw{border-color:var(--paper);}
+.soc-map-legend{position:absolute;top:6px;left:2px;z-index:2;display:flex;flex-direction:column;gap:5px;font-size:11.5px;line-height:1.35;background:var(--paper);padding:9px 11px;border:1.5px solid var(--ink);border-radius:6px;pointer-events:none;}
+.soc-map-legend .sml-t{font-weight:800;}
+.soc-map-legend .sw{display:inline-block;width:14px;height:14px;margin-right:8px;border:1.5px solid var(--ink);border-radius:2px;vertical-align:-2px;}
+.soc-map-hint{margin:2px 0 0;font-size:12px;font-style:italic;color:var(--muted);}
+@media (max-width:640px){.soc-map-legend{position:static;margin-bottom:8px;}.soc-map-lab{font-size:24px;}}
 
 /* ---- Pages défilantes : révélation au défilement + emphase Alimentaire ---- */
 .soc-sec.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
