@@ -656,7 +656,6 @@ function initIndicMap() {
   const rtCleanRevers = (s) => String(s || "").replace(/^\s*Revers\s*[—–-]\s*/i, "");
   const rtVerticalHTML = () =>
     `<div class="outil-page">` +
-    `<header class="outil-head"><h2>Les 12 résultats transitoires</h2></header>` +
     RT_FONCTIONS.map((f) =>
       `<section class="outil-fn"><h3>${esc(f.nom)}</h3><p class="outil-fdescr">${esc(f.descr)}</p>` +
       f.rts.map((n) => {
@@ -960,6 +959,10 @@ function initIndicMap() {
       `les personnes à leur milieu. La carte montre la <strong>satisfaction de la vie sociale</strong> par réseau ` +
       `territorial de services (RTS)&nbsp;; en faisant défiler sous la carte&nbsp;: le sentiment d'appartenance et ` +
       `le degré de solitude.</p>` +
+      `<p class="intro">En 2020-2021, <strong>81 %</strong> des Montréalais·es de 15 ans et plus se disaient ` +
+      `satisfait·es de leur vie sociale — mais la satisfaction a <strong>reculé</strong> depuis 2014-2015 (93 %), ` +
+      `la part « plutôt ou très insatisfaite » passant de 7 % à près de 19 %. La carte colore chacun des cinq RTS ` +
+      `selon cette part insatisfaite.</p>` +
       `<p class="intro">Cliquez un territoire pour sa répartition détaillée et son évolution depuis 2014-2015.</p>` +
       srcNote("Sources : Institut de la statistique du Québec (ESCC, EQSP) — voir chaque section."),
     render: () => {
@@ -977,12 +980,6 @@ function initIndicMap() {
 
         (sat
           ? `<section class="soc-sec soc-sec-map"><div class="soc-body">` +
-            `<div class="soc-sec-head"><span class="soc-num soc-num-inline" style="color:${SAT_C[0]}">81&nbsp;%</span>` +
-            `<h3>Satisfaction de la vie sociale</h3></div>` +
-            `<p>En 2020-2021, <strong>81&nbsp;%</strong> des Montréalais·es de 15 ans et plus se disaient satisfait·es ` +
-            `de leur vie sociale — mais la satisfaction a <strong>reculé</strong> depuis 2014-2015 (93&nbsp;%), la part ` +
-            `« plutôt ou très insatisfaite » passant de 7&nbsp;% à près de 19&nbsp;%. La carte colore chacun des cinq ` +
-            `réseaux territoriaux de services selon cette part insatisfaite.</p>` +
             socialMapSVG() +
             satLegend() +
             `<p class="iq-title">Montréal — 2014-2015 vs 2020-2021</p>` +
@@ -1075,7 +1072,6 @@ function initIndicMap() {
         `<div class="pc-bar"><span style="width:${Math.min(100, v * 3)}%;background:${c}"></span></div>` +
         `<span class="pc-val">${FR(v, 0)} %</span></div>`;
       return `<div class="soc-page alim-page">` +
-        `<header class="soc-hero alim-hero"><h2>Se nourrir à Montréal</h2></header>` +
 
         `<section class="soc-sec alim-big"><div class="soc-num alim-figure" style="color:${ACCENT}">22&nbsp;%</div>` +
         `<div class="soc-body"><h3>des ménages montréalais en situation d'insécurité alimentaire (2023)</h3>` +
@@ -1135,8 +1131,11 @@ function initIndicMap() {
     { id: "particip", label: "Participation", title: "Participation électorale", toggle: true, hideGeo: true,
       options: participTabOptions() },
     { id: "social", label: "Social", options: [socialOption], noSelect: true },
-    { id: "alim", label: "Alimentaire", options: [alimScrollOption], noSelect: true },
-    { id: "outil", label: "Outil", options: [rtOption], noSelect: true },
+    { id: "alim", label: "Alimentaire", title: "Insécurité alimentaire",
+      options: [alimScrollOption], noSelect: true },
+    { id: "outil", label: "Outil",
+      title: "Outil d'appréciation des effets de l'action intersectorielle locale",
+      options: [rtOption], noSelect: true },
   ];
 
   /* ---- état ---------------------------------------------------------------- */
@@ -1347,7 +1346,11 @@ function initIndicMap() {
 
   const setTab = (id) => {
     tab = TABS.find((t) => t.id === id) || TABS[0];
-    if (title) title.textContent = tab.title || tab.label;
+    if (title) {
+      const t = tab.title || tab.label;
+      title.textContent = t;
+      title.classList.toggle("t-long", t.length > 30);
+    }
     if (eyebrow) [...eyebrow.querySelectorAll(".map-pick")].forEach((b) =>
       b.setAttribute("aria-current", b.dataset.tab === tab.id ? "page" : "false"));
     setOption(tab.options[0].id);

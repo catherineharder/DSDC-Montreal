@@ -58,6 +58,8 @@
   .map-side{flex:0 0 66.666%;display:flex;flex-direction:column;min-width:0;border-right:1.5px solid var(--ink);background:var(--bg);}
   .map-head{padding:18px 26px 2px;display:flex;align-items:center;gap:18px;}
   .map-head h1{margin:0;font-size:46px;font-weight:700;letter-spacing:-.015em;}
+  /* titres longs (ex. l'outil d'appréciation) : on réduit plutôt que de déborder */
+  .map-head h1.t-long{font-size:clamp(22px,2.1vw,30px);line-height:1.12;}
   /* Circonscriptions: the Assemblée nationale logo is oversized, which would inflate
      the map-head and shrink the map. Pin this view's map-head to the same height as
      the others so the map renders at the identical size; the logo may overflow
@@ -292,7 +294,8 @@
 
 /* Pages défilantes (Social, Alimentaire) rendues dans la zone graphique */
 .indic-graph.indic-page{display:block;align-items:stretch;justify-content:flex-start;padding:0;}
-.soc-page{max-width:760px;margin:0 auto;padding:6px 8px 40px;}
+/* alignées sur le bord gauche (sous le grand titre), pas centrées */
+.soc-page{max-width:760px;margin:0;padding:6px 8px 40px 16px;}
 .soc-hero{padding:8px 0 22px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
 .soc-hero h2{margin:0;font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05;}
 .soc-sec{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:start;padding:26px 0;border-bottom:1.5px solid var(--ink);}
@@ -306,10 +309,9 @@
 @media (max-width:640px){.soc-sec{grid-template-columns:1fr;gap:8px;}}
 
 /* ---- Indicateurs : onglet « Outil » (12 RT en vertical, vert + jaune) ---- */
-.outil-page{max-width:720px;margin:0 auto;padding:6px 8px 44px;}
-.outil-head{padding:8px 0 20px;border-bottom:2px solid var(--ink);margin-bottom:14px;}
-.outil-head h2{margin:0;font-size:clamp(24px,3.6vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.05;}
+.outil-page{max-width:720px;margin:0;padding:6px 8px 44px 16px;}
 .outil-fn{margin:0 0 22px;}
+.outil-fn:first-child h3{margin-top:4px;}
 .outil-fn h3{margin:16px 0 2px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--olive);}
 .outil-fdescr{margin:0 0 12px;font-size:13px;line-height:1.45;}
 .rt-block{margin:0 0 14px;}
@@ -348,11 +350,8 @@
 @media (max-width:640px){.sat-lab{flex-basis:92px;}}
 
 /* ---- Social : carte RTS en tête de la page défilante ---- */
-.soc-sec-map{grid-template-columns:1fr;}
-.soc-sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;}
-.soc-num-inline{font-size:40px;}
-.soc-sec-head h3{margin:0;}
-.soc-map-wrap{position:relative;margin:10px 0 18px;}
+.soc-sec-map{grid-template-columns:1fr;padding-top:14px;}
+.soc-map-wrap{position:relative;margin:0 0 18px;}
 .soc-map{width:100%;max-width:620px;height:auto;display:block;margin:0 auto;overflow:visible;}
 .soc-rts{stroke:var(--ink);stroke-width:3;stroke-linejoin:round;cursor:pointer;transition:filter 140ms ease;}
 .soc-rts:hover{filter:brightness(1.08);}
