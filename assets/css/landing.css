@@ -20,6 +20,12 @@
 .land-hero h1{font-size:clamp(44px,8vw,104px);line-height:.98;font-weight:800;letter-spacing:-.03em;margin:0;max-width:15ch;}
 .land-hero .accent-bar{display:flex;gap:0;margin:38px 0 0;width:min(520px,80%);height:18px;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;}
 .land-hero .accent-bar span{flex:1;}
+/* Les cinq accents de la palette, dans l'ordre (auparavant en style="" inline). */
+.land-hero .accent-bar span:nth-child(1){background:var(--sand);}
+.land-hero .accent-bar span:nth-child(2){background:var(--orange);}
+.land-hero .accent-bar span:nth-child(3){background:var(--red);}
+.land-hero .accent-bar span:nth-child(4){background:var(--olive);}
+.land-hero .accent-bar span:nth-child(5){background:var(--teal);}
 .land-scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:12px;font-weight:700;
   text-transform:uppercase;letter-spacing:.12em;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.75;}
 .land-scroll-cue svg{width:22px;height:22px;animation:land-bob 1.8s ease-in-out infinite;}
@@ -48,6 +54,9 @@
   border:1.5px solid var(--ink);border-radius:999px;padding:11px 22px;background:var(--ink);color:var(--cream);
   text-decoration:none;transition:transform 120ms ease,background 120ms ease,color 120ms ease;}
 .land-btn:hover{transform:translateY(-2px);}
+/* Boutons empilés dans la carte latérale : l'espacement était assuré par une
+   cale <div style="height:12px"> dans index.html. */
+.land-card-aside .land-btn + .land-btn{margin-top:12px;}
 .land-btn.ghost{background:var(--paper);color:var(--ink);}
 .land-btn.ghost:hover{background:var(--sand);}
 .land-btn svg{width:16px;height:16px;}
@@ -152,11 +161,11 @@
 .res-meta h3{margin:0;font-size:14.5px;font-weight:700;line-height:1.28;}
 .res-meta .res-org{font-size:12.5px;font-weight:600;line-height:1.3;}
 .res-meta .res-date{font-size:12.5px;font-weight:600;opacity:.72;}
-.res-tag[data-tag="Contexte"]{background:#6C6F3F;color:var(--cream);}
-.res-tag[data-tag="DS"]{background:#46747F;color:var(--cream);}
-.res-tag[data-tag="DC"]{background:#D97A22;}
-.res-tag[data-tag="Montréal"]{background:#C43E42;color:var(--cream);}
-.res-tag[data-tag="Outils"]{background:#D7B063;}
+.res-tag[data-tag="Contexte"]{background:var(--olive);color:var(--paper);}
+.res-tag[data-tag="DS"]{background:var(--teal);color:var(--paper);}
+.res-tag[data-tag="DC"]{background:var(--orange);}
+.res-tag[data-tag="Montréal"]{background:var(--red);color:var(--paper);}
+.res-tag[data-tag="Outils"]{background:var(--sand);}
 .res-empty{padding:40px clamp(24px,6vw,90px);font-size:15px;}
 
 /* ============================================================================
@@ -191,3 +200,12 @@
 /* intégration vidéo (Tables de quartier) */
 .mx-video{margin:4px 0 14px;border:1.5px solid var(--ink);border-radius:10px;overflow:hidden;background:#000;aspect-ratio:16/9;}
 .mx-video iframe{display:block;width:100%;height:100%;border:0;}
+
+/* ---- Page introuvable (routage SPA : voir showNotFound dans app.js) ------ */
+.notfound{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;
+  background:var(--cream);padding:32px;}
+.notfound .nf-box{max-width:56ch;text-align:center;}
+.notfound h1{margin:0 0 14px;font-size:clamp(34px,5vw,58px);font-weight:800;letter-spacing:-.02em;line-height:1.05;}
+.notfound p{margin:0 0 26px;font-size:16px;line-height:1.6;}
+.notfound code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.94em;
+  background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;padding:2px 8px;}

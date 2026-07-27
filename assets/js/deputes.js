@@ -16,7 +16,7 @@ function initDeputesMap() {
   (function applyOverrides() {
     const OV = window.DEPUTES_OVERRIDES;
     if (!OV) return;
-    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
     const byName = {};
     Object.keys(DEPUTES).forEach((slug) => { byName[norm(DEPUTES[slug].name)] = slug; });
     Object.keys(OV).forEach((circ) => {
@@ -34,6 +34,23 @@ function initDeputesMap() {
   const partyColor = (d) => PARTY_COLORS[d.partyShort] || PARTY_COLORS.IND;
   const partyDot = (d) =>
     `<span class="party-dot" style="background:${partyColor(d)}"></span>`;
+
+  // Légende construite depuis PARTY_COLORS : une seule source de vérité pour les
+  // couleurs de parti, partagée par la carte, les pastilles et la légende.
+  // (Auparavant recopiée en dur dans index.html, avec un risque de divergence.)
+  const PARTY_NAMES = {
+    PLQ: "Parti libéral du Québec",
+    QS: "Québec solidaire",
+    CAQ: "Coalition avenir Québec",
+    PQ: "Parti québécois",
+    IND: "Indépendant·e",
+  };
+  const legend = el("deputes-legend");
+  if (legend) {
+    legend.innerHTML = Object.keys(PARTY_NAMES)
+      .map((k) => `<div><span class="sw" style="background:${PARTY_COLORS[k]}"></span>${PARTY_NAMES[k]}</div>`)
+      .join("");
+  }
 
   // décomptes par parti (pour l'accueil du panneau)
   const counts = {};

@@ -2,12 +2,12 @@
 .conc-app{
   --ink:#000; --muted:#000; --soft:#000; --faint:#000;
   --hairline:#000; --rule:#000; --soft-fill:#F2EEE4;
-  --accent:#3b6fa8; --accent-fill:#e7eef6; --warn:#b07b6b;
+  --accent:#3b6fa8;  --warn:#b07b6b;
   /* familles de partenaires : palette froide, hues distincts (vert > plum) */
-  --rec:#2e8b57; --rss:#138f8f; --gov:#1aa3d4; --min:#2a52be; --comm:#6a4ce0; --fond:#9b51d4; --cit:#c14fb0;
+   --rss:#138f8f; --gov:#1aa3d4; --min:#2a52be; --comm:#6a4ce0; --fond:#9b51d4; --cit:#c14fb0;
   /* deux nuances de vert pour la recherche : instituts (foncé) / universités (clair) */
   --rec1:#1f7a4d; --rec2:#5cb085;
-  --drsp-sect:#16307a;
+  
   /* niveau = remplissage des boites : stratégique / tactique / opérationnel (pastels doux) */
   /* niveau (remplissage des boîtes) aux teintes de la palette :
      stratégique = rouge · tactique = orange · opérationnel = jaune (sable) */
@@ -15,7 +15,7 @@
   /* marqueurs : cercle noir = DRSP coordonnatrice, étoile noire = nouveau */
   --drsp-mark:#000; --new-mark:#000;
   --i-dir:#e0644b; --i-eusp:#f0a93e; --i-jeun:#6cb04e; --i-pcmi:#4a90d9; --i-ecos:#8a6fc0;
-  --drsp:#000; --new:#000;
+   
   color:var(--ink);
   font-family:var(--font-sans);
   font-size:12pt; line-height:1.5;
@@ -23,9 +23,6 @@
 .conc-app *{box-sizing:border-box;}
 .conc-app.embed{height:100%;flex:1;min-width:0;overflow-y:auto;background:var(--soft-fill);}
 
-.conc-app .c-toc{position:sticky;top:0;z-index:30;background:rgba(242,238,228,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:14px 40px;font-size:10pt;display:flex;gap:24px;align-items:center;}
-.conc-app .c-toc .brand{font-weight:600;color:var(--ink);}
-.conc-app .c-toc .sub{color:var(--soft);}
 
 .conc-app .pagehead{padding:26px 0 14px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
 .conc-app .pagehead h1{font-size:46px;font-weight:700;line-height:1.12;letter-spacing:-.015em;margin:0;}
@@ -39,9 +36,6 @@
 .conc-app .pane-left{padding:0 34px 80px;min-width:0;}
 .conc-app .pane-right{position:sticky;top:0;align-self:start;height:calc(100vh - 60px);overflow-y:auto;border-left:1px solid var(--hairline);background:var(--soft-fill);}
 
-.conc-app .leftnav{position:sticky;top:0;z-index:10;background:rgba(242,238,228,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding:10px 0 9px;margin:0 0 6px;display:flex;gap:22px;flex-wrap:wrap;font-size:9.5pt;}
-.conc-app .leftnav a{color:var(--soft);text-decoration:none;}
-.conc-app .leftnav a:hover{color:var(--accent);}
 
 .conc-app section.cblock{padding:26px 0 16px;border-bottom:1px solid var(--hairline);scroll-margin-top:80px;}
 .conc-app section.cblock:last-child{border-bottom:none;}
@@ -77,15 +71,12 @@
 .conc-app .def dt{font-weight:600;font-size:10.5pt;margin-bottom:3px;}
 .conc-app .def dt .ac{font-weight:400;color:var(--soft);font-size:9.5pt;margin-left:6px;}
 .conc-app .def dd{margin:0;font-size:10pt;color:var(--muted);line-height:1.5;}
-.conc-app .def dd em{font-style:italic;color:var(--ink);}
 
 .conc-app .legend-box{margin:0 0 18px;font-size:9pt;}
 .conc-app .legend-row{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin-bottom:8px;}
 .conc-app .legend-row:last-child{margin-bottom:0;}
-.conc-app .legend-row .ll{font-size:8pt;text-transform:uppercase;letter-spacing:0.08em;color:var(--soft);width:78px;flex-shrink:0;}
 .conc-app .lg{display:inline-flex;align-items:center;gap:5px;color:var(--muted);}
 .conc-app .lg .sw{width:16px;height:11px;border-radius:3px;flex-shrink:0;border:1px solid var(--rule);}
-.conc-app .lg .pdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .conc-app .lg .sq{width:9px;height:9px;border-radius:0;flex-shrink:0;}
 .conc-app .lg .sq-drsp{background:var(--drsp-mark);border-radius:50%;}
 .conc-app .lg .star{color:#000;font-size:12px;line-height:1;flex-shrink:0;}
@@ -104,8 +95,6 @@
 .conc-app .cbox.ina.nv-tact{background:repeating-linear-gradient(45deg,#fff,#fff 6px,var(--nf-tact) 6px,var(--nf-tact) 12px);}
 .conc-app .cbox.ina.nv-oper{background:repeating-linear-gradient(45deg,#fff,#fff 6px,var(--nf-oper) 6px,var(--nf-oper) 12px);}
 .conc-app .cbox .ctop{display:flex;align-items:center;gap:6px;}
-.conc-app .cbox .pdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.conc-app .pdot.national{background:var(--p-national);}.conc-app .pdot.regional{background:var(--p-regional);}.conc-app .pdot.local{background:var(--p-local);}
 .conc-app .cbox .cname{font-weight:600;font-size:10pt;flex:1;line-height:1.2;}
 .conc-app .cbox .marks{display:flex;gap:4px;align-items:center;flex-shrink:0;}
 .conc-app .cbox .mk-drsp{width:8px;height:8px;border-radius:50%;background:var(--drsp-mark);}
@@ -118,17 +107,9 @@
 .conc-app .info-empty{color:var(--soft);font-size:13.5px;line-height:1.55;max-width:360px;}
 .conc-app .info-empty .big{font-size:16px;color:var(--muted);display:block;margin-bottom:10px;}
 .conc-app .info-title{font-size:23px;font-weight:700;color:#000;margin:0 0 14px;letter-spacing:-0.01em;line-height:1.22;}
-.conc-app .info-full{font-size:12.5px;color:var(--muted);margin:0 0 14px;}
-.conc-app .badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;}
-.conc-app .badge{font-size:8.2pt;padding:3px 9px;border-radius:20px;border:1px solid var(--rule);color:var(--ink);display:inline-flex;align-items:center;gap:5px;background:#fff;}
-.conc-app .badge .d{width:8px;height:8px;border-radius:50%;}
-.conc-app .badge .sq{width:8px;height:8px;border-radius:0;}
-.conc-app .badge .star{color:#000;font-size:11px;line-height:1;}
-.conc-app .badge .swn{width:13px;height:9px;border-radius:3px;border:1px solid var(--rule);}
 .conc-app .fld{margin:0 0 18px;}
 .conc-app .fld .fl{font-size:15px;font-weight:700;color:#000;text-transform:none;letter-spacing:0;margin:0 0 5px;}
 .conc-app .fld .fv{font-size:13.5px;color:#000;line-height:1.55;margin:0;}
-.conc-app .info-desc{font-size:13.5px;color:#000;line-height:1.55;margin:0 0 18px;}
 /* Liste à puces, texte noir — même esprit que les cartes (sous-titre gras + puces) */
 .conc-app .blist{list-style:none;margin:6px 0 0;padding:0;}
 .conc-app .blist li{position:relative;padding:3px 0 3px 18px;font-size:13.5px;line-height:1.5;color:#000;}

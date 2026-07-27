@@ -1,17 +1,17 @@
-/* Indicateurs — quatre onglets : Défavorisation, Équité des milieux de vie,
-   Capital social, Résultats transitoires.
+/* Indicateurs — six onglets : Défavorisation, Équité, Participation, Social,
+   Alimentaire, Outil (voir le registre TABS, plus bas).
 
-   Chaque onglet (eyebrow) porte un menu déroulant d'indicateurs. Selon
-   l'indicateur, la scène affiche :
+   Chaque onglet porte un sélecteur d'indicateurs. Selon l'indicateur, la scène
+   affiche :
      - une choroplèthe par territoire (découpages SQ / VdM / TQ) ;
-     - une mosaïque d'aires de diffusion (IEMV, 3 classes de vulnérabilité)
-       surmontée des contours du découpage choisi ;
-     - un graphique (données disponibles à l'échelle régionale seulement) ;
-     - la grille des 12 résultats transitoires (CACIS/CReSP).
-   Les valeurs viennent d'assets/data/indicateurs.data.js (INDIC_DATA) et
-   d'assets/data/indicateurs-iemv-geo.data.js (IEMV_GEO), générés par
-   tools/build_indicateurs.py. Cliquer un territoire affiche son détail ;
-   cliquer hors de l'île revient à la fiche de l'indicateur. */
+     - un graphique ou une page défilante (données régionales seulement).
+   Les valeurs viennent d'assets/data/indicateurs.data.js (INDIC_DATA), généré
+   par tools/build_indicateurs.py. Cliquer un territoire affiche son détail ;
+   cliquer hors de l'île revient à la fiche de l'indicateur.
+
+   Note : la mosaïque IEMV par aire de diffusion (et son fichier de géométrie de
+   702 Ko) a été retirée en juillet 2026 — le code était devenu inatteignable.
+   Récupérable dans l'historique git si la vue revient. */
 
 function initIndicMap() {
   const svg = el("indic-map");
@@ -25,7 +25,6 @@ function initIndicMap() {
   if (!svg || !panel || typeof TDQ_GEOMETRY === "undefined") return;
 
   const DATA = (typeof INDIC_DATA !== "undefined") ? INDIC_DATA : null;
-  const GEOPATHS = (typeof IEMV_GEO !== "undefined") ? IEMV_GEO : null;
   if (!DATA) return;
 
   const FR = (v, nd = 0) => (v == null ? "n. d." : v.toFixed(nd).replace(".", ","));
@@ -85,20 +84,9 @@ function initIndicMap() {
   const LOG_PAL6 = ["#f6e2e3", "#eab8bb", "#db8a8f", "#cf5b62", "#C43E42", "#8f2a2e"];
   const PART_PAL6 = ["#f4ecd8", "#e6d3a6", "#d7b972", "#c69f45", "#a8842f", "#7d6120"];
   const SAT_PAL4 = ["#dbe6e8", "#9dbcc1", "#5f8990", "#2f545c"];
-  /* IEMV : 3 classes de vulnérabilité (teintes distinctes) + crème hors-données */
-  const NIV = {
-    pv: { c: "#8a2f4f", lbl: "Vulnérable et prioritaire" },
-    vnp: { c: "#d19aa8", lbl: "Vulnérable non prioritaire" },
-    nv: { c: "#f0e7d9", lbl: "Non vulnérable" },
-  };
-  const INK = "#000000", MUTED = "#000000", ACCENT = "#D97A22";
+  const INK = "#000000", ACCENT = "#D97A22";
 
   /* ---- petits gabarits de rendu ------------------------------------------ */
-  const barsHTML = (labels, dist, ramp, nd = 1) => labels.map((lab, i) =>
-    `<div class="iq-row"><span class="lab">${lab}</span>` +
-    `<div class="iq-bar"><span style="width:${Math.min(100, dist[i])}%;background:${ramp[i]}"></span></div>` +
-    `<span class="iq-val">${PCT(dist[i], nd)}</span></div>`).join("");
-
   const lead = (valueHTML, rest) =>
     `<p class="indic-lead">${valueHTML} ${rest}</p>`;
 
@@ -242,28 +230,6 @@ function initIndicMap() {
     addOutline();
   };
 
-  /* mosaïque IEMV : classes d'AD dissoutes (inertes) + contours cliquables */
-  const buildMosaic = (geo, optId) => {
-    clearStage();
-    const gp = GEOPATHS && GEOPATHS[optId];
-    if (gp) {
-      ["nv", "vnp", "pv"].forEach((cls) => {
-        if (!gp[cls]) return;
-        const p = addPath(gp[cls]);
-        p.setAttribute("fill", NIV[cls].c);
-        p.setAttribute("fill-rule", "evenodd");
-        p.setAttribute("stroke", "none");
-        p.style.pointerEvents = "none";
-      });
-    }
-    Object.entries(geo.shapes()).forEach(([slug, d]) => {
-      const p = addPath(d, "indic-overlay");
-      wireRegion(p, slug, geo);
-      paths[slug] = p;
-    });
-    addOutline();
-  };
-
   /* ---- registre : onglets et indicateurs ---------------------------------- */
 
   const rec = (grp, geoId, slug) => {
@@ -272,30 +238,6 @@ function initIndicMap() {
   };
 
   const srcNote = (t) => `<p class="iq-note">${t}</p>`;
-
-  /* -- fabrique « taux simple » (faible revenu, logement) -- */
-  const rateOption = (cfg) => ({
-    id: cfg.id, label: cfg.label, kind: "map",
-    available: !!DATA[cfg.key],
-    breaks: cfg.breaks,
-    value: (geoId, slug) => { const r = rec(cfg.key, geoId, slug); return r ? r.v : null; },
-    pal: () => cfg.pal,
-    legendTitle: () => cfg.legendTitle,
-    legendNote: () => cfg.legendNote,
-    landing: (geo) =>
-      `<p class="intro">${cfg.descr}</p>` +
-      `<p class="intro">Découpage : <strong>${esc(geo.full)}</strong>. Cliquez un territoire pour le détail.</p>` +
-      srcNote(cfg.source),
-    panel: (geo, slug) => {
-      const r = rec(cfg.key, geo.id, slug);
-      if (!r) return `<p class="intro">Données non disponibles pour ce territoire.</p>`;
-      const overall = DATA[cfg.key].meta.overall;
-      return lead(big(r.v, cfg.pal[cfg.pal.length - 1], 1), cfg.leadText +
-          (overall != null ? ` <span class="indic-ref">· île de Montréal : ${PCT(overall, 1)}</span>` : "")) +
-        `<p class="intro" style="margin-top:8px">${cfg.baseLine(r)} · ${r.nad} aires de diffusion</p>` +
-        srcNote(cfg.note);
-    },
-  });
 
   /* ================= Onglet 1 — Défavorisation ============================ */
 
@@ -359,241 +301,20 @@ function initIndicMap() {
       panel: defavoPanel,
     };
   };
-
-  const alimOption = {
-    id: "alim", label: "Insécurité alimentaire", kind: "graph",
-    available: !!DATA.alim,
-    render: () => {
-      const a = DATA.alim;
-      const years = a.years.map(String);
-      const iMtl = a.years.indexOf(2023);
-      const mtlVals = a.years.map((y) => (y === 2023 ? a.mtl2023 : null));
-      return bigLine({
-        labels: years, ymin: 0, ymax: 26,
-        series: [
-          { vals: a.qc, c: INK, lbl: "Québec", nd: 0 },
-          { vals: mtlVals, c: ACCENT, lbl: "Montréal", nd: 0 },
-        ],
-      });
-    },
-    landing: () =>
-      `<p class="intro"><strong>Insécurité alimentaire des ménages</strong> — part des ménages dont l'accès à ` +
-      `la nourriture est limité par le manque d'argent (insécurité marginale, modérée ou grave, mesurée par ` +
-      `l'Enquête canadienne sur le revenu).</p>` +
-      `<p class="intro">En 2023, <strong style="color:${ACCENT}">22 % des ménages montréalais</strong> étaient en ` +
-      `situation d'insécurité alimentaire — plus que dans l'ensemble du Québec (19 %), une proportion en forte ` +
-      `hausse depuis 2021. Ces données n'existent qu'à l'échelle régionale : le graphique remplace la carte.</p>` +
-      srcNote(`Source : <a href="${DATA.alim.meta.url}" target="_blank" rel="noopener">Institut de la statistique ` +
-        `du Québec (ECR 2018-2023)</a>, mars 2026. Montréal et Laval sont les régions les plus touchées ` +
-        `(22 % et 23 % en 2023).`),
-  };
-
   /* ================= Onglet 2 — Équité des milieux de vie ================= */
 
   const DIMS_IEMV = DATA.iemv && DATA.iemv.meta.dims ? DATA.iemv.meta.dims : {};
-
-  const iemvOption = (optId, dimKey) => ({
-    id: "iemv-" + optId, label: dimKey ? DIMS_IEMV[dimKey] : "Ensemble des dimensions",
-    kind: "mosaic", mosaicId: optId,
-    available: !!(DATA.iemv && GEOPATHS),
-    legendTitle: () => dimKey
-      ? "IEMV — " + DIMS_IEMV[dimKey]
-      : "IEMV — niveau de vulnérabilité",
-    legendNote: () => dimKey
-      ? "Aires de diffusion vulnérables pour cette\ndimension ; « prioritaire » = au moins 4\nvulnérabilités sur 6, toutes dimensions"
-      : "Aires de diffusion selon le nombre de\nvulnérabilités cumulées : 0-2, 3, ou 4-6",
-    landing: (geo) =>
-      `<p class="intro"><strong>Indice d'équité des milieux de vie (IEMV, Ville de Montréal, 2026)</strong> — ` +
-      `chaque aire de diffusion cumule de 0 à 6 vulnérabilités parmi six dimensions : culture, sports et ` +
-      `loisirs ; ressources et proximité ; sécurité urbaine ; environnementale ; économique ; sociale.</p>` +
-      `<p class="intro">La Ville qualifie de <strong style="color:${NIV.pv.c}">vulnérables et prioritaires</strong> ` +
-      `les milieux cumulant au moins 4 vulnérabilités, de <strong>vulnérables non prioritaires</strong> ceux qui ` +
-      `en cumulent 3, et de <strong>non vulnérables</strong> les autres (0 à 2).` +
-      (dimKey ? ` La carte montre les milieux vulnérables pour la dimension <strong>${esc(DIMS_IEMV[dimKey])}</strong>, ` +
-        `selon qu'ils se trouvent ou non en zone prioritaire.` : "") + `</p>` +
-      `<p class="intro">Contours : <strong>${esc(geo.full)}</strong>. Cliquez un territoire pour le détail.</p>` +
-      srcNote(`Source : <a href="https://donnees.montreal.ca/dataset/indice-equite-milieux-vie" target="_blank" ` +
-        `rel="noopener">Ville de Montréal, données ouvertes</a>. Mesure relative servant à prioriser les ` +
-        `investissements municipaux ; non comparable d'une version à l'autre.`),
-    panel: (geo, slug) => {
-      const r = rec("iemv", geo.id, slug);
-      if (!r) return `<p class="intro">Données non disponibles pour ce territoire.</p>`;
-      const ov = DATA.iemv.meta.overall || null;
-      if (!dimKey) {
-        const labs = [NIV.nv.lbl, NIV.vnp.lbl, NIV.pv.lbl];
-        const ramp = [NIV.nv.c, NIV.vnp.c, NIV.pv.c];
-        return lead(big(r.niv[2], NIV.pv.c),
-            `de la population en zone <strong>vulnérable et prioritaire</strong>` +
-            (ov ? ` <span class="indic-ref">· île : ${PCT(ov.niv[2])}</span>` : "")) +
-          `<p class="intro" style="margin-top:6px">Population 2021 : ${r.pop.toLocaleString("fr-CA")} · ${r.nad} aires de diffusion</p>` +
-          `<p class="iq-title">Répartition de la population</p>` +
-          labs.map((lb, i) =>
-            `<div class="iq-row"><span class="lab lab-wide">${lb}</span>` +
-            `<div class="iq-bar"><span style="width:${Math.min(100, r.niv[i])}%;background:${ramp[i]};` +
-            (i === 0 ? "outline:1px solid #d8d2c6;outline-offset:-1px" : "") + `"></span></div>` +
-            `<span class="iq-val">${PCT(r.niv[i], 1)}</span></div>`).join("") +
-          `<p class="iq-title">Nombre de vulnérabilités cumulées</p>` +
-          barsHTML(["0", "1", "2", "3", "4", "5", "6"], r.dist,
-            ["#eee9f6", "#e3d9f1", "#cbb5e2", "#b08fd2", "#9169bf", "#7247a8", "#552f8a"]) +
-          srcNote(`Source : Ville de Montréal, IEMV version 2026.`);
-      }
-      const dm = r.dims[dimKey];   // [vulnérable, vulnérable et prioritaire]
-      const vnp = Math.max(0, +(dm[0] - dm[1]).toFixed(1));
-      const nv = Math.max(0, +(100 - dm[0]).toFixed(1));
-      const rows = [[NIV.pv.lbl, dm[1], NIV.pv.c], [NIV.vnp.lbl, vnp, NIV.vnp.c], [NIV.nv.lbl, nv, NIV.nv.c]];
-      return lead(big(dm[0], NIV.pv.c),
-          `de la population en milieu vulnérable — dimension <strong>${esc(DIMS_IEMV[dimKey])}</strong>` +
-          (ov ? ` <span class="indic-ref">· île : ${PCT(ov.dims[dimKey][0])}</span>` : "")) +
-        `<p class="intro" style="margin-top:6px">Population 2021 : ${r.pop.toLocaleString("fr-CA")} · ${r.nad} aires de diffusion</p>` +
-        `<p class="iq-title">Répartition de la population</p>` +
-        rows.map(([lb, v, c], i) =>
-          `<div class="iq-row"><span class="lab lab-wide">${lb}</span>` +
-          `<div class="iq-bar"><span style="width:${Math.min(100, v)}%;background:${c};` +
-          (i === 2 ? "outline:1px solid #d8d2c6;outline-offset:-1px" : "") + `"></span></div>` +
-          `<span class="iq-val">${PCT(v, 1)}</span></div>`).join("") +
-        srcNote(`« Prioritaire » : aires cumulant au moins 4 vulnérabilités sur 6, toutes dimensions confondues. ` +
-          `Source : Ville de Montréal, IEMV version 2026.`);
-    },
-  });
+  const PART = DATA.participation || null;
 
   /* ================= Onglet 3 — Capital social ============================ */
 
   const CAP = DATA.capital || null;
 
-  const appartOption = {
-    id: "appart", label: "Sentiment d'appartenance", kind: "graph",
-    available: !!(CAP && CAP.appartenance),
-    render: () => {
-      const a = CAP.appartenance;
-      return bigLine({
-        labels: a.cycles, ymin: 40, ymax: 75,
-        series: [
-          { vals: a.mtl, c: ACCENT, lbl: "Montréal" },
-          { vals: a.qc, c: MUTED, lbl: "Québec" },
-        ],
-      });
-    },
-    landing: () =>
-      `<p class="intro"><strong>Sentiment d'appartenance à sa communauté locale</strong> — part de la population ` +
-      `de 12 ans et plus qui décrit son sentiment d'appartenance comme <strong>très ou plutôt fort</strong>.</p>` +
-      `<p class="intro">À Montréal, ce sentiment progresse : <strong style="color:${ACCENT}">65 % en 2019-2020</strong>, ` +
-      `contre 59 % dix ans plus tôt — un niveau légèrement supérieur à la moyenne québécoise. Donnée régionale ` +
-      `seulement : le graphique remplace la carte.</p>` +
-      srcNote(esc(CAP && CAP.meta ? CAP.meta.appartenance : "")),
-  };
-
-  const RTS_OF_RLS = (slug) => {
-    const code = (slug || "").replace("rls-", "").slice(0, 3);
-    return { "061": "061", "062": "062", "063": "063", "064": "064", "065": "065" }[code] || null;
-  };
+  /* Réseaux territoriaux de services : libellés courts, utilisés par la carte
+     sociale et par les panneaux de satisfaction. */
   const RTS_NAMES = {
     "061": "Ouest-de-l'Île", "062": "Centre-Ouest", "063": "Centre-Sud",
     "064": "Nord-de-l'Île", "065": "Est-de-l'Île",
-  };
-  const insat = (v4) => +(v4[2] + v4[3]).toFixed(1);
-
-  const satisfOption = {
-    id: "satisf", label: "Satisfaction de sa vie sociale", kind: "map", fixedGeo: "sq",
-    available: !!(CAP && CAP.satisfaction && CAP.satisfaction.c2020),
-    breaks: [16, 18, 20],
-    value: (geoId, slug) => {
-      const t = RTS_OF_RLS(slug);
-      const v = t && CAP.satisfaction.c2020[t];
-      return v ? insat(v) : null;
-    },
-    pal: () => SAT_PAL4,
-    legendTitle: () => "Insatisfaction de sa vie sociale (2020-2021)",
-    legendNote: () => "% de la population plutôt ou très\ninsatisfaite de sa vie sociale, par RTS\n(les RLS d'un même RTS partagent la valeur)",
-    landing: (geo) =>
-      `<p class="intro"><strong>Satisfaction par rapport à sa vie sociale</strong> — en 2020-2021, ` +
-      `<strong>81 %</strong> des Montréalais·es de 15 ans et plus se disaient très ou plutôt satisfait·es de leur ` +
-      `vie sociale (Québec : 85 %). La carte montre la part <strong>insatisfaite</strong>, disponible par réseau ` +
-      `territorial de services (RTS) seulement.</p>` +
-      `<p class="intro">Cliquez un territoire pour le détail.</p>` +
-      srcNote(esc(CAP && CAP.meta ? CAP.meta.satisfaction : "")),
-    panel: (geo, slug) => {
-      const t = RTS_OF_RLS(slug);
-      const v = t && CAP.satisfaction.c2020[t];
-      if (!v) return `<p class="intro">Données non disponibles pour ce territoire.</p>`;
-      const cats = ["Très satisfaisante", "Plutôt satisfaisante", "Plutôt insatisfaisante", "Très insatisfaisante"];
-      const ramp = ["#1f5e8c", "#93bed8", "#e5a33f", "#c2410c"];
-      return lead(big(insat(v), "#1f5e8c", 1),
-          `de la population plutôt ou très <strong>insatisfaite</strong> de sa vie sociale — RTS ` +
-          `${esc(RTS_NAMES[t] || t)} (2020-2021) <span class="indic-ref">· Montréal : 18,5 %</span>`) +
-        `<p class="iq-title">Niveau de satisfaction (2020-2021)</p>` +
-        cats.map((lb, i) =>
-          `<div class="iq-row"><span class="lab lab-wide">${lb}</span>` +
-          `<div class="iq-bar"><span style="width:${Math.min(100, v[i])}%;background:${ramp[i]}"></span></div>` +
-          `<span class="iq-val">${PCT(v[i], 1)}</span></div>`).join("") +
-        srcNote(`Valeur du RTS appliquée à chacun de ses RLS. ` + esc(CAP.meta ? CAP.meta.satisfaction : ""));
-    },
-  };
-
-  const solitudeOption = {
-    id: "solitude", label: "Degré de solitude", kind: "graph",
-    available: !!(CAP && CAP.solitude && CAP.solitude.mtl),
-    render: () => {
-      const s = CAP.solitude;
-      const W = 760, H = 300, L = 150, R = 70, T = 70, B = 60;
-      const iw = W - L - R;
-      const xmin = 4.7, xmax = 5.5;
-      const x = (v) => L + iw * (v - xmin) / (xmax - xmin);
-      const row = (lbl, d, c, yy) =>
-        `<text x="${L - 14}" y="${yy + 5}" text-anchor="end" class="bl-lab" fill="${c}">${lbl}</text>` +
-        `<line x1="${x(d.ic[0])}" y1="${yy}" x2="${x(d.ic[1])}" y2="${yy}" stroke="${c}" stroke-width="3" opacity=".45"/>` +
-        `<line x1="${x(d.ic[0])}" y1="${yy - 7}" x2="${x(d.ic[0])}" y2="${yy + 7}" stroke="${c}" stroke-width="2.5" opacity=".45"/>` +
-        `<line x1="${x(d.ic[1])}" y1="${yy - 7}" x2="${x(d.ic[1])}" y2="${yy + 7}" stroke="${c}" stroke-width="2.5" opacity=".45"/>` +
-        `<circle cx="${x(d.moy)}" cy="${yy}" r="7" fill="${c}"/>` +
-        `<text x="${x(d.moy)}" y="${yy - 16}" text-anchor="middle" class="bl-val" fill="${c}">${FR(d.moy, 2)}</text>`;
-      let out = `<svg viewBox="0 0 ${W} ${H}" role="img" class="big-line">`;
-      [4.8, 5.0, 5.2, 5.4].forEach((v) => {
-        out += `<line x1="${x(v)}" y1="${T - 16}" x2="${x(v)}" y2="${H - B + 8}" stroke="#e6e1d5" stroke-width="1"/>` +
-          `<text x="${x(v)}" y="${H - B + 28}" text-anchor="middle" class="bl-axis">${FR(v, 1)}</text>`;
-      });
-      out += row("Montréal", s.mtl, ACCENT, T + 40);
-      out += row("Québec", s.qc, MUTED, T + 110);
-      out += `<text x="${L}" y="${T - 34}" class="bl-note">Degré moyen de solitude (EQSP 2020-2021) — un score plus élevé = plus de solitude ; traits = IC à 99 %</text>`;
-      out += `</svg>`;
-      return out;
-    },
-    landing: () =>
-      `<p class="intro"><strong>Degré de solitude</strong> — score moyen déclaré par la population de 15 ans ` +
-      `et plus (EQSP 2020-2021).</p>` +
-      `<p class="intro">Le degré moyen de solitude est <strong style="color:${ACCENT}">légèrement plus élevé à ` +
-      `Montréal (5,11)</strong> que dans l'ensemble du Québec (4,99) ; l'écart est faible mais les intervalles de ` +
-      `confiance ne se recoupent presque pas. Donnée régionale seulement : le graphique remplace la carte.</p>` +
-      srcNote(esc(CAP && CAP.meta ? CAP.meta.solitude : "")),
-  };
-
-  const PART = DATA.participation || null;
-  const participOption = {
-    id: "particip", label: "Participation électorale", kind: "map", fixedGeo: "vdm",
-    available: !!PART,
-    breaks: [30, 35, 40, 45, 50],
-    value: (geoId, slug) => (PART.geo[slug] != null ? PART.geo[slug] : null),
-    pal: () => PART_PAL6,
-    legendTitle: () => "Participation électorale (municipales 2021)",
-    legendNote: () => "% des personnes inscrites ayant voté,\npar arrondissement (villes liées : scrutins\ndistincts, non affichés)",
-    landing: (geo) =>
-      `<p class="intro"><strong>Participation électorale</strong> — part des électrices et électeurs inscrits ` +
-      `ayant voté à l'élection municipale du 7 novembre 2021, par arrondissement.</p>` +
-      `<p class="intro">À l'échelle de la ville, la participation a été de <strong>38,3 %</strong> — de 29 % ` +
-      `(Saint-Laurent) à 56 % (Outremont) selon l'arrondissement. Les villes liées tiennent leurs propres ` +
-      `scrutins et ne sont pas affichées.</p>` +
-      srcNote(`Source : Élections Montréal, résultats officiels de l'élection générale de 2021.`),
-    panel: (geo, slug) => {
-      const v = PART.geo[slug];
-      if (v == null) {
-        return `<p class="intro">Ville liée : scrutin municipal distinct de celui de la Ville de Montréal ` +
-          `(donnée non affichée).</p>`;
-      }
-      return lead(big(v, PART_PAL6[5], 1),
-          `des personnes inscrites ont voté aux élections municipales de 2021 ` +
-          `<span class="indic-ref">· Ville de Montréal : 38,3 %</span>`) +
-        srcNote(`Taux du scrutin de la mairie d'arrondissement (Ville-Marie : moyenne pondérée des trois ` +
-          `districts, la mairie d'arrondissement y étant assumée par la mairie de Montréal). ` +
-          `Source : Élections Montréal, 2021.`);
-    },
   };
 
   /* ================= Onglet 4 — Résultats transitoires ===================== */
@@ -639,16 +360,6 @@ function initIndicMap() {
       d: "Engagement d'acteurs détenant les leviers de décision et d'action indispensables à la réalisation des projets (émission de permis, propriété de terrain, p. ex.).",
       r: "Revers — non-engagement / désengagement : refus ou retrait d'acteurs détenant les leviers indispensables, qui fait obstacle à la réalisation du changement." },
   };
-
-  const rtGridHTML = () =>
-    `<div class="rt-grid">` + RT_FONCTIONS.map((f) =>
-      `<div class="rt-col"><h3>${esc(f.nom)}</h3><p class="rt-fdescr">${esc(f.descr)}</p>` +
-      f.rts.map((n) =>
-        `<button class="rt-item" data-rt="${n}" aria-pressed="false">` +
-        `<span class="rt-num">RT ${n}</span><span class="rt-t">${esc(RTS[n].t)}</span>` +
-        (RTS[n].r ? `<span class="rt-flag" title="Comporte un résultat transitoire de revers">⇄</span>` : "") +
-        `</button>`).join("") +
-      `</div>`).join("") + `</div>`;
 
   /* Outil : les 12 RT en disposition verticale. Chaque RT = boîte verte (le
      résultat + sa définition) ; s'il comporte un revers, une boîte jaune sous
@@ -1186,18 +897,10 @@ function initIndicMap() {
 
   const renderLegend = () => {
     if (!legend) return;
-    if (option.kind === "graph" || option.kind === "rt" || !option.available) {
+    if (option.kind === "graph" || !option.available) {
       legend.innerHTML = ""; legend.style.display = "none"; return;
     }
     legend.style.display = "";
-    if (option.kind === "mosaic") {
-      legend.innerHTML =
-        `<div style="font-weight:700">${esc(option.legendTitle())}</div>` +
-        ["pv", "vnp", "nv"].map((cls) =>
-          `<div><span class="sw" style="background:${NIV[cls].c}"></span>${NIV[cls].lbl}</div>`).join("") +
-        `<div style="color:var(--muted);white-space:pre-line">${esc(option.legendNote())}</div>`;
-      return;
-    }
     const pal = option.pal();
     const rows = pal.map((c, i) => {
       const lo = i === 0 ? null : option.breaks[i - 1];
@@ -1212,7 +915,7 @@ function initIndicMap() {
 
   const renderLanding = () => {
     panel.innerHTML =
-      `<h2>${esc(option.kind === "rt" ? tab.label : option.label)}</h2><hr class="rule">` +
+      `<h2>${esc(option.label)}</h2><hr class="rule">` +
       (option.available ? option.landing(geo)
         : `<p class="intro">Données en cours d'intégration.</p>`);
   };
@@ -1220,9 +923,6 @@ function initIndicMap() {
   const reset = () => {
     selected = null;
     Object.values(paths).forEach((p) => p.classList.remove("active"));
-    if (option.kind === "rt" && graph) {
-      graph.querySelectorAll(".rt-item").forEach((b) => b.setAttribute("aria-pressed", "false"));
-    }
     renderLanding();
     panel.scrollTop = 0;
   };
@@ -1238,7 +938,7 @@ function initIndicMap() {
 
   /* ---- scène : carte / mosaïque / graphique / grille RT --------------------- */
   const renderStage = () => {
-    const isSvg = option.kind === "map" || option.kind === "mosaic";
+    const isSvg = option.kind === "map";
     svg.style.display = isSvg ? "" : "none";
     if (graph) {
       graph.hidden = isSvg;
@@ -1248,8 +948,6 @@ function initIndicMap() {
     if (option.kind === "map") {
       buildChoropleth(geo);
       paint();
-    } else if (option.kind === "mosaic") {
-      buildMosaic(geo, option.mosaicId);
     } else if (graph) {
       graph.innerHTML = option.render ? option.render() : "";
       if (option.mount) option.mount(graph);
@@ -1267,19 +965,6 @@ function initIndicMap() {
     renderLegend();
   };
 
-  if (graph) {
-    graph.addEventListener("click", (e) => {
-      if (option.kind !== "rt") return;
-      const b = e.target.closest(".rt-item");
-      if (!b) { reset(); return; }
-      graph.querySelectorAll(".rt-item").forEach((x) =>
-        x.setAttribute("aria-pressed", String(x === b)));
-      panel.innerHTML = `<h2>RT ${b.dataset.rt} — ${esc(RTS[b.dataset.rt].t)}</h2><hr class="rule">` +
-        rtOption.panelFor(b.dataset.rt);
-      panel.scrollTop = 0;
-    });
-  }
-
   /* ---- contrôles ------------------------------------------------------------ */
   /* Sélecteur d'indicateur : soit un menu déroulant (par défaut), soit — si
      tab.toggle — une bascule de boutons dans le style des interrupteurs de
@@ -1289,7 +974,10 @@ function initIndicMap() {
     if (optSwitch || !selectEl) return;
     optSwitch = document.createElement("div");
     optSwitch.className = "dim-switch indic-optswitch";
-    optSwitch.setAttribute("role", "tablist");
+    // role="group" et non "tablist" : les enfants sont des <button> ordinaires,
+    // sans role="tab" ni panneaux associés. Un tablist vide de tabs est annoncé
+    // « liste d'onglets, 0 onglet » par les lecteurs d'écran.
+    optSwitch.setAttribute("role", "group");
     optSwitch.setAttribute("aria-label", "Choisir un indicateur");
     selectEl.parentNode.insertBefore(optSwitch, selectEl.nextSibling);
     optSwitch.addEventListener("click", (e) => {
@@ -1327,7 +1015,7 @@ function initIndicMap() {
       optSwitch.innerHTML = tab.options.map((o) =>
         `<button data-opt="${o.id}" aria-current="${o.id === option.id}"` +
         (o.available === false ? " disabled title=\"Données à venir\"" : "") +
-        (o.dimC ? ` style="--dim-c:${o.dimC}"` : "") +
+        (o.dimC ? ` class="dim-tinted" style="--dim-c:${o.dimC}"` : "") +
         `>${esc(o.short || o.label)}</button>`).join("");
       return;
     }
@@ -1339,7 +1027,7 @@ function initIndicMap() {
 
   const renderGeos = () => {
     if (!geosEl) return;
-    const mapKind = option.kind === "map" || option.kind === "mosaic";
+    const mapKind = option.kind === "map";
     if (tab.hideGeo || !mapKind) { geosEl.innerHTML = ""; return; }
     geosEl.innerHTML = GEOS.map((g) => {
       const off = option.fixedGeo && option.fixedGeo !== g.id;

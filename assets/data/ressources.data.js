@@ -62,7 +62,7 @@ window.RESSOURCES = [
 
   /* ---- Montréal : démarches de terrain ---- */
   { title: "Initiative montréalaise de soutien au développement social local — cadre de référence", org: "Initiative montréalaise de soutien au développement social local", date: "2024", tag: "Montréal",
-    url: "http://www.tablesdequartiermontreal.org/wp-content/uploads/2024/09/IMSDSL_CadreReference_web-1.pdf", cover: null },
+    url: "https://www.tablesdequartiermontreal.org/wp-content/uploads/2024/09/IMSDSL_CadreReference_web-1.pdf", cover: null },
   { title: "Plan de développement social de Montréal-Nord", org: "Table de quartier de Montréal-Nord (TQMN)", date: "2021", tag: "Montréal",
     url: "https://www.tqmn.ca/site/assets/files/1352/tqnm_le-pds_vf.pdf", cover: null },
   { title: "Le système alimentaire verdunois", org: "Concertation en développement social de Verdun (CDSV)", date: "2024", tag: "Montréal",

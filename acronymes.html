@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Glossaire des acronymes — DSDC Montréal</title>
+<meta name="description" content="Les acronymes du milieu du développement social et de la santé publique à Montréal, de A à Z. Cherchable et synchronisé depuis la feuille de référence.">
+<link rel="canonical" href="https://dsdcmontreal.ca/glossaire">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DSDC Montréal">
+<meta property="og:locale" content="fr_CA">
+<meta property="og:title" content="Glossaire des acronymes">
+<meta property="og:description" content="Les acronymes du milieu du développement social et de la santé publique à Montréal, de A à Z.">
+<meta property="og:url" content="https://dsdcmontreal.ca/glossaire">
+<meta property="og:image" content="https://dsdcmontreal.ca/images/og-dsdc-montreal.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -669,7 +681,7 @@
     <div class="entry"><dt>VSOP</dt><dd>Vigie sanitaire et optimisation des processus</dd></div>
   </dl>
 </section>
-  <p class="g-empty" id="empty" hidden>Aucun acronyme ne correspond à cette recherche.</p>
+  <p class="g-empty" id="empty" hidden>Aucun résultat ne correspond à votre recherche.</p>
 </main>
 
 <footer>
@@ -686,7 +698,11 @@
   const chips = Array.from(document.querySelectorAll('.g-alpha a'));
   const total = entries.length;
   function norm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
-  function label(n){ return n + (n === 1 ? ' acronyme' : ' acronymes'); }
+  /* L'accord doit porter sur « acronyme » ET sur « trouvé » : sans quoi une
+     recherche à un seul résultat affichait « 1 acronyme trouvés ». */
+  function label(n, found){
+    return n + (n === 1 ? ' acronyme' : ' acronymes') + (found ? (n === 1 ? ' trouvé' : ' trouvés') : '');
+  }
   q.addEventListener('input', () => {
     const term = norm(q.value.trim());
     let visible = 0;
@@ -703,7 +719,7 @@
     });
     chips.forEach(c => c.classList.toggle('off', !!term && !live.has(c.getAttribute('href').slice(1))));
     if (emptyEl) emptyEl.hidden = visible !== 0;
-    if (countEl) countEl.textContent = label(visible) + (term ? ' trouvés' : '');
+    if (countEl) countEl.textContent = label(visible, !!term);
   });
 })();
 </script>

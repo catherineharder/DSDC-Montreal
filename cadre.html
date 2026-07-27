@@ -3,16 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cadre conceptuel DS-DC, DRSP Montréal</title>
+<title>Cadre conceptuel DSDC — DSDC Montréal</title>
+<meta name="description" content="Le cadre conceptuel du développement social et du développement des communautés : 44 concepts cliquables, des intrants aux résultats visés, avec exemples montréalais.">
+<link rel="canonical" href="https://dsdcmontreal.ca/cadre">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DSDC Montréal">
+<meta property="og:locale" content="fr_CA">
+<meta property="og:title" content="Cadre conceptuel DSDC">
+<meta property="og:description" content="44 concepts cliquables, des intrants aux résultats visés, avec exemples montréalais.">
+<meta property="og:url" content="https://dsdcmontreal.ca/cadre">
+<meta property="og:image" content="https://dsdcmontreal.ca/images/og-dsdc-montreal.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Palette DSDC : accent teal, texte/lignes noirs, fond crème */
-  --red: #46747F;
-  --red-soft: rgba(70, 116, 127, 0.10);
-  --red-hover: rgba(70, 116, 127, 0.18);
+  /* Palette DSDC : accent teal, texte/lignes noirs, fond crème.
+     (La variable s'appelait --red alors qu'elle contient du teal.) */
+  --accent: #46747F;
+  --accent-soft: rgba(70, 116, 127, 0.10);
+  --accent-hover: rgba(70, 116, 127, 0.18);
   --pink-light: #e7eeef;
   --pink-medium: #bcd0d4;
   --pink-dark: #7ea3aa;
@@ -37,7 +50,7 @@ html, body {
 .left { position: relative; background: var(--bg); border-right: 1px solid var(--border); overflow-y: auto; padding: 24px 32px; }
 .left-header { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .home-btn { background: none; border: 1px solid var(--border); color: var(--gray); padding: 5px 10px; border-radius: 7px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
-.home-btn:hover { background: var(--pink-light); color: var(--red); border-color: var(--pink-medium); }
+.home-btn:hover { background: var(--pink-light); color: var(--accent); border-color: var(--pink-medium); }
 /* Onglets — même langage visuel que la page Cartes (.map-pick) */
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .tab { appearance: none; background: transparent; border: 1.5px solid transparent; border-radius: 7px; font: inherit; font-size: 12.5px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); padding: 4px 10px; cursor: pointer; transition: color 120ms ease, border-color 120ms ease; }
@@ -51,23 +64,23 @@ html, body {
 .snode:hover .box { filter: brightness(0.94); }
 .snode.active .box { stroke: #000000; stroke-width: 1.75px; }
 .ex-item { background: #fff; border-left: 3px solid var(--pink-medium); padding: 9px 13px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.55; border-radius: 0 6px 6px 0; }
-.ex-item strong { color: var(--red); font-weight: 600; }
+.ex-item strong { color: var(--accent); font-weight: 600; }
 .theory-link { margin: 14px 0; }
-.theory-link button { background: var(--pink-light); border: none; color: var(--red); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+.theory-link button { background: var(--pink-light); border: none; color: var(--accent); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
 .theory-link button:hover { background: var(--pink-medium); }
 .chrono { font-size: 13px; line-height: 1.6; margin: 10px 0 16px; }
 .chrono div { padding: 4px 0; border-bottom: 1px solid #000000; }
-.chrono b { color: var(--red); font-weight: 600; }
+.chrono b { color: var(--accent); font-weight: 600; }
 .svg-wrap { position: relative; width: 100%; max-width: none; margin: 0; }
 .svg-wrap img { width: 100%; display: block; user-select: none; pointer-events: none; }
 .zone { position: absolute; cursor: pointer; border-radius: 6px; transition: background 0.18s ease, box-shadow 0.18s ease; border: 1.5px solid transparent; }
-.zone:hover { background: var(--red-soft); border-color: rgba(177, 38, 56, 0.40); }
-.zone.active { background: var(--red-hover); border-color: var(--red); box-shadow: 0 0 0 2px rgba(177, 38, 56, 0.10); }
+.zone:hover { background: var(--accent-soft); border-color: rgba(177, 38, 56, 0.40); }
+.zone.active { background: var(--accent-hover); border-color: var(--accent); box-shadow: 0 0 0 2px rgba(177, 38, 56, 0.10); }
 .right { background: #F2EEE4; overflow-y: auto; padding: 40px 48px 80px 48px; }
 /* Barre de recherche — même gabarit que celle de Concertations (.conc-search input) */
 .search-bar { position: relative; flex: 0 0 auto; width: 230px; max-width: 46vw; margin-left: auto; }
 .search-bar input { width: 100%; box-sizing: border-box; padding: 7px 12px; font-family: inherit; font-size: 10.5pt; color: #000000; border: 1.5px solid #000000; border-radius: 8px; background: #fff; outline: none; transition: border-color 0.15s; }
-.search-bar input:focus { border-color: var(--red); }
+.search-bar input:focus { border-color: var(--accent); }
 .search-results { position: absolute; top: 40px; left: auto; right: 0; width: 340px; max-width: 80vw; background: #fff; border: 1px solid var(--border); border-radius: 8px; max-height: 340px; overflow-y: auto; display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.06); z-index: 20; }
 .search-results.open { display: block; }
 .search-results .item { padding: 10px 16px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #000000; }
@@ -76,29 +89,31 @@ html, body {
 .welcome { color: var(--muted); padding-top: 4px; }
 .welcome h1 { font-size: 23px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.25; letter-spacing: -.01em; }
 .welcome p { font-size: 13.5px; max-width: 460px; margin-bottom: 10px; line-height: 1.5; }
-.welcome .hint { display: inline-block; margin-top: 14px; padding: 10px 16px; border-radius: 8px; background: var(--pink-light); color: var(--red); font-size: 13px; font-weight: 500; }
-.section-banner { margin-bottom: 22px; padding-bottom: 14px; border-bottom: 2px solid var(--red); }
-.section-banner h1 { font-size: 23px; font-weight: 700; color: var(--red); line-height: 1.2; letter-spacing: -.01em; }
+/* Texte assombri : le teal #46747F sur #e7eeef ne donnait que 4,40:1, sous le
+   seuil AA de 4,5:1. #33565f sur le même fond : 6,3:1. */
+.welcome .hint { display: inline-block; margin-top: 14px; padding: 10px 16px; border-radius: 8px; background: var(--pink-light); color: #33565f; font-size: 13px; font-weight: 500; }
+.section-banner { margin-bottom: 22px; padding-bottom: 14px; border-bottom: 2px solid var(--accent); }
+.section-banner h1 { font-size: 23px; font-weight: 700; color: var(--accent); line-height: 1.2; letter-spacing: -.01em; }
 .concept-card { margin-bottom: 28px; padding-bottom: 22px; }
 .concept-card .definition { font-size: 13.5px; color: var(--text); line-height: 1.55; margin-bottom: 16px; white-space: pre-line; }
 .section-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 6px; margin-top: 16px; }
 .connexes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.connexes .chip { background: var(--pink-light); color: var(--red); padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
-.example { background: #fff; border-left: 3px solid var(--red); padding: 10px 14px; margin-bottom: 14px; font-size: 13.5px; color: var(--text); line-height: 1.55; border-radius: 0 6px 6px 0; white-space: pre-line; }
-.example .label { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 3px; }
+.connexes .chip { background: var(--pink-light); color: var(--accent); padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+.example { background: #fff; border-left: 3px solid var(--accent); padding: 10px 14px; margin-bottom: 14px; font-size: 13.5px; color: var(--text); line-height: 1.55; border-radius: 0 6px 6px 0; white-space: pre-line; }
+.example .label { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
 .example.inspirant { border-left-color: var(--pink-dark); }
 .example.inspirant .label { color: var(--pink-dark); }
 .extra-block { background: var(--pink-light); border-radius: 6px; padding: 12px 14px; margin-bottom: 14px; font-size: 13px; line-height: 1.55; white-space: pre-line; }
-.extra-block .label { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 4px; }
+.extra-block .label { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
 .source { font-size: 11px; color: var(--muted); font-style: italic; line-height: 1.5; margin-top: 14px; word-break: break-word; }
 .concept-image { margin: 14px 0; border-radius: 6px; overflow: hidden; background: var(--pink-light); }
 .concept-image img { width: 100%; height: auto; display: block; }
 .concept-image .caption { font-size: 11px; color: var(--muted); padding: 6px 10px; background: #fff; border-top: 1px solid var(--border); }
 .empty-note { color: var(--muted); font-size: 13.5px; font-style: italic; padding: 12px 0; }
 .related-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.related-links button { background: var(--pink-light); border: none; color: var(--red); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+.related-links button { background: var(--pink-light); border: none; color: var(--accent); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
 .related-links button:hover { background: var(--pink-medium); }
-a { color: var(--red); }
+a { color: var(--accent); }
 /* Barre coulissante entre le cadre (gauche) et le panneau (droite) — même
    comportement que les autres onglets du site. Poignée superposée au filet. */
 .split-handle { position: absolute; top: 0; bottom: 0; width: 12px; margin-left: -6px; cursor: col-resize; z-index: 30; touch-action: none; background: transparent; }
@@ -116,7 +131,7 @@ a { color: var(--red); }
 <div class="app">
   <div class="left">
     <div class="left-header">
-      <div class="tabs" role="tablist" aria-label="Choisir une vue">
+      <div class="tabs" role="group" aria-label="Choisir une vue">
         <button class="tab" data-tab="cadre" aria-current="page">Cadre</button>
         <button class="tab" data-tab="verdun" aria-current="false">Verdun</button>
         <button class="tab" data-tab="cdn" aria-current="false">CDN</button>
@@ -129,7 +144,7 @@ a { color: var(--red); }
     </div>
     <div class="lview" id="lv-cadre">
       <div class="svg-wrap" id="svgwrap">
-        <img src="cadre.svg" alt="Cadre conceptuel DS-DC">
+        <img src="cadre.svg" alt="Cadre conceptuel DSDC">
       </div>
     </div>
     <div class="lview" id="lv-verdun" hidden></div>
@@ -212,7 +227,7 @@ function goHome() {
   document.querySelectorAll('.zone').forEach(z => z.classList.remove('active'));
   const n = Object.keys(ZONEMAP).length;
   contentEl.innerHTML = `<div class="welcome">
-    <h1>Cadre conceptuel DS-DC</h1>
+    <h1>Cadre conceptuel DSDC</h1>
     <p>Cliquez sur une section du cadre à gauche pour explorer les définitions, les termes connexes, les exemples montréalais et les exemples inspirants.</p>
     <p>Utilisez la barre de recherche pour accéder directement à un concept par son nom.</p>
     <span class="hint">${n} concepts cliquables</span></div>`;
@@ -459,7 +474,7 @@ cdn: {
   savoir: { how: 'Des données de quartier qui fondent chaque demande.', items: [
     '<strong>Portrait de quartier 2025</strong> (CDC) : 47 % de pop. immigrante, 13 510 ménages à faible revenu, 10,8 % de logements à réparer.',
     'DRSP : ~9 100 ménages de CDN exposés aux moisissures; précédent documenté : FUS de l’écoquartier Louvain.'],
-    src: [['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
+    src: [['Portrait de quartier 2025','https://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
   capital: { how: '30 ans de liens militants = le vrai capital du projet.', items: [
     'Réseaux d’entraide locataires (Projet Genèse, ŒIL) bâtis depuis les années 1990.',
     'Proposition 6 : filet social — cuisines collectives, lieux culturels et communautaires en rez-de-chaussée.'],
@@ -481,7 +496,7 @@ cdn: {
     'Pourquoi cette priorité : <strong>13 510 ménages à faible revenu</strong>; 10,8 % des logements locatifs à réparer; ~9 100 ménages exposés aux moisissures; 47 % de pop. immigrante.',
     'PDAD adopté (déc. 2024) avec cibles sociales; <strong>320,8 M$</strong> débloqués; phase 1 (~2 250 logements) enclenchée en 2026.',
     'La FUS communautaire est au cœur du montage retenu (PL22) — plus grand chantier d’habitation au pays, dernière réserve foncière publique du quartier.'],
-    src: [['Le Devoir','https://www.ledevoir.com/politique/montreal/966756/futur-quartier-namur-hippodrome-sera-entre-mains-obnl'],['Portrait de quartier 2025','http://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
+    src: [['Le Devoir','https://www.ledevoir.com/politique/montreal/966756/futur-quartier-namur-hippodrome-sera-entre-mains-obnl'],['Portrait de quartier 2025','https://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
   determinants: { how: 'Ici, le projet change les règles elles-mêmes.', items: [
     'Cascade LAU : OGAT → PMAD (2012) → schéma d’agglomération (2015) → PUM 2050 (2025) → <strong>PDAD N-H</strong> (2024) = nouveau cadre légal du secteur.',
     '<strong>RMM 20-20-20</strong> (2021) : abrogation annoncée nov. 2025, remplacé par 20 % « hors marché »; <strong>PL22</strong> (2026) crée le véhicule OBNL; Loi 31 (2024) encadre le parc existant.',

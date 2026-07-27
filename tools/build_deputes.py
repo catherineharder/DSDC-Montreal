@@ -9,7 +9,7 @@ est découpée sur ce contour et les liserés côtiers sont résorbés.
 
 Géométrie : Represent API (Open North), simple_shape, WGS84.
 """
-import json, math, re, sys, unicodedata
+import json, math, os, re, sys, unicodedata
 from pathlib import Path
 from shapely.geometry import shape, Polygon
 from shapely.ops import unary_union
@@ -207,8 +207,13 @@ out.append("const DEPUTES_GEOMETRY = " +
            json.dumps(paths, ensure_ascii=False, indent=0) + ";\n")
 out.append("const DEPUTES = " +
            json.dumps(records, ensure_ascii=False, indent=1) + ";\n")
+# Couleurs officielles des partis, sauf « Indépendant·e » : le gris #8a8f98
+# contrevenait à la règle d'identité DSDC (aucun gris). Remplacé par l'olive de
+# la palette, distinct des quatre couleurs de parti.
 out.append('const PARTY_COLORS = {\n'
            ' "PLQ": "#d31f2c",\n "QS": "#ff5605",\n "CAQ": "#00addc",\n'
-           ' "PQ": "#1a3c8f",\n "IND": "#8a8f98",\n};\n')
-open("deputes.data.js", "w", encoding="utf-8").write("\n".join(out))
+           ' "PQ": "#1a3c8f",\n "IND": "#6C6F3F",\n};\n')
+DEST = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                    "..", "assets", "data", "deputes.data.js")
+open(os.path.normpath(DEST), "w", encoding="utf-8").write("\n".join(out))
 print("écrit deputes.data.js —", len(paths), "tracés,", len(records), "députés")

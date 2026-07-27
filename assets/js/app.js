@@ -109,17 +109,39 @@ function initNav() {
     // quand sa vue passe de masquée à visible.
     requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
   };
-  const viewFromPath = () => {
-    const seg = location.pathname.slice(BASE.length).replace(/^\/+|\/+$/g, "").split("/")[0];
-    return SLUG_VIEW[seg] || "accueil";
+  const pathSeg = () =>
+    location.pathname.slice(BASE.length).replace(/^\/+|\/+$/g, "").split("/")[0];
+  const viewFromPath = () => SLUG_VIEW[pathSeg()] || "accueil";
+
+  /* Page introuvable. 404.html se contente de réencoder l'URL et de revenir ici :
+     sans ce garde-fou, une adresse erronée affichait silencieusement l'accueil,
+     l'URL fautive restant dans la barre d'adresse. On le dit maintenant. */
+  const showNotFound = (seg) => {
+    const home = el("view-accueil");
+    if (!home) return;
+    apply("accueil");
+    const nf = document.createElement("div");
+    nf.className = "notfound";
+    nf.innerHTML =
+      '<div class="nf-box"><h1>Page introuvable</h1>' +
+      '<p>L\'adresse <code></code> ne correspond à aucune section du site.</p>' +
+      '<button class="land-btn" type="button" data-goto="accueil">Retour à l\'accueil</button></div>';
+    nf.querySelector("code").textContent = "/" + seg;
+    nf.querySelector("[data-goto]").addEventListener("click", () => {
+      nf.remove();
+      go("accueil", true);
+    });
+    home.prepend(nf);
+    document.title = "Page introuvable — DSDC Montréal";
   };
+
   const go = (view, push) => {
     apply(view);
     if (push) history.pushState({ view }, "", BASE + (VIEW_SLUG[view] || ""));
   };
 
   buttons.forEach((b) => b.addEventListener("click", () => go(b.dataset.view, true)));
-  // Cliquer la marque « DS-DC Montréal » ramène à la page d'accueil.
+  // Cliquer la marque « DSDC Montréal » ramène à la page d'accueil.
   const brand = document.querySelector(".brand");
   if (brand) {
     brand.setAttribute("role", "link");
@@ -135,7 +157,11 @@ function initNav() {
   });
 
   window.addEventListener("popstate", () => apply(viewFromPath()));
-  go(viewFromPath(), false); // état initial (sans empiler d'historique)
+
+  // état initial (sans empiler d'historique)
+  const seg0 = pathSeg();
+  if (seg0 && !SLUG_VIEW[seg0]) showNotFound(seg0);
+  else go(viewFromPath(), false);
 }
 
 /* ---- "Cartes" tab : pick a map from the list in the left column -------------
@@ -236,13 +262,16 @@ function createMap(opts) {
    of { label, value, group? }; picking a result calls onPick(value). Inserted
    into a map's left column so each map can be navigated by name as well as by
    clicking the territory. Accent-insensitive matching. */
-const stripAccents = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+const stripAccents = (s) => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 function makeSearch(entries, onPick, placeholder) {
   const wrap = document.createElement("div");
   wrap.className = "map-search";
   const input = document.createElement("input");
   input.type = "search";
   input.placeholder = placeholder || "Rechercher…";
+  // Le placeholder ne tient pas lieu de nom accessible : il disparaît à la saisie
+  // et n'est pas annoncé de façon fiable. On ajoute une étiquette explicite.
+  input.setAttribute("aria-label", placeholder ? placeholder.replace(/…$/, "") : "Rechercher un territoire");
   input.setAttribute("autocomplete", "off");
   const results = document.createElement("div");
   results.className = "map-results";

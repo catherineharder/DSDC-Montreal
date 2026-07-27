@@ -45,12 +45,12 @@ function initSanteMap() {
   const santeExtrasHTML = () =>
     `<div class="map-extra">` +
       `<p class="block-title">Structure du système</p>` +
-      `<figure class="mx-fig" data-enlarge="images/cartes/structure-systeme-sante.png" ` +
+      `<figure class="mx-fig" data-enlarge="images/assets/structure-systeme-sante.png" ` +
         `data-caption="Structure du système de santé et de services sociaux du Québec" ` +
         `data-source="https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/systeme-quebecois-de-sante-et-de-services-sociaux/structure-systeme-sante-services-sociaux-quebec">` +
         `<img data-asset="structure-systeme-sante" alt="Structure du système de santé et de services sociaux du Québec">` +
-        `<div class="mx-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 16 5-5 4 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg><span>Structure du système — image à ajouter<br>(cliquer pour la source)</span></div>` +
-        `<figcaption>Cliquer pour agrandir · <a href="https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/systeme-quebecois-de-sante-et-de-services-sociaux/structure-systeme-sante-services-sociaux-quebec" target="_blank" rel="noopener">source&nbsp;: quebec.ca</a></figcaption>` +
+        `<div class="mx-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 16 5-5 4 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg><span>Structure du système — image à ajouter<br>(cliquer pour la source)</span></div>` +
+        `<figcaption>Cliquer pour agrandir · <a href="https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/systeme-quebecois-de-sante-et-de-services-sociaux/structure-systeme-sante-services-sociaux-quebec" target="_blank" rel="noopener">Source&nbsp;: quebec.ca</a></figcaption>` +
       `</figure>` +
       `<div class="mx-btns">` +
         `<a class="mx-btn" href="https://cdn-contenu.quebec.ca/cdn-contenu/premier-ministre/equipe/conseil-ministre/conseil-ministres.pdf" target="_blank" rel="noopener">${PDF_ICON}<span class="mx-lab">Conseil des ministres</span></a>` +

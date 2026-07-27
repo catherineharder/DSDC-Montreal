@@ -9,10 +9,6 @@ const sectionsHTML = (sections) => sections.map((s) =>
     : "") +
   `</div>`).join("");
 
-const groupsHTML = (groups) => groups.map((g) =>
-  `<div class="block"><p class="block-title">${esc(g.group)}</p>` +
-  `<ul class="items">${g.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
-
 /* ---- Ville de Montréal: arrondissements map ------------------------------ */
 function initVilleMap() {
   const svg = el("ville-map");

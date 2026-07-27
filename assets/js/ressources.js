@@ -9,15 +9,9 @@
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[c]));
-  const strip = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-  const prettyDate = (d) => {
-    if (!d) return "s. d.";
-    const m = String(d).match(/^(\d{4})-(\d{2})$/);
-    if (m) { const mois = ["janv.","févr.","mars","avr.","mai","juin","juill.","août","sept.","oct.","nov.","déc."]; return mois[+m[2] - 1] + " " + m[1]; }
-    return String(d);
-  };
+  const strip = (s) => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const yearOnly = (d) => {
-    if (!d) return "s. d.";
+    if (!d) return "s. d.";
     const m = String(d).match(/(\d{4})/);
     return m ? m[1] : String(d);
   };
@@ -32,7 +26,7 @@
       '</header>' +
       '<div class="res-tools">' +
         '<div class="res-search"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>' +
-          '<input type="search" id="res-q" placeholder="Rechercher une source…" autocomplete="off"></div>' +
+          '<input type="search" id="res-q" placeholder="Rechercher une source…" autocomplete="off" aria-label="Rechercher une source"></div>' +
         '<div class="res-filters" id="res-filters"></div>' +
         '<div class="res-sort"><select id="res-sort" aria-label="Trier">' +
           '<option value="date-desc">Plus récentes</option>' +
@@ -41,7 +35,7 @@
         '</select></div>' +
       '</div>' +
       '<div class="res-grid" id="res-grid"></div>' +
-      '<div class="res-empty" id="res-empty" hidden>Aucune source ne correspond à votre recherche.</div>' +
+      '<div class="res-empty" id="res-empty" hidden>Aucun résultat ne correspond à votre recherche.</div>' +
     '</div>';
 
   const filtersEl = root.querySelector("#res-filters");

@@ -531,5 +531,5 @@ const PARTY_COLORS = {
  "QS": "#ff5605",
  "CAQ": "#00addc",
  "PQ": "#1a3c8f",
- "IND": "#8a8f98",
+ "IND": "#6C6F3F",
 };

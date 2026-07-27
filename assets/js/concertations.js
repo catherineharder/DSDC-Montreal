@@ -16,7 +16,7 @@
      feuille Google est relabellisée (colonne « groupe »), ces libellés
      disparaissent et cette transformation devient sans effet. */
   (function reorganize() {
-    var norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+    var norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
     var isAutres = function (lab) { return norm(lab).indexOf('autres comites intersectoriels') === 0; };
     var isInternes = function (lab) { return norm(lab).indexOf('comites internes') >= 0; };
     var SPLIT = [
@@ -53,9 +53,6 @@
   })();
 
   var INT = {dir:["Direction","var(--i-dir)"],eusp:["EUSP","var(--i-eusp)"],jeun:["Jeunesse","var(--i-jeun)"],pcmi:["PCMI","var(--i-pcmi)"],ecos:["ÉCoS","var(--i-ecos)"]};
-  var SECT = {min:["Ministères","var(--min)"],rss:["Santé / RSSS","var(--rss)"],mun:["Municipal","var(--gov)"],rec:["Recherche","var(--rec)"],fond:["Philanthropie","var(--fond)"],comm:["Communautaire","var(--comm)"],cit:["Citoyens","var(--cit)"],drsp:["DRSP / EUSP","var(--drsp-sect)"]};
-  var PAR2SECT = {min:"min",mun:"mun",com:"comm",ciu:"rss",fond:"fond"};
-  var NIVL = {strat:"Stratégique",tact:"Tactique",oper:"Opérationnel"};
 
   function partnersHTML(fams) {
     return fams.map(function (F) {
@@ -95,7 +92,7 @@
 
   root.innerHTML =
     '<div class="layout"><div class="pane-left">'
-    + '<div class="pagehead"><h1>Concertations' + editPencil(EDIT_SHEETS.concertations) + '</h1><div class="conc-search"><span class="conc-noresult" id="conc-noresult">Aucun résultat</span><input id="conc-q" type="search" autocomplete="off" placeholder="Rechercher…"></div></div>'
+    + '<div class="pagehead"><h1>Concertations' + editPencil(EDIT_SHEETS.concertations) + '</h1><div class="conc-search"><span class="conc-noresult" id="conc-noresult">Aucun résultat</span><input id="conc-q" type="search" autocomplete="off" placeholder="Rechercher…" aria-label="Rechercher un comité ou un partenaire"></div></div>'
     + '<section class="cblock" id="c-partenaires"><h2>Partenaires</h2>' + partnersHTML(D.famsP) + '</section>'
     + '<section class="cblock" id="c-comites"><h2>Comités</h2>' + LEG + '<div id="ctree"></div></section>'
     + '<section class="cblock" id="c-definitions"><h2>Définitions</h2><dl>' + defsHTML(D.defs) + '</dl></section>'
@@ -139,7 +136,6 @@
   var cboxes = root.querySelectorAll('.cbox');
   var pboxes = root.querySelectorAll('.pbox');
   function clearActive() { cboxes.forEach(function (x) { x.classList.remove('active'); }); pboxes.forEach(function (x) { x.classList.remove('active'); }); }
-  function nivColor(k) { return {strat:'var(--nf-strat)',tact:'var(--nf-tact)',oper:'var(--nf-oper)'}[k]; }
   // Nom complet épelé, acronyme (court) entre parenthèses. Pas de sous-titre séparé.
   // Si « acr » est en réalité un nom court (non un acronyme), on n'affiche que le nom complet.
   function titleAcr(full, acr) {
@@ -148,12 +144,6 @@
   }
   // Champ « sous-titre gras + texte ». Omis si vide (à documenter).
   function fld(label, val) { return val ? '<div class="fld"><p class="fl">' + label + '</p><p class="fv">' + val + '</p></div>' : ''; }
-  // Présence interne en liste à puces (sans pastilles de couleur). Omise si vide.
-  function presBlock(codes) {
-    if (!codes || !codes.length) return '';
-    var items = codes.map(function (x) { var m = INT[x]; return m ? '<li>' + m[0] + '</li>' : ''; }).join('');
-    return items ? '<div class="fld"><p class="fl">Présence interne (DRSP)</p><ul class="blist">' + items + '</ul></div>' : '';
-  }
   // Composition en liste à puces. Omise si rien à afficher.
   // Composition : « membre (catégorie) », ordonnée porteur -> DRSP -> autres.
   function compBlock(c) {
@@ -206,7 +196,7 @@
   pboxes.forEach(function (b) { b.addEventListener('click', function () { clearActive(); b.classList.add('active'); renderPartner(b.getAttribute('data-pid')); }); });
 
   /* ---- Recherche : filtre les partenaires, comités et définitions en place ---- */
-  function normC(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function normC(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
   var qInput = root.querySelector('#conc-q');
   var noResult = root.querySelector('#conc-noresult');
   if (qInput) {
