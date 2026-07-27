@@ -142,7 +142,7 @@
             </button>
             <button class="land-tile" type="button" data-goto="reco">
               <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><span class="t-arrow">→</span></div>
-              <h3>Recommandations</h3><p>Huit pistes d'action concrètes issues de la démarche.</p>
+              <h3>Recommandations</h3><p>Cinq pistes d'action concrètes, chacune avec une ressource pour la mettre en œuvre.</p>
             </button>
             <button class="land-tile" type="button" data-goto="ressources">
               <div class="t-top"><span class="t-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path d="M14 4v5h5"/></svg></span><span class="t-arrow">→</span></div>
@@ -246,55 +246,41 @@
       </div>
     </section>
 
-    <!-- Recommandations : 8 pistes d'action, style « landing » -->
+    <!-- Recommandations : 5 pistes d'action + panneau de ressources à droite -->
     <section class="view" id="view-reco" aria-label="Recommandations" hidden>
-      <div class="reco-wrap">
-        <header class="reco-hero">
-          <h1>Recommandations</h1>
-        </header>
-        <div class="reco-grid">
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">1</span>
-            <h3>Renforcer les contacts politiques</h3>
-            <p>Multiplier et entretenir les liens avec les élu·e·s et les paliers décisionnels pour porter les enjeux du développement social plus haut dans l'agenda public.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">2</span>
-            <h3>Augmenter le niveau d'engagement communautaire</h3>
-            <p>Passer d'une consultation ponctuelle à un véritable engagement communautaire, où les citoyen·ne·s contribuent aux décisions qui les concernent.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">3</span>
-            <h3>Produire des données au service des communautés</h3>
-            <p>Descendre à l'échelle des territoires et des populations pour révéler les inégalités que les moyennes masquent, et rendre les données utiles à l'action locale.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">4</span>
-            <h3>Assurer un financement souple</h3>
-            <p>Privilégier un financement à la mission, pluriannuel et adaptable, qui laisse aux milieux la marge d'agir sur le long terme.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">5</span>
-            <h3>Simplifier les comités</h3>
-            <p>Alléger et clarifier l'architecture de concertation pour réduire la charge de coordination et concentrer les efforts sur l'action.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">6</span>
-            <h3>Inclure le privé et les commerces</h3>
-            <p>Mobiliser les acteurs économiques locaux comme partenaires du développement social, au-delà du seul mécénat.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">7</span>
-            <h3>Plus d'innovation et d'action</h3>
-            <p>Encourager les approches nouvelles et passer plus vite de la réflexion à l'action concrète dans les milieux.</p>
-          </article>
-          <article class="reco-card">
-            <span class="r-num" aria-hidden="true">8</span>
-            <h3>Bâtir la confiance avec les citoyen·ne·s</h3>
-            <p>Cultiver la transparence, la constance et la reddition de comptes pour établir un lien de confiance durable avec la population.</p>
-          </article>
-        </div>
-        <p class="reco-note">Formulation de travail à valider avec l'équipe DSDC. Ces recommandations découlent de l'objectif&nbsp;6 du mandat de stage — «&nbsp;Formuler des recommandations&nbsp;» — et alimentent la synthèse finale.</p>
+      <div class="wrap">
+        <section class="reco-side">
+          <div class="reco-head"><h1>Recommandations</h1></div>
+          <div class="reco-list" id="reco-list">
+            <button type="button" class="reco-card" data-reco="1" aria-controls="reco-panel">
+              <span class="r-num" aria-hidden="true">1</span>
+              <h3>Partager le pouvoir, pas seulement la parole</h3>
+              <p>Viser le partenariat et le leadership citoyen plutôt que la consultation. Bâtir la confiance avec les citoyens.</p>
+            </button>
+            <button type="button" class="reco-card" data-reco="2" aria-controls="reco-panel">
+              <span class="r-num" aria-hidden="true">2</span>
+              <h3>Investir le rôle d'influence des politiques publiques</h3>
+              <p>Une veille et les compétences pour porter le DS-DC devant les décideurs. Renforcer les contacts politiques.</p>
+            </button>
+            <button type="button" class="reco-card" data-reco="3" aria-controls="reco-panel">
+              <span class="r-num" aria-hidden="true">3</span>
+              <h3>Alléger la charge qu'on impose au milieu</h3>
+              <p>Financement souple et à la mission, reddition de comptes simplifiée, moins de comités.</p>
+            </button>
+            <button type="button" class="reco-card" data-reco="4" aria-controls="reco-panel">
+              <span class="r-num" aria-hidden="true">4</span>
+              <h3>Outiller le milieu communautaire avec des données</h3>
+              <p>Interpeller des chercheurs, choisir des indicateurs avec les milieux, créer des outils accessibles et une mesure commune.</p>
+            </button>
+            <button type="button" class="reco-card" data-reco="5" aria-controls="reco-panel">
+              <span class="r-num" aria-hidden="true">5</span>
+              <h3>S'ouvrir à des partenaires non-conventionnels</h3>
+              <p>Inclure davantage les communautés religieuses, sociétés de développement commercial, associations de marchands, etc.</p>
+            </button>
+          </div>
+          <p class="reco-note">Formulation de travail à valider avec l'équipe DSDC. Ces recommandations découlent de l'objectif&nbsp;6 du mandat de stage — «&nbsp;Formuler des recommandations&nbsp;» — et alimentent la synthèse finale.</p>
+        </section>
+        <aside class="panel" id="reco-panel" aria-live="polite"></aside>
       </div>
     </section>
 
@@ -338,5 +324,7 @@
   <!-- section Ressources : catalogue de sources puis rendu -->
   <script src="assets/data/ressources.data.js"></script>
   <script src="assets/js/ressources.js"></script>
+  <!-- section Recommandations : panneau de ressources associé à chaque piste -->
+  <script src="assets/js/reco.js"></script>
 </body>
 </html>

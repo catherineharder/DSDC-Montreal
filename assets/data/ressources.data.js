@@ -23,6 +23,10 @@ window.RESSOURCES = [
     url: "https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/systeme-quebecois-de-sante-et-de-services-sociaux/structure-systeme-sante-services-sociaux-quebec", cover: null },
   { title: "Portrait de santé de la population montréalaise", org: "Direction régionale de santé publique de Montréal (DRSP)", date: "2026-05", tag: "Contexte",
     url: "https://santepubliquemontreal.ca/sites/drsp/files/media/document/Pub_20260507_PortraitSante.pdf", cover: null },
+  { title: "Cadre de référence en influence des politiques publiques à la DRSP Montréal", org: "Direction régionale de santé publique de Montréal (DRSP)", date: "2025-01", tag: "Contexte",
+    url: "https://santepubliquemontreal.ca/sites/drsp/files/media/document/DRSP_Pub_2025-01-01_Cadre%20de%20r%C3%A9f%C3%A9rence_PPPS.pdf", cover: null },
+  { title: "Avis déposé à la DRSP de Montréal sur la révision du cadre de financement de santé publique", org: "Regroupements montréalais d'organismes communautaires (RIOCM et al.)", date: "2024-06", tag: "Contexte",
+    url: "https://riocm.org/wp-content/uploads/2024/08/2024-06-AVIS-DRSP-regroupements-Revision-du-cadre-de-sante-publique.pdf", cover: null },
   { title: "Programme national de santé publique 2025-2035", org: "Ministère de la Santé et des Services sociaux (MSSS)", date: "2025", tag: "Contexte",
     url: "https://publications.msss.gouv.qc.ca/msss/fichiers/2025/25-297-03W.pdf", cover: null },
   { title: "Priorités triennales de santé publique 2025-2028", org: "Ministère de la Santé et des Services sociaux (MSSS)", date: "2025", tag: "Contexte",
@@ -59,6 +63,8 @@ window.RESSOURCES = [
     url: "https://nccdh.ca/wp-content/uploads/2024/10/Lets-Talk-Community-Engagement-EN.pdf", cover: null },
   { title: "L'expérience citoyenne au service de la prévention — cadre de référence", org: "Direction régionale de santé publique de Montréal (DRSP)", date: "2020", tag: "DC",
     url: "https://santepubliquemontreal.ca/sites/drsp/files/media/document/DRSP_Pub_2022_10_01_ExperienceCitoyenneCadreReference.pdf", cover: null },
+  { title: "La mobilisation — Comprendre et agir", org: "Communagir", date: "2023", tag: "DC",
+    url: "https://communagir.org/contenus-et-outils/comprendre-et-agir/la-mobilisation/", cover: null },
 
   /* ---- Montréal : démarches de terrain ---- */
   { title: "Initiative montréalaise de soutien au développement social local — cadre de référence", org: "Initiative montréalaise de soutien au développement social local", date: "2024", tag: "Montréal",
@@ -71,6 +77,8 @@ window.RESSOURCES = [
   /* ---- Indicateurs / données ---- */
   { title: "Part de la population en situation d'insécurité alimentaire", org: "Communauté métropolitaine de Montréal — Indicateurs vitaux", date: "2024", tag: "Montréal",
     url: "https://indicateurs-vitaux.cmm.qc.ca/developpement-social/part-de-la-population-en-situation-d-insecurite-alimentaire/", cover: null },
+  { title: "Le Dispositif participatif de caractérisation des communautés locales", org: "Institut national de santé publique du Québec (INSPQ)", date: "2014", tag: "Outils",
+    url: "https://www.inspq.qc.ca/sites/default/files/publications/1785_caracterisation_communautes_locales.pdf", cover: null },
 
   /* ---- Outils ---- */
   { title: "Feuillet CRESP-CACIS — outil d'analyse", org: "Chaire CACIS", date: "2021", tag: "Outils",
