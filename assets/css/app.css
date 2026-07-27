@@ -63,12 +63,24 @@
   .map-head h1{margin:0;font-size:46px;font-weight:700;letter-spacing:-.015em;}
   /* titres longs (ex. l'outil d'appréciation) : on réduit plutôt que de déborder */
   .map-head h1.t-long{font-size:clamp(22px,2.1vw,30px);line-height:1.12;}
-  /* Circonscriptions: the Assemblée nationale logo is oversized, which would inflate
-     the map-head and shrink the map. Pin this view's map-head to the same height as
-     the others so the map renders at the identical size; the logo may overflow
-     (overlap) the map area below it. */
-  #view-deputes .map-head{height:98px;box-sizing:border-box;align-items:flex-start;overflow:visible;}
-  #view-deputes .map-head .logo{position:relative;z-index:2;}
+  /* Circonscriptions: the source PNG (1200x577) is mostly empty margin — the artwork
+     only occupies x 341-849, y 9-572. We crop those margins away in CSS (clip-path +
+     matching negative margins) rather than re-cutting the file, because the file is
+     re-downloaded from Notion by sync/builders/assets.py and any edit would be lost.
+     Cropped, the logo is a 92x83px block held entirely inside the head, so it can no
+     longer reach down into the map and collide with the legend.
+     --an-h is the VISIBLE height; --anf/--anw are the full uncropped box it implies. */
+  #view-deputes .map-head{height:98px;box-sizing:border-box;align-items:flex-start;overflow:hidden;padding:6px 26px 0;}
+  #view-deputes .map-head .logo{
+    --an-h:92px;   /* 6px padding + 92px = the 98px head exactly, so nothing spills out */
+    --anf:calc(var(--an-h) / 0.9775);      /* full height  = visible / (1 - top% - bottom%) */
+    --anw:calc(var(--anf) * 2.0798);       /* full width   = full height * 1200/577 */
+    position:relative;z-index:2;
+    height:var(--anf);width:auto;max-width:none;
+    clip-path:inset(1.56% 29.17% 0.69% 28.42%);
+    margin:calc(var(--anf) * -0.0156) calc(var(--anw) * -0.2917)
+           calc(var(--anf) * -0.0069) calc(var(--anw) * -0.2842);
+  }
   /* Legend overlays the top-left of the map so it no longer consumes vertical space.
      This keeps every map view exactly the same size regardless of how many legend rows it has. */
   .legend{position:absolute;top:25%;left:38px;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.4;background:#fff;padding:10px 13px;border:1.5px solid var(--ink);border-radius:6px;box-shadow:0 1px 5px rgba(0,0,0,.08);pointer-events:none;}
@@ -112,6 +124,10 @@
   /* Députés : fiche du panneau (nom en évidence, parti avec pastille de couleur) */
   #deputes-panel .depute-nom{margin:0 0 4px;font-size:23px;font-weight:700;letter-spacing:-.01em;}
   .party-dot{display:inline-block;width:11px;height:11px;margin-right:8px;border-radius:50%;border:1.5px solid var(--ink);vertical-align:-1px;}
+  /* Party tallies already carry a coloured .party-dot — suppress the generic accent
+     bullet so each row shows one dot, not two. */
+  #deputes-panel .depute-counts li{padding-left:0;}
+  #deputes-panel .depute-counts li::before{content:none;}
   #deputes-panel .items a.tdq-org{color:inherit;text-decoration:none;cursor:pointer;transition:color 120ms ease;}
   #deputes-panel .items a.tdq-org:hover,#deputes-panel .items a.tdq-org:focus-visible{color:var(--accent);text-decoration:underline;}
   /* Circonscriptions : couleur de parti saturée en tout temps ; la sélection
