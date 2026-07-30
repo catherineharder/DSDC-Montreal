@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Glossaire : feuille « Acronymes » (Acronyme | Signification | Source) -> acronymes.html.
+"""Glossaire : feuille « Acronymes » (Acronyme | Signification) -> acronymes.html.
 
 Gabarit aligné sur l'identité visuelle DSDC Montréal (crème #F2EEE4, accents
 terreux, tout cerné de noir, Inter) — mêmes jetons que assets/css/app.css.
@@ -22,6 +22,20 @@ TEMPLATE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* Même garde-fou que cadre.html : cette page vit dans l'iframe de index.html,
+   qui porte la barre de navigation. Atteinte seule en haut de fenêtre, elle
+   privait le visiteur de toute navigation. On renvoie vers /glossaire. */
+(function () {
+  if (window.top !== window.self) return;
+  if (!/^https?:$/.test(location.protocol)) return;
+  if (!/\\/acronymes\\.html$/.test(location.pathname)) return;
+  location.replace(
+    location.pathname.replace(/\\/acronymes\\.html$/, "/glossaire") +
+    location.search + location.hash
+  );
+})();
+</script>
 <title>Glossaire des acronymes — DSDC Montréal</title>
 <meta name="description" content="Les acronymes du milieu du développement social et de la santé publique à Montréal, de A à Z. Cherchable et synchronisé depuis la feuille de référence.">
 <link rel="canonical" href="https://dsdcmontreal.ca/glossaire">
@@ -255,12 +269,13 @@ def parse_entries(rows):
             continue  # en-tête
         if not row or not row[0]:
             continue
+        # Deux colonnes : Acronyme | Signification. Une éventuelle troisième
+        # colonne (l'ancienne « Source », jamais affichée) est ignorée.
         acronyme = row[0].strip()
         signification = row[1].strip() if len(row) > 1 else ""
-        source = row[2].strip() if len(row) > 2 else ""
         if not acronyme:
             continue
-        entries.append((acronyme, signification, source))
+        entries.append((acronyme, signification))
     # Tri alphabétique insensible aux accents et à la casse : l'ordre des
     # lignes dans la feuille Google n'a donc aucune importance.
     def sort_key(entry):
@@ -270,7 +285,7 @@ def parse_entries(rows):
     return entries
 
 
-def render_entry(acronyme, signification, source):
+def render_entry(acronyme, signification):
     a = html.escape(acronyme, quote=True)
     s = html.escape(signification, quote=True)
     return f'    <div class="entry"><dt>{a}</dt><dd>{s}</dd></div>'

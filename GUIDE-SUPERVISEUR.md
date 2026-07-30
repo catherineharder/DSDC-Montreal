@@ -1,26 +1,28 @@
 # Guide d'édition du contenu — pour la mise à jour courante
 
 Bienvenue. Ce site présente l'écosystème de la santé publique (Glossaire,
-Concertations, Tables de quartier, cartes). **Vous n'avez jamais besoin de
-toucher au code.** Tout le contenu modifiable vit dans **trois feuilles Google**.
-Vous y faites vos changements ; le site se met à jour **automatiquement chaque
-nuit**.
+Concertations, Tables de quartier, Ressources, cartes). **Vous n'avez jamais
+besoin de toucher au code.** Tout le contenu modifiable vit dans **quatre
+feuilles Google**. Vous y faites vos changements ; le site se met à jour
+**automatiquement chaque nuit**.
 
-Les trois feuilles (partagées avec vous) :
+Les quatre feuilles (partagées avec vous) :
 
 | Feuille | Ce qu'elle contrôle |
 |---|---|
 | **Glossaire — site** | La liste des acronymes |
 | **Tables de quartier — site** | Les membres de chaque table de quartier |
-| **Concertations — site** | Les partenaires, comités et définitions |
+| **Concertations — site** | Les partenaires et les comités |
+| **Ressources — site** | Le catalogue des sources documentaires |
 
 > **Règle d'or** : on ajoute / modifie / supprime des **lignes**. On ne change
 > **jamais la première ligne** (les en-têtes de colonnes) ni les **noms des
 > onglets**. Si une colonne ne vous concerne pas, laissez-la vide.
 
 **Raccourci** : sur le site, chaque section modifiable affiche un petit
-**crayon** ✎ à côté de son titre (Glossaire, Concertations, panneau des Tables
-de quartier). Cliquer le crayon ouvre directement la bonne feuille Google.
+**crayon** ✎ à côté de son titre (Glossaire, Concertations, Ressources, panneau
+des Tables de quartier). Cliquer le crayon ouvre directement la bonne feuille
+Google.
 Sans accès en écriture, la feuille s'ouvre en lecture seule (avec possibilité
 de demander l'accès).
 
@@ -81,9 +83,14 @@ Une ligne = **un organisme membre** d'une table de quartier.
 
 ## 3. Concertations — feuille « Concertations — site »
 
-Elle a **cinq onglets** : `Partenaires`, `Comites`, `Composition`,
-`Definitions`, `Postures`. Les familles (groupes) ne sont plus un onglet à
-part : elles se déduisent automatiquement des colonnes `famille` / `groupe`.
+Elle a **trois onglets à modifier** : `Partenaires`, `Comites`, `Composition`.
+Les familles (groupes) ne sont plus un onglet à part : elles se déduisent
+automatiquement des colonnes `famille` / `groupe`.
+
+> Le **lexique** de bas de section et les **cinq postures de la DRSP** restent
+> affichés sur le site, mais ne se modifient plus ici : leurs onglets ont été
+> masqués. Leur contenu est figé et repris tel quel à chaque synchronisation.
+> Pour le faire évoluer, passez par l'administrateur·rice du site.
 
 ### Onglet `Partenaires` — les cases « Partenaires »
 Un partenaire = une ligne.
@@ -131,27 +138,43 @@ comité, renseignez `partenaire` avec son acronym. Une référence qui ne
 correspond à aucun comité / partenaire est signalée dans le journal de
 synchronisation et la ligne est ignorée.
 
-### Onglet `Definitions` — le lexique de bas de section
-| Colonne | À mettre |
-|---|---|
-| **terme** | Le terme défini, ex. `Communauté de pratique` |
-| **acronym** | Son sigle (facultatif), ex. `CoP` |
-| **definition** | La définition (le HTML simple comme `<em>…</em>` est permis) |
-
-### Onglet `Postures` — les cinq postures de la DRSP
-Une posture = une ligne. Cet onglet est **facultatif** : s'il est absent ou
-vide, la section n'apparaît simplement pas sur le site.
-
-| Colonne | À mettre |
-|---|---|
-| **ordre** | Numéro d'affichage : `1`, `2`, `3`… |
-| **posture** | Le nom de la posture, ex. `Convocatrice` |
-| **description** | Une phrase décrivant la posture |
-| **exemple** | Exemples concrets (le HTML simple comme `<strong>…</strong>` est permis) |
-
 > L'**ordre des lignes** des onglets `Partenaires` et `Comites` fixe l'ordre
 > d'affichage ; les familles/groupes apparaissent dans l'ordre de leur première
 > occurrence.
+
+---
+
+## 4. Ressources — feuille « Ressources — site », onglet `Ressources`
+
+Une ligne = **une source documentaire** affichée dans l'onglet Ressources du
+site (une fiche cliquable qui ouvre le document).
+
+| Colonne | À mettre |
+|---|---|
+| **Titre** | Le titre exact du document, tel qu'il doit s'afficher |
+| **Organisme** | L'auteur ou l'organisme éditeur, ex. `Organisation mondiale de la Santé (OMS)` |
+| **Date** | L'année (`2024`) ou l'année-mois (`2024-06`) |
+| **Etiquette** | **Une seule** valeur parmi `Contexte`, `DS`, `DC`, `Montréal`, `Outils` (liste déroulante) |
+| **Lien** | L'adresse complète du document, commençant par `https://` |
+
+- **Ajouter une source** : nouvelle ligne, remplissez les cinq colonnes.
+- **Retirer une source** : supprimez la ligne entière.
+- L'**ordre des lignes n'a pas d'importance** : le site trie lui-même (plus
+  récentes par défaut, avec un choix de tri à l'écran).
+- La **Date** ne sert qu'au tri et à l'affichage de l'année. Si vous ne
+  connaissez que l'année, mettez juste l'année.
+- Une ligne **sans titre ou sans lien est ignorée** (et signalée dans le journal
+  de synchronisation) ; le reste du catalogue n'est pas affecté.
+
+> **Les cinq étiquettes** : `Contexte` = politiques, plans et cadres
+> structurants · `DS` = développement social et déterminants sociaux de la santé
+> · `DC` = développement des communautés · `Montréal` = démarches et exemples de
+> terrain montréalais · `Outils` = outils pratiques et interactifs.
+
+> **Les pages couverture ne sont pas dans cette feuille.** Aujourd'hui toutes
+> les fiches affichent un aperçu générique. Pour ajouter une vraie page
+> couverture, il faut déposer une image dans le dépôt : demandez à
+> l'administrateur·rice. Vous n'avez rien à saisir dans la feuille pour ça.
 
 ---
 

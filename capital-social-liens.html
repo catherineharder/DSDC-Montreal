@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trois types de liens sociaux — DSDC Montréal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --cream:#F3EEE4; --ink:#101010; --accent:#D97B22; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:var(--cream);color:var(--ink);
+    font-family:'Inter',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:48px 28px;}
+
+  .fig{max-width:780px;width:100%;}
+  .fig h1{margin:0 0 20px;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15;}
+  .fig svg{display:block;width:100%;height:auto;
+    border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);padding:14px 0;}
+  .fig .src{margin:14px 0 0;font-size:13px;}
+
+  /* Traits du schéma : tout en noir, seuls les nœuds portent l'accent. */
+  .edge{stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;fill:none;}
+  .node{fill:var(--accent);stroke:var(--ink);stroke-width:2.5;}
+  .level{stroke:var(--ink);stroke-width:1.5;}
+  .link-dots{stroke:var(--ink);stroke-width:7;stroke-linecap:round;
+    stroke-dasharray:0.1 16;fill:none;}
+  .t{font-family:'Inter',Helvetica,Arial,sans-serif;fill:var(--ink);}
+  .t-name{font-size:18px;font-weight:800;}
+  .t-def{font-size:15px;}
+</style>
+</head>
+<body>
+
+  <div class="fig">
+    <h1>Trois types de liens sociaux composant le capital social</h1>
+
+    <svg viewBox="0 0 780 530" role="img"
+         aria-label="Schéma : le bonding relie les individus d'un même réseau, le bridging relie deux réseaux de même niveau, le linking relie des réseaux de niveaux hiérarchiques différents.">
+
+      <!-- ligne de partage entre les deux niveaux hiérarchiques -->
+      <line class="level" x1="10" y1="240" x2="770" y2="240"/>
+
+      <!-- linking : lien pointillé qui traverse les niveaux -->
+      <path class="link-dots" d="M 545 340 Q 470 245 325 143"/>
+
+      <!-- bridging : lien double entre deux réseaux de même niveau -->
+      <line class="edge" style="stroke-width:2.5" x1="200" y1="388" x2="512" y2="388"/>
+      <line class="edge" style="stroke-width:2.5" x1="200" y1="396" x2="512" y2="396"/>
+
+      <!-- réseau du haut (niveau supérieur) -->
+      <g>
+        <path class="edge" d="M262 42 H338 M262 42 L348 92 M338 42 L252 92 M252 92 L300 132 M348 92 L300 132"/>
+        <circle class="node" cx="262" cy="42" r="14"/>
+        <circle class="node" cx="338" cy="42" r="14"/>
+        <circle class="node" cx="252" cy="92" r="14"/>
+        <circle class="node" cx="348" cy="92" r="14"/>
+        <circle class="node" cx="300" cy="132" r="14"/>
+      </g>
+
+      <!-- réseau bas-gauche : liens internes = bonding -->
+      <g>
+        <path class="edge" d="M100 366 L132 420 M132 420 L160 358 M160 358 L200 392 M132 420 L152 442 M152 442 L200 392"/>
+        <circle class="node" cx="100" cy="366" r="14"/>
+        <circle class="node" cx="132" cy="420" r="14"/>
+        <circle class="node" cx="160" cy="358" r="14"/>
+        <circle class="node" cx="200" cy="392" r="14"/>
+        <circle class="node" cx="152" cy="442" r="14"/>
+      </g>
+
+      <!-- réseau bas-droite -->
+      <g>
+        <path class="edge" d="M522 340 H598 M522 340 L608 390 M598 340 L512 390 M512 390 L560 430 M608 390 L560 430"/>
+        <circle class="node" cx="522" cy="340" r="14"/>
+        <circle class="node" cx="598" cy="340" r="14"/>
+        <circle class="node" cx="512" cy="390" r="14"/>
+        <circle class="node" cx="608" cy="390" r="14"/>
+        <circle class="node" cx="560" cy="430" r="14"/>
+      </g>
+
+      <!-- étiquettes -->
+      <text class="t t-name" x="470" y="70">Linking</text>
+      <text class="t t-def" x="470" y="94">entre individus de réseaux</text>
+      <text class="t t-def" x="470" y="115">de niveaux hiérarchiques</text>
+      <text class="t t-def" x="470" y="136">différents</text>
+
+      <text class="t t-name" x="30" y="296">Bonding</text>
+      <text class="t t-def" x="30" y="320">au sein d'un</text>
+      <text class="t t-def" x="30" y="341">même réseau</text>
+
+      <text class="t t-name" x="245" y="464">Bridging</text>
+      <text class="t t-def" x="245" y="488">entre individus de réseaux</text>
+      <text class="t t-def" x="245" y="509">différents, mais de même niveau</text>
+    </svg>
+
+    <p class="src">Schéma adapté d'Aldrich, 2012, p. 34.</p>
+  </div>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 # Installation et mise en ligne — procédure complète
 
 Ce guide explique, étape par étape, comment **mettre le site en ligne sur GitHub
-Pages** et **brancher les trois feuilles Google** qui alimentent le site. Suivez
+Pages** et **brancher les quatre feuilles Google** qui alimentent le site. Suivez
 les sections dans l'ordre. Comptez environ 30 minutes la première fois.
 
 Public visé : la personne qui administre le dépôt (vous). Pour la personne qui
@@ -14,7 +14,7 @@ mettra le contenu à jour ensuite (votre superviseur·e), voir
 
 ```
    Vous / superviseur·e
-   modifiez 3 feuilles Google
+   modifiez 4 feuilles Google
             │
             ▼
    Chaque nuit (03h00 UTC), GitHub Actions lance sync/sync_all.py
@@ -139,7 +139,7 @@ le workflow à la main.
   `node_modules/` (~25 Mo), `__pycache__/`, `.DS_Store` et les anciens scripts
   remplacés (`scripts/sync_acronymes.py`, `tools/build_concertations.py`,
   `tools/build_members.py`) ont été retirés.
-- **`tables_de_quartier.csv` / `tables_de_quartier.xlsx`** (à la racine) : ce
+- **`Tables_de_quartier.csv` / `Tables_de_quartier.xlsx`** (à la racine) : ce
   sont les **données d'origine** des tables de quartier. Elles ne servent plus à
   alimenter le site (c'est la feuille Google qui le fait), mais on les garde comme
   archive de provenance. Vous pouvez les supprimer si vous préférez ; sans effet

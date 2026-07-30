@@ -33,8 +33,8 @@ assets/
     concertations.data.js       DONNÉES Concertations — GÉNÉRÉ depuis la feuille Google « Concertations »
 
 sync/                           SYNCHRONISATION : feuilles Google -> fichiers du site (voir SETUP.md)
-  sync_all.py                   Point d'entrée : lit sync/config.json, régénère les 3 fichiers générés
-  config.json                   ID des 3 feuilles Google + onglets + fichier de sortie
+  sync_all.py                   Point d'entrée : lit sync/config.json, régénère les fichiers générés
+  config.json                   ID des feuilles Google + onglets + fichier de sortie
   builders/
     common.py                   Téléchargement d'un onglet de feuille en CSV (export gviz public)
     glossaire.py                feuille « Acronymes »  -> acronymes.html
@@ -48,22 +48,29 @@ tools/
   build_tables_quartier.py      OUTIL HORS LIGNE : régénère la géométrie de la carte des tables
                                 (exige GeoJSON + shapely ; ne tourne pas en CI). Voir tools/README.md.
 
-feuilles-sources-google/        Classeurs Excel de départ pour créer les 3 feuilles (ignoré par git)
+feuilles-sources-google/        Classeurs Excel de départ pour créer les feuilles (ignoré par git)
 SETUP.md                        Mise en ligne + branchement des feuilles (à lire en premier)
 GUIDE-SUPERVISEUR.md            Comment éditer le contenu via les feuilles Google
 ```
 
-### Trois sources de contenu, un seul mécanisme
+### Quatre sources de contenu, un seul mécanisme
 
-Le contenu **éditable** du site provient de **trois feuilles Google** lues chaque
+Le contenu **éditable** du site provient de **quatre feuilles Google** lues chaque
 nuit par `sync/sync_all.py` (GitHub Action). Voir **SETUP.md** pour le branchement
 et **GUIDE-SUPERVISEUR.md** pour l'édition au quotidien.
 
 | Feuille Google | Fichier régénéré | Onglet(s) |
 |---|---|---|
 | Glossaire | `acronymes.html` | `Acronymes` |
-| Concertations | `assets/data/concertations.data.js` | `Partenaires`, `Comites`, `Composition`, `Definitions` |
+| Concertations | `assets/data/concertations.data.js` | `Partenaires`, `Comites`, `Composition` |
 | Tables de quartier | `assets/data/tables-quartier.members.js` | `Membres` |
+| Ressources | `assets/data/ressources.data.js` | `Ressources` |
+
+Les onglets `Definitions` et `Postures` de la feuille Concertations sont masqués
+depuis juillet 2026 : leur contenu reste affiché sur le site et est recopié tel
+quel à chaque synchronisation (`FROZEN_TABS` dans `sync/builders/concertations.py`).
+Les **pages couverture** des Ressources ne sont pas dans la feuille : elles se
+rattachent par le nom du fichier déposé dans `images/ressources/`.
 
 Aucun secret ni clé d'API : les feuilles sont lues via l'export CSV public de
 Google (gviz), il suffit qu'elles soient partagées « lecteur par lien ».

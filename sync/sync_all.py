@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 """Synchronisation unifiée du site « Ressources EUSP ».
 
-Régénère, à partir de trois feuilles Google partagées en lecture par lien :
+Régénère, à partir des feuilles Google partagées en lecture par lien :
 
     glossaire      -> acronymes.html
     concertations  -> assets/data/concertations.data.js
     tables         -> assets/data/tables-quartier.members.js
+    ressources     -> assets/data/ressources.data.js
 
 Lancé chaque nuit par .github/workflows/sync.yml (et à la demande).
 Configuration des feuilles : sync/config.json.
@@ -30,14 +31,14 @@ import glossaire       # noqa: E402
 import concertations   # noqa: E402
 import tables          # noqa: E402
 import deputes         # noqa: E402
-import assets          # noqa: E402
+import ressources      # noqa: E402
 
 RUNNERS = {
     "glossaire": glossaire.run,
     "concertations": concertations.run,
     "tables": tables.run,
     "deputes": deputes.run,
-    "assets": assets.run,
+    "ressources": ressources.run,
 }
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Députés : feuille Google (Circonscription | député | parti | coordonnées)
+"""Députés : feuille Google (circonscription | parti | député | contact)
 -> assets/data/deputes-overrides.data.js (window.DEPUTES_OVERRIDES).
 
 Surcharge LÉGÈRE. Ne régénère pas la géométrie ni la liste complète des
@@ -9,7 +9,7 @@ appliqué au chargement par assets/js/deputes.js, qui rapproche chaque ligne par
 NOM DE CIRCONSCRIPTION (accents et casse ignorés).
 
 Onglet attendu : « Deputes » avec les colonnes
-    Circonscription | Député | Parti | Coordonnées
+    circonscription | parti | député | contact
 (l'ordre et la casse des en-têtes importent peu ; les accents sont ignorés.)
 
 Bibliothèque standard seulement.

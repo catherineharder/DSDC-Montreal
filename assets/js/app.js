@@ -19,8 +19,11 @@ const EDIT_SHEETS = {
   concertations: "https://docs.google.com/spreadsheets/d/1dDpLbIMQCE9OoCvnZNVQc0R8gkmydV8I/edit",
   tables: "https://docs.google.com/spreadsheets/d/11P0JPIxhEmf3EFvXxVx2z_NYmQ-oNo7u/edit",
   glossaire: "https://docs.google.com/spreadsheets/d/1RRaZ4SMFaWm3m78ypPufWrClJymn4y7n/edit",
+  ressources: "https://docs.google.com/spreadsheets/d/1TKfEQ7vTnAypJrHuyAGoiKELpwFSOTtm/edit",
+  deputes: "https://docs.google.com/spreadsheets/d/1cZ5BwEkoDH5FjCgQwr6Ud15VejUOQ2oY/edit",
 };
 const editPencil = (url) =>
+  !url ? "" :
   `<a class="edit-pencil" href="${url}" target="_blank" rel="noopener" ` +
   `title="Suggérer une modification (ouvre la feuille Google)" aria-label="Suggérer une modification">` +
   `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" ` +

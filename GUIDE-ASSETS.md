@@ -1,52 +1,59 @@
-# Ajouter des visuels depuis Notion
+# Ajouter des visuels au site
 
-Le site va chercher les images sur la page Notion **« Assets »** et les place tout
-seul dans `images/assets/`, exactement comme il synchronise déjà le glossaire et
-les concertations depuis Google Sheets.
+Les visuels du site (logos, schémas, illustrations) vivent dans `images/assets/`
+et sont associés à un emplacement de la page par le manifeste
+`assets/data/assets-manifest.js`.
 
-## Comment ça marche pour toi (au quotidien)
+> **Aucun jeton, aucun secret, aucune connexion à Notion n'est nécessaire — ni
+> ici, ni dans GitHub.** Le site ne va chercher aucune image tout seul. La
+> synchronisation de nuit ne touche qu'aux feuilles Google (texte), jamais aux
+> images.
 
-1. Ouvre la page Notion **Assets**.
-2. Colle ton image (logo, schéma, page couverture, etc.).
-3. **Donne-lui une légende** (clic sur l'image → « Légende »). Cette légende est
-   son **étiquette** — c'est elle qui décide où l'image atterrit.
-4. Lance la synchro (bouton Synchro du site, ou attends la synchro de nuit).
+## Comment ça marche
 
-C'est tout. L'image apparaît au bon endroit.
+Trois pièces, et rien d'autre :
 
-### Étiquettes réservées (remplissent un emplacement existant du site)
+1. **L'image** dans `images/assets/`, nommée d'après son étiquette
+   (ex. `structure-systeme-sante.png`).
+2. **Une ligne dans le manifeste** `assets/data/assets-manifest.js` :
+   `"structure-systeme-sante": "images/assets/structure-systeme-sante.png"`.
+3. **Un emplacement dans la page** qui porte `data-asset="structure-systeme-sante"`.
+   Au chargement, `assets/js/assets.js` remplit chaque emplacement avec l'image
+   correspondante et masque le cadre « à ajouter ».
 
-| Étiquette (légende) | Emplacement rempli |
+## Étiquettes déjà utilisées
+
+| Étiquette | Emplacement rempli |
 |---|---|
 | `structure-systeme-sante` | Cartes → Santé Québec → « Structure du système » |
 | `developpement-des-communautes` | Accueil → section Développement des communautés |
-| `assemblee-nationale` | Cartes → Circonscriptions (logo) |
+| `assemblee-nationale` | Cartes → Députés (logo) |
 
-Toute autre étiquette est aussi téléchargée et référencée dans le manifeste ; pour
-l'afficher ailleurs, on ajoute `data-asset="ton-etiquette"` à l'endroit voulu.
+Pour afficher une image ailleurs, on ajoute `data-asset="mon-etiquette"` à
+l'endroit voulu dans la page.
 
-## Réglage initial (une seule fois)
+## Ajouter une image
 
-La page Notion est privée : le script a besoin d'un **jeton d'intégration Notion**.
+Le plus simple : demandez à Claude, en lui disant que vous avez déposé l'image
+dans la page Notion **Assets**. La compétence `notion-assets-sync` fait tout le
+trajet — elle récupère l'image, la nomme, la place dans `images/assets/`, met le
+manifeste à jour et la relie à son emplacement.
 
-1. Va sur https://www.notion.so/my-integrations → **New integration** (interne),
-   nomme-la p. ex. « DSDC site », copie le **jeton secret** (`ntn_…`).
-2. Ouvre la page **Assets** dans Notion → menu `•••` → **Connexions** → ajoute
-   ton intégration (pour lui donner accès à la page).
-3. Fournis le jeton au script via la variable d'environnement `NOTION_TOKEN` :
-   - **En local** : `export NOTION_TOKEN="ntn_…"` avant de lancer la synchro.
-   - **GitHub Actions** (synchro de nuit) : Settings → Secrets and variables →
-     Actions → **New repository secret**, nom `NOTION_TOKEN`, valeur = le jeton ;
-     puis exposer `NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}` dans le workflow.
+Cette compétence tourne **sur votre ordinateur**, dans votre session Claude. Elle
+lit Notion avec votre propre connexion Notion : le site, le dépôt GitHub et la
+synchronisation de nuit n'ont aucun accès à Notion et n'en ont pas besoin.
 
-Le `page_id` de la page Assets est déjà rempli dans `sync/config.json`.
+À la main, si vous préférez :
 
-## Lancer manuellement
+1. Déposez le fichier dans `images/assets/`, en minuscules, sans accent ni
+   espace (ex. `mon-schema.png`).
+2. Ajoutez sa ligne dans `assets/data/assets-manifest.js`.
+3. Vérifiez qu'un emplacement de la page porte bien le `data-asset`
+   correspondant.
+4. Poussez sur GitHub.
 
-```bash
-export NOTION_TOKEN="ntn_…"
-python3 sync/sync_all.py assets
-```
+## Pages couverture des Ressources
 
-Le script écrit les images dans `images/assets/` et le manifeste
-`assets/data/assets-manifest.js`. Rien à éditer à la main.
+Elles suivent une mécanique **différente et automatique** : voir
+`images/ressources/LISEZ-MOI.md`. Il n'y a ni manifeste ni `data-asset` à
+remplir — le nom du fichier suffit.

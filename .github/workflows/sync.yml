@@ -1,7 +1,8 @@
 name: Synchronisation du site depuis Google Sheets
 
-# Régénère acronymes.html, concertations.data.js et tables-quartier.members.js
-# à partir des trois feuilles Google configurées dans sync/config.json.
+# Régénère acronymes.html, concertations.data.js, tables-quartier.members.js
+# et ressources.data.js à partir des feuilles Google configurées dans
+# sync/config.json.
 #
 # S'exécute :
 #   - chaque jour à 03h00 UTC (≈ 23h00 au Québec en EDT, 22h00 en EST)
@@ -11,9 +12,9 @@ name: Synchronisation du site depuis Google Sheets
 # public de Google (gviz). Chaque feuille doit être partagée « Tout le monde
 # disposant du lien : Lecteur ». Voir SETUP.md.
 #
-# Visuels Notion (facultatif) : si le secret NOTION_TOKEN est défini
-# (Settings → Secrets and variables → Actions), les images de la page Notion
-# « Assets » sont aussi téléchargées dans images/assets/. Voir GUIDE-ASSETS.md.
+# Aucun secret n'est utilisé par ce workflow. Les visuels du site ne sont PAS
+# synchronisés ici : ils sont déposés à la main dans images/assets/ (voir
+# GUIDE-ASSETS.md).
 
 on:
   schedule:
@@ -40,16 +41,18 @@ jobs:
           python-version: "3.x"
 
       - name: Régénérer les fichiers du site depuis les feuilles
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python3 sync/sync_all.py
 
       - name: Pousser les changements
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add acronymes.html assets/data/concertations.data.js assets/data/tables-quartier.members.js
-          git add -A images/assets assets/data/assets-manifest.js
+          git add acronymes.html
+          git add assets/data/concertations.data.js
+          git add assets/data/tables-quartier.members.js
+          git add assets/data/ressources.data.js
+          git add assets/data/deputes-overrides.data.js
+          git add -A images/ressources
           if git diff --cached --quiet; then
             echo "Aucun changement à pousser."
           else

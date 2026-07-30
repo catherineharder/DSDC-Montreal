@@ -97,8 +97,39 @@ def cat_rank(cat):
     return 2
 
 
+# Les en-têtes de la feuille sont écrits en français (« acronyme », « comité »)
+# alors que le code utilise des clés courtes historiques. On normalise à la
+# lecture : accents, casse et espaces ignorés, puis synonymes rapprochés. Les
+# deux orthographes restent acceptées, pour que renommer une colonne dans la
+# feuille ne casse jamais la synchronisation.
+ALIAS_ENTETES = {
+    "acronyme": "acronym", "acronym": "acronym", "sigle": "acronym",
+    "comite": "comite", "comité": "comite",
+    "categorie": "categorie", "catégorie": "categorie",
+    "definition": "definition", "définition": "definition",
+    "deputee": "depute", "depute": "depute",
+}
+
+
+def _cle_entete(nom):
+    s = unicodedata.normalize("NFKD", (nom or "").strip().lower())
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return ALIAS_ENTETES.get(s, s)
+
+
 def csv_to_dicts(text):
-    return list(csv.DictReader(io.StringIO(text)))
+    rdr = csv.reader(io.StringIO(text))
+    rows = list(rdr)
+    if not rows:
+        return []
+    entetes = [_cle_entete(c) for c in rows[0]]
+    out = []
+    for row in rows[1:]:
+        d = {}
+        for i, k in enumerate(entetes):
+            d[k] = row[i] if i < len(row) else ""
+        out.append(d)
+    return out
 
 
 def _check_unique(kind, pairs):
@@ -141,7 +172,7 @@ def build(tabs):
     part = csv_to_dicts(tabs["Partenaires"])
     com = csv_to_dicts(tabs["Comites"])
     comp = csv_to_dicts(tabs["Composition"])
-    defs = csv_to_dicts(tabs["Definitions"])
+    defs = csv_to_dicts(tabs.get("Definitions") or "")
     warnings = []
 
     # --- Partenaires : clé = slug(acronym) ; familles dans l'ordre d'apparition
@@ -275,20 +306,52 @@ def render_js(conc):
         conc, ensure_ascii=False, indent=2) + ";\n"
 
 
-TABS = ["Partenaires", "Comites", "Composition", "Definitions"]
-OPTIONAL_TABS = ["Postures"]
+TABS = ["Partenaires", "Comites", "Composition"]
+
+# « Definitions » et « Postures » ne sont plus édités dans la feuille (onglets
+# masqués, juillet 2026). Ils restent affichés sur le site : quand l'onglet est
+# absent ou inaccessible, on RECOPIE le contenu déjà publié au lieu de vider la
+# section. Sans ce gel, une synchronisation aurait effacé le lexique et les cinq
+# postures du jour au lendemain, sans que personne n'ait rien supprimé.
+FROZEN_TABS = {"Definitions": "defs", "Postures": "postures"}
+
+
+def _publie(repo_root, sortie):
+    """Relit le concertations.data.js déjà publié -> dict window.CONC ({} si absent)."""
+    p = repo_root / sortie
+    if not p.exists():
+        return {}
+    txt = p.read_text(encoding="utf-8")
+    i = txt.find("window.CONC")
+    if i < 0:
+        return {}
+    debut = txt.find("{", i)
+    fin = txt.rfind("}")
+    if debut < 0 or fin <= debut:
+        return {}
+    try:
+        return json.loads(txt[debut:fin + 1])
+    except ValueError:
+        return {}
 
 
 def run(cfg, fetch, repo_root):
     # Les onglets sont fixés par le schéma ; on ignore tout « tabs » du config.
     tabs = {t: fetch(cfg["sheet_id"], t) for t in TABS}
-    for t in OPTIONAL_TABS:
+    for t in FROZEN_TABS:
         try:
             tabs[t] = fetch(cfg["sheet_id"], t)
-        except Exception:  # noqa: BLE001 — onglet absent : section omise
-            print(f"[note] onglet optionnel « {t} » absent ou inaccessible ; "
-                  "section omise.")
+        except Exception:  # noqa: BLE001 — onglet masqué ou retiré
+            pass
     conc, warnings = build(tabs)
+
+    # Onglet indisponible OU présent mais vide : on garde le contenu publié.
+    ancien = _publie(repo_root, cfg["output"])
+    for onglet, cle in FROZEN_TABS.items():
+        if not conc.get(cle) and ancien.get(cle):
+            conc[cle] = ancien[cle]
+            print(f"[note] onglet « {onglet} » absent ou vide ; "
+                  f"contenu publié conservé ({len(conc[cle])} entrées).")
     for w in sorted(set(warnings)):
         print(f"[attention] {w}")
     (repo_root / cfg["output"]).write_text(render_js(conc), encoding="utf-8")

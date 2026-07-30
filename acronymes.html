@@ -3,6 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* Même garde-fou que cadre.html : cette page vit dans l'iframe de index.html,
+   qui porte la barre de navigation. Atteinte seule en haut de fenêtre, elle
+   privait le visiteur de toute navigation. On renvoie vers /glossaire. */
+(function () {
+  if (window.top !== window.self) return;
+  if (!/^https?:$/.test(location.protocol)) return;
+  if (!/\/acronymes\.html$/.test(location.pathname)) return;
+  location.replace(
+    location.pathname.replace(/\/acronymes\.html$/, "/glossaire") +
+    location.search + location.hash
+  );
+})();
+</script>
 <title>Glossaire des acronymes — DSDC Montréal</title>
 <meta name="description" content="Les acronymes du milieu du développement social et de la santé publique à Montréal, de A à Z. Cherchable et synchronisé depuis la feuille de référence.">
 <link rel="canonical" href="https://dsdcmontreal.ca/glossaire">

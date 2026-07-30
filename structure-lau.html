@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Structure LAU — DSDC Montréal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --cream:#F3EEE4; --ink:#101010; --accent:#D97B22; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:var(--cream);color:var(--ink);
+    font-family:'Inter',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:48px 28px;}
+
+  .lau{max-width:760px;width:100%;}
+  .lau h1{margin:0 0 20px;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15;}
+  .lau .rows{border-top:1.5px solid var(--ink);}
+
+  .row{display:grid;grid-template-columns:130px 96px 1fr;align-items:center;gap:16px;
+    padding:12px 0;border-bottom:1.5px solid var(--ink);}
+  .org{font-size:15px;font-weight:600;}
+  .doc{font-size:15px;font-weight:800;color:var(--accent);}
+  .label{font-size:15px;}
+  .row.sub .org{padding-left:22px;font-size:14px;}
+
+  @media (max-width:620px){
+    .row{grid-template-columns:1fr;gap:2px;padding:12px 0;}
+    .row.sub .org{padding-left:0;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="lau">
+    <h1>Loi sur l'aménagement et l'urbanisme (LAU)</h1>
+
+    <div class="rows">
+    <div class="row"><div class="org">MAMH</div><div class="doc">OGAT</div>
+      <div class="label">Orientations gouvernementales en aménagement du territoire</div></div>
+
+    <div class="row"><div class="org">CMM</div><div class="doc">PMAD</div>
+      <div class="label">Plan métropolitain d'aménagement et de développement</div></div>
+
+    <div class="row"><div class="org">Agglo. MTL</div><div class="doc">SAD</div>
+      <div class="label">Schéma d'aménagement et de développement</div></div>
+
+    <div class="row"><div class="org">Ville de MTL</div><div class="doc">PUM</div>
+      <div class="label">Plan d'urbanisme et de mobilité</div></div>
+
+    <div class="row"><div class="org">Secteur</div><div class="doc">PDAD</div>
+      <div class="label">Plan directeur d'aménagement et de développement</div></div>
+
+    <div class="row sub"><div class="org">↳</div><div class="doc">PPU</div>
+      <div class="label">Programme particulier d'urbanisme</div></div>
+    </div>
+  </div>
+
+</body>
+</html>

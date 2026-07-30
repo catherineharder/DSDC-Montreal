@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* cadre.html est conçue pour vivre dans l'iframe de index.html, qui fournit la
+   barre de navigation du site. Atteinte directement en haut de fenêtre
+   (résultat de recherche, « Recharger le cadre », signet, ouverture de l'iframe
+   dans un nouvel onglet), elle s'affichait seule : plus de nav, aucun moyen de
+   revenir aux autres sections. On renvoie alors vers /cadre, qui charge la
+   coquille du site avec cette page à l'intérieur.
+   Pas de boucle possible : après la redirection le chemin n'est plus
+   « /cadre.html », donc la condition ne se vérifie plus. */
+(function () {
+  if (window.top !== window.self) return;            // déjà dans le site
+  if (!/^https?:$/.test(location.protocol)) return;  // ouverture locale en file://
+  if (!/\/cadre\.html$/.test(location.pathname)) return;
+  location.replace(
+    location.pathname.replace(/\/cadre\.html$/, "/cadre") +
+    location.search + location.hash
+  );
+})();
+</script>
 <title>Cadre conceptuel DSDC — DSDC Montréal</title>
 <meta name="description" content="Le cadre conceptuel du développement social et du développement des communautés : 44 concepts cliquables, des intrants aux résultats visés, avec exemples montréalais.">
 <link rel="canonical" href="https://dsdcmontreal.ca/cadre">
@@ -48,7 +67,13 @@ html, body {
 }
 .app { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); height: 100vh; width: 100vw; position: relative; }
 .left { position: relative; background: var(--bg); border-right: 1px solid var(--border); overflow-y: auto; padding: 24px 32px; }
-.left-header { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+/* En-tête de la colonne de gauche (onglets + « Vue d'ensemble » + recherche).
+   Il défilait avec le cadre : passé quelques centaines de pixels vers le bas,
+   plus aucun moyen de changer d'onglet ni de revenir à la vue d'ensemble. Il
+   reste désormais collé en haut. Les marges négatives puis le rembourrage
+   redonnent les 24/32px de .left, pour que le contenu passe derrière et non
+   à côté. */
+.left-header { position: sticky; top: -24px; z-index: 25; background: var(--bg); margin: -24px -32px 18px; padding: 24px 32px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .home-btn { background: none; border: 1px solid var(--border); color: var(--gray); padding: 5px 10px; border-radius: 7px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
 .home-btn:hover { background: var(--pink-light); color: var(--accent); border-color: var(--pink-medium); }
 /* Onglets — même langage visuel que la page Cartes (.map-pick) */

@@ -22,7 +22,7 @@
   root.innerHTML =
     '<div class="res-wrap">' +
       '<header class="res-hero">' +
-        '<h1>Ressources</h1>' +
+        '<h1>Ressources' + editPencil(EDIT_SHEETS.ressources) + '</h1>' +
       '</header>' +
       '<div class="res-tools">' +
         '<div class="res-search"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>' +
