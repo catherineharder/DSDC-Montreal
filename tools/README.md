@@ -1,8 +1,37 @@
-# tools/ — outils hors ligne (cartographie)
+# tools/ — outils hors ligne
 
 Ce dossier ne contient **pas** de code qui tourne sur GitHub. C'est de l'outillage
-ponctuel, à lancer à la main sur un poste, uniquement pour **refabriquer la
-géométrie de la carte des tables de quartier**.
+ponctuel, à lancer à la main sur un poste, pour refabriquer des fichiers du site
+à partir d'une source externe : la géométrie des cartes, et le cadre conceptuel.
+
+## build_cadre.py
+
+À lancer **après chaque réexport du cadre conceptuel depuis Illustrator** :
+
+```bash
+python3 tools/build_cadre.py
+```
+
+Le geste complet, quand le dessin change :
+
+1. dans Illustrator, exporter en SVG (Objet ID : **Nom de calque**, Style :
+   CSS interne, Police : conserver le texte, Réactif : coché) ;
+2. enregistrer le fichier à la racine du dépôt sous le nom `cadre.svg`, en
+   écrasant l'ancien — ce fichier n'est jamais retouché à la main ;
+3. lancer la commande ci-dessus.
+
+Le script insère le dessin dans `cadre-frame.html`, rend chaque calque nommé
+« … box » cliquable, et affiche à la fin la liste des fiches encore vides.
+
+Deux choses à savoir :
+
+- la correspondance entre un calque d'Illustrator et sa fiche est fixée par la
+  table `BOXES`, en tête du script. Si vous **renommez** un calque, corrigez le
+  nom à gauche dans `BOXES` : le texte déjà rédigé reste rattaché à la bonne
+  boîte. Si vous **ajoutez** une boîte, ajoutez-y une ligne ; le script s'arrête
+  et vous dit lequel des calques attendus a disparu ;
+- le **contenu** des fiches vit dans `assets/data/cadre.data.js` et ne dépend pas
+  d'Illustrator. Rédiger un texte n'oblige à relancer aucun script.
 
 ## build_tables_quartier.py
 
