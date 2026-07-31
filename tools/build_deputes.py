@@ -207,16 +207,16 @@ out.append("const DEPUTES_GEOMETRY = " +
            json.dumps(paths, ensure_ascii=False, indent=0) + ";\n")
 out.append("const DEPUTES = " +
            json.dumps(records, ensure_ascii=False, indent=1) + ";\n")
-# Couleurs de parti accordées à la palette DSDC (crème + accents terreux) plutôt
-# qu'aux hex officiels des partis, trop saturés à côté du reste du site : rouge,
-# orange, sarcelle et olive sont repris tels quels de :root (app.css) ; le bleu du
-# PQ est une version assourdie du bleu marine. Aucun gris (règle d'identité DSDC).
-out.append('/* Couleurs de parti accordées à la palette DSDC (crème + accents terreux) plutôt\n'
-           "   qu'aux hex officiels des partis : rouge, orange, sarcelle et olive sont repris\n"
-           '   tels quels de :root ; le bleu du PQ est une version assourdie du bleu marine. */\n'
+# Couleurs officielles des partis, adoucies non par les hex mais par le
+# remplissage à 55 % des tracés (.arr dans app.css). « Indépendant·e » n'a pas de
+# couleur officielle : gris chaud, seule exception à la règle « aucun gris ».
+out.append('/* Couleurs officielles des partis. Elles sont adoucies non pas en changeant les\n'
+           '   hex, mais par le remplissage à 55 % des tracés (.arr dans app.css), ce qui les\n'
+           "   accorde à la palette crème. « Indépendant·e » n'a pas de couleur officielle :\n"
+           '   gris chaud, neutre à côté des quatre teintes de parti. */\n'
            'const PARTY_COLORS = {\n'
-           ' "PLQ": "#C43E42",\n "QS": "#D97A22",\n "CAQ": "#46747F",\n'
-           ' "PQ": "#34506B",\n "IND": "#6C6F3F",\n};\n')
+           ' "PLQ": "#d31f2c",\n "QS": "#ff5605",\n "CAQ": "#00addc",\n'
+           ' "PQ": "#1a3c8f",\n "IND": "#8F8B85",\n};\n')
 DEST = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                     "..", "assets", "data", "deputes.data.js")
 open(os.path.normpath(DEST), "w", encoding="utf-8").write("\n".join(out))

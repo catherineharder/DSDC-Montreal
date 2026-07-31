@@ -526,13 +526,14 @@ const DEPUTES = {
  }
 };
 
-/* Couleurs de parti accordées à la palette DSDC (crème + accents terreux) plutôt
-   qu'aux hex officiels des partis : rouge, orange, sarcelle et olive sont repris
-   tels quels de :root ; le bleu du PQ est une version assourdie du bleu marine. */
+/* Couleurs officielles des partis. Elles sont adoucies non pas en changeant les
+   hex, mais par le remplissage à 55 % des tracés (.arr dans app.css), ce qui les
+   accorde à la palette crème. « Indépendant·e » n'a pas de couleur officielle :
+   gris chaud, neutre à côté des quatre teintes de parti. */
 const PARTY_COLORS = {
- "PLQ": "#C43E42",
- "QS": "#D97A22",
- "CAQ": "#46747F",
- "PQ": "#34506B",
- "IND": "#6C6F3F",
+ "PLQ": "#d31f2c",
+ "QS": "#ff5605",
+ "CAQ": "#00addc",
+ "PQ": "#1a3c8f",
+ "IND": "#8F8B85",
 };
