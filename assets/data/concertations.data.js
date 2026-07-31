@@ -451,10 +451,7 @@ window.CONC = {
         {
           "id": "citoyennes-et-citoyens",
           "ac": "Citoyennes et citoyens",
-          "coms": [
-            "comite-citoyen-msam",
-            "conseil-citoyen-equite"
-          ]
+          "coms": []
         },
         {
           "id": "benevoles",
@@ -592,7 +589,7 @@ window.CONC = {
       "name": "GR Alimentation",
       "full": "Groupe de répondants en alimentation",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Groupe de répondants thématique sur l'alimentation. Décline à Montréal les travaux nationaux en alimentation; plusieurs équipes EUSP y participent.",
       "under": "TCNPP",
       "comp": [
@@ -608,7 +605,7 @@ window.CONC = {
       "name": "GR Pauvreté et DC",
       "full": "Groupe de répondants en pauvreté et développement des communautés",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Groupe de répondants thématique sur la pauvreté et le développement des communautés. Décline à Montréal les travaux nationaux; plusieurs équipes EUSP y participent.",
       "under": "TCNPP",
       "comp": [
@@ -624,7 +621,7 @@ window.CONC = {
       "name": "CAR",
       "full": "Conférence administrative régionale",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Coordination des ministères et organismes du gouvernement du Québec à l'échelle de la région de Montréal.",
       "comp": [
         {
@@ -667,7 +664,7 @@ window.CONC = {
       "name": "TRSP",
       "full": "Table régionale de santé publique",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Principal lieu de gouvernance en santé publique à l'échelle de l'île. Décline le PNSP et le PARI-SP, arbitre les priorités régionales et suit la mise en œuvre des plans d'action.",
       "comp": [
         {
@@ -702,7 +699,7 @@ window.CONC = {
       "name": "Comité conjoint SP-communautaire",
       "full": "Comité conjoint santé publique et milieu communautaire",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Plateforme de transmission d’information sur la santé publique régionale (enjeux, bons coups, besoins) de la part de tous les membres, à relayer dans les réseaux. Porte d’entrée pour amener des enjeux de santé publique régionaux, à travailler en sous-comité.",
       "under": "TRSP",
       "comp": [
@@ -794,7 +791,7 @@ window.CONC = {
       "name": "CCSP",
       "full": "Comité de coordination de santé publique",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Comité de coordination de santé publique, sous la TRSP. Regroupe notamment la CoP EUSP. <span class='tbc'>Structure tirée de l'organigramme 2024, à confirmer.</span>",
       "under": "TRSP",
       "comp": [
@@ -810,7 +807,7 @@ window.CONC = {
       "name": "CoP EUSP",
       "full": "Communauté de pratique, EUSP",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Favoriser le développement professionnel des équipes de santé publique œuvrant au niveau local et travaillant à la réduction des inégalités sociales de santé et au développement des communautés.",
       "under": "CCSP",
       "comp": [
@@ -842,7 +839,7 @@ window.CONC = {
       "name": "CoP Participation citoyenne",
       "full": "Communauté de pratique, Participation citoyenne",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Communauté de pratique sur la participation citoyenne.",
       "under": "CCSP",
       "comp": [
@@ -866,7 +863,7 @@ window.CONC = {
       "name": "CoP Langage clair",
       "full": "Communauté de pratique, Langage clair",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Communauté de pratique sur la communication en langage clair.",
       "under": "CCSP",
       "comp": [
@@ -902,7 +899,7 @@ window.CONC = {
       "name": "GT sécurité alimentaire",
       "full": "Groupe de travail sécurité alimentaire",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "<span class='tbc'>À confirmer.</span>",
       "neu": true,
       "under": "CCSP",
@@ -914,7 +911,7 @@ window.CONC = {
       "name": "GT communautés noires",
       "full": "Groupe de travail intersectoriel pour le bien-être des communautés noires",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Groupe de travail intersectoriel pour le bien-être des communautés noires. <span class='tbc'>Rattachement au CCSP à confirmer.</span>",
       "under": "CCSP",
       "comp": []
@@ -925,7 +922,7 @@ window.CONC = {
       "name": "Alliance pour la solidarité",
       "full": "Alliance pour la solidarité",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Mécanisme régional de concertation et de financement de projets de lutte contre la pauvreté et l'exclusion sociale.",
       "comp": [
         {
@@ -960,7 +957,7 @@ window.CONC = {
       "name": "Alliance, sous-comités",
       "full": "Alliance pour la solidarité, sous-comités",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Sous-comités de mise en œuvre de l'Alliance pour la solidarité.",
       "under": "Alliance pour la solidarité",
       "comp": [
@@ -992,7 +989,7 @@ window.CONC = {
       "name": "Instance stratégique",
       "full": "Instance stratégique des bailleurs de fonds",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Maximiser la cohérence et la complémentarité des leviers des institutions et des milieux communautaire et philanthropique pour agir comme catalyseur d’amélioration des conditions de vie des communautés montréalaises. Espace volontaire d’échange, l’Instance n’est pas un lieu de décision.",
       "comp": [
         {
@@ -1059,7 +1056,7 @@ window.CONC = {
       "name": "IMSDSL Comité de pilotage",
       "full": "Initiative montréalaise de soutien au développement social local, Comité de pilotage",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Protéger l'intégrité de l'Initiative, déterminer ses grandes orientations stratégiques et veiller à leur respect. Instance décisionnelle (droit de vote par réseau); confirme annuellement le financement et organise un rendez-vous stratégique aux 2 ans.",
       "comp": [
         {
@@ -1102,7 +1099,7 @@ window.CONC = {
       "name": "IMSDSL Comité de coordination",
       "full": "Initiative montréalaise, Comité de coordination",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Assurer la mise en œuvre du plan d'action, la gestion courante et la promotion de l'Initiative. Analyse conjointe de la reddition de comptes; transmet au comité de pilotage ses recommandations sur le financement des Tables de quartier.",
       "comp": [
         {
@@ -1137,7 +1134,7 @@ window.CONC = {
       "name": "PIC",
       "full": "Projet d'impact collectif",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Démarche de mobilisation et de financement concerté déployée dans 17 quartiers montréalais pour lutter contre la pauvreté et l'exclusion sociale.",
       "comp": [
         {
@@ -1218,7 +1215,7 @@ window.CONC = {
       "name": "TEC",
       "full": "Transition en commun (concertation)",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Concertation sur la transition en commun, au niveau de l'équipe de direction. Voir aussi les GT logement, démotorisation et alimentation de TEC.",
       "comp": [
         {
@@ -1233,7 +1230,7 @@ window.CONC = {
       "name": "GT logement de TEC",
       "full": "Groupe de travail sur le logement de TEC (Transition en commun)",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "under": "TEC",
       "comp": [
@@ -1265,7 +1262,7 @@ window.CONC = {
       "name": "GT alimentation de TEC",
       "full": "Groupe de travail sur l'alimentation de TEC (Transition en commun)",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Groupe de travail sur l'alimentation de Transition en commun (TEC).",
       "under": "TEC",
       "comp": [
@@ -1281,7 +1278,7 @@ window.CONC = {
       "name": "Comité citoyen MSAM",
       "full": "Comité citoyen, personnes migrantes sans assurance médicale (MSAM)",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Comité citoyen lié aux personnes migrantes sans assurance médicale. En place depuis 2022, en collaboration avec Médecins du Monde.",
       "comp": [
         {
@@ -1308,7 +1305,7 @@ window.CONC = {
       "name": "Conseil Citoyen Équité",
       "full": "Conseil Citoyen Équité",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Conseil citoyen en équité.",
       "neu": true,
       "comp": [
@@ -1328,7 +1325,7 @@ window.CONC = {
       "name": "Groupe cœur",
       "full": "Groupe cœur",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Suivre l'avancement des activités du plan d'action et soutenir leur mise en œuvre afin de favoriser un changement de pratiques durable au sein de la DA-SP. Durée du mandat : 5 ans (2026-2031), soit la durée prévue du plan d'action.",
       "comp": [
         {
@@ -1351,7 +1348,7 @@ window.CONC = {
       "name": "GT sécurisation culturelle",
       "full": "Groupe de travail sécurisation culturelle",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1362,7 +1359,7 @@ window.CONC = {
       "name": "Pouvoir d'agir Jeunesse",
       "full": "Pouvoir d'agir Jeunesse",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Démarche visant à renforcer le pouvoir d'agir des jeunes.",
       "comp": [
         {
@@ -1389,7 +1386,7 @@ window.CONC = {
       "name": "ASPIC",
       "full": "Action de santé publique et ISS en contexte de crise",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Renforcer les actions de la DRSP de Montréal visant la réduction des impacts collatéraux et des inégalités sociales de santé liées aux interventions de santé publique, par la collaboration intersectorielle.",
       "comp": [
         {
@@ -1424,7 +1421,7 @@ window.CONC = {
       "name": "Groupes de CoDev",
       "full": "Deux groupes de codéveloppement professionnel (CoDev)",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1435,7 +1432,7 @@ window.CONC = {
       "name": "Arrimages itinérance intra-DRSP",
       "full": "Arrimages itinérance intra-DRSP",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1446,7 +1443,7 @@ window.CONC = {
       "name": "Cellule rapide itinérance",
       "full": "Cellule rapide itinérance",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1457,7 +1454,7 @@ window.CONC = {
       "name": "Pouvoir d'agir des communautés locales",
       "full": "Pouvoir d'agir des communautés locales",
       "niv": "oper",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1468,7 +1465,7 @@ window.CONC = {
       "name": "Comité prévention de l'itinérance",
       "full": "Comité prévention de l'itinérance",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "- Identifier, rehausser, soutenir la mise en œuvre d’interventions basées sur les meilleures pratiques en prévention de l’itinérance.\n\n- Favoriser la collaboration intersectorielle par l’animation d’un espace de concertation, arrimage et co-construction, sur la prévention de l’itinérance.\n\n· Arrimer lorsque requis, les actions de prévention de l’itinérance avec les objets traités dans les autres comités tactiques en place afin d’assurer une cohérence et synergie d’action.\n\n· Assurer l’intégration d’actions de prévention dans le prochain PCMI\n\n· Encadrer et accompagner les travaux des 2 chantiers (jeunesse et prévention de la perte de logement)",
       "neu": true,
       "comp": [
@@ -1552,7 +1549,7 @@ window.CONC = {
       "name": "GT prévention perte de logement",
       "full": "Groupe de travail, prévention de la perte de logement",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "under": "Comité prévention de l'itinérance",
@@ -1574,7 +1571,7 @@ window.CONC = {
       "name": "Cohabitation sociale",
       "full": "Comité cohabitation sociale",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1632,7 +1629,7 @@ window.CONC = {
       "name": "Tableau de bord régional itinérance",
       "full": "Comité Tableau de bord régional en itinérance",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "comp": []
@@ -1654,7 +1651,7 @@ window.CONC = {
       "name": "Comité aviseur, OQI itinérance et climat",
       "full": "Comité aviseur du projet de recherche de l'OQI sur l'itinérance, les changements climatiques et les adaptations",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Comité aviseur d'un projet de recherche de l'OQI sur l'itinérance, les changements climatiques et les adaptations.",
       "neu": true,
       "comp": [
@@ -1688,7 +1685,7 @@ window.CONC = {
       "name": "Sécurité alimentaire et DDA",
       "full": "Concertation sécurité alimentaire et DDA (demandeurs·euses d'asile)",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Concertation reliant la sécurité alimentaire et la situation des demandeurs·euses d'asile (DDA).",
       "comp": []
     },
@@ -1852,7 +1849,7 @@ window.CONC = {
       "name": "Comité stratégique DDA-MSAM",
       "full": "Comité stratégique DDA-MSAM et ses 4 lots de travail",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Comité stratégique sur les demandeurs·euses d'asile (DDA) et les personnes migrantes sans assurance médicale (MSAM), décliné en quatre lots de travail.",
       "comp": []
     },
@@ -1873,7 +1870,7 @@ window.CONC = {
       "name": "Concertation DSPu, sécurisation culturelle",
       "full": "Concertation des directions de santé publique (DSPu) régionales en sécurisation culturelle",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Concertation interrégionale des directions de santé publique en sécurisation culturelle.",
       "neu": true,
       "comp": []
@@ -1895,7 +1892,7 @@ window.CONC = {
       "name": "VRAC-PARC",
       "full": "Démarche VRAC-PARC",
       "niv": "strat",
-      "drsp": "lead",
+      "drsp": "",
       "man": "Évaluation des vulnérabilités et risques régionaux liés aux changements climatiques (VRAC) et plan d'adaptation régional au climat (PARC). Démarche coordonnée par l'INSPQ (2019-2027), en partenariat avec le MELCCFP, le MSSS et Santé Québec.",
       "neu": true,
       "comp": []
@@ -1906,7 +1903,7 @@ window.CONC = {
       "name": "CT PRIME",
       "full": "Comité de travail PRIME",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "under": "VRAC-PARC",
@@ -1918,7 +1915,7 @@ window.CONC = {
       "name": "CT Logement",
       "full": "Comité de travail Logement",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "under": "VRAC-PARC",
@@ -1930,7 +1927,7 @@ window.CONC = {
       "name": "CT Itinérance",
       "full": "Comité de travail Itinérance",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "under": "VRAC-PARC",
@@ -1942,7 +1939,7 @@ window.CONC = {
       "name": "CT Autochtone",
       "full": "Comité de travail Autochtone",
       "niv": "tact",
-      "drsp": "lead",
+      "drsp": "",
       "man": "",
       "neu": true,
       "under": "VRAC-PARC",
