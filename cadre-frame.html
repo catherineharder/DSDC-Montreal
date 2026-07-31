@@ -4,20 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-/* cadre.html est conçue pour vivre dans l'iframe de index.html, qui fournit la
+/* Cette page est conçue pour vivre dans l'iframe de index.html, qui fournit la
    barre de navigation du site. Atteinte directement en haut de fenêtre
    (résultat de recherche, « Recharger le cadre », signet, ouverture de l'iframe
-   dans un nouvel onglet), elle s'affichait seule : plus de nav, aucun moyen de
+   dans un nouvel onglet), elle s'affiche seule : plus de nav, aucun moyen de
    revenir aux autres sections. On renvoie alors vers /cadre, qui charge la
    coquille du site avec cette page à l'intérieur.
+
+   Le fichier s'appelle « cadre-frame.html » et non « cadre.html » : GitHub Pages
+   sert cadre.html pour l'URL sans extension /cadre, si bien qu'un rechargement
+   de /cadre livrait ce document nu — sans nav — au lieu de la coquille, et que
+   le garde-fou ci-dessous ne se déclenchait pas (le chemin n'était pas
+   « /cadre.html »). Aucun fichier ne porte plus le nom d'un onglet : /cadre
+   passe donc par 404.html → index.html comme toutes les autres sections.
    Pas de boucle possible : après la redirection le chemin n'est plus
-   « /cadre.html », donc la condition ne se vérifie plus. */
+   « /cadre-frame.html », donc la condition ne se vérifie plus. */
 (function () {
   if (window.top !== window.self) return;            // déjà dans le site
   if (!/^https?:$/.test(location.protocol)) return;  // ouverture locale en file://
-  if (!/\/cadre\.html$/.test(location.pathname)) return;
+  if (!/\/cadre-frame\.html$/.test(location.pathname)) return;
   location.replace(
-    location.pathname.replace(/\/cadre\.html$/, "/cadre") +
+    location.pathname.replace(/\/cadre-frame\.html$/, "/cadre") +
     location.search + location.hash
   );
 })();

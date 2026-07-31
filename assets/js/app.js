@@ -92,7 +92,10 @@ function initNav() {
   };
   const SLUG_VIEW = {};
   Object.keys(VIEW_SLUG).forEach((v) => { SLUG_VIEW[VIEW_SLUG[v]] = v; });
-  SLUG_VIEW["cadre-conceptuel"] = "cadre"; // ancienne URL (liens existants)
+  // Anciennes adresses encore en circulation (signets, liens envoyés, audit).
+  // Elles ouvrent la bonne section ; l'URL est ensuite réécrite en /cadre.
+  SLUG_VIEW["cadre-conceptuel"] = "cadre";
+  SLUG_VIEW["cadre.html"] = "cadre"; // le fichier s'appelle désormais cadre-frame.html
 
   const apply = (view) => {
     buttons.forEach((b) => {
@@ -164,7 +167,14 @@ function initNav() {
   // état initial (sans empiler d'historique)
   const seg0 = pathSeg();
   if (seg0 && !SLUG_VIEW[seg0]) showNotFound(seg0);
-  else go(viewFromPath(), false);
+  else {
+    const view0 = viewFromPath();
+    go(view0, false);
+    // arrivée par une ancienne adresse : on affiche l'URL canonique
+    if (seg0 && seg0 !== VIEW_SLUG[view0]) {
+      history.replaceState({ view: view0 }, "", BASE + (VIEW_SLUG[view0] || ""));
+    }
+  }
 }
 
 /* ---- "Cartes" tab : pick a map from the list in the left column -------------

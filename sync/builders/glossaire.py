@@ -23,7 +23,7 @@ TEMPLATE = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-/* Même garde-fou que cadre.html : cette page vit dans l'iframe de index.html,
+/* Même garde-fou que cadre-frame.html : cette page vit dans l'iframe de index.html,
    qui porte la barre de navigation. Atteinte seule en haut de fenêtre, elle
    privait le visiteur de toute navigation. On renvoie vers /glossaire. */
 (function () {

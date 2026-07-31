@@ -219,9 +219,12 @@
       <div class="conc-app embed" id="conc-root"></div>
     </section>
 
-    <!-- Cadre conceptuel : cadre.html en iframe -->
+    <!-- Cadre conceptuel : cadre-frame.html en iframe.
+         Le fichier ne peut pas s'appeler « cadre.html » : GitHub Pages le
+         servirait pour /cadre et le rechargement de l'onglet afficherait la
+         page nue, sans barre de navigation. -->
     <section class="view" id="view-cadre" aria-label="Cadre conceptuel" hidden>
-      <iframe class="gloss-frame" src="cadre.html" title="Cadre conceptuel DSDC" loading="lazy"></iframe>
+      <iframe class="gloss-frame" src="cadre-frame.html" title="Cadre conceptuel DSDC" loading="lazy"></iframe>
     </section>
 
     <!-- Indicateurs : quatre onglets (Défavorisation, Équité des milieux de vie,
