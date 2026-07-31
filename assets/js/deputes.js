@@ -48,7 +48,9 @@ function initDeputesMap() {
   const legend = el("deputes-legend");
   if (legend) {
     legend.innerHTML = Object.keys(PARTY_NAMES)
-      .map((k) => `<div><span class="sw" style="background:${PARTY_COLORS[k]}"></span>${PARTY_NAMES[k]}</div>`)
+      // .sw.mid = pastille à 55 % d'opacité, exactement le remplissage par défaut
+      // des tracés (.arr) : la légende montre la carte au repos, pas à la sélection.
+      .map((k) => `<div><span class="sw mid" style="--accent:${PARTY_COLORS[k]}"></span>${PARTY_NAMES[k]}</div>`)
       .join("");
   }
 

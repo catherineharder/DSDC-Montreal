@@ -526,10 +526,13 @@ const DEPUTES = {
  }
 };
 
+/* Couleurs de parti accordées à la palette DSDC (crème + accents terreux) plutôt
+   qu'aux hex officiels des partis : rouge, orange, sarcelle et olive sont repris
+   tels quels de :root ; le bleu du PQ est une version assourdie du bleu marine. */
 const PARTY_COLORS = {
- "PLQ": "#d31f2c",
- "QS": "#ff5605",
- "CAQ": "#00addc",
- "PQ": "#1a3c8f",
+ "PLQ": "#C43E42",
+ "QS": "#D97A22",
+ "CAQ": "#46747F",
+ "PQ": "#34506B",
  "IND": "#6C6F3F",
 };
