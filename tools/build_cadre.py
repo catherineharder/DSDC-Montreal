@@ -193,6 +193,26 @@ FONTS = [
     ("Inter18pt-Italic, 'Inter 18pt'",    "Inter, system-ui, sans-serif", None, "italic"),
 ]
 
+def isolate_classes(svg_text, prefix):
+    """Renomme les classes CSS du fichier pour qu'il puisse cohabiter avec l'autre.
+
+    Illustrator numérote ses classes à partir de zéro dans chaque export :
+    « .cls-1 », « .cls-2 »… Les deux planches en définissent donc des dizaines
+    portant le même nom mais pas les mêmes couleurs. Or les deux SVG sont
+    insérés dans la même page : leurs balises <style> sont globales, la seconde
+    écrase la première, et chaque forme hérite du remplissage de l'autre dessin.
+    On préfixe donc les classes de chaque fichier avant l'insertion.
+    """
+    svg_text = re.sub(r"\.cls-([\w-]+)", lambda m: ".%scls-%s" % (prefix, m.group(1)), svg_text)
+
+    def fix_attr(m):
+        names = " ".join(prefix + n if n.startswith("cls-") else n
+                         for n in m.group(1).split())
+        return 'class="%s"' % names
+
+    return re.sub(r'class="([^"]*)"', fix_attr, svg_text)
+
+
 GEOM = {
     "rect": ("x", "y", "width", "height", "rx", "ry"),
     "circle": ("cx", "cy", "r"),
@@ -375,17 +395,20 @@ def boxes_by_label(root):
     return found
 
 
-def build(svg_path, finder, svg_id):
+def build(svg_path, finder, svg_id, prefix):
     if not os.path.exists(svg_path):
         fail("fichier manquant : %s" % svg_path)
     raw = fix_fonts(open(svg_path, encoding="utf-8").read())
+    raw = isolate_classes(raw, prefix)
     root = ET.fromstring(raw)
     strip_title(root)
     boxes = finder(root)
 
-    halo = ET.SubElement(root, Q + "g"); halo.set("id", "cadre-halo"); halo.set("aria-hidden", "true")
-    outline = ET.SubElement(root, Q + "g"); outline.set("id", "cadre-outline"); outline.set("aria-hidden", "true")
-    hits = ET.SubElement(root, Q + "g"); hits.set("id", "cadre-hit")
+    # Les identifiants aussi doivent rester distincts d'une planche à l'autre :
+    # deux éléments portant le même id dans une page, c'est le premier qui gagne.
+    halo = ET.SubElement(root, Q + "g"); halo.set("id", svg_id + "-halo"); halo.set("aria-hidden", "true")
+    outline = ET.SubElement(root, Q + "g"); outline.set("id", svg_id + "-outline"); outline.set("aria-hidden", "true")
+    hits = ET.SubElement(root, Q + "g"); hits.set("id", svg_id + "-hit")
 
     for key, section, el, label in boxes:
         # Les attributs de présentation ci-dessous doublent la feuille de style
@@ -445,8 +468,19 @@ def report(keys):
 
 
 def main():
-    full_body, full_keys = build(os.path.join(ROOT, "cadre.svg"), boxes_by_layer, "cadre-svg")
-    simple_body, simple_keys = build(os.path.join(ROOT, "cadre-simple.svg"), boxes_by_label, "simple-svg")
+    full_body, full_keys = build(os.path.join(ROOT, "cadre.svg"), boxes_by_layer, "cadre-svg", "k-")
+    simple_body, simple_keys = build(os.path.join(ROOT, "cadre-simple.svg"), boxes_by_label, "simple-svg", "s-")
+
+    # Garde-fou : c'est exactement ce qui avait cassé l'affichage. Les deux
+    # planches partagent la page, donc leurs styles et leurs identifiants.
+    def names(body):
+        return (set(re.findall(r"\.([\w-]*cls-[\w-]+)", body)),
+                set(re.findall(r'\sid="([^"]+)"', body)))
+    (ca, ia), (cb, ib) = names(full_body), names(simple_body)
+    if ca & cb or ia & ib:
+        fail("les deux dessins partagent des noms : classes %s, identifiants %s.\n"
+             "        Ils s'écraseraient l'un l'autre dans la page."
+             % (sorted(ca & cb) or "aucune", sorted(ia & ib) or "aucun"))
 
     # Une même clé peut être cliquable dans les deux dessins : la section et
     # l'ordre de lecture viennent du cadre complet, plus détaillé, et le cadre
