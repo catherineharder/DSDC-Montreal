@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<title>Namur-Hippodrome · Cadre conceptuel DSDC</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!-- Onglet « Exemple » de /cadre : cette planche est chargée dans une iframe
+     par cadre-frame.html. Elle fonctionne aussi ouverte seule.
+     La planche fait 1920 × 1080 et se met à l'échelle de la place disponible
+     (fit), après avoir resserré son interlignage si les rangées débordent
+     (autofit). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F2EDE3;
+    --ink:#1E1C19;
+    --muted:#726D63;
+    --faint:#9A9488;
+    --rule:#DCD5C7;
+    --c-enjeux:#8E3B48;
+    --c-determ:#5B4B92;
+    --c-ds:#2C567F;
+    --c-dc:#8A6D1F;
+    --c-inter:#35704A;
+    --c-impact:#1E5136;
+    --c-rech:#5E5A52;
+    --m:1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#F2EEE4;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+
+  #stage{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
+  .slide{width:1920px;height:1080px;flex:none;background:var(--cream);color:var(--ink);
+    padding:36px 50px 26px;display:flex;flex-direction:column;transform-origin:center center}
+
+  /* ---------- header ---------- */
+  .head{display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:2px solid var(--ink);padding-bottom:11px;margin-bottom:4px}
+  .head h1{font-size:26px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+  .head h1 span{font-weight:400;color:var(--muted);letter-spacing:.01em;text-transform:none;font-size:20px;margin-left:14px}
+  .head .meta{font-family:'Source Serif 4',Georgia,serif;font-style:italic;font-size:16px;color:var(--muted)}
+
+  /* ---------- rows ---------- */
+  .rows{flex:1;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden}
+  .row{display:grid;grid-template-columns:228px repeat(4,1fr);gap:0 32px;
+       padding:calc(12px * var(--m)) 0;border-bottom:1px solid var(--rule);flex:0 0 auto;align-content:center}
+  .row:last-child{border-bottom:none}
+
+  .rowlab{border-left:5px solid var(--ink);padding-left:15px;align-self:center}
+  .rowlab .n{font-size:calc(11px * var(--m));font-weight:700;letter-spacing:.16em;color:var(--faint);display:block;margin-bottom:4px}
+  .rowlab .t{font-size:calc(16px * var(--m));font-weight:800;letter-spacing:.06em;text-transform:uppercase;line-height:1.18;display:block}
+  .rowlab .s{font-size:calc(12.5px * var(--m));color:var(--muted);line-height:1.3;margin-top:5px;display:block;font-weight:400}
+
+  .cell{align-self:center;padding-right:12px}
+  .eyebrow{font-size:calc(10.5px * var(--m));font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+           color:var(--faint);margin-bottom:6px}
+  .fact{font-size:calc(25px * var(--m));font-weight:700;line-height:1.13;letter-spacing:-.018em}
+  .sub{font-size:calc(13.4px * var(--m));line-height:1.36;color:var(--muted);margin-top:7px}
+
+  /* row accents */
+  .r1 .rowlab{border-color:var(--c-enjeux)} .r1 .rowlab .t{color:var(--c-enjeux)}
+  .r2 .rowlab{border-color:var(--c-determ)} .r2 .rowlab .t{color:var(--c-determ)}
+  .r3 .rowlab{border-color:var(--c-ds)}     .r3 .rowlab .t{color:var(--c-ds)}
+  .r4 .rowlab{border-color:var(--c-dc)}     .r4 .rowlab .t{color:var(--c-dc)}
+  .r5 .rowlab{border-color:var(--c-inter)}  .r5 .rowlab .t{color:var(--c-inter)}
+  .r6 .rowlab{border-color:var(--c-impact)} .r6 .rowlab .t{color:var(--c-impact)}
+  .r7 .rowlab{border-color:var(--c-rech)}   .r7 .rowlab .t{color:var(--c-rech)}
+
+  /* row 05 is the heart: more room, but typography stays consistent */
+  .r5{background:rgba(53,112,74,.08);flex:1 1 auto;padding:calc(18px * var(--m)) 0}
+  .r5 .cell{border-left:2px solid rgba(53,112,74,.3);padding-left:17px;margin-left:-17px}
+
+  /* rows 06 and 07 are compact, with the same type scale */
+  .r6,.r7{padding:calc(9px * var(--m)) 0}
+  .r6{background:rgba(30,81,54,.07)}
+  .r6 .equite{border-left:3px solid var(--c-impact);padding-left:16px;margin-left:-16px}
+  .fact,.hl{color:var(--ink)}
+
+  /* ---------- footer ---------- */
+  .foot{display:flex;justify-content:space-between;align-items:baseline;
+        border-top:2px solid var(--ink);margin-top:6px;padding-top:8px;
+        font-size:11.5px;color:var(--faint);letter-spacing:.02em}
+  .foot a{color:inherit;text-decoration:none}
+  .foot a:hover{text-decoration:underline}
+
+  .measuring .row{flex:0 0 auto !important}
+
+  @media print{
+    html,body{background:#fff}
+    #stage{padding:0;min-height:auto}
+    .slide{transform:none!important}
+    @page{size:1920px 1080px;margin:0}
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+<div class="slide" id="slide">
+
+  <div class="head">
+    <h1>Namur-Hippodrome <span>lu à travers le cadre conceptuel DSDC</span></h1>
+    <div class="meta">Côte-des-Neiges · juillet 2026</div>
+  </div>
+
+  <div class="rows">
+
+    <!-- 01 -->
+    <div class="row r1">
+      <div class="rowlab">
+        <span class="n">01</span>
+        <span class="t">Enjeux transversaux</span>
+        <span class="s">Ce qui traverse tout le projet</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Rapports de pouvoir</div>
+        <div class="fact">Qui peut rendre la vision obligatoire ?</div>
+        <div class="sub">La Ville contrôle le sol et le cadre légal; GALOPH peut recevoir les leviers d'exécution; la communauté influence sans disposer des mêmes pouvoirs formels.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Inégalités croisées</div>
+        <div class="fact"><span class="hl">47 %</span> issus de l'immigration</div>
+        <div class="sub">Un quartier d'arrivée : jeune, très diversifié, plus pauvre que la moyenne montréalaise.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Transformation numérique</div>
+        <div class="fact">La parole citoyenne en ligne</div>
+        <div class="sub">Un site public rassemble les propositions du milieu. Écrit, daté, consultable : difficile à ignorer.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Changements climatiques</div>
+        <div class="fact">Verdir sans embourgeoiser</div>
+        <div class="sub">Un quartier plus vert fait monter les loyers. Le risque est de chasser les ménages qu'on voulait aider.</div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="row r2">
+      <div class="rowlab">
+        <span class="n">02</span>
+        <span class="t">Déterminants structurels</span>
+        <span class="s">Le projet change les règles</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Valeurs et normes</div>
+        <div class="fact">Le logement comme droit</div>
+        <div class="sub">Le milieu demande que l'abordabilité se calcule sur le revenu des ménages, et non sur le prix du marché.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Gouvernance</div>
+        <div class="fact">Société GALOPH OBNL</div>
+        <div class="sub">La loi permet à la Ville de lui confier le financement, les infrastructures et la mise en marché du site.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Lois, politiques, budgets</div>
+        <div class="fact">PDAD 2024 · loi 2026, c. 18</div>
+        <div class="sub">Le plan fixe les orientations; la loi autorise une entente Ville–GALOPH et en exige les paramètres de gouvernance.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Méthodes institutionnelles</div>
+        <div class="fact">Une fiducie encore revendiquée</div>
+        <div class="sub">Le comité communauté propose une fiducie d'utilité sociale; le cadre public retient le hors marché sans consacrer cet outil.</div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="row r3">
+      <div class="rowlab">
+        <span class="n">03</span>
+        <span class="t">Actions en amont</span>
+        <span class="s">Développement social (DS)</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Financement</div>
+        <div class="fact">320,8 M$ pour l'eau</div>
+        <div class="sub">Ottawa finance 128,3 M$ et la Ville 192,5 M$ pour l'eau potable, les eaux usées et les eaux pluviales.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Connaissances</div>
+        <div class="fact"><span class="hl">9 100</span> ménages, des moisissures</div>
+        <div class="sub">La santé publique documente le lien entre logements insalubres et maladies respiratoires chez les enfants.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Influence sur les politiques</div>
+        <div class="fact">Plus de 600 contributions</div>
+        <div class="sub">La consultation de 2024 a recueilli opinions, suggestions et mémoires qui ont alimenté la version finale du PDAD.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Accompagnement</div>
+        <div class="fact">Un mandat du CIUSSS</div>
+        <div class="sub">Une organisatrice communautaire est prêtée au comité : du temps professionnel payé par le réseau de la santé.</div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="row r4">
+      <div class="rowlab">
+        <span class="n">04</span>
+        <span class="t">Actions ancrées dans le territoire</span>
+        <span class="s">Développement des communautés (DC)</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Capital social</div>
+        <div class="fact">30 ans de mobilisation</div>
+        <div class="sub">Les liens entre groupes, locataires et militants existaient bien avant le projet. Ils en sont le socle.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Leadership</div>
+        <div class="fact">La CDC de Côte-des-Neiges</div>
+        <div class="sub">Elle fédère les organismes du quartier, mandate et anime le comité communauté Namur-Hippodrome.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Savoir</div>
+        <div class="fact">13 510 ménages à faible revenu</div>
+        <div class="sub">Un portrait de quartier chiffre les besoins locaux et sert d'argument dans les négociations.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Ressources et maillage</div>
+        <div class="fact">Des expertises mises en commun</div>
+        <div class="sub">Logement, accessibilité, santé, recherche, urbanisme et mobilisation sont reliés autour du comité.</div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="row r5">
+      <div class="rowlab">
+        <span class="n">05</span>
+        <span class="t">Action intersectorielle</span>
+        <span class="s">Coconstruction</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Les acteurs</div>
+        <div class="fact">Des réseaux complémentaires</div>
+        <div class="sub">Public, finance, immobilier, habitation, économie sociale et communautaire se rencontrent autour du projet.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Gouvernance collaborative</div>
+        <div class="fact">Un GALOPH multiréseau</div>
+        <div class="sub">Créé par la Ville et Québec, il réunit les trois paliers publics et des acteurs privés, sociaux et communautaires.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Vision commune</div>
+        <div class="fact">9 orientations communautaires</div>
+        <div class="sub">Le milieu a rédigé sa vision avant que la Ville ne publie son plan. Écrire en premier a pesé sur le résultat.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Action collective</div>
+        <div class="fact">Un plan de fiducie</div>
+        <div class="sub">Groupes et résident·es ont conçu ensemble le montage juridique qui protégerait le terrain de la spéculation.</div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="row r6">
+      <div class="rowlab">
+        <span class="n">06</span>
+        <span class="t">Impact collectif</span>
+        <span class="s">Priorité locale : le logement</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Cadre officiel</div>
+        <div class="fact">Des cibles sociales au PDAD</div>
+        <div class="sub">Le plan de la Ville a bougé sous l'effet de la mobilisation.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Terrain</div>
+        <div class="fact">2 250 logements à desservir</div>
+        <div class="sub">Les réseaux d'eau de la première phase sont financés; les logements restent à réaliser.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Acquis fragile</div>
+        <div class="fact">La fiducie reste à inscrire</div>
+        <div class="sub">Rien ne la rend obligatoire pour l'instant.</div>
+      </div>
+      <div class="cell equite">
+        <div class="eyebrow">Équité en santé</div>
+        <div class="fact">S'améliorer sans expulser</div>
+        <div class="sub">Un sol hors marché protège les ménages déjà là.</div>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="row r7">
+      <div class="rowlab">
+        <span class="n">07</span>
+        <span class="t">Recherche et évaluation</span>
+        <span class="s">Documenter, apprendre, ajuster</span>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Diagnostic initial</div>
+        <div class="fact">Du technique au social</div>
+        <div class="sub">Mobilité, bruit, énergie, santé et portraits sociaux documentent le territoire avant sa transformation.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Apprentissage collectif</div>
+        <div class="fact">Le plan révisé après consultation</div>
+        <div class="sub">L'OCPM a formulé 41 recommandations; en 2024, plus de 600 contributions ont bonifié le PDAD.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Reddition de comptes</div>
+        <div class="fact">Une obligation dans la loi</div>
+        <div class="sub">L'entente Ville–GALOPH devra préciser comment la Société rend compte de son action à la Ville.</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">Lacune évaluative</div>
+        <div class="fact">Pas encore de tableau de bord public</div>
+        <div class="sub">Il manque des indicateurs partagés d'abordabilité, de santé, de mobilité, de verdissement et de non-déplacement.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <span>
+      <a href="https://www.who.int/health-topics/health-equity">OMS</a> ·
+      <a href="https://montreal.ca/articles/quartier-namur-hippodrome-un-projet-inclusif-et-resilient-34160">Ville de Montréal 2026</a> ·
+      <a href="https://www.publicationsduquebec.gouv.qc.ca/fileadmin/Fichiers_client/lois_et_reglements/LoisAnnuelles/fr/2026/2026C18F.PDF">L.Q. 2026, c. 18</a> ·
+      <a href="https://ocpm.qc.ca/sites/default/files/pdf/rapports/rapport-namur-hippodrome.pdf">OCPM 2020</a> ·
+      <a href="https://inm.qc.ca/sites/inm.qc.ca/wp-content/uploads/2026/02/Rapport_de_consultation_publique_PDAD_QNH_2024.docx.pdf">INM 2024</a> ·
+      <a href="https://conseilcdn.qc.ca/wp-content/uploads/2025/09/Portrait-de-quartier-2025-Cote-des-Neiges2.pdf">CDC-CDN 2025</a>
+    </span>
+    <span><a href="https://nh.conseilcdn.qc.ca/le-projet/">nh.conseilcdn.qc.ca</a></span>
+  </div>
+
+</div>
+</div>
+
+<script>
+  function autofit(){
+    var rows=document.querySelector('.rows'), s=document.getElementById('slide');
+    var prev=s.style.transform, prevM=s.style.margin;
+    s.style.transform='none'; s.style.margin='0';
+    document.body.classList.add('measuring');
+    var m=1, guard=0;
+    document.documentElement.style.setProperty('--m',m);
+    while(rows.scrollHeight > rows.clientHeight + 1 && m > 0.68 && guard++ < 60){
+      m = Math.round((m-0.012)*1000)/1000;
+      document.documentElement.style.setProperty('--m',m);
+    }
+    document.body.classList.remove('measuring');
+    s.style.transform=prev; s.style.margin=prevM;
+  }
+  function fit(){
+    var s=document.getElementById('slide');
+    var k=Math.min((window.innerWidth-32)/1920,(window.innerHeight-32)/1080);
+    s.style.transform='scale('+k+')';
+    s.style.margin=((1080*k-1080)/2)+'px '+((1920*k-1920)/2)+'px';
+  }
+  window.addEventListener('resize', fit);
+  autofit(); fit();
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ autofit(); fit(); }); }
+  window.addEventListener('beforeprint', function(){ document.getElementById('slide').style.transform='none'; autofit(); });
+</script>
+</body>
+</html>

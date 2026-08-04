@@ -266,6 +266,44 @@ window.CADRE_DATA = {
     "images": [],
     "source": ""
   },
+  "conditions-vie": {
+    "title": "Conditions de vie favorables",
+    "definition": "« Les conditions et ressources préalables sont, en matière de santé : la paix, un abri, de la nourriture et un revenu. »",
+    "connexes": [
+      "Logement",
+      "Sécurité alimentaire",
+      "Revenu"
+    ],
+    "exMtl": "Le Plan de développement de la communauté nourricière du Sud-Ouest de Montréal favorise l'accès à une alimentation saine, locale et abordable.",
+    "exInsp": "",
+    "extra": "",
+    "images": [],
+    "source": "Organisation mondiale de la Santé. (1986). Charte d'Ottawa pour la promotion de la santé. OMS, Santé et Bien-être social Canada, Association canadienne de santé publique."
+  },
+  "pouvoir-agir": {
+    "title": "Développement du pouvoir d'agir",
+    "definition": "Dans la littérature, le pouvoir d'agir (empowerment) est à la fois une approche, un processus et un résultat (RQIIAC, 2020) :\n- « Une approche : fondée sur la croyance que les personnes, tant individuellement que collectivement, ont ou peuvent acquérir les capacités pour effectuer des transformations nécessaires pour assurer leur accès aux ressources, voire les contrôler (Ninacs, 2008).\n- Un processus : les personnes ou les communautés s'approprient leur pouvoir d'agir et capacité de l'exercer de façon autonome (Ninacs, 2008).\n- Un résultat : capacité concrète des personnes d'exercer individuellement ou collectivement un plus grand contrôle sur ce qui est important pour elles, leurs proches, ou la collectivité à laquelle elles s'identifient (Le Bossé, 2003). »",
+    "connexes": [
+      "Empowerment",
+      "Capacité d'agir",
+      "Autonomie"
+    ],
+    "exMtl": "Le cadre de référence « Le pouvoir d'agir des communautés » (DRSP, 2023) opérationnalise le pouvoir d'agir collectif, notamment dans les 32 Tables de quartier.",
+    "exInsp": "",
+    "extra": "Le pouvoir d'agir des communautés se définit par quatre composantes : la participation (intégration dans les espaces décisionnels de la communauté); les compétences (connaissance et reconnaissance des forces du milieu, capacité de mailler les ressources locales); la communication efficace (circulation libre de l'information, transparence des processus décisionnels); et le capital communautaire (sentiment d'appartenance à la collectivité et à l'environnement).",
+    "images": [],
+    "source": "Regroupement québécois des intervenants et intervenantes en action communautaire en CISSS et CIUSSS. (2020). Pratique d'organisation communautaire dans les établissements de santé et de services sociaux du Québec (éd. actualisée). Presses de l'Université du Québec ; Direction régionale de santé publique de Montréal. (2023). Le pouvoir d'agir des communautés et la lutte aux inégalités sociales de santé au cœur des priorités de santé publique pour une métropole résiliente. Gouvernement du Québec. https://santepubliquemontreal.ca/sites/drsp/files/media/document/DRSP_Pub_2023_CadreRefPouvoirAgirCommLutteInegalSocialSP.pdf"
+  },
+  "inclusion-sociale": {
+    "title": "Inclusion sociale",
+    "definition": "",
+    "connexes": [],
+    "exMtl": "",
+    "exInsp": "",
+    "extra": "",
+    "images": [],
+    "source": ""
+  },
   "institutions": {
     "title": "Institutions",
     "definition": "",

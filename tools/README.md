@@ -6,32 +6,49 @@ ponctuel, à lancer à la main sur un poste, pour refabriquer des fichiers du si
 
 ## build_cadre.py
 
-À lancer **après chaque réexport du cadre conceptuel depuis Illustrator** :
+À lancer **après chaque réexport d'un des deux cadres depuis Illustrator** :
 
 ```bash
+pip3 install svgelements     # une seule fois
 python3 tools/build_cadre.py
 ```
 
-Le geste complet, quand le dessin change :
+Deux dessins, deux onglets de la page `/cadre` :
+
+| Fichier            | Onglet             |
+| ------------------ | ------------------ |
+| `cadre.svg`        | Cadre conceptuel   |
+| `cadre-simple.svg` | Cadre simplifié    |
+
+Le geste complet, quand un dessin change :
 
 1. dans Illustrator, exporter en SVG (Objet ID : **Nom de calque**, Style :
    CSS interne, Police : conserver le texte, Réactif : coché) ;
-2. enregistrer le fichier à la racine du dépôt sous le nom `cadre.svg`, en
-   écrasant l'ancien — ce fichier n'est jamais retouché à la main ;
-3. lancer la commande ci-dessus.
+2. enregistrer à la racine du dépôt sous le nom ci-dessus, en écrasant l'ancien
+   — ces deux fichiers ne sont jamais retouchés à la main ;
+3. lancer la commande.
 
-Le script insère le dessin dans `cadre-frame.html`, rend chaque calque nommé
-« … box » cliquable, et affiche à la fin la liste des fiches encore vides.
+Le script retire le bandeau de titre, recadre la vue sur le dessin, rend les
+boîtes cliquables, insère le tout dans `cadre-frame.html` et affiche à la fin la
+liste des fiches encore vides.
 
-Deux choses à savoir :
+Ce qu'il faut savoir :
 
-- la correspondance entre un calque d'Illustrator et sa fiche est fixée par la
-  table `BOXES`, en tête du script. Si vous **renommez** un calque, corrigez le
-  nom à gauche dans `BOXES` : le texte déjà rédigé reste rattaché à la bonne
-  boîte. Si vous **ajoutez** une boîte, ajoutez-y une ligne ; le script s'arrête
-  et vous dit lequel des calques attendus a disparu ;
-- le **contenu** des fiches vit dans `assets/data/cadre.data.js` et ne dépend pas
-  d'Illustrator. Rédiger un texte n'oblige à relancer aucun script.
+- **les zones cliquables se repèrent différemment dans les deux fichiers.**
+  Dans `cadre.svg`, c'est le nom de calque (« … box »), via la table `BOXES`.
+  Dans `cadre-simple.svg`, dont les calques ne sont pas nommés, c'est le texte
+  écrit dans la boîte, via la table `SIMPLE_BOXES` — donc **reformuler une
+  étiquette de ce dessin oblige à corriger la ligne correspondante**. Dans les
+  deux cas le script s'arrête et vous dit ce qu'il ne retrouve plus ;
+- **l'ordre de `BOXES` est l'ordre d'empilement.** Une boîte qui en contient
+  d'autres doit être listée avant elles, sinon elle les recouvre et vole leurs
+  clics ;
+- **le contenu des fiches vit dans `assets/data/cadre.data.js`** et ne dépend
+  pas d'Illustrator. Rédiger un texte n'oblige à relancer aucun script. Un même
+  concept peut être cliquable dans les deux dessins : il n'a qu'une fiche.
+
+L'onglet « Exemple » est indépendant de tout ça : c'est `exemple-namur.html`,
+une planche autonome chargée en iframe, qu'on peut aussi ouvrir seule.
 
 ## build_tables_quartier.py
 

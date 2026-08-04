@@ -30,7 +30,7 @@
 })();
 </script>
 <title>Cadre conceptuel DSDC — DSDC Montréal</title>
-<meta name="description" content="Le cadre conceptuel du développement social et du développement des communautés : 36 concepts cliquables, des enjeux transversaux à l’équité en santé, avec exemples montréalais.">
+<meta name="description" content="Le cadre conceptuel du développement social et du développement des communautés : le cadre complet et sa version simplifiée, 39 concepts cliquables, et le cas de Namur-Hippodrome.">
 <link rel="canonical" href="https://dsdcmontreal.ca/cadre">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -38,7 +38,7 @@
 <meta property="og:site_name" content="DSDC Montréal">
 <meta property="og:locale" content="fr_CA">
 <meta property="og:title" content="Cadre conceptuel DSDC">
-<meta property="og:description" content="36 concepts cliquables, des enjeux transversaux à l’équité en santé, avec exemples montréalais.">
+<meta property="og:description" content="Le cadre complet et sa version simplifiée, 39 concepts cliquables, et un exemple montréalais lu à travers le cadre.">
 <meta property="og:url" content="https://dsdcmontreal.ca/cadre">
 <meta property="og:image" content="https://dsdcmontreal.ca/images/og-dsdc-montreal.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -80,29 +80,27 @@ html, body {
    reste désormais collé en haut. Les marges négatives puis le rembourrage
    redonnent les 24/32px de .left, pour que le contenu passe derrière et non
    à côté. */
+/* Onglets sans concepts (Exemple, Outil) : la vue prend toute la largeur.
+   La colonne devient une pile verticale — en-tête de hauteur naturelle, vue qui
+   prend le reste — pour que la planche de l'exemple sache à quelle hauteur
+   s'ajuster sans qu'on ait à la deviner en pixels. */
+.app.solo { grid-template-columns: 1fr !important; }
+.app.solo .right, .app.solo .split-handle, .app.solo .search-bar { display: none; }
+.app.solo .left { border-right: none; padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+.app.solo .left-header { position: static; margin: 0; padding: 18px 24px 12px; flex: 0 0 auto; }
+.app.solo .lview:not([hidden]) { flex: 1 1 auto; min-height: 0; }
+.slide-frame { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
+.soon { padding: 60px 32px; color: var(--text); }
+.soon h1 { font-size: 23px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; }
+.soon p { font-size: 13.5px; }
 .left-header { position: sticky; top: -24px; z-index: 25; background: var(--bg); margin: -24px -32px 18px; padding: 24px 32px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-.home-btn { background: none; border: 1px solid var(--border); color: var(--gray); padding: 5px 10px; border-radius: 7px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
-.home-btn:hover { background: var(--pink-light); color: var(--accent); border-color: var(--pink-medium); }
 /* Onglets — même langage visuel que la page Cartes (.map-pick) */
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .tab { appearance: none; background: transparent; border: 1.5px solid transparent; border-radius: 7px; font: inherit; font-size: 12.5px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); padding: 4px 10px; cursor: pointer; transition: color 120ms ease, border-color 120ms ease; }
 .tab:hover { color: #000000; }
 .tab[aria-current="page"] { border-color: #000000; color: #000000; }
 .tab:focus-visible { outline: 2px solid #000000; outline-offset: 1px; }
-/* Cadre simplifié interactif */
 .lview[hidden] { display: none; }
-.snode { cursor: pointer; }
-.snode .box { transition: filter 0.15s ease, stroke 0.15s ease; }
-.snode:hover .box { filter: brightness(0.94); }
-.snode.active .box { stroke: #000000; stroke-width: 1.75px; }
-.ex-item { background: #fff; border-left: 3px solid var(--pink-medium); padding: 9px 13px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.55; border-radius: 0 6px 6px 0; }
-.ex-item strong { color: var(--accent); font-weight: 600; }
-.theory-link { margin: 14px 0; }
-.theory-link button { background: var(--pink-light); border: none; color: var(--accent); padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
-.theory-link button:hover { background: var(--pink-medium); }
-.chrono { font-size: 13px; line-height: 1.6; margin: 10px 0 16px; }
-.chrono div { padding: 4px 0; border-bottom: 1px solid #000000; }
-.chrono b { color: var(--accent); font-weight: 600; }
 /* Le cadre est un SVG inséré directement dans la page (bloc CADRE:SVG plus
    bas) et non une image : chaque boîte dessinée dans Illustrator devient donc
    sa propre zone cliquable, au pixel près, cercles et coins arrondis compris.
@@ -113,10 +111,12 @@ html, body {
    L'ancienne version posait des rectangles positionnés en pourcentage sur une
    image ; il fallait tous les recalculer dès qu'on retouchait le dessin. */
 .svg-wrap { position: relative; width: 100%; max-width: none; margin: 0; }
-#cadre-svg { width: 100%; height: auto; display: block; }
-#cadre-svg text { user-select: none; }
-/* Le fond du dessin reprend celui de la page : aucun liseré entre les deux. */
-#cadre-svg #background { fill: var(--bg); }
+#cadre-svg, #simple-svg { width: 100%; height: auto; display: block; }
+#cadre-svg text, #simple-svg text { user-select: none; }
+/* Le fond des dessins reprend celui de la page : aucun liseré entre les deux.
+   Le rectangle de fond du cadre simplifié n'a pas d'identifiant — Illustrator
+   ne lui en donne pas — d'où le ciblage par la position dans le groupe. */
+#cadre-svg #background, #simple-svg #simple > rect:first-child { fill: var(--bg); }
 .cadre-halo, .cadre-outline { fill: none; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
 .cadre-halo { stroke: #FFFFFF; stroke-width: 4.5px; }
 .cadre-outline { stroke: #000000; stroke-width: 2px; }
@@ -182,20 +182,20 @@ a { color: var(--accent); }
   <div class="left">
     <div class="left-header">
       <div class="tabs" role="group" aria-label="Choisir une vue">
-        <button class="tab" data-tab="cadre" aria-current="page">Cadre</button>
-        <button class="tab" data-tab="verdun" aria-current="false">Verdun</button>
-        <button class="tab" data-tab="cdn" aria-current="false">CDN</button>
+        <button class="tab" data-tab="cadre" aria-current="page">Cadre conceptuel</button>
+        <button class="tab" data-tab="simple" aria-current="false">Cadre simplifié</button>
+        <button class="tab" data-tab="exemple" aria-current="false">Exemple</button>
+        <button class="tab" data-tab="outil" aria-current="false">Outil</button>
       </div>
-      <button class="home-btn" id="homeBtn">Vue d'ensemble</button>
       <div class="search-bar">
         <input type="text" id="search" placeholder="Rechercher…" autocomplete="off">
         <div class="search-results" id="searchResults"></div>
       </div>
     </div>
     <div class="lview" id="lv-cadre">
-      <div class="svg-wrap" id="svgwrap">
+      <div class="svg-wrap">
 <!-- CADRE:SVG:START -->
-<svg xmlns="http://www.w3.org/2000/svg" id="cadre-svg" viewBox="0 0 612 792" role="img" aria-label="Cadre conceptuel du développement social et du développement des communautés">
+<svg xmlns="http://www.w3.org/2000/svg" id="cadre-svg" viewBox="23 48 566 744" role="img">
   <defs>
     <style>
       .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16, .cls-17, .cls-18, .cls-19, .cls-20 {
@@ -678,7 +678,6 @@ a { color: var(--accent); }
       }
     </style>
   </defs>
-  <rect id="background" class="cls-29" width="612" height="792" />
   <g id="Conceptual_framework" data-name="Conceptual framework">
     <g id="Group_6" data-name="Group 6">
       <g id="recherche_arrows" data-name="recherche arrows">
@@ -1041,18 +1040,462 @@ a { color: var(--accent); }
       </g>
     </g>
   </g>
-  <g id="Title">
-    <rect id="Title_background" data-name="Title background" class="cls-81" width="612" height="40.45" />
-    <text id="DSDC" class="cls-53" transform="translate(37.71 32.24)"><tspan x="0" y="0">DÉVE</tspan><tspan class="cls-107" x="29.73" y="0">L</tspan><tspan class="cls-77" x="35.64" y="0">OPPEMENT SOCIAL ET DÉVE</tspan><tspan class="cls-107" x="190.31" y="0">L</tspan><tspan x="196.22" y="0">OPPEMENT DES COMMUN</tspan><tspan class="cls-90" x="338.5" y="0">A</tspan><tspan x="346.61" y="0">UTÉS </tspan><tspan class="cls-128" x="378.3" y="0">(</tspan><tspan x="382.63" y="0">DSDC)</tspan></text>
-    <text class="cls-57" transform="translate(484.25 32.24)"><tspan x="0" y="0">Cad</tspan><tspan class="cls-96" x="21.26" y="0">r</tspan><tspan x="25.11" y="0">e conceptuel</tspan></text>
-    <line id="bar" class="cls-9" y1="40.45" x2="612" y2="40.45" />
-  </g>
-<g id="cadre-halo" aria-hidden="true"><rect x="47.47" y="63.18" width="517" height="55.86" rx="27.93" ry="27.93" class="cadre-halo" data-key="enjeux" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M76.87,92.62h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-halo" data-key="rapports" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M233.46,93h145.07c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-145.07c-4.56,0-8.25-3.69-8.25-8.25h-.04c0-4.56,3.73-8.25,8.29-8.25Z" class="cadre-halo" data-key="transformation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M414.29,93h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-halo" data-key="changements" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="125.83" width="517" height="74.85" rx="21.88" ry="21.88" class="cadre-halo" data-key="determinants" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="66.52" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="valeurs" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="188.7" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="gouvernance" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="310.87" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="lois" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="433.05" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="methodes" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="215.72" width="517" height="154.77" rx="21.52" ry="21.52" class="cadre-halo" data-key="ds" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="249.09" y="252.85" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-halo" data-key="roles" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="65.83" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="financement" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="396.91" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="connaissances" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="65.83" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="influence" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="231.37" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="ds-participation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="396.91" y="303.29" width="149.2" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="ds-concertation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.33" y="384.21" width="517.15" height="214.58" rx="21.52" ry="21.52" class="cadre-halo" data-key="action-intersectorielle" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="51.91" y="388.77" width="95.63" height="205.32" rx="17.12" ry="17.12" class="cadre-halo" data-key="prealable-processus-resultat" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M162.89,395.81h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="institutions" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M330.16,398.11h26.99c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-26.99c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="prive" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M296.69,570.02h74.95c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-74.95c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="communautaire" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M162.89,570.02h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="citoyens" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M196.85,431.68h132.03c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-132.03c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="gouvernance-collaborative" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M169.79,482.91h59.54c4.56,0,8.21,3.69,8.21,8.25h-.01c0,4.56-3.64,8.25-8.19,8.25h-59.54c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="concertation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M205.68,533.98h112.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-112.88c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="participation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><circle cx="278.95" cy="491.16" r="31.17" class="cadre-halo" data-key="vision" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><circle cx="351.47" cy="491.16" r="31.17" class="cadre-halo" data-key="action-collective" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="395.38" y="414.62" width="95.15" height="179.68" rx="17.12" ry="17.12" class="cadre-halo" data-key="impact" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><circle cx="532.69" cy="491.16" r="31.17" class="cadre-halo" data-key="equite" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="614.25" width="517" height="134.42" rx="21.81" ry="21.81" class="cadre-halo" data-key="dc" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="249.84" y="667.5" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-halo" data-key="mobilisation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="66.97" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="capital" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="66.97" y="700.37" width="147.82" height="23.1" rx="11.18" ry="11.18" class="cadre-halo" data-key="savoir" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="397.14" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="leadership" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="397.14" y="700.37" width="148.29" height="23.1" rx="11.18" ry="11.18" class="cadre-halo" data-key="ressources" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="756.31" width="517" height="20.72" rx="10.36" ry="10.36" class="cadre-halo" data-key="recherche" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /></g><g id="cadre-outline" aria-hidden="true"><rect x="47.47" y="63.18" width="517" height="55.86" rx="27.93" ry="27.93" class="cadre-outline" data-key="enjeux" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M76.87,92.62h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-outline" data-key="rapports" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M233.46,93h145.07c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-145.07c-4.56,0-8.25-3.69-8.25-8.25h-.04c0-4.56,3.73-8.25,8.29-8.25Z" class="cadre-outline" data-key="transformation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M414.29,93h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-outline" data-key="changements" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="125.83" width="517" height="74.85" rx="21.88" ry="21.88" class="cadre-outline" data-key="determinants" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="66.52" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="valeurs" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="188.7" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="gouvernance" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="310.87" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="lois" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="433.05" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="methodes" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="215.72" width="517" height="154.77" rx="21.52" ry="21.52" class="cadre-outline" data-key="ds" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="249.09" y="252.85" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-outline" data-key="roles" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="65.83" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="financement" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="396.91" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="connaissances" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="65.83" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="influence" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="231.37" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="ds-participation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="396.91" y="303.29" width="149.2" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="ds-concertation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.33" y="384.21" width="517.15" height="214.58" rx="21.52" ry="21.52" class="cadre-outline" data-key="action-intersectorielle" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="51.91" y="388.77" width="95.63" height="205.32" rx="17.12" ry="17.12" class="cadre-outline" data-key="prealable-processus-resultat" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M162.89,395.81h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="institutions" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M330.16,398.11h26.99c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-26.99c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="prive" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M296.69,570.02h74.95c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-74.95c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="communautaire" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M162.89,570.02h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="citoyens" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M196.85,431.68h132.03c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-132.03c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="gouvernance-collaborative" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M169.79,482.91h59.54c4.56,0,8.21,3.69,8.21,8.25h-.01c0,4.56-3.64,8.25-8.19,8.25h-59.54c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="concertation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M205.68,533.98h112.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-112.88c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="participation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><circle cx="278.95" cy="491.16" r="31.17" class="cadre-outline" data-key="vision" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><circle cx="351.47" cy="491.16" r="31.17" class="cadre-outline" data-key="action-collective" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="395.38" y="414.62" width="95.15" height="179.68" rx="17.12" ry="17.12" class="cadre-outline" data-key="impact" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><circle cx="532.69" cy="491.16" r="31.17" class="cadre-outline" data-key="equite" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="614.25" width="517" height="134.42" rx="21.81" ry="21.81" class="cadre-outline" data-key="dc" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="249.84" y="667.5" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-outline" data-key="mobilisation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="66.97" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="capital" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="66.97" y="700.37" width="147.82" height="23.1" rx="11.18" ry="11.18" class="cadre-outline" data-key="savoir" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="397.14" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="leadership" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="397.14" y="700.37" width="148.29" height="23.1" rx="11.18" ry="11.18" class="cadre-outline" data-key="ressources" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="756.31" width="517" height="20.72" rx="10.36" ry="10.36" class="cadre-outline" data-key="recherche" fill="none" stroke="#000000" stroke-width="2" opacity="0" /></g><g id="cadre-hit"><rect x="47.47" y="63.18" width="517" height="55.86" rx="27.93" ry="27.93" class="cadre-hit" data-key="enjeux" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>ENJEUX TRANSVERSAUX</title></rect><path d="M76.87,92.62h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-hit" data-key="rapports" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Rapports de pouvoir</title></path><path d="M233.46,93h145.07c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-145.07c-4.56,0-8.25-3.69-8.25-8.25h-.04c0-4.56,3.73-8.25,8.29-8.25Z" class="cadre-hit" data-key="transformation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Transformation numérique</title></path><path d="M414.29,93h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-hit" data-key="changements" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Changements climatiques</title></path><rect x="47.47" y="125.83" width="517" height="74.85" rx="21.88" ry="21.88" class="cadre-hit" data-key="determinants" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>DÉTERMINANTS STRUCTURELS DE LA SANTÉ</title></rect><rect x="66.52" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="valeurs" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>valeurs</title></rect><rect x="188.7" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="gouvernance" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Gouvernance</title></rect><rect x="310.87" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="lois" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Lois, politiques, règlements, budgets</title></rect><rect x="433.05" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="methodes" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Méthodes institutionnelles</title></rect><rect x="47.47" y="215.72" width="517" height="154.77" rx="21.52" ry="21.52" class="cadre-hit" data-key="ds" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Le DS produit les conditions requises pour le DC. Actions en amont sur les déterminants structurels DÉVELOPPEMENT SOCIAL (DS)</title></rect><rect x="249.09" y="252.85" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-hit" data-key="roles" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Rôles de la santé publique</title></rect><rect x="65.83" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="financement" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Financement, soutienet accompagnement</title></rect><rect x="396.91" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="connaissances" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Développement et partage de connaissances</title></rect><rect x="65.83" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="influence" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Influence et transformationdes politiques publiques</title></rect><rect x="231.37" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="ds-participation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Participation citoyenneet inclusion</title></rect><rect x="396.91" y="303.29" width="149.2" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="ds-concertation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Concertation, collaborationet mobilisation</title></rect><rect x="47.33" y="384.21" width="517.15" height="214.58" rx="21.52" ry="21.52" class="cadre-hit" data-key="action-intersectorielle" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Action intersectorielle et multiréseau</title></rect><rect x="51.91" y="388.77" width="95.63" height="205.32" rx="17.12" ry="17.12" class="cadre-hit" data-key="prealable-processus-resultat" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Conditions de vie favorables Développement du pouvoir d'agir Inclusionsociale Sont à la foisPRÉALABLE,PROCESSUSET RÉSULTAT :</title></rect><path d="M162.89,395.81h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="institutions" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>institutions</title></path><path d="M330.16,398.11h26.99c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-26.99c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="prive" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>privé</title></path><path d="M296.69,570.02h74.95c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-74.95c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="communautaire" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>communautaire</title></path><path d="M162.89,570.02h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="citoyens" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>citoyen·ne·s</title></path><path d="M196.85,431.68h132.03c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-132.03c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="gouvernance-collaborative" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Gouvernance collaborative</title></path><path d="M169.79,482.91h59.54c4.56,0,8.21,3.69,8.21,8.25h-.01c0,4.56-3.64,8.25-8.19,8.25h-59.54c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="concertation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Concertation</title></path><path d="M205.68,533.98h112.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-112.88c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="participation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Participation citoyenne</title></path><circle cx="278.95" cy="491.16" r="31.17" class="cadre-hit" data-key="vision" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Visioncommune</title></circle><circle cx="351.47" cy="491.16" r="31.17" class="cadre-hit" data-key="action-collective" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Actioncollective</title></circle><rect x="395.38" y="414.62" width="95.15" height="179.68" rx="17.12" ry="17.12" class="cadre-hit" data-key="impact" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>de l'enfant Développement professionnelle Insertion socio- Logement Sécurité alimentaire</title></rect><circle cx="532.69" cy="491.16" r="31.17" class="cadre-hit" data-key="equite" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Équitéen santé</title></circle><rect x="47.47" y="614.25" width="517" height="134.42" rx="21.81" ry="21.81" class="cadre-hit" data-key="dc" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Le DC concrétise le DS à l’échelle des milieux de vie. Actions ancrées dans un territoire local DÉVELOPPEMENT DES COMMUNAUTÉS (DC)</title></rect><rect x="249.84" y="667.5" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-hit" data-key="mobilisation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>mobilisation</title></rect><rect x="66.97" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="capital" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Capital social etcohésion sociale</title></rect><rect x="66.97" y="700.37" width="147.82" height="23.1" rx="11.18" ry="11.18" class="cadre-hit" data-key="savoir" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Savoir et apprentissage</title></rect><rect x="397.14" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="leadership" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Leadership et capacitéorganisationnelle</title></rect><rect x="397.14" y="700.37" width="148.29" height="23.1" rx="11.18" ry="11.18" class="cadre-hit" data-key="ressources" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Ressources et maillage</title></rect><rect x="47.47" y="756.31" width="517" height="20.72" rx="10.36" ry="10.36" class="cadre-hit" data-key="recherche" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Documenter, apprendre et ajuster RECHERCHE ET ÉVALUATION</title></rect></g></svg>
+  <g id="cadre-halo" aria-hidden="true"><rect x="47.47" y="63.18" width="517" height="55.86" rx="27.93" ry="27.93" class="cadre-halo" data-key="enjeux" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M76.87,92.62h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-halo" data-key="rapports" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M233.46,93h145.07c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-145.07c-4.56,0-8.25-3.69-8.25-8.25h-.04c0-4.56,3.73-8.25,8.29-8.25Z" class="cadre-halo" data-key="transformation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M414.29,93h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-halo" data-key="changements" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="125.83" width="517" height="74.85" rx="21.88" ry="21.88" class="cadre-halo" data-key="determinants" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="66.52" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="valeurs" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="188.7" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="gouvernance" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="310.87" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="lois" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="433.05" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="methodes" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="215.72" width="517" height="154.77" rx="21.52" ry="21.52" class="cadre-halo" data-key="ds" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="249.09" y="252.85" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-halo" data-key="roles" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="65.83" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="financement" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="396.91" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="connaissances" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="65.83" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="influence" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="231.37" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="ds-participation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="396.91" y="303.29" width="149.2" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="ds-concertation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.33" y="384.21" width="517.15" height="214.58" rx="21.52" ry="21.52" class="cadre-halo" data-key="action-intersectorielle" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="51.91" y="388.77" width="95.63" height="205.32" rx="17.12" ry="17.12" class="cadre-halo" data-key="prealable-processus-resultat" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M162.89,395.81h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="institutions" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M330.16,398.11h26.99c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-26.99c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="prive" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M296.69,570.02h74.95c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-74.95c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="communautaire" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M162.89,570.02h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="citoyens" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M196.85,431.68h132.03c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-132.03c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="gouvernance-collaborative" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M169.79,482.91h59.54c4.56,0,8.21,3.69,8.21,8.25h-.01c0,4.56-3.64,8.25-8.19,8.25h-59.54c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="concertation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M205.68,533.98h112.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-112.88c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-halo" data-key="participation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><circle cx="278.95" cy="491.16" r="31.17" class="cadre-halo" data-key="vision" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><circle cx="351.47" cy="491.16" r="31.17" class="cadre-halo" data-key="action-collective" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="395.38" y="414.62" width="95.15" height="179.68" rx="17.12" ry="17.12" class="cadre-halo" data-key="impact" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><circle cx="532.69" cy="491.16" r="31.17" class="cadre-halo" data-key="equite" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="614.25" width="517" height="134.42" rx="21.81" ry="21.81" class="cadre-halo" data-key="dc" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="249.84" y="667.5" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-halo" data-key="mobilisation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="66.97" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="capital" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="66.97" y="700.37" width="147.82" height="23.1" rx="11.18" ry="11.18" class="cadre-halo" data-key="savoir" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="397.14" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-halo" data-key="leadership" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="397.14" y="700.37" width="148.29" height="23.1" rx="11.18" ry="11.18" class="cadre-halo" data-key="ressources" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="47.47" y="756.31" width="517" height="20.72" rx="10.36" ry="10.36" class="cadre-halo" data-key="recherche" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /></g><g id="cadre-outline" aria-hidden="true"><rect x="47.47" y="63.18" width="517" height="55.86" rx="27.93" ry="27.93" class="cadre-outline" data-key="enjeux" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M76.87,92.62h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-outline" data-key="rapports" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M233.46,93h145.07c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-145.07c-4.56,0-8.25-3.69-8.25-8.25h-.04c0-4.56,3.73-8.25,8.29-8.25Z" class="cadre-outline" data-key="transformation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M414.29,93h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-outline" data-key="changements" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="125.83" width="517" height="74.85" rx="21.88" ry="21.88" class="cadre-outline" data-key="determinants" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="66.52" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="valeurs" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="188.7" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="gouvernance" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="310.87" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="lois" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="433.05" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="methodes" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="215.72" width="517" height="154.77" rx="21.52" ry="21.52" class="cadre-outline" data-key="ds" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="249.09" y="252.85" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-outline" data-key="roles" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="65.83" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="financement" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="396.91" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="connaissances" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="65.83" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="influence" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="231.37" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="ds-participation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="396.91" y="303.29" width="149.2" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="ds-concertation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.33" y="384.21" width="517.15" height="214.58" rx="21.52" ry="21.52" class="cadre-outline" data-key="action-intersectorielle" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="51.91" y="388.77" width="95.63" height="205.32" rx="17.12" ry="17.12" class="cadre-outline" data-key="prealable-processus-resultat" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M162.89,395.81h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="institutions" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M330.16,398.11h26.99c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-26.99c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="prive" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M296.69,570.02h74.95c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-74.95c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="communautaire" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M162.89,570.02h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="citoyens" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M196.85,431.68h132.03c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-132.03c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="gouvernance-collaborative" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M169.79,482.91h59.54c4.56,0,8.21,3.69,8.21,8.25h-.01c0,4.56-3.64,8.25-8.19,8.25h-59.54c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="concertation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M205.68,533.98h112.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-112.88c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-outline" data-key="participation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><circle cx="278.95" cy="491.16" r="31.17" class="cadre-outline" data-key="vision" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><circle cx="351.47" cy="491.16" r="31.17" class="cadre-outline" data-key="action-collective" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="395.38" y="414.62" width="95.15" height="179.68" rx="17.12" ry="17.12" class="cadre-outline" data-key="impact" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><circle cx="532.69" cy="491.16" r="31.17" class="cadre-outline" data-key="equite" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="614.25" width="517" height="134.42" rx="21.81" ry="21.81" class="cadre-outline" data-key="dc" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="249.84" y="667.5" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-outline" data-key="mobilisation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="66.97" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="capital" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="66.97" y="700.37" width="147.82" height="23.1" rx="11.18" ry="11.18" class="cadre-outline" data-key="savoir" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="397.14" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-outline" data-key="leadership" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="397.14" y="700.37" width="148.29" height="23.1" rx="11.18" ry="11.18" class="cadre-outline" data-key="ressources" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="47.47" y="756.31" width="517" height="20.72" rx="10.36" ry="10.36" class="cadre-outline" data-key="recherche" fill="none" stroke="#000000" stroke-width="2" opacity="0" /></g><g id="cadre-hit"><rect x="47.47" y="63.18" width="517" height="55.86" rx="27.93" ry="27.93" class="cadre-hit" data-key="enjeux" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>ENJEUX TRANSVERSAUX</title></rect><path d="M76.87,92.62h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-hit" data-key="rapports" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Rapports de pouvoir</title></path><path d="M233.46,93h145.07c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-145.07c-4.56,0-8.25-3.69-8.25-8.25h-.04c0-4.56,3.73-8.25,8.29-8.25Z" class="cadre-hit" data-key="transformation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Transformation numérique</title></path><path d="M414.29,93h122.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-122.88c-4.56,0-8.28-3.69-8.28-8.25h0c0-4.56,3.72-8.25,8.28-8.25Z" class="cadre-hit" data-key="changements" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Changements climatiques</title></path><rect x="47.47" y="125.83" width="517" height="74.85" rx="21.88" ry="21.88" class="cadre-hit" data-key="determinants" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>DÉTERMINANTS STRUCTURELS DE LA SANTÉ</title></rect><rect x="66.52" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="valeurs" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>valeurs</title></rect><rect x="188.7" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="gouvernance" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Gouvernance</title></rect><rect x="310.87" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="lois" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Lois, politiques, règlements, budgets</title></rect><rect x="433.05" y="153.01" width="112.38" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="methodes" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Méthodes institutionnelles</title></rect><rect x="47.47" y="215.72" width="517" height="154.77" rx="21.52" ry="21.52" class="cadre-hit" data-key="ds" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Le DS produit les conditions requises pour le DC. Actions en amont sur les déterminants structurels DÉVELOPPEMENT SOCIAL (DS)</title></rect><rect x="249.09" y="252.85" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-hit" data-key="roles" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Rôles de la santé publique</title></rect><rect x="65.83" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="financement" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Financement, soutienet accompagnement</title></rect><rect x="396.91" y="252.85" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="connaissances" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Développement et partage de connaissances</title></rect><rect x="65.83" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="influence" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Influence et transformationdes politiques publiques</title></rect><rect x="231.37" y="303.29" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="ds-participation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Participation citoyenneet inclusion</title></rect><rect x="396.91" y="303.29" width="149.2" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="ds-concertation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Concertation, collaborationet mobilisation</title></rect><rect x="47.33" y="384.21" width="517.15" height="214.58" rx="21.52" ry="21.52" class="cadre-hit" data-key="action-intersectorielle" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Action intersectorielle et multiréseau</title></rect><rect x="51.91" y="388.77" width="95.63" height="205.32" rx="17.12" ry="17.12" class="cadre-hit" data-key="prealable-processus-resultat" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Conditions de vie favorables Développement du pouvoir d'agir Inclusionsociale Sont à la foisPRÉALABLE,PROCESSUSET RÉSULTAT :</title></rect><path d="M162.89,395.81h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="institutions" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>institutions</title></path><path d="M330.16,398.11h26.99c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-26.99c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="prive" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>privé</title></path><path d="M296.69,570.02h74.95c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-74.95c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="communautaire" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>communautaire</title></path><path d="M162.89,570.02h60.6c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-60.6c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="citoyens" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>citoyen·ne·s</title></path><path d="M196.85,431.68h132.03c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-132.03c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="gouvernance-collaborative" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Gouvernance collaborative</title></path><path d="M169.79,482.91h59.54c4.56,0,8.21,3.69,8.21,8.25h-.01c0,4.56-3.64,8.25-8.19,8.25h-59.54c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="concertation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Concertation</title></path><path d="M205.68,533.98h112.88c4.56,0,8.25,3.69,8.25,8.25h0c0,4.56-3.69,8.25-8.25,8.25h-112.88c-4.56,0-8.25-3.69-8.25-8.25h0c0-4.56,3.69-8.25,8.25-8.25Z" class="cadre-hit" data-key="participation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Participation citoyenne</title></path><circle cx="278.95" cy="491.16" r="31.17" class="cadre-hit" data-key="vision" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Visioncommune</title></circle><circle cx="351.47" cy="491.16" r="31.17" class="cadre-hit" data-key="action-collective" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Actioncollective</title></circle><rect x="395.38" y="414.62" width="95.15" height="179.68" rx="17.12" ry="17.12" class="cadre-hit" data-key="impact" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>de l'enfant Développement professionnelle Insertion socio- Logement Sécurité alimentaire</title></rect><circle cx="532.69" cy="491.16" r="31.17" class="cadre-hit" data-key="equite" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Équitéen santé</title></circle><rect x="47.47" y="614.25" width="517" height="134.42" rx="21.81" ry="21.81" class="cadre-hit" data-key="dc" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Le DC concrétise le DS à l’échelle des milieux de vie. Actions ancrées dans un territoire local DÉVELOPPEMENT DES COMMUNAUTÉS (DC)</title></rect><rect x="249.84" y="667.5" width="112.38" height="37.21" rx="18.6" ry="18.6" class="cadre-hit" data-key="mobilisation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>mobilisation</title></rect><rect x="66.97" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="capital" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Capital social etcohésion sociale</title></rect><rect x="66.97" y="700.37" width="147.82" height="23.1" rx="11.18" ry="11.18" class="cadre-hit" data-key="savoir" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Savoir et apprentissage</title></rect><rect x="397.14" y="649.93" width="147.82" height="37.21" rx="11.18" ry="11.18" class="cadre-hit" data-key="leadership" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Leadership et capacitéorganisationnelle</title></rect><rect x="397.14" y="700.37" width="148.29" height="23.1" rx="11.18" ry="11.18" class="cadre-hit" data-key="ressources" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Ressources et maillage</title></rect><rect x="47.47" y="756.31" width="517" height="20.72" rx="10.36" ry="10.36" class="cadre-hit" data-key="recherche" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Documenter, apprendre et ajuster RECHERCHE ET ÉVALUATION</title></rect></g></svg>
 <!-- CADRE:SVG:END -->
       </div>
     </div>
-    <div class="lview" id="lv-verdun" hidden></div>
-    <div class="lview" id="lv-cdn" hidden></div>
+    <div class="lview" id="lv-simple" hidden>
+      <div class="svg-wrap">
+<!-- SIMPLE:SVG:START -->
+<svg xmlns="http://www.w3.org/2000/svg" id="simple-svg" viewBox="23 48 566 744" role="img">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #f3eee4;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #f3eee4;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #205b1a;
+      }
+
+      .cls-5 {
+        fill: #e8e8e8;
+        stroke: #565454;
+      }
+
+      .cls-6 {
+        fill: #d6dfea;
+        stroke: #184587;
+      }
+
+      .cls-7 {
+        fill: #dddce5;
+        stroke: #5a2c96;
+      }
+
+      .cls-8 {
+        fill: #efe1c5;
+        stroke: #a57f16;
+      }
+
+      .cls-2, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14 {
+        stroke: #205b1a;
+      }
+
+      .cls-15 {
+        fill: #5a2c96;
+      }
+
+      .cls-15, .cls-16, .cls-17, .cls-4, .cls-18, .cls-19, .cls-20, .cls-21, .cls-22, .cls-23, .cls-24, .cls-25 {
+        font-size: 11px;
+      }
+
+      .cls-15, .cls-17, .cls-18, .cls-19, .cls-20, .cls-23, .cls-24, .cls-25 {
+        font-weight: 700;
+      }
+
+      .cls-15, .cls-18, .cls-19, .cls-20, .cls-23, .cls-24, .cls-25 {
+        font-family: Inter, system-ui, sans-serif; font-weight: 700;
+      }
+
+      .cls-9 {
+        fill: #e6efda;
+      }
+
+      .cls-9, .cls-26, .cls-11, .cls-12, .cls-13 {
+        stroke-linecap: round;
+      }
+
+      .cls-9, .cls-26, .cls-11, .cls-13 {
+        stroke-linejoin: round;
+      }
+
+      .cls-16, .cls-4, .cls-21, .cls-22 {
+        font-family: Inter, system-ui, sans-serif; font-style: italic;
+        font-style: italic;
+      }
+
+      .cls-16, .cls-20 {
+        fill: #184587;
+      }
+
+      .cls-17 {
+        font-family: Inter, system-ui, sans-serif; font-weight: 800;
+      }
+
+      .cls-17, .cls-21, .cls-22 {
+        fill: #1e1917;
+      }
+
+      .cls-4, .cls-27, .cls-18, .cls-19, .cls-20, .cls-22, .cls-24, .cls-25 {
+        isolation: isolate;
+      }
+
+      .cls-18 {
+        fill: #f4f1ea;
+      }
+
+      .cls-28 {
+        letter-spacing: 0em;
+      }
+
+      .cls-19 {
+        fill: #87681f;
+      }
+
+      .cls-29 {
+        letter-spacing: 0em;
+      }
+
+      .cls-30 {
+        letter-spacing: 0em;
+      }
+
+      .cls-31 {
+        letter-spacing: 0em;
+      }
+
+      .cls-10 {
+        fill: #2c5730;
+      }
+
+      .cls-26 {
+        stroke: #1e1917;
+      }
+
+      .cls-26, .cls-12 {
+        fill: none;
+      }
+
+      .cls-32 {
+        fill: #e5bdba;
+        stroke: #823027;
+      }
+
+      .cls-11 {
+        fill: #b8d3ab;
+      }
+
+      .cls-12 {
+        stroke-width: 1.6px;
+      }
+
+      .cls-33 {
+        letter-spacing: -.09em;
+      }
+
+      .cls-34 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-35 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-36 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-37 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-38 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-39 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-40 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-41 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-42 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-43 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-44 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-45 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-46 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-47 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-48 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-49 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-50 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-51 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-52 {
+        letter-spacing: 0em;
+      }
+
+      .cls-53 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-54 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-55 {
+        letter-spacing: 0em;
+      }
+
+      .cls-23 {
+        fill: #565454;
+      }
+
+      .cls-56 {
+        letter-spacing: 0em;
+      }
+
+      .cls-57 {
+        letter-spacing: 0em;
+      }
+
+      .cls-58 {
+        letter-spacing: 0em;
+      }
+
+      .cls-59 {
+        letter-spacing: 0em;
+      }
+
+      .cls-60 {
+        letter-spacing: .02em;
+      }
+
+      .cls-61 {
+        letter-spacing: .02em;
+      }
+
+      .cls-62 {
+        letter-spacing: .02em;
+      }
+
+      .cls-63 {
+        letter-spacing: .02em;
+      }
+
+      .cls-24 {
+        fill: #823027;
+      }
+
+      .cls-25 {
+        fill: #33632f;
+      }
+
+      .cls-13 {
+        fill: #467c3c;
+      }
+
+      .cls-64 {
+        letter-spacing: 0em;
+      }
+
+      .cls-65 {
+        letter-spacing: 0em;
+      }
+
+      .cls-66 {
+        letter-spacing: .01em;
+      }
+
+      .cls-67 {
+        letter-spacing: .01em;
+      }
+
+      .cls-68 {
+        letter-spacing: .01em;
+      }
+
+      .cls-69 {
+        letter-spacing: 0em;
+      }
+
+      .cls-14 {
+        fill: #d7e6d0;
+      }
+
+      .cls-70 {
+        letter-spacing: 0em;
+      }
+
+      .cls-71 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <g id="simple">
+    <g>
+      <text class="cls-17" transform="translate(37.71 32.24)"><tspan x="0" y="0">DÉVE</tspan><tspan class="cls-49" x="29.73" y="0">L</tspan><tspan class="cls-28" x="35.64" y="0">OPPEMENT SOCIAL ET DÉVE</tspan><tspan class="cls-49" x="190.31" y="0">L</tspan><tspan x="196.22" y="0">OPPEMENT DES COMMUN</tspan><tspan class="cls-36" x="338.5" y="0">A</tspan><tspan x="346.61" y="0">UTÉS </tspan><tspan class="cls-60" x="378.3" y="0">(</tspan><tspan x="382.63" y="0">DSDC)</tspan></text>
+      <text class="cls-21" transform="translate(498.74 32.24)"><tspan x="0" y="0">Cad</tspan><tspan class="cls-43" x="21.26" y="0">r</tspan><tspan x="25.11" y="0">e simplifié</tspan></text>
+      <g>
+        <text class="cls-22" transform="translate(212.8 73.03)"><tspan x="0" y="0">Considé</tspan><tspan class="cls-48" x="41.97" y="0">r</tspan><tspan x="45.82" y="0">ant les enjeux t</tspan><tspan class="cls-48" x="123.21" y="0">r</tspan><tspan x="127.06" y="0">an</tspan><tspan class="cls-59" x="140.09" y="0">s</tspan><tspan class="cls-45" x="145.72" y="0">v</tspan><tspan x="151.57" y="0">ersaux</tspan></text>
+        <path class="cls-32" d="M54.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-24" transform="translate(73.29 98.53)"><tspan class="cls-57" x="0" y="0">R</tspan><tspan x="7.14" y="0">appo</tspan><tspan class="cls-61" x="33.83" y="0">r</tspan><tspan class="cls-55" x="38.44" y="0">t</tspan><tspan x="42.39" y="0">s de pou</tspan><tspan class="cls-39" x="87.16" y="0">v</tspan><tspan x="93.44" y="0">oir</tspan></text>
+        <path class="cls-32" d="M233.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-24" transform="translate(235.07 98.53)"><tspan class="cls-34" x="0" y="0">T</tspan><tspan class="cls-51" x="6.6" y="0">r</tspan><tspan x="10.87" y="0">ans</tspan><tspan class="cls-46" x="30" y="0">f</tspan><tspan x="34.11" y="0">o</tspan><tspan class="cls-70" x="40.77" y="0">r</tspan><tspan x="45.25" y="0">mation numé</tspan><tspan class="cls-65" x="114.4" y="0">r</tspan><tspan x="118.86" y="0">ique</tspan></text>
+        <path class="cls-32" d="M412.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-24" transform="translate(415.68 98.53)"><tspan x="0" y="0">Changemen</tspan><tspan class="cls-55" x="64.45" y="0">t</tspan><tspan x="68.41" y="0">s climatiques</tspan></text>
+        <text class="cls-22" transform="translate(112.39 126.03)"><tspan x="0" y="0">le d</tspan><tspan class="cls-45" x="18.43" y="0">év</tspan><tspan x="30.28" y="0">eloppement social (DS) ag</tspan><tspan class="cls-30" x="165.69" y="0">i</tspan><tspan x="168.29" y="0">t en amont sur les dé</tspan><tspan class="cls-56" x="275.56" y="0">t</tspan><tspan x="279.02" y="0">e</tspan><tspan class="cls-67" x="285.24" y="0">r</tspan><tspan x="289.38" y="0">minan</tspan><tspan class="cls-56" x="320.94" y="0">t</tspan><tspan x="324.4" y="0">s </tspan><tspan class="cls-30" x="333.09" y="0">s</tspan><tspan x="338.78" y="0">tructu</tspan><tspan class="cls-43" x="368.9" y="0">r</tspan><tspan x="372.75" y="0">els</tspan></text>
+        <rect class="cls-7" x="42" y="135.03" width="125.25" height="49" rx="14" ry="14" />
+        <text class="cls-15" transform="translate(82.72 151.53)"><tspan class="cls-35" x="0" y="0">V</tspan><tspan x="7.42" y="0">aleurs</tspan><tspan class="cls-50" x="40.35" y="0">,</tspan></text>
+        <text class="cls-15" transform="translate(75.19 163.53)"><tspan x="0" y="0">c</tspan><tspan class="cls-40" x="6.39" y="0">r</tspan><tspan class="cls-39" x="10.57" y="0">o</tspan><tspan class="cls-53" x="17.04" y="0">y</tspan><tspan x="23.41" y="0">ances</tspan><tspan class="cls-50" x="55.41" y="0">,</tspan></text>
+        <text class="cls-15" transform="translate(62.77 175.53)"><tspan x="0" y="0">cu</tspan><tspan class="cls-66" x="13.15" y="0">l</tspan><tspan x="16.21" y="0">tu</tspan><tspan class="cls-40" x="27" y="0">r</tspan><tspan x="31.18" y="0">e</tspan><tspan class="cls-50" x="37.65" y="0">,</tspan><tspan x="40.76" y="0" xml:space="preserve"> no</tspan><tspan class="cls-70" x="56.73" y="0">r</tspan><tspan x="61.21" y="0">mes</tspan></text>
+        <rect class="cls-7" x="176.25" y="135.03" width="125.25" height="49" rx="14" ry="14" />
+        <text class="cls-15" transform="translate(203.1 163.53)"><tspan x="0" y="0">Gou</tspan><tspan class="cls-39" x="21.64" y="0">v</tspan><tspan x="27.92" y="0">e</tspan><tspan class="cls-70" x="34.39" y="0">r</tspan><tspan x="38.87" y="0">nance</tspan></text>
+        <rect class="cls-7" x="310.5" y="135.03" width="125.25" height="49" rx="14" ry="14" />
+        <text class="cls-15" transform="translate(331.4 151.53)"><tspan x="0" y="0">Lois</tspan><tspan class="cls-50" x="21.85" y="0">,</tspan><tspan x="24.96" y="0" xml:space="preserve"> pol</tspan><tspan class="cls-29" x="43.96" y="0">i</tspan><tspan x="46.9" y="0">tiques</tspan><tspan class="cls-50" x="79.99" y="0">,</tspan></text>
+        <text class="cls-15" transform="translate(341.35 163.53)"><tspan class="cls-40" x="0" y="0">r</tspan><tspan x="4.18" y="0">èglemen</tspan><tspan class="cls-55" x="50.09" y="0">t</tspan><tspan x="54.04" y="0">s</tspan><tspan class="cls-50" x="60.1" y="0">,</tspan></text>
+        <text class="cls-15" transform="translate(351.22 175.53)"><tspan x="0" y="0">budge</tspan><tspan class="cls-55" x="33.79" y="0">t</tspan><tspan x="37.75" y="0">s</tspan></text>
+        <rect class="cls-7" x="444.75" y="135.03" width="125.25" height="49" rx="14" ry="14" />
+        <text class="cls-15" transform="translate(480.63 157.53)"><tspan x="0" y="0">Mé</tspan><tspan class="cls-30" x="16.62" y="0">t</tspan><tspan x="20.68" y="0">hodes</tspan></text>
+        <text class="cls-15" transform="translate(464.62 169.53)"><tspan x="0" y="0">in</tspan><tspan class="cls-30" x="9.68" y="0">s</tspan><tspan x="15.76" y="0">t</tspan><tspan class="cls-29" x="19.8" y="0">i</tspan><tspan x="22.74" y="0">tutionnelles</tspan></text>
+        <text class="cls-22" transform="translate(175.2 203.03)"><tspan x="0" y="0">auquel la san</tspan><tspan class="cls-56" x="68.8" y="0">t</tspan><tspan x="72.26" y="0">é publique cont</tspan><tspan class="cls-71" x="151.17" y="0">r</tspan><tspan x="155.27" y="0">ibue par ses </tspan><tspan class="cls-48" x="220.97" y="0">r</tspan><tspan x="224.82" y="0">ôles de</tspan></text>
+        <rect class="cls-6" x="42" y="212.03" width="106.73" height="57" rx="14" ry="14" />
+        <text class="cls-20" transform="translate(59.17 233.53)"><tspan x="0" y="0">Financement</tspan><tspan class="cls-50" x="69.28" y="0">,</tspan></text>
+        <text class="cls-20" transform="translate(69.01 244.53)"><tspan x="0" y="0">soutien et</tspan></text>
+        <text class="cls-20" transform="translate(47.21 255.53)"><tspan x="0" y="0">accom</tspan><tspan class="cls-69" x="35.73" y="0">p</tspan><tspan x="42.68" y="0">agnement</tspan></text>
+        <rect class="cls-6" x="157.36" y="212.03" width="98.4" height="57" rx="14" ry="14" />
+        <g>
+          <text class="cls-20" transform="translate(164.62 233.53)"><tspan x="0" y="0">D</tspan><tspan class="cls-39" x="7.89" y="0">év</tspan><tspan x="20.44" y="0">eloppement</tspan></text>
+          <text class="cls-20" transform="translate(171.29 244.53)"><tspan x="0" y="0">et </tspan><tspan class="cls-69" x="13.05" y="0">p</tspan><tspan x="20.01" y="0">a</tspan><tspan class="cls-61" x="26.32" y="0">r</tspan><tspan class="cls-64" x="30.94" y="0">t</tspan><tspan x="35.04" y="0">age de</tspan></text>
+          <text class="cls-20" transform="translate(166.6 255.53)"><tspan x="0" y="0">connaissances</tspan></text>
+        </g>
+        <rect class="cls-6" x="263.9" y="212.03" width="98.4" height="57" rx="14" ry="14" />
+        <text class="cls-20" transform="translate(281.64 228.03)"><tspan x="0" y="0">Influence et</tspan></text>
+        <text class="cls-20" transform="translate(273.43 239.03)"><tspan x="0" y="0">t</tspan><tspan class="cls-51" x="4.03" y="0">r</tspan><tspan x="8.3" y="0">ans</tspan><tspan class="cls-46" x="27.44" y="0">f</tspan><tspan x="31.54" y="0">o</tspan><tspan class="cls-70" x="38.2" y="0">r</tspan><tspan x="42.68" y="0">mation</tspan></text>
+        <text class="cls-20" transform="translate(275.9 250.03)"><tspan x="0" y="0">des pol</tspan><tspan class="cls-29" x="38.38" y="0">i</tspan><tspan x="41.31" y="0">tiques</tspan></text>
+        <text class="cls-20" transform="translate(286.88 261.03)"><tspan x="0" y="0">publiques</tspan></text>
+        <rect class="cls-6" x="370.78" y="212.03" width="93.34" height="57" rx="14" ry="14" />
+        <text class="cls-20" transform="translate(383.56 233.53)"><tspan class="cls-47" x="0" y="0">P</tspan><tspan x="6.93" y="0">a</tspan><tspan class="cls-61" x="13.25" y="0">r</tspan><tspan x="17.86" y="0">tici</tspan><tspan class="cls-69" x="34.13" y="0">p</tspan><tspan x="41.08" y="0">ation</tspan></text>
+        <text class="cls-20" transform="translate(384.68 244.53)"><tspan x="0" y="0">c</tspan><tspan class="cls-29" x="6.39" y="0">i</tspan><tspan class="cls-52" x="9.33" y="0">t</tspan><tspan class="cls-39" x="13.26" y="0">oy</tspan><tspan x="26.03" y="0">enne et</tspan></text>
+        <text class="cls-20" transform="translate(393.37 255.53)"><tspan x="0" y="0">inclusion</tspan></text>
+        <rect class="cls-6" x="471.6" y="212.03" width="98.4" height="57" rx="14" ry="14" />
+        <g>
+          <text class="cls-20" transform="translate(484.18 233.53)"><tspan x="0" y="0">Conce</tspan><tspan class="cls-61" x="34.39" y="0">r</tspan><tspan class="cls-64" x="39" y="0">t</tspan><tspan x="43.1" y="0">ation</tspan><tspan class="cls-50" x="69.79" y="0">,</tspan></text>
+          <text class="cls-20" transform="translate(485.95 244.53)"><tspan x="0" y="0">collabo</tspan><tspan class="cls-51" x="38.74" y="0">r</tspan><tspan x="43" y="0">ation</tspan></text>
+          <text class="cls-20" transform="translate(481.77 255.53)"><tspan x="0" y="0">et mobilisation</tspan></text>
+        </g>
+        <text class="cls-22" transform="translate(99.52 300.03)"><tspan x="0" y="0">et p</tspan><tspan class="cls-48" x="19.42" y="0">r</tspan><tspan x="23.27" y="0">odu</tspan><tspan class="cls-30" x="42.76" y="0">i</tspan><tspan x="45.37" y="0">t les cond</tspan><tspan class="cls-30" x="95.1" y="0">i</tspan><tspan x="97.71" y="0">tions </tspan><tspan class="cls-48" x="125.42" y="0">r</tspan><tspan x="129.26" y="0">equises pour le d</tspan><tspan class="cls-45" x="216.62" y="0">év</tspan><tspan x="228.46" y="0">eloppement des communau</tspan><tspan class="cls-56" x="371.02" y="0">t</tspan><tspan class="cls-28" x="374.48" y="0">és (DC)</tspan></text>
+        <rect class="cls-14" x="42" y="309.03" width="170" height="35" rx="14" ry="14" />
+        <text class="cls-25" transform="translate(80.97 325.03)"><tspan x="0" y="0">Cond</tspan><tspan class="cls-29" x="28.38" y="0">i</tspan><tspan x="31.32" y="0">tions de vie</tspan></text>
+        <text class="cls-25" transform="translate(98.97 336.03)"><tspan class="cls-45" x="0" y="0">f</tspan><tspan class="cls-39" x="4.1" y="0">av</tspan><tspan x="16.5" y="0">o</tspan><tspan class="cls-51" x="23.17" y="0">r</tspan><tspan x="27.43" y="0">ables</tspan></text>
+        <rect class="cls-14" x="221" y="309.03" width="170" height="35" rx="14" ry="14" />
+        <text class="cls-25" transform="translate(234.42 325.03)"><tspan x="0" y="0">D</tspan><tspan class="cls-39" x="7.89" y="0">év</tspan><tspan x="20.44" y="0">eloppement du pou</tspan><tspan class="cls-39" x="122.88" y="0">v</tspan><tspan x="129.16" y="0">oir</tspan></text>
+        <text class="cls-25" transform="translate(290.54 336.03)"><tspan x="0" y="0">d'agir</tspan></text>
+        <rect class="cls-14" x="400" y="309.03" width="170" height="35" rx="14" ry="14" />
+        <text class="cls-25" transform="translate(440.72 330.53)"><tspan x="0" y="0">Inclusion sociale</tspan></text>
+        <text class="cls-4" transform="translate(165.58 356.03)"><tspan x="0" y="0">qui sont à la </tspan><tspan class="cls-37" x="65.63" y="0">f</tspan><tspan x="69.3" y="0">ois des p</tspan><tspan class="cls-48" x="115.2" y="0">r</tspan><tspan x="119.04" y="0">éalables, p</tspan><tspan class="cls-48" x="174.83" y="0">r</tspan><tspan x="178.67" y="0">ocessus et </tspan><tspan class="cls-48" x="236.77" y="0">r</tspan><tspan x="240.61" y="0">ésu</tspan><tspan class="cls-66" x="258.9" y="0">l</tspan><tspan class="cls-56" x="261.62" y="0">t</tspan><tspan x="265.08" y="0">a</tspan><tspan class="cls-56" x="271.71" y="0">t</tspan><tspan x="275.17" y="0">s</tspan></text>
+        <text class="cls-22" transform="translate(128.99 376.03)"><tspan x="0" y="0">que le DC </tspan><tspan class="cls-48" x="52.95" y="0">r</tspan><tspan x="56.8" y="0">en</tspan><tspan class="cls-37" x="69.41" y="0">f</tspan><tspan x="73.08" y="0">o</tspan><tspan class="cls-48" x="79.55" y="0">r</tspan><tspan x="83.4" y="0">ce à son </tspan><tspan class="cls-56" x="130.01" y="0">t</tspan><tspan x="133.47" y="0">our en mobilisant les acti</tspan><tspan class="cls-42" x="261.12" y="0">f</tspan><tspan x="264.81" y="0">s de son </tspan><tspan class="cls-56" x="310.92" y="0">t</tspan><tspan class="cls-31" x="314.38" y="0">e</tspan><tspan class="cls-68" x="320.59" y="0">r</tspan><tspan class="cls-71" x="324.74" y="0">r</tspan><tspan class="cls-30" x="328.83" y="0">i</tspan><tspan class="cls-56" x="331.44" y="0">t</tspan><tspan x="334.9" y="0">oi</tspan><tspan class="cls-43" x="343.95" y="0">r</tspan><tspan class="cls-28" x="347.8" y="0">e</tspan></text>
+        <rect class="cls-8" x="42" y="386.03" width="125.25" height="46" rx="14" ry="14" />
+        <text class="cls-19" transform="translate(62.41 407.53)"><tspan x="0" y="0">Cap</tspan><tspan class="cls-29" x="21.27" y="0">i</tspan><tspan class="cls-64" x="24.21" y="0">t</tspan><tspan x="28.31" y="0">al social et</tspan></text>
+        <text class="cls-19" transform="translate(60.13 418.53)"><tspan x="0" y="0">cohésion sociale</tspan></text>
+        <rect class="cls-8" x="176.25" y="386.03" width="125.25" height="46" rx="14" ry="14" />
+        <text class="cls-19" transform="translate(202.65 402.03)"><tspan x="0" y="0">L</tspan><tspan class="cls-69" x="6.2" y="0">e</tspan><tspan x="12.77" y="0">adership et</tspan></text>
+        <text class="cls-19" transform="translate(215.97 413.03)"><tspan class="cls-69" x="0" y="0">c</tspan><tspan x="6.49" y="0">a</tspan><tspan class="cls-69" x="12.81" y="0">p</tspan><tspan x="19.77" y="0">ac</tspan><tspan class="cls-29" x="32.47" y="0">i</tspan><tspan class="cls-52" x="35.41" y="0">t</tspan><tspan x="39.34" y="0">é</tspan></text>
+        <text class="cls-19" transform="translate(192.88 424.03)"><tspan x="0" y="0">o</tspan><tspan class="cls-40" x="6.67" y="0">r</tspan><tspan x="10.84" y="0">ganisationnelle</tspan></text>
+        <rect class="cls-8" x="310.5" y="386.03" width="125.25" height="46" rx="14" ry="14" />
+        <text class="cls-19" transform="translate(349.81 407.53)"><tspan x="0" y="0">S</tspan><tspan class="cls-39" x="7.2" y="0">av</tspan><tspan x="19.6" y="0">oir et</tspan></text>
+        <text class="cls-19" transform="translate(335.05 418.53)"><tspan x="0" y="0">app</tspan><tspan class="cls-40" x="20.02" y="0">r</tspan><tspan x="24.2" y="0">entissage</tspan></text>
+        <rect class="cls-8" x="444.75" y="386.03" width="125.25" height="46" rx="14" ry="14" />
+        <text class="cls-19" transform="translate(469.77 407.53)"><tspan class="cls-47" x="0" y="0">R</tspan><tspan x="7.05" y="0">essou</tspan><tspan class="cls-40" x="39.06" y="0">r</tspan><tspan x="43.24" y="0">ces et</tspan></text>
+        <text class="cls-19" transform="translate(485.03 418.53)"><tspan x="0" y="0">maillage</tspan></text>
+        <text class="cls-22" transform="translate(201.11 743.03)"><tspan x="0" y="0">le </tspan><tspan class="cls-56" x="11.81" y="0">t</tspan><tspan x="15.27" y="0">out documen</tspan><tspan class="cls-56" x="82.55" y="0">t</tspan><tspan x="86.01" y="0">é, app</tspan><tspan class="cls-71" x="118.12" y="0">r</tspan><tspan x="122.22" y="0">is et aju</tspan><tspan class="cls-30" x="161.91" y="0">s</tspan><tspan class="cls-56" x="167.6" y="0">t</tspan><tspan x="171.06" y="0">é par la</tspan></text>
+        <path class="cls-5" d="M54.5,752.03h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <g class="cls-27">
+          <text class="cls-23" transform="translate(242.08 768.53)"><tspan class="cls-47" x="0" y="0">R</tspan><tspan x="7.05" y="0">eche</tspan><tspan class="cls-40" x="33.13" y="0">r</tspan><tspan x="37.31" y="0">che et </tspan><tspan class="cls-39" x="72.53" y="0">é</tspan><tspan class="cls-53" x="78.79" y="0">v</tspan><tspan x="85.15" y="0">aluation</tspan></text>
+        </g>
+        <text class="cls-22" transform="translate(93.55 451.8)"><tspan class="cls-48" x="0" y="0">r</tspan><tspan x="3.85" y="0">endant possible l</tspan><tspan class="cls-35" x="90.73" y="0">’</tspan><tspan x="93.12" y="0">action in</tspan><tspan class="cls-56" x="136.95" y="0">t</tspan><tspan x="140.41" y="0">ersec</tspan><tspan class="cls-56" x="168.69" y="0">t</tspan><tspan x="172.15" y="0">o</tspan><tspan class="cls-71" x="178.62" y="0">r</tspan><tspan x="182.72" y="0">ielle et mu</tspan><tspan class="cls-66" x="234.65" y="0">l</tspan><tspan x="237.37" y="0">ti</tspan><tspan class="cls-48" x="243.52" y="0">r</tspan><tspan x="247.37" y="0">éseau, où les pa</tspan><tspan class="cls-63" x="331.15" y="0">r</tspan><tspan x="335.33" y="0">ties p</tspan><tspan class="cls-43" x="363.01" y="0">r</tspan><tspan class="cls-28" x="366.86" y="0">enan</tspan><tspan class="cls-56" x="392.5" y="0">t</tspan><tspan x="395.96" y="0">es</tspan></text>
+        <path class="cls-2" d="M54.5,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-25" transform="translate(74.58 477.3)"><tspan x="0" y="0">In</tspan><tspan class="cls-30" x="9.79" y="0">s</tspan><tspan x="15.88" y="0">t</tspan><tspan class="cls-29" x="19.91" y="0">i</tspan><tspan x="22.85" y="0">tutions</tspan></text>
+        <path class="cls-2" d="M188.75,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-25" transform="translate(225.27 477.3)"><tspan class="cls-58" x="0" y="0">P</tspan><tspan class="cls-65" x="7.08" y="0">r</tspan><tspan x="11.53" y="0">i</tspan><tspan class="cls-39" x="14.45" y="0">v</tspan><tspan x="20.74" y="0">é</tspan></text>
+        <path class="cls-2" d="M323,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-25" transform="translate(330.49 477.3)"><tspan x="0" y="0">Communau</tspan><tspan class="cls-64" x="61.28" y="0">t</tspan><tspan x="65.38" y="0">ai</tspan><tspan class="cls-40" x="74.62" y="0">r</tspan><tspan x="78.8" y="0">e</tspan></text>
+        <path class="cls-2" d="M457.25,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-25" transform="translate(473.79 477.3)"><tspan x="0" y="0">C</tspan><tspan class="cls-29" x="8.1" y="0">i</tspan><tspan class="cls-52" x="11.04" y="0">t</tspan><tspan class="cls-39" x="14.97" y="0">oy</tspan><tspan x="27.75" y="0">en·ne·s</tspan></text>
+        <text class="cls-22" transform="translate(251.85 504.8)"><tspan x="0" y="0">cocon</tspan><tspan class="cls-30" x="31.68" y="0">s</tspan><tspan x="37.38" y="0">truisent par la</tspan></text>
+        <rect class="cls-9" x="42" y="513.8" width="170" height="37" rx="14" ry="14" />
+        <text class="cls-25" transform="translate(91.22 530.3)"><tspan x="0" y="0">Gou</tspan><tspan class="cls-39" x="21.64" y="0">v</tspan><tspan x="27.92" y="0">e</tspan><tspan class="cls-70" x="34.39" y="0">r</tspan><tspan x="38.87" y="0">nance</tspan></text>
+        <text class="cls-25" transform="translate(92.49 542.3)"><tspan x="0" y="0">collabo</tspan><tspan class="cls-51" x="38.74" y="0">r</tspan><tspan x="43" y="0">ati</tspan><tspan class="cls-39" x="56.27" y="0">v</tspan><tspan x="62.56" y="0">e</tspan></text>
+        <rect class="cls-9" x="221" y="513.8" width="170" height="37" rx="14" ry="14" />
+        <text class="cls-25" transform="translate(271.1 536.3)"><tspan x="0" y="0">Conce</tspan><tspan class="cls-61" x="34.39" y="0">r</tspan><tspan class="cls-64" x="39" y="0">t</tspan><tspan x="43.1" y="0">ation</tspan></text>
+        <rect class="cls-9" x="400" y="513.8" width="170" height="37" rx="14" ry="14" />
+        <text class="cls-25" transform="translate(423.59 536.3)"><tspan class="cls-47" x="0" y="0">P</tspan><tspan x="6.93" y="0">a</tspan><tspan class="cls-61" x="13.25" y="0">r</tspan><tspan x="17.86" y="0">tici</tspan><tspan class="cls-69" x="34.13" y="0">p</tspan><tspan x="41.08" y="0">ation c</tspan><tspan class="cls-29" x="76.72" y="0">i</tspan><tspan class="cls-52" x="79.66" y="0">t</tspan><tspan class="cls-39" x="83.59" y="0">oy</tspan><tspan x="96.36" y="0">enne</tspan></text>
+        <text class="cls-22" transform="translate(260.16 569.8)"><tspan x="0" y="0">pour a</tspan><tspan class="cls-67" x="33.16" y="0">r</tspan><tspan class="cls-71" x="37.31" y="0">r</tspan><tspan x="41.41" y="0">i</tspan><tspan class="cls-45" x="43.99" y="0">v</tspan><tspan x="49.83" y="0">er à une</tspan></text>
+        <path class="cls-11" d="M54.5,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-25" transform="translate(124.75 595.3)"><tspan x="0" y="0">Vision commune</tspan></text>
+        <path class="cls-11" d="M328.05,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-229.45c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-25" transform="translate(398.44 595.3)"><tspan class="cls-41" x="0" y="0">A</tspan><tspan x="7.88" y="0">ction collecti</tspan><tspan class="cls-39" x="75.92" y="0">v</tspan><tspan x="82.2" y="0">e</tspan></text>
+        <text class="cls-22" transform="translate(273.89 622.8)"><tspan x="0" y="0">menant à un</tspan></text>
+        <path class="cls-13" d="M54.5,631.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-18" transform="translate(202.13 648.3)"><tspan x="0" y="0">Im</tspan><tspan class="cls-69" x="13" y="0">p</tspan><tspan x="19.95" y="0">act collectif sur les p</tspan><tspan class="cls-65" x="129.45" y="0">r</tspan><tspan x="133.91" y="0">io</tspan><tspan class="cls-65" x="143.49" y="0">r</tspan><tspan class="cls-29" x="147.95" y="0">i</tspan><tspan class="cls-52" x="150.88" y="0">t</tspan><tspan x="154.82" y="0">és lo</tspan><tspan class="cls-69" x="179.49" y="0">c</tspan><tspan x="185.98" y="0">ales</tspan></text>
+        <text class="cls-4" transform="translate(64.54 669.8)"><tspan class="cls-54" x="0" y="0">(</tspan><tspan class="cls-38" x="3.73" y="0">e</tspan><tspan x="9.68" y="0">x : sécu</tspan><tspan class="cls-71" x="49.09" y="0">r</tspan><tspan class="cls-30" x="53.18" y="0">i</tspan><tspan class="cls-56" x="55.79" y="0">t</tspan><tspan x="59.25" y="0">é alimen</tspan><tspan class="cls-56" x="102.43" y="0">t</tspan><tspan x="105.89" y="0">ai</tspan><tspan class="cls-48" x="115.11" y="0">r</tspan><tspan x="118.95" y="0">e, logement, inse</tspan><tspan class="cls-62" x="205.68" y="0">r</tspan><tspan x="209.86" y="0">tion sociop</tspan><tspan class="cls-48" x="265.9" y="0">r</tspan><tspan x="269.74" y="0">o</tspan><tspan class="cls-37" x="276.21" y="0">f</tspan><tspan x="279.88" y="0">essionnelle, d</tspan><tspan class="cls-45" x="349.51" y="0">év</tspan><tspan x="361.36" y="0">eloppement de l</tspan><tspan class="cls-42" x="443.25" y="0">'</tspan><tspan x="446.19" y="0">en</tspan><tspan class="cls-37" x="458.8" y="0">f</tspan><tspan x="462.47" y="0">ant)</tspan></text>
+        <text class="cls-22" transform="translate(252.36 690.8)"><tspan class="cls-44" x="0" y="0">a</tspan><tspan class="cls-45" x="6.45" y="0">y</tspan><tspan x="12.29" y="0">ant comme final</tspan><tspan class="cls-30" x="95.01" y="0">i</tspan><tspan class="cls-56" x="97.61" y="0">t</tspan><tspan x="101.07" y="0">é</tspan></text>
+        <path class="cls-10" d="M54.5,699.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" />
+        <text class="cls-18" transform="translate(261.11 716.3)"><tspan class="cls-33" x="0" y="0">L</tspan><tspan class="cls-41" x="5.2" y="0">'</tspan><tspan x="8.51" y="0">équ</tspan><tspan class="cls-29" x="28.58" y="0">i</tspan><tspan class="cls-52" x="31.52" y="0">t</tspan><tspan x="35.45" y="0">é en san</tspan><tspan class="cls-52" x="79.38" y="0">t</tspan><tspan x="83.32" y="0">é</tspan></text>
+        <g>
+          <line class="cls-12" x1="306.64" y1="591.3" x2="302.32" y2="591.3" />
+          <path class="cls-3" d="M311.68,591.3l-5.65,2.52v-5.05l5.65,2.52Z" />
+        </g>
+        <text class="cls-16" transform="translate(207.42 280.96)"><tspan x="0" y="0">aux cô</tspan><tspan class="cls-56" x="34.61" y="0">t</tspan><tspan x="38.06" y="0">és de nomb</tspan><tspan class="cls-43" x="97.86" y="0">r</tspan><tspan x="101.71" y="0">eux aut</tspan><tspan class="cls-43" x="139.85" y="0">r</tspan><tspan class="cls-28" x="143.7" y="0">es ac</tspan><tspan class="cls-56" x="171.41" y="0">t</tspan><tspan class="cls-28" x="174.87" y="0">eurs</tspan></text>
+      </g>
+    </g>
+  </g>
+<g id="cadre-halo" aria-hidden="true"><path d="M54.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="rapports" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M233.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="transformation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M412.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="changements" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="42" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-halo" data-key="valeurs" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="176.25" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-halo" data-key="gouvernance" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="310.5" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-halo" data-key="lois" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="444.75" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-halo" data-key="methodes" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="42" y="212.03" width="106.73" height="57" rx="14" ry="14" class="cadre-halo" data-key="financement" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="157.36" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-halo" data-key="connaissances" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="263.9" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-halo" data-key="influence" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="370.78" y="212.03" width="93.34" height="57" rx="14" ry="14" class="cadre-halo" data-key="ds-participation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="471.6" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-halo" data-key="ds-concertation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="42" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-halo" data-key="conditions-vie" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="221" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-halo" data-key="pouvoir-agir" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="400" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-halo" data-key="inclusion-sociale" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="42" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-halo" data-key="capital" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="176.25" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-halo" data-key="leadership" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="310.5" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-halo" data-key="savoir" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="444.75" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-halo" data-key="ressources" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M54.5,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="institutions" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M188.75,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="prive" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M323,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="communautaire" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M457.25,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="citoyens" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="42" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-halo" data-key="gouvernance-collaborative" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="221" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-halo" data-key="concertation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><rect x="400" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-halo" data-key="participation" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M54.5,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="vision" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M328.05,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-229.45c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="action-collective" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M54.5,631.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="impact" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M54.5,699.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="equite" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /><path d="M54.5,752.03h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-halo" data-key="recherche" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0" /></g><g id="cadre-outline" aria-hidden="true"><path d="M54.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="rapports" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M233.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="transformation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M412.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="changements" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="42" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-outline" data-key="valeurs" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="176.25" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-outline" data-key="gouvernance" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="310.5" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-outline" data-key="lois" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="444.75" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-outline" data-key="methodes" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="42" y="212.03" width="106.73" height="57" rx="14" ry="14" class="cadre-outline" data-key="financement" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="157.36" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-outline" data-key="connaissances" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="263.9" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-outline" data-key="influence" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="370.78" y="212.03" width="93.34" height="57" rx="14" ry="14" class="cadre-outline" data-key="ds-participation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="471.6" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-outline" data-key="ds-concertation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="42" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-outline" data-key="conditions-vie" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="221" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-outline" data-key="pouvoir-agir" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="400" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-outline" data-key="inclusion-sociale" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="42" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-outline" data-key="capital" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="176.25" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-outline" data-key="leadership" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="310.5" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-outline" data-key="savoir" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="444.75" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-outline" data-key="ressources" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M54.5,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="institutions" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M188.75,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="prive" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M323,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="communautaire" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M457.25,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="citoyens" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="42" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-outline" data-key="gouvernance-collaborative" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="221" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-outline" data-key="concertation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><rect x="400" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-outline" data-key="participation" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M54.5,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="vision" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M328.05,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-229.45c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="action-collective" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M54.5,631.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="impact" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M54.5,699.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="equite" fill="none" stroke="#000000" stroke-width="2" opacity="0" /><path d="M54.5,752.03h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-outline" data-key="recherche" fill="none" stroke="#000000" stroke-width="2" opacity="0" /></g><g id="cadre-hit"><path d="M54.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="rapports" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Rapports de pouvoir</title></path><path d="M233.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="transformation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Transformation numérique</title></path><path d="M412.5,82.03h145c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-145c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="changements" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Changements climatiques</title></path><rect x="42" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-hit" data-key="valeurs" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Valeurs, croyances, culture, normes</title></rect><rect x="176.25" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-hit" data-key="gouvernance" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Gouvernance</title></rect><rect x="310.5" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-hit" data-key="lois" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Lois, politiques, règlements, budgets</title></rect><rect x="444.75" y="135.03" width="125.25" height="49" rx="14" ry="14" class="cadre-hit" data-key="methodes" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Méthodes institutionnelles</title></rect><rect x="42" y="212.03" width="106.73" height="57" rx="14" ry="14" class="cadre-hit" data-key="financement" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Financement, soutien et accompagnement</title></rect><rect x="157.36" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-hit" data-key="connaissances" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Développement et partage de connaissances</title></rect><rect x="263.9" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-hit" data-key="influence" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Influence et transformation des politiques publiques</title></rect><rect x="370.78" y="212.03" width="93.34" height="57" rx="14" ry="14" class="cadre-hit" data-key="ds-participation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Participation citoyenne et inclusion</title></rect><rect x="471.6" y="212.03" width="98.4" height="57" rx="14" ry="14" class="cadre-hit" data-key="ds-concertation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Concertation, collaboration et mobilisation</title></rect><rect x="42" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-hit" data-key="conditions-vie" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Conditions de vie favorables</title></rect><rect x="221" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-hit" data-key="pouvoir-agir" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Développement du pouvoir d'agir</title></rect><rect x="400" y="309.03" width="170" height="35" rx="14" ry="14" class="cadre-hit" data-key="inclusion-sociale" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Inclusion sociale</title></rect><rect x="42" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-hit" data-key="capital" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Capital social et cohésion sociale</title></rect><rect x="176.25" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-hit" data-key="leadership" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Leadership et capacité organisationnelle</title></rect><rect x="310.5" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-hit" data-key="savoir" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Savoir et apprentissage</title></rect><rect x="444.75" y="386.03" width="125.25" height="46" rx="14" ry="14" class="cadre-hit" data-key="ressources" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Ressources et maillage</title></rect><path d="M54.5,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="institutions" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Institutions</title></path><path d="M188.75,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="prive" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Privé</title></path><path d="M323,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="communautaire" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Communautaire</title></path><path d="M457.25,460.8h100.25c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-100.25c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="citoyens" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Citoyen·ne·s</title></path><rect x="42" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-hit" data-key="gouvernance-collaborative" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Gouvernance collaborative</title></rect><rect x="221" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-hit" data-key="concertation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Concertation</title></rect><rect x="400" y="513.8" width="170" height="37" rx="14" ry="14" class="cadre-hit" data-key="participation" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Participation citoyenne</title></rect><path d="M54.5,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="vision" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Vision commune</title></path><path d="M328.05,578.8h229.45c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5h-229.45c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="action-collective" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Action collective</title></path><path d="M54.5,631.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="impact" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Impact collectif sur les priorités locales</title></path><path d="M54.5,699.8h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="equite" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>L'équité en santé</title></path><path d="M54.5,752.03h503c6.9,0,12.5,5.6,12.5,12.5h0c0,6.9-5.6,12.5-12.5,12.5H54.5c-6.9,0-12.5-5.6-12.5-12.5h0c0-6.9,5.6-12.5,12.5-12.5Z" class="cadre-hit" data-key="recherche" fill="#000000" fill-opacity="0" stroke="none" pointer-events="all" role="button" tabindex="0"><title>Recherche et évaluation</title></path></g></svg>
+<!-- SIMPLE:SVG:END -->
+      </div>
+    </div>
+    <!-- L'exemple est une planche 1920 × 1080, avec sa propre typographie et sa
+         propre grille. Il vit dans son fichier et arrive ici par une iframe :
+         ses styles ne peuvent pas déteindre sur le reste de la page, et le
+         fichier reste ouvrable seul. -->
+    <div class="lview" id="lv-exemple" hidden>
+      <iframe class="slide-frame" src="exemple-namur.html" title="Namur-Hippodrome lu à travers le cadre conceptuel DSDC" loading="lazy"></iframe>
+    </div>
+    <div class="lview" id="lv-outil" hidden>
+      <div class="soon">
+        <h1>Outil d'accompagnement</h1>
+        <p>En développement.</p>
+      </div>
+    </div>
   </div>
   <div class="right" id="right">
     <div id="content"></div>
@@ -1066,7 +1509,7 @@ a { color: var(--accent); }
 <!-- CADRE:MAP:START -->
 <script>
 /* Écrit par tools/build_cadre.py — ne pas modifier à la main.
-   Section de chaque zone (utilisée par la recherche) et ordre de lecture. */
+   Section de chaque concept (pour la recherche) et ordre de lecture. */
 window.CADRE_MAP = {
   "enjeux": {
     "section": "Enjeux transversaux"
@@ -1175,9 +1618,18 @@ window.CADRE_MAP = {
   },
   "recherche": {
     "section": "Recherche et évaluation"
+  },
+  "conditions-vie": {
+    "section": "Conditions produites par le DS"
+  },
+  "pouvoir-agir": {
+    "section": "Conditions produites par le DS"
+  },
+  "inclusion-sociale": {
+    "section": "Conditions produites par le DS"
   }
 };
-window.CADRE_ORDER = ["enjeux", "rapports", "transformation", "changements", "determinants", "valeurs", "gouvernance", "lois", "methodes", "ds", "roles", "financement", "connaissances", "influence", "ds-participation", "ds-concertation", "action-intersectorielle", "prealable-processus-resultat", "institutions", "prive", "communautaire", "citoyens", "gouvernance-collaborative", "concertation", "participation", "vision", "action-collective", "impact", "equite", "dc", "mobilisation", "capital", "savoir", "leadership", "ressources", "recherche"];
+window.CADRE_ORDER = ["enjeux", "rapports", "transformation", "changements", "determinants", "valeurs", "gouvernance", "lois", "methodes", "ds", "roles", "financement", "connaissances", "influence", "ds-participation", "ds-concertation", "action-intersectorielle", "prealable-processus-resultat", "institutions", "prive", "communautaire", "citoyens", "gouvernance-collaborative", "concertation", "participation", "vision", "action-collective", "impact", "equite", "dc", "mobilisation", "capital", "savoir", "leadership", "ressources", "recherche", "conditions-vie", "pouvoir-agir", "inclusion-sociale"];
 </script>
 <!-- CADRE:MAP:END -->
 <script>
@@ -1186,32 +1638,47 @@ window.CADRE_ORDER = ["enjeux", "rapports", "transformation", "changements", "de
 const DATA = window.CADRE_DATA || {};
 const ZONEMAP = window.CADRE_MAP || {};
 
-const svgwrap = document.getElementById('svgwrap');
+/* Deux dessins cliquables cohabitent : le cadre complet et le cadre simplifié.
+   Un même concept peut exister dans les deux ; la sélection est donc appliquée
+   partout, pour qu'on retrouve sa boîte allumée en changeant d'onglet. */
+const wraps = [...document.querySelectorAll('.svg-wrap')];
 const contentEl = document.getElementById('content');
 const searchInput = document.getElementById('search');
 const searchResults = document.getElementById('searchResults');
-const homeBtn = document.getElementById('homeBtn');
 
-/* Les zones cliquables sont déjà dans le SVG (calque #cadre-hit, posé par
+/* Les zones cliquables sont déjà dans les SVG (calque #cadre-hit, posé par
    tools/build_cadre.py). On leur branche ici le clic, le survol et le clavier.
-   Une boîte présente dans le dessin mais absente de cadre.data.js reste
+   Une boîte présente dans un dessin mais absente de cadre.data.js reste
    cliquable : elle affichera « Fiche à compléter ». */
-const marksOf = key => svgwrap.querySelectorAll('.cadre-halo[data-key="' + CSS.escape(key) + '"], .cadre-outline[data-key="' + CSS.escape(key) + '"]');
-const setMark = (key, cls, on) => marksOf(key).forEach(m => m.classList.toggle(cls, on));
+const allMarks = () => document.querySelectorAll('.cadre-halo, .cadre-outline');
+const setMark = (key, cls, on) => {
+  const sel = '[data-key="' + CSS.escape(key) + '"]';
+  document.querySelectorAll('.cadre-halo' + sel + ', .cadre-outline' + sel)
+    .forEach(m => m.classList.toggle(cls, on));
+};
 
-svgwrap.querySelectorAll('.cadre-hit').forEach(hit => {
-  const key = hit.dataset.key;
-  const label = (DATA[key] && DATA[key].title) || (hit.querySelector('title') || {}).textContent || key;
-  hit.setAttribute('aria-label', label);
-  hit.addEventListener('click', () => selectZone(key));
-  hit.addEventListener('mouseenter', () => setMark(key, 'hover', true));
-  hit.addEventListener('mouseleave', () => setMark(key, 'hover', false));
-  hit.addEventListener('focus', () => { hit.classList.add('kb'); setMark(key, 'hover', true); });
-  hit.addEventListener('blur', () => { hit.classList.remove('kb'); setMark(key, 'hover', false); });
-  hit.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectZone(key); }
+wraps.forEach(wrap => {
+  wrap.querySelectorAll('.cadre-hit').forEach(hit => {
+    const key = hit.dataset.key;
+    const label = (DATA[key] && DATA[key].title) || (hit.querySelector('title') || {}).textContent || key;
+    hit.setAttribute('aria-label', label);
+    hit.addEventListener('click', () => selectZone(key));
+    hit.addEventListener('mouseenter', () => setMark(key, 'hover', true));
+    hit.addEventListener('mouseleave', () => setMark(key, 'hover', false));
+    hit.addEventListener('focus', () => { hit.classList.add('kb'); setMark(key, 'hover', true); });
+    hit.addEventListener('blur', () => { hit.classList.remove('kb'); setMark(key, 'hover', false); });
+    hit.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectZone(key); }
+    });
   });
+
+  /* Retour à la vue d'ensemble : un clic dans le dessin, à côté des boîtes.
+     Il n'y a donc pas de bouton « Vue d'ensemble » — le geste est le même que
+     pour désélectionner ailleurs sur le site. */
+  wrap.addEventListener('click', e => { if (!e.target.closest('.cadre-hit')) goHome(); });
 });
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') goHome(); });
 
 function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 function linkify(s) {
@@ -1244,7 +1711,7 @@ function termCard(slug) {
 function selectZone(id, fromSearch) {
   const c = DATA[id];
   if (!c) return;
-  svgwrap.querySelectorAll('.cadre-halo, .cadre-outline').forEach(o => o.classList.toggle('active', o.dataset.key === id));
+  allMarks().forEach(o => o.classList.toggle('active', o.dataset.key === id));
   contentEl.innerHTML = `<div class="section-banner"><h1>${esc(c.title)}</h1></div>${termCard(id)}`;
   document.querySelector('.right').scrollTop = 0;
   searchResults.classList.remove('open');
@@ -1253,16 +1720,16 @@ function selectZone(id, fromSearch) {
 window.selectZone = selectZone;
 
 function goHome() {
-  svgwrap.querySelectorAll('.cadre-halo, .cadre-outline').forEach(o => o.classList.remove('active'));
-  const n = svgwrap.querySelectorAll('.cadre-hit').length;
+  allMarks().forEach(o => o.classList.remove('active'));
+  const n = (window.CADRE_ORDER || []).length;
   contentEl.innerHTML = `<div class="welcome">
     <h1>Cadre conceptuel DSDC</h1>
     <p>Cliquez sur une section du cadre à gauche pour explorer les définitions, les termes connexes, les exemples montréalais et les exemples inspirants.</p>
     <p>Utilisez la barre de recherche pour accéder directement à un concept par son nom.</p>
+    <p>Pour revenir ici, cliquez dans le cadre à côté des boîtes.</p>
     <span class="hint">${n} concepts cliquables</span></div>`;
   document.querySelector('.right').scrollTop = 0;
 }
-homeBtn.addEventListener('click', goHome);
 goHome();
 
 searchInput.addEventListener('input', e => {
@@ -1290,337 +1757,26 @@ document.addEventListener('click', e => {
 });
 
 /* ================================================================
-   ONGLETS : Cadre conceptuel | Sécurité alimentaire à Verdun | Logement à CDN
-   Cadre simplifié (mêmes couleurs que le cadre complet) + contenus d'exemple
+   ONGLETS : Cadre conceptuel | Cadre simplifié | Exemple | Outil
    ================================================================ */
 
-const COL = { red:'#C43E42', redL:'#f1d9da', blue:'#46747F', or:'#b3651c', orL:'#f0e4c8',
-  vio:'#6C6F3F', vioL:'#e4e7d6', gold:'#8f6f1c', gr:'#3f6a5c', grL:'#e7eeef', grM:'#bcd0d4', grD:'#46747F' };
-
-const NODE_TITLES = { rapports:'Rapports de pouvoir', numerique:'Transformation numérique', climat:'Changements climatiques',
-  institutions:'Institutions', philanthropie:'Philanthropie', prive:'Secteur privé (incl. philanthropie)', communautaire:'Milieu communautaire',
-  citoyens:'Citoyens et citoyennes', plaidoyer:'Plaidoyer', concertation:'Concertation', participation:'Participation citoyenne',
-  vision:'Vision commune', savoir:'Savoir', capital:'Capital social', financement:'Financement', gouvernance:'Gouvernance partagée',
-  evaluation:'Évaluation', impact:'Impact collectif sur les priorités locales', determinants:'Déterminants structurels', equite:'Équité en santé' };
-
-/* Concept du cadre simplifié (onglets Verdun / CDN) -> boîte du cadre complet.
-   Les clés de droite sont celles de tools/build_cadre.py. */
-const NODE_TO_ZONE = { rapports:'rapports', numerique:'transformation', climat:'changements', plaidoyer:'influence',
-  concertation:'concertation', participation:'participation', vision:'vision', savoir:'savoir', capital:'capital',
-  financement:'financement', gouvernance:'gouvernance-collaborative', evaluation:'recherche', impact:'impact',
-  determinants:'determinants', equite:'equite' };
-
-/* Cadre DSL simplifié — pastel, texte noir, sans flèches (utilisé par les 2 onglets exemples) */
-const DSL_ROWS = [
-  { lab: 'Considérant les enjeux transversaux', c: '#ede7d9', fs: 15, chips: [['rapports','RAPPORTS DE POUVOIR'],['numerique','TRANSFORMATION NUMÉRIQUE'],['climat','CHANGEMENTS CLIMATIQUES']] },
-  { lab: 'et agissant en amont sur les', c: '#f1d9da', fs: 16, chips: [['determinants','DÉTERMINANTS STRUCTURELS']] },
-  { lab: 'les parties prenantes', c: '#dde7e9', fs: 13.5, chips: [['institutions','INSTITUTIONS'],['prive','PRIVÉ'],['communautaire','COMMUNAUTAIRE'],['citoyens','CITOYENS']] },
-  { lab: 'utilisent', c: '#e4e7d6', fs: 15, chips: [['plaidoyer','PLAIDOYER'],['concertation','CONCERTATION'],['participation','PARTICIPATION CITOYENNE']] },
-  { lab: 'pour arriver à une', c: '#d9ddca', fs: 16, chips: [['vision','VISION COMMUNE']] },
-  { lab: 'mettant à profit', c: '#f0e4c8', fs: 15, chips: [['savoir','SAVOIR'],['capital','CAPITAL SOCIAL'],['financement','FINANCEMENT'],['gouvernance','GOUVERNANCE PARTAGÉE']] },
-  { lab: 'amélioré par un processus d’', c: '#f0e4c8', fs: 15, chips: [['evaluation','ÉVALUATION']] },
-  { lab: 'pour avoir un', c: '#e5e0d2', fs: 15, chips: [['impact','IMPACT COLLECTIF SUR LES PRIORITÉS LOCALES']] },
-  { lab: 'ayant comme finalité', c: '#efe1b6', fs: 16, chips: [['equite','L’ÉQUITÉ EN SANTÉ']] }
-];
-
-function simpleSVG(tab) {
-  const W = 1040, X = 70, RW = 900, CH = 46, INK = '#000000';
-  let y = 118, out = [];
-  DSL_ROWS.forEach(row => {
-    if (row.lab) { out.push(`<text x="${W/2}" y="${y+24}" text-anchor="middle" font-size="16.5" fill="#000000">${row.lab}</text>`); y += 40; }
-    else { y += 6; }
-    const n = row.chips.length, gap = 6, cw = (RW - gap*(n-1))/n;
-    row.chips.forEach((ch, i) => {
-      const x = X + i*(cw+gap), fill = ch[2] || row.c;
-      out.push(`<g class="snode" data-node="${ch[0]}"><rect class="box" x="${x.toFixed(1)}" y="${y}" width="${cw.toFixed(1)}" height="${CH}" rx="${CH/2}" fill="${fill}"/>` +
-        `<text x="${(x+cw/2).toFixed(1)}" y="${y+CH/2+5.5}" text-anchor="middle" font-size="${row.fs}" font-weight="700" letter-spacing=".04em" fill="${INK}">${ch[1]}</text></g>`);
-    });
-    y += CH;
-  });
-  y += 30;
-  return `<svg viewBox="0 0 ${W} ${y}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;font-family:inherit" role="group" aria-label="Cadre conceptuel du développement social local">` +
-    `<text x="${W/2}" y="58" text-anchor="middle" font-size="27" font-weight="800" fill="${INK}">CADRE CONCEPTUEL DU DÉVELOPPEMENT SOCIAL LOCAL (DSL)</text>` +
-    out.join('') + `</svg>`;
-}
-
-/* ---- Contenus d'exemple : comment chaque projet illustre chaque concept ---- */
-const EX = {
-verdun: {
-  kicker: 'SÉCURITÉ ALIMENTAIRE À VERDUN',
-  title: 'Plan de développement de la communauté nourricière (PDCN) 2022-2030',
-  intro: 'Porté par l’arrondissement de Verdun (DCSLDS), accompagné par Vivre en Ville et financé par le MAPAQ, le PDCN articule 5 orientations, 15 priorités et un plan d’action 2023-2026 de 58 actions pour un système alimentaire local, sain et équitable.',
-  chrono: [
-    ['Janv. 2021','Comité de pilotage multi-acteurs (12 rencontres) + comité interdirection'],
-    ['Juin 2021','40 000 $ du MAPAQ; consultation lancée sur Réalisons Montréal'],
-    ['Nov. 2021','Dépôt du Portrait diagnostic (méthode FFOM, avec Vivre en Ville)'],
-    ['Déc. 2021 – janv. 2022','Vote populaire sur la vision (243 répondants)'],
-    ['29 juin 2022','Lancement du PDCN 2022-2030'],
-    ['Avril 2023','Plan d’action détaillé 2023-2026 : 58 actions']],
-  srcs: [['PDCN 2022-2030 (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf'],['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']],
-  nodes: {
-  rapports: { how: 'Qui détient le pouvoir, qui le partage.', items: [
-    'L’arrondissement détient budget et compétences; il partage la décision via le comité de pilotage et un vote populaire (la vision gagnante à 54,3 % a été retravaillée).',
-    'L’insécurité alimentaire suit le revenu : gradient social, pas manque de nourriture.'],
-    src: [] },
-  numerique: { how: 'Le numérique comme canal de participation — et ses limites.', items: [
-    'Consultation numérique Réalisons Montréal : 1 402 visiteurs, 83 « engagés » (2021-2022).',
-    'Contre la fracture numérique : groupes de discussion et ateliers en personne (43 + 43 pers.).'],
-    src: [['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']] },
-  climat: { how: 'La communauté nourricière est une stratégie climatique locale.', items: [
-    'Circuits courts (marchés fermiers, serres, ~20 000 pi²), agriculture urbaine, compost (Multi-CAUS), lutte au gaspillage (repas ~3 $ BGC Dawson).'],
-    src: [] },
-  institutions: { how: 'Trois paliers publics dans un plan d’arrondissement.', items: [
-    '<strong>Arrondissement</strong> (DCSLDS) : porteur du PDCN, nommé dans presque toutes les 58 actions.',
-    '<strong>MAPAQ</strong> : 40 000 $ + siège au comité de pilotage.',
-    '<strong>DRSP</strong> : données (14,8 % d’insécurité, 2020) + SISA 1 755 200 $ (2025-2029); CIUSSS et écoles partenaires.'],
-    src: [['PDCN (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
-  philanthropie: { how: 'La philanthropie a précédé et outillé le plan.', items: [
-    '<strong>Centraide</strong> : le PIC « Un toit, une table pour tous » (2016) a créé le Système alimentaire verdunois (2017); 70,3 M$ investis dans 375 organismes (2024-2025).',
-    '<strong>FGM + Fondation Chagnon</strong> : démarche « Faim zéro à Montréal » (2019) — cartographie de l’écosystème.'],
-    src: [['Centraide','https://www.centraide-mtl.org/en/media/centraide-investments-2024-2025/']] },
-  prive: { how: 'Le commerce local comme maillon du système alimentaire.', items: [
-    '<strong>SDC Wellington</strong> : verdissement, agriculture urbaine, mise en marché de proximité.',
-    'PME MTL Grand Sud-Ouest : accompagnement des entreprises alimentaires; commerces locaux : réduction du gaspillage et invendus.'],
-    src: [] },
-  communautaire: { how: 'Les organismes livrent le système au quotidien.', items: [
-    '<strong>CDSV</strong> (table de quartier) et son comité <strong>Verdun sans faim</strong>; Grand Potager (serres); CAUS (marchés fermiers, ~26 exposants); BGC Dawson et Manna (aide alimentaire); MEV (sensibilisation).'],
-    src: [['CDSV','https://cdsv.org/qui-sommes-nous/']] },
-  citoyens: { how: 'Des citoyens qui votent, siègent et jardinent.', items: [
-    '243 votes sur la vision; 43 pers. en groupes de discussion; 120 via outils collaboratifs.',
-    'Collège citoyen au CA de la CDSV; <strong>4 161 votes</strong> pour le Jardin Éthel au budget participatif.'],
-    src: [] },
-  plaidoyer: { how: 'Documenter, puis interpeller.', items: [
-    'Verdun sans faim présente les <strong>10 défis</strong> du Système alimentaire verdunois à la mairie d’arrondissement.',
-    'Le Conseil SAM porte les enjeux à l’agglomération; le Bilan-Faim (Moisson) sert d’argumentaire chiffré.'],
-    src: [['Les 10 défis du SAV','https://nouvellesdici.com/actu/les-defis-du-systeme-alimentaire-de-verdun-appel-a-laction-collective/']] },
-  concertation: { how: 'Des espaces formels où les acteurs s’alignent.', items: [
-    'Comité de pilotage PDCN : 12 rencontres multi-acteurs; CDSV : AG 3-4×/an, CA de 5 collèges.',
-    '<strong>Conseil SAM</strong> (2018) : 1er conseil de politiques alimentaires d’une ville francophone, 150+ partenaires.'],
-    src: [['Conseil SAM','https://csam.ca/a-propos-conseil-sam/']] },
-  participation: { how: 'Les résidents ont façonné le plan à chaque étape.', items: [
-    '5 groupes de discussion (43 pers.) + sondages (19 org.) + atelier de cocréation (43) + outils collaboratifs (120) + vote final (243).',
-    'Réalisons Montréal, juin 2021 – mars 2022 : 1 402 visiteurs.'],
-    src: [['Réalisons Montréal','https://www.realisonsmtl.ca/pdcnverdun']] },
-  vision: { how: 'Une vision commune formellement votée.', items: [
-    'Vote populaire : <strong>243 répondants</strong>, énoncé gagnant à 54,3 %.',
-    'Résultat : 1 vision, 5 orientations, 15 priorités, 58 actions (2023-2026).'],
-    src: [['PDCN (PDF)','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
-  savoir: { how: 'Le plan repose sur un diagnostic, pas des impressions.', items: [
-    '<strong>Portrait diagnostic</strong> (nov. 2021, méthode FFOM, avec Vivre en Ville) + Portrait en sécurité alimentaire (CDSV, 2017).',
-    'Données DRSP : 14,8 % des ménages montréalais en insécurité alimentaire (2020), presque doublé 2018-2022.'],
-    src: [['Portrait diagnostic','https://portail-m4s.s3.montreal.ca/pdf/ver_pdcn_portraitdiagnostic_15_nov_2021_final.pdf']] },
-  capital: { how: 'L’alimentation crée du lien.', items: [
-    'Marchés fermiers et Jardin Éthel = lieux de rencontre; jardins collectifs et éducatifs (BGC Dawson, écoles) = liens intergénérationnels.',
-    'Réseaux du SAV actifs depuis 2017; livraison aux personnes à mobilité réduite (~222 ménages/mois au dépannage Dawson).'],
-    src: [] },
-  financement: { how: 'Petits montants dédiés + gros socles récurrents.', items: [
-    'Élaboration : <strong>MAPAQ 40 000 $</strong>; projets : budget participatif (Jardin Éthel <strong>755 000 $</strong>), SISA ~75 000 $/an/projet.',
-    'Socles : PSOC 252,2 M$/an en mission globale (Montréal); IMSDSL finance la CDSV (Ville + Centraide + DRSP).'],
-    src: [['Jardin Éthel','https://montreal.ca/articles/le-jardin-ethel-30140']] },
-  gouvernance: { how: 'Pilotage partagé arrondissement-communauté.', items: [
-    'Comité de pilotage multi-acteurs + comité interdirection municipal; reconduits pour la mise en œuvre.',
-    'CDSV : CA représentatif de 5 collèges (communautaire, économique, scolaire, institutionnel, citoyen).'],
-    src: [['PDCN, annexe 4','https://portail-m4s.s3.montreal.ca/pdf/ver_plan_communaute_nourriciere.pdf']] },
-  evaluation: { how: 'Le maillon faible — assumé.', items: [
-    'Pas d’indicateurs publics de suivi du PDCN à ce jour.',
-    'Suivi indirect : mise à jour du SAV (10 défis), Bilan-Faim annuel, portraits DRSP.'],
-    src: [] },
-  impact: { how: 'Priorité locale : la sécurité alimentaire. Des livrables concrets depuis 2022.', items: [
-    'Pourquoi cette priorité : <strong>14,8 %</strong> des ménages montréalais en insécurité alimentaire (2020) vs 11,4 % ailleurs au Québec; Moisson Montréal : <strong>1,1 M demandes/mois</strong> (2025), +54 % vs 2021.',
-    'Verdun documente l’enjeu depuis 2017 — la priorité vient du terrain.',
-    'Livrables : plan d’action 2023-2026 (<strong>58 actions</strong>); Jardin Éthel livré; marchés fermiers (11e saison, 2025); serres en production (~20 000 pi²).'],
-    src: [['Bilan-Faim 2025','https://www.moissonmontreal.org/wp-content/uploads/2025/10/MMTL_85x11_bilanfaim2025-20-10-25-FR-WEB-1.pdf']] },
-  determinants: { how: 'Ce que le projet touche — et ne touche pas — dans les règles du jeu.', items: [
-    'Touché : pratiques municipales (budget participatif, plan décennal 2022-2030 adopté par l’arrondissement).',
-    'Cadre : Politique bioalimentaire Qc 2018-2025 (5 G$) puis 2025-2035.',
-    '<strong>Vide structurel</strong> : aucune loi québécoise anti-gaspillage (PL 697 non adopté) — la récupération reste volontaire.'],
-    src: [['Politique bioalimentaire','https://www.quebec.ca/gouvernement/politiques-orientations/politique-bioalimentaire']] },
-  equite: { how: 'Universalisme proportionné appliqué à l’alimentation.', items: [
-    'Offre universelle (marchés, jardins, serres) + intensité accrue pour les plus vulnérables (dépannage ~222 ménages/mois, repas ~3 $, livraison).',
-    'Viser l’accès physique ET économique — le système, pas seulement l’urgence.'],
-    src: [] }
-}},
-cdn: {
-  kicker: 'LOGEMENT À CÔTE-DES-NEIGES',
-  title: 'Projet Namur-Hippodrome : la vision de la communauté',
-  intro: 'Sur le dernier grand terrain public de Montréal (l’ancien hippodrome, cédé par Québec en 2017), la Ville planifie 18 500 à 20 000 logements (PDAD, déc. 2024). La communauté de CDN — CDC, comité communautaire N-H — exige au moins 4 800 logements sociaux et communautaires et une fiducie d’utilité sociale (FUS) pour sortir le site de la spéculation. Coût total estimé : 8-10 G$ sur 10 ans.',
-  chrono: [
-    ['2009-2017','Fin des courses (2009); Québec cède le terrain à Montréal (2017) contre 50 % des profits nets'],
-    ['2019-2020','Consultation OCPM : 2 800+ participations; rapport recommandant 35-40 % de logement social'],
-    ['Mai 2023','Création du GALOPH (Ville-Québec-Ottawa + milieux communautaire, immobilier, finance)'],
-    ['Déc. 2024','Adoption du PDAD : 18 500-20 000 logements sur 95 ha'],
-    ['Sept. 2025','Entente de 320,8 M$ (Ottawa 128,3 + Ville 192,5) pour les infrastructures de la phase 1 (~2 250 logements)'],
-    ['Oct. 2025','La communauté dévoile son plan de FUS'],
-    ['2026','PL22 : les terrains passent à l’OBNL GALOPH; première phase enclenchée']],
-  srcs: [['Les propositions (nh.conseilcdn.qc.ca)','https://nh.conseilcdn.qc.ca/les-propositions/'],['Rapport OCPM 2020','https://ocpm.qc.ca/sites/default/files/pdf/rapports/rapport-namur-hippodrome.pdf']],
-  nodes: {
-  rapports: { how: 'Spéculation foncière vs communauté : un rapport de force construit sur 30 ans.', items: [
-    'La revendication a grandi avec le rapport de force : 2 500 logements sociaux → 4 800 → « 100 % hors marché ».',
-    'Proposition 7 : prévenir l’éco-embourgeoisement; les villes liées contestent un emprunt de 20 M$ de l’agglomération.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  numerique: { how: 'Le numérique amplifie la mobilisation.', items: [
-    'OCPM 2019-2020 : 788 répondants au sondage en ligne; consultation PDAD 2024 sur Réalisons Montréal.',
-    'nh.conseilcdn.qc.ca : vitrine permanente des propositions et appels à mobilisation.'],
-    src: [['nh.conseilcdn.qc.ca','https://nh.conseilcdn.qc.ca/']] },
-  climat: { how: 'Un écoquartier — à condition qu’il ne chasse personne.', items: [
-    'Milieu de vie complet et résilient (PNSP, activité 38); gestion des eaux pluviales incluse dans les 320,8 M$ d’infrastructures.',
-    'Proposition 7 : écologie avec et pour la population, biologiste à chaque étape.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  institutions: { how: 'Trois gouvernements + leurs bras immobiliers et consultatifs.', items: [
-    '<strong>Ville</strong> : PDAD (déc. 2024) + 192,5 M$; <strong>Québec</strong> : terrain (2017), 6 M$, SHQ/PHAQ, PL22; <strong>Ottawa</strong> : 128,3 M$, SCHL.',
-    'OCPM (consultation), arrondissement CDN-NDG (permis, 500 000 $ volet logement 2025-2026), OMHM/Communia.',
-    '<strong>DRSP</strong> : preuve santé-logement (moisissures = ~26 % des infections respiratoires, 13-17 % de l’asthme des enfants); <strong>CIUSSS Centre-Ouest</strong> : organisatrice communautaire prêtée au comité.'],
-    src: [['Entente 320 M$','https://ici.radio-canada.ca/nouvelle/2192495/quebec-ottawa-320-millions-quartier-namur-hippodrome']] },
-  philanthropie: { how: 'Présente en appui, pas au centre.', items: [
-    'Centraide : PIC en planification à CDN; finance la CDC via l’IMSDSL.',
-    'Finance solidaire au GALOPH : Fonds de solidarité FTQ (coprésidence).'],
-    src: [] },
-  prive: { how: 'Le privé est dans la gouvernance ET dans le chantier.', items: [
-    '<strong>GALOPH</strong> coprésidé par Pierre Boivin (Claridge) et Janie Béïque (Fonds FTQ).',
-    'Coût total 8-10 G$ sur ~10 ans — majoritairement porté par des promoteurs; premier promoteur en lice (2026).'],
-    src: [['La Presse, mai 2026','https://www.lapresse.ca/affaires/marche-immobilier/2026-05-04/quartier-namur-hippodrome/le-signal-de-la-premiere-phase-enfin-donne.php']] },
-  communautaire: { how: 'Une coalition dense, coordonnée par la table de quartier.', items: [
-    '<strong>CDC de CDN</strong> + comité communautaire N-H (2023) : ROMEL, ŒIL, Groupe CDH, Ex Aequo, Femmes du Monde, Projet Genèse.',
-    'Expertise immobilière communautaire (Groupe CDH, ROMEL) et accessibilité (Ex Aequo, Société Logique); FRAPRU en appui provincial.'],
-    src: [['Le projet','https://nh.conseilcdn.qc.ca/le-projet/']] },
-  citoyens: { how: 'Les résidents pèsent dans les instances et les consultations.', items: [
-    '<strong>2 800+ participations</strong> à l’OCPM (2019-2020); 135 opinions et mémoires.',
-    'Comité N-H renouvelé (2026) : un résident architecte y siège; locataires mobilisés via Projet Genèse et l’ŒIL (salubrité).'],
-    src: [['Documentation OCPM','https://ocpm.qc.ca/fr/hippodrome/documentation']] },
-  plaidoyer: { how: 'Du mémoire à la contre-proposition.', items: [
-    'Mémoires : Projet Genèse à l’OCPM (2020), comité N-H au PDAD (2024); l’OCPM reprend 35-40 % de social.',
-    'Oct. 2025 : la communauté publie son propre <strong>plan de FUS</strong> — elle ne réagit plus, elle propose.',
-    'La coalition action-salubrité vise des changements réglementaires systémiques.'],
-    src: [['Plan FUS','https://nh.conseilcdn.qc.ca/wp-content/uploads/2026/01/Plan-FUS-longue-MaJ-01-2026.pdf']] },
-  concertation: { how: 'Une architecture en couches.', items: [
-    '<strong>Table habitation sociale</strong> (multiréseau); <strong>chantier salubrité</strong> (CIUSSS, arrondissement, OMHM, SPVM PDQ 26, DRSP, Fondation Dr Julien); coalition action-salubrité.',
-    'Le comité N-H fait l’interface avec le GALOPH; la CDC (CMTQ, financée par l’IMSDSL) coordonne le tout.'],
-    src: [['La concertation (CDC)','https://conseilcdn.qc.ca/la-concertation/']] },
-  participation: { how: 'La consultation publique a pesé sur le cadre officiel.', items: [
-    'OCPM 2019-2020 : 2 800+ participations, 135 mémoires, 788 répondants — rapport recommandant 35-40 % de social.',
-    'Proposition 4 : co-conception avec des personnes en situation d’itinérance; consultation PDAD 2024.'],
-    src: [['Rapport OCPM','https://ocpm.qc.ca/sites/default/files/pdf/rapports/rapport-namur-hippodrome.pdf']] },
-  vision: { how: 'Une vision écrite AVANT le plan officiel de la Ville.', items: [
-    '« La vision de la communauté » : 9 orientations — ≥4 800 logements sociaux, FUS, inclusion, milieu complet, écologie, gouvernance partagée.',
-    'Le PDAD (déc. 2024) en reprend une partie : 18 500-20 000 logements, dont ~10 000 « hors spéculation » sur l’hippodrome.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  savoir: { how: 'Des données de quartier qui fondent chaque demande.', items: [
-    '<strong>Portrait de quartier 2025</strong> (CDC) : 47 % de pop. immigrante, 13 510 ménages à faible revenu, 10,8 % de logements à réparer.',
-    'DRSP : ~9 100 ménages de CDN exposés aux moisissures; précédent documenté : FUS de l’écoquartier Louvain.'],
-    src: [['Portrait de quartier 2025','https://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
-  capital: { how: '30 ans de liens militants = le vrai capital du projet.', items: [
-    'Réseaux d’entraide locataires (Projet Genèse, ŒIL) bâtis depuis les années 1990.',
-    'Proposition 6 : filet social — cuisines collectives, lieux culturels et communautaires en rez-de-chaussée.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  financement: { how: 'Un empilement à trois paliers, encore incomplet.', items: [
-    'Infrastructures phase 1 : <strong>320,8 M$</strong> (Ottawa 128,3 + Ville 192,5); Québec : terrain (2017, 50 % des profits) + 6 M$ (2023).',
-    'Programmes à mobiliser : PHAQ (300 + 650 M$), SCHL (FLA ~14,6 G$, ICRL ~4 G$), <strong>PSL</strong> (loyer = 25 % du revenu) exigé pour ≥60 % des logements sociaux.',
-    'Aucune ventilation publique du financement des 2 250 logements de la phase 1 à ce jour.'],
-    src: [['Entente 320 M$','https://ici.radio-canada.ca/nouvelle/2192495/quebec-ottawa-320-millions-quartier-namur-hippodrome']] },
-  gouvernance: { how: 'Hybride public-communautaire-privé, chapeautée à terme par la FUS.', items: [
-    '<strong>GALOPH</strong> : ~15 membres → OBNL propriétaire et maître d’œuvre du site (PL22, 2026), exempt de taxes.',
-    'Proposition 8 : gouvernance partagée sous la FUS; terrains sociaux mis en réserve dès l’adoption.'],
-    src: [['Le développement','https://nh.conseilcdn.qc.ca/le-developpement/']] },
-  evaluation: { how: 'Promise, pas encore construite.', items: [
-    'Proposition 5 : définir des <strong>indicateurs de qualité des milieux de vie</strong> avec des urbanistes — à faire.',
-    'Angle mort assumé : pas de cadre d’évaluation public du projet à ce jour.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] },
-  impact: { how: 'Priorité locale : le logement. La mobilisation a déjà changé le cadre officiel.', items: [
-    'Pourquoi cette priorité : <strong>13 510 ménages à faible revenu</strong>; 10,8 % des logements locatifs à réparer; ~9 100 ménages exposés aux moisissures; 47 % de pop. immigrante.',
-    'PDAD adopté (déc. 2024) avec cibles sociales; <strong>320,8 M$</strong> débloqués; phase 1 (~2 250 logements) enclenchée en 2026.',
-    'La FUS communautaire est au cœur du montage retenu (PL22) — plus grand chantier d’habitation au pays, dernière réserve foncière publique du quartier.'],
-    src: [['Le Devoir','https://www.ledevoir.com/politique/montreal/966756/futur-quartier-namur-hippodrome-sera-entre-mains-obnl'],['Portrait de quartier 2025','https://conseilcdn.qc.ca/wp-content/uploads/2025/09/DIGITAL-Portrait-de-quartier-2025-Co_te-des-Neiges.pdf']] },
-  determinants: { how: 'Ici, le projet change les règles elles-mêmes.', items: [
-    'Cascade LAU : OGAT → PMAD (2012) → schéma d’agglomération (2015) → PUM 2050 (2025) → <strong>PDAD N-H</strong> (2024) = nouveau cadre légal du secteur.',
-    '<strong>RMM 20-20-20</strong> (2021) : abrogation annoncée nov. 2025, remplacé par 20 % « hors marché »; <strong>PL22</strong> (2026) crée le véhicule OBNL; Loi 31 (2024) encadre le parc existant.',
-    'La <strong>FUS</strong> = nouveau modèle foncier : sol hors marché à perpétuité.'],
-    src: [['PL22 / OBNL','https://www.ledevoir.com/politique/montreal/966756/futur-quartier-namur-hippodrome-sera-entre-mains-obnl']] },
-  equite: { how: 'Sortir le sol du marché pour pérenniser l’abordabilité.', items: [
-    'FUS : l’abordabilité ne s’érode pas à la revente — l’équité inscrite dans la structure foncière.',
-    'Abordabilité définie par le <strong>revenu</strong> (PSL = 25 % du revenu), pas par le marché; ADS+ et accessibilité universelle partout.'],
-    src: [['Les propositions','https://nh.conseilcdn.qc.ca/les-propositions/']] }
-}}};
-
-/* ---- Rendu des onglets exemples ---- */
 let activeTab = 'cadre';
-let activeNode = { verdun: null, cdn: null };
+const ALL_TABS = ['cadre', 'simple', 'exemple', 'outil'];
 
-function renderExHome(tab) {
-  const ex = EX[tab];
-  const chrono = ex.chrono.map(([d, e]) => `<div><b>${d}</b> — ${esc(e)}</div>`).join('');
-  const srcs = ex.srcs.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ');
-  contentEl.innerHTML = `<div class="section-banner"><h1>${esc(ex.title)}</h1></div>
-    <div class="concept-card"><div class="definition">${esc(ex.intro)}</div>
-    <div class="section-label">Chronologie</div><div class="chrono">${chrono}</div>
-    <div class="extra-block"><div class="label">Comment lire cet onglet</div>Cliquez sur un concept du cadre simplifié à gauche pour voir comment ce projet l'illustre concrètement — avec les lois, budgets, instances et acteurs en jeu.</div>
-    <div class="source">Sources principales. ${srcs}</div></div>`;
-  document.querySelector('.right').scrollTop = 0;
-}
+/* « Exemple » et « Outil » n'ont pas de concepts à ouvrir : le panneau de
+   droite, la poignée de redimensionnement et la recherche disparaissent, et la
+   vue occupe toute la largeur. */
+const SOLO_TABS = ['exemple', 'outil'];
 
-function renderExNode(tab, node) {
-  const ex = EX[tab]; const d = ex.nodes[node];
-  if (!d) return;
-  activeNode[tab] = node;
-  const lv = document.getElementById('lv-' + tab);
-  lv.querySelectorAll('.snode').forEach(g => g.classList.toggle('active', g.dataset.node === node));
-  const items = d.items.map(i => `<div class="ex-item">${i}</div>`).join('');
-  const src = (d.src && d.src.length) ? `<div class="source">Sources. ${d.src.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ')}</div>` : '';
-  const zone = NODE_TO_ZONE[node];
-  const theory = zone && DATA[zone] ? `<div class="theory-link"><button onclick="openTheory('${zone}')">Voir la fiche théorique : ${esc(DATA[zone].title)}</button></div>` : '';
-  const title = NODE_TITLES[node];
-  contentEl.innerHTML = `<div class="section-banner"><h1>${esc(title)}</h1></div>
-    <div class="concept-card"><div class="definition">${esc(d.how)}</div>${items}${theory}${src}</div>`;
-  document.querySelector('.right').scrollTop = 0;
-}
-
-function openTheory(zone) { setTab('cadre'); selectZone(zone); }
-window.openTheory = openTheory;
-
-const ALL_TABS = ['cadre', 'verdun', 'cdn'];
 function setTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
   ALL_TABS.forEach(t => { document.getElementById('lv-' + t).hidden = (t !== tab); });
-  if (tab === 'cadre') { goHome(); }
-  else if (tab === 'verdun' || tab === 'cdn') { activeNode[tab] ? renderExNode(tab, activeNode[tab]) : renderExHome(tab); }
+  const solo = SOLO_TABS.indexOf(tab) !== -1;
+  document.querySelector('.app').classList.toggle('solo', solo);
+  searchResults.classList.remove('open');
 }
-
-['verdun', 'cdn'].forEach(tab => {
-  const lv = document.getElementById('lv-' + tab);
-  lv.innerHTML = simpleSVG(tab);
-  lv.addEventListener('click', e => {
-    const g = e.target.closest('.snode');
-    if (g) renderExNode(tab, g.dataset.node);
-  });
-});
-
-
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
-
-homeBtn.addEventListener('click', () => {
-  if (activeTab === 'verdun' || activeTab === 'cdn') { activeNode[activeTab] = null; document.getElementById('lv-' + activeTab).querySelectorAll('.snode').forEach(g => g.classList.remove('active')); renderExHome(activeTab); }
-});
-
-/* Recherche : depuis un onglet exemple, ramène vers le concept (dans l'exemple si possible, sinon dans le cadre complet) */
-const ZONE_TO_NODE = {};
-Object.entries(NODE_TO_ZONE).forEach(([n, z]) => { ZONE_TO_NODE[z] = n; });
-/* La sécurité alimentaire et le logement ne sont plus des boîtes distinctes :
-   elles figurent dans « Impact collectif sur les priorités locales ». */
-searchResults.addEventListener('click', e => {
-  const item = e.target.closest('.item');
-  if (!item || !item.dataset.zone) return;
-  const z = item.dataset.zone;
-  if (activeTab !== 'cadre') {
-    const n = ZONE_TO_NODE[z];
-    if (n) {
-      e.stopImmediatePropagation(); renderExNode(activeTab, n);
-      searchResults.classList.remove('open'); searchInput.value = '';
-      return;
-    }
-    e.stopImmediatePropagation(); setTab('cadre'); selectZone(z, true);
-    searchResults.classList.remove('open'); searchInput.value = '';
-  }
-}, true);
 
 /* ---- Barre coulissante gauche/droite (redimensionnable, mémorisée) ---- */
 (function () {
