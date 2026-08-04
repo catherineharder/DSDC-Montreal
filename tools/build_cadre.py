@@ -32,6 +32,17 @@ Ce que le script fait, pour chacun :
         fiche par ce texte, d'après la table SIMPLE_BOXES. Ce dessin n'a pas de
         calques nommés ; c'est possible ici parce que sa mise en page est
         régulière (une étiquette par boîte, jamais deux fois la même).
+4bis. Enferme le dessin dans un <template>. C'est le point important : une
+    balise <style> d'Illustrator s'applique à TOUTE la page, pas au seul SVG qui
+    la contient. Illustrator renumérote ses classes à partir de zéro dans chaque
+    export, donc les deux planches définissent des dizaines de « .cls-1 »,
+    « .cls-2 »… portant les mêmes noms et pas les mêmes couleurs. Insérées
+    ensemble, elles s'écrasent l'une l'autre et chaque forme hérite du
+    remplissage de l'autre dessin. Le contenu d'un <template> est inerte : ses
+    styles ne s'appliquent pas. La page ne monte donc que le dessin de l'onglet
+    affiché, et démonte l'autre — un seul jeu de styles vivant à la fois. Les
+    classes sont en plus préfixées par fichier, ceinture et bretelles.
+
 5.  Ajoute trois calques par-dessus le dessin :
       • #cadre-halo — un liseré blanc épais, pour que le contour de sélection
         reste visible sur les boîtes de couleur foncée ;
@@ -251,27 +262,32 @@ def fix_fonts(svg_text):
     return svg_text
 
 
-def top_y(el):
-    """Ordonnée haute d'un élément simple, ou None si on ne sait pas la lire."""
+def span_y(el):
+    """(haut, bas) d'un élément simple, ou None si on ne sait pas les lire."""
     tag = el.tag.split("}")[-1]
     if tag in ("rect", "image"):
-        return float(el.get("y", 0))
+        y = float(el.get("y", 0))
+        return (y, y + float(el.get("height", 0)))
     if tag == "line":
-        return max(float(el.get("y1", 0)), float(el.get("y2", 0)))
+        y1, y2 = float(el.get("y1", 0)), float(el.get("y2", 0))
+        return (min(y1, y2), max(y1, y2))
     if tag == "text":
         m = re.search(r"translate\(\s*[-\d.]+[ ,]+([-\d.]+)", el.get("transform", ""))
-        return float(m.group(1)) if m else None
+        return (float(m.group(1)), float(m.group(1))) if m else None
     return None
 
 
 def strip_title(root):
-    """Retire le bandeau de titre : tout ce qui est au-dessus du recadrage.
+    """Retire le bandeau de titre du haut de la planche.
 
-    Le titre est un groupe nommé « Title » dans cadre.svg, et un simple empilement
-    de deux textes et d'un filet dans cadre-simple.svg. Plutôt que de coder les
-    deux cas, on enlève ce qui se trouve entièrement au-dessus de la ligne de
-    recadrage — donc invisible de toute façon, mais autant ne pas le laisser
-    traîner dans le document."""
+    Le titre est un groupe nommé « Title » dans cadre.svg, et un simple
+    empilement de deux textes et d'un filet dans cadre-simple.svg. Plutôt que de
+    coder les deux cas, on enlève ce qui se trouve ENTIÈREMENT au-dessus de la
+    ligne de recadrage.
+
+    « Entièrement », et pas seulement « qui commence au-dessus » : le rectangle
+    de fond de la planche commence lui aussi à y = 0, mais descend jusqu'en bas.
+    Le supprimer laisserait le dessin sans fond."""
     removed = 0
     for parent in list(root.iter()):
         for el in list(parent):
@@ -279,8 +295,8 @@ def strip_title(root):
                 parent.remove(el)
                 removed += 1
                 continue
-            y = top_y(el)
-            if y is not None and y < TITLE_BOTTOM and len(el) == 0:
+            span = span_y(el) if len(el) == 0 else None
+            if span and span[1] <= TITLE_BOTTOM:
                 parent.remove(el)
                 removed += 1
     return removed
@@ -502,8 +518,8 @@ def main():
          json.dumps(order, ensure_ascii=False))
 
     page = open(PAGE, encoding="utf-8").read()
-    page = replace_block(page, "CADRE:SVG", full_body)
-    page = replace_block(page, "SIMPLE:SVG", simple_body)
+    page = replace_block(page, "CADRE:SVG", '<template id="tpl-cadre">%s</template>' % full_body)
+    page = replace_block(page, "SIMPLE:SVG", '<template id="tpl-simple">%s</template>' % simple_body)
     page = replace_block(page, "CADRE:MAP", map_block)
     open(PAGE, "w", encoding="utf-8").write(page)
 
